@@ -4,6 +4,7 @@
 
 ## 배포 주소
 
+- GitHub Pages 통합 포털: https://datathinkinglab.github.io/kyonggi-courses-2026/
 - 통합 강의 포털: https://kyonggi-data-courses-2026.seungmook.chatgpt.site
 - 자료탐색분석: https://kgu-eda-2026-fall.seungmook.chatgpt.site
 - 통계컨설팅의 이해: https://kyonggi-stat-consulting-2026.seungmook.chatgpt.site
