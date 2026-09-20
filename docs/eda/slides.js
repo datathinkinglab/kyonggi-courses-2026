@@ -4,6 +4,7 @@
   const counter = document.querySelector('.slide-counter');
   const overview = document.querySelector('.overview');
   const note = document.querySelector('.speaker-note');
+  const printParams = new URLSearchParams(location.search);
   let current = Math.max(0, Math.min(slides.length - 1, Number(location.hash.replace('#','')) - 1 || 0));
   let noteOpen = false;
 
@@ -70,5 +71,13 @@
 
   window.addEventListener('hashchange', () => { const n = Number(location.hash.replace('#','')); if (n) { current = Math.max(0, Math.min(slides.length - 1, n - 1)); render(false); } });
   render(false);
-})();
 
+  if (printParams.get('print') === '1') {
+    const from = Math.max(1, Number(printParams.get('from')) || 1);
+    const to = Math.min(slides.length, Number(printParams.get('to')) || slides.length);
+    slides.forEach((slide, index) => slide.classList.toggle('print-skip', index + 1 < from || index + 1 > to));
+    const weekLabel = from === 3 ? '1주차' : from === 13 ? '2주차' : '강의슬라이드';
+    document.title = `자료탐색방법론_${weekLabel}`;
+    window.addEventListener('load', () => window.setTimeout(() => window.print(), 350), { once: true });
+  }
+})();

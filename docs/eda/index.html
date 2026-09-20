@@ -15,7 +15,12 @@
     <a class="course-title-lockup" href="#top"><strong>자료탐색방법론</strong><small>경기대학교 응용통계전공</small></a>
     <nav class="nav-actions" aria-label="주요 메뉴">
       <a class="button roadmap-link" href="#roadmap">주차별 강의</a>
-      <button class="button primary" id="open-slide-picker" type="button">강의 슬라이드 →</button>
+      <div class="header-week-menu">
+        <label class="sr-only" for="header-week-select">슬라이드를 볼 주차</label>
+        <select id="header-week-select" aria-label="슬라이드를 볼 주차"></select>
+        <a class="button primary" id="header-slide-link" href="slides/week-01-02.html#3">슬라이드 열기 →</a>
+        <a class="button pdf-link" id="header-pdf-link" href="slides/week-01-02.html?print=1&amp;from=3&amp;to=12#3" target="_blank" rel="noopener">PDF 출력</a>
+      </div>
     </nav>
   </header>
 
@@ -26,47 +31,31 @@
         <h1>자료를 읽고,<em>질문을 설계하다.</em></h1>
         <p class="hero-copy">자료탐색방법론은 모형을 세우기 전에 데이터 안에 무엇이 있는지 살펴보는 법을 배웁니다. AI와 함께 분석하되, 결과를 믿을 근거는 우리가 만듭니다.</p>
         <div class="hero-meta"><span class="pill">경기대학교 응용통계전공</span><span class="pill">Exploratory Data Analysis</span><span class="pill">이승묵 · Data Thinking Lab</span></div>
-        <div class="hero-actions"><a class="button coral" href="slides/week-01-02.html">강의 시작</a><a class="button" href="https://app.notion.com/p/3b096f1add7680049123c4b50ec2eabf" target="_blank" rel="noopener">Notion 강의노트 ↗</a></div>
+        <div class="hero-actions"><a class="button coral" id="hero-slide-link" href="slides/week-01-02.html#3">1주차 강의 시작 →</a><a class="button" href="https://app.notion.com/p/3b096f1add7680049123c4b50ec2eabf" target="_blank" rel="noopener">Notion 강의노트 ↗</a></div>
       </div>
       <div class="hero-mark"><img src="assets/logo-circle.png" alt="Data Thinking Lab — Think with Data"></div>
     </section>
 
     <section class="section current-course" id="current-course" aria-labelledby="current-title">
-      <div class="section-head"><div><div class="eyebrow">CURRENT LECTURE</div><h2 id="current-title">탐색에서<br>명세까지</h2></div><p>첫 두 주의 내용을 2시간 특강으로 묶었습니다. 개념을 짧게 설명하고, 바로 손계산·분류·AI 명세 비교로 확인합니다.</p></div>
-      <article class="course-card">
+      <div class="section-head"><div><div class="eyebrow" id="current-week-label">WEEK 01</div><h2 id="current-week-title">EDA의 출발점 · 4가지 원칙</h2></div><p id="current-week-activity">탐색과 확증의 차이, 저항성·잔차·재표현·현시성을 살펴봅니다.</p></div>
+      <fieldset class="week-picker" aria-label="강의 주차 선택"><legend>주차 선택</legend><div id="week-radio-list" class="week-radio-list"></div></fieldset>
+      <article class="course-card" aria-live="polite">
         <div class="course-card-main">
-          <span class="pill">120 MINUTES · 31 SLIDES</span>
-          <h3>EDA의 질문법과<br>재현 가능한 분석 명세</h3>
-          <p>“결과는 나왔다. 그런데 이것을 어떻게 믿을 것인가?”에서 시작해, “무엇을 계산할지 충분히 정했는가?”로 이어집니다.</p>
-          <div class="ratio" aria-label="이론과 실습 비율"><span class="theory">이론 72분 · 60%</span><span class="practice">실습 48분 · 40%</span></div>
-          <a class="button primary" href="slides/week-01-02.html">슬라이드 열기 →</a>
+          <span class="pill" id="current-week-meta">1주차 · 10 SLIDES</span>
+          <h3 id="current-session-title">EDA의 질문법과<br>네 가지 탐색 원칙</h3>
+          <p id="current-session-copy">계산보다 먼저 자료의 맥락을 살피고, 탐색과 확증을 구분하는 네 가지 관점을 익힙니다.</p>
+          <div class="hero-actions"><a class="button primary" id="current-slide-link" href="slides/week-01-02.html#3">1주차 슬라이드 열기 →</a><a class="button" id="current-notion-link" href="https://app.notion.com/p/3d196f1add768148a985d21d826ca92b" target="_blank" rel="noopener">1주차 원문 ↗</a></div>
         </div>
         <aside class="course-card-side">
-          <div><small>SESSION FLOW</small><ol class="agenda"><li><span>오프닝</span><strong>5분</strong></li><li><span>EDA 사고법</span><strong>30분</strong></li><li><span>실습 A</span><strong>12분</strong></li><li><span>자료 구조</span><strong>27분</strong></li><li><span>실습 B</span><strong>12분</strong></li><li><span>분석 명세</span><strong>10분</strong></li><li><span>실습 C + 정리</span><strong>24분</strong></li></ol></div>
-          <p><b>운영 팁</b><br>슬라이드는 개념과 진행 리듬을, Notion은 코드·표·과제의 원문을 맡습니다.</p>
+          <div><small>학습 흐름</small><ol class="agenda" id="current-agenda"><li>탐색과 확증의 차이</li><li>저항성과 대표값</li><li>잔차·재표현·현시성</li><li>손계산과 해석 실습</li></ol></div>
+          <p id="current-card-help">방향키로 이동 · O 전체 목록<br>N 강사 노트 · 전체 화면 지원</p>
         </aside>
       </article>
     </section>
 
     <section class="section dark" id="roadmap" aria-labelledby="roadmap-title">
-      <div class="section-head"><div><div class="eyebrow">SEMESTER MAP</div><h2 id="roadmap-title">주차별 강의</h2></div><p>주차별 슬라이드는 이 메인 페이지에 계속 추가됩니다. 현재 1–2주차가 열려 있습니다.</p></div>
-      <div class="roadmap">
-        <details class="week available" open><summary><b>Week 01</b><span>EDA의 출발점 · 4가지 원칙</span></summary><div class="week-body"><p>탐색과 확증의 차이, 저항성·잔차·재표현·현시성을 살펴봅니다.</p><a class="button primary" href="slides/week-01-02.html#3">1주차 슬라이드 열기 →</a></div></details>
-        <details class="week available"><summary><b>Week 02</b><span>자료 구조 · 분석 명세</span></summary><div class="week-body"><p>관측 단위·변수·측정척도와 재현 가능한 분석 명세를 학습합니다.</p><a class="button primary" href="slides/week-01-02.html#13">2주차 슬라이드 열기 →</a></div></details>
-        <details class="week"><summary><b>Week 03</b><span>코드 읽기와 결과 검증</span></summary><div class="week-body"><p>결측 처리, 부분세트·정렬, 검증 3종 세트를 다룹니다. 슬라이드는 추후 공개됩니다.</p></div></details>
-        <details class="week"><summary><b>Week 04</b><span>줄기와 잎 · 히스토그램</span></summary><div class="week-body"><p>분포와 구간 폭을 탐색합니다. 슬라이드는 추후 공개됩니다.</p></div></details>
-        <details class="week"><summary><b>Week 05</b><span>중심위치와 저항성</span></summary><div class="week-body"><p>평균·중앙값·분위수·IQR을 학습합니다. 슬라이드는 추후 공개됩니다.</p></div></details>
-        <details class="week"><summary><b>Week 06</b><span>5수요약과 상자그림</span></summary><div class="week-body"><p>울타리와 이상점, 그룹 비교를 다룹니다. 슬라이드는 추후 공개됩니다.</p></div></details>
-        <details class="week"><summary><b>Week 07</b><span>재표현: 변환의 사다리</span></summary><div class="week-body"><p>여러 변환과 왜도 비교를 실습합니다. 슬라이드는 추후 공개됩니다.</p></div></details>
-        <details class="week"><summary><b>Week 08</b><span>중간고사</span></summary><div class="week-body"><p>1–7주차 범위의 중간평가를 진행합니다.</p></div></details>
-        <details class="week"><summary><b>Week 09</b><span>표준화와 Box–Cox</span></summary><div class="week-body"><p>표준화·로버스트 표준화·Box–Cox 변환을 다룹니다. 슬라이드는 추후 공개됩니다.</p></div></details>
-        <details class="week"><summary><b>Week 10</b><span>확률분포와 Q–Q 플롯</span></summary><div class="week-body"><p>정규분포와 확률플롯을 학습합니다. 슬라이드는 추후 공개됩니다.</p></div></details>
-        <details class="week"><summary><b>Week 11</b><span>여러 분포와 플롯 진단</span></summary><div class="week-body"><p>연속·이산분포와 꼬리·비대칭을 진단합니다. 슬라이드는 추후 공개됩니다.</p></div></details>
-        <details class="week"><summary><b>Week 12</b><span>이원 자료와 빈도표</span></summary><div class="week-body"><p>주변합·비율·모자이크 플롯을 다룹니다. 슬라이드는 추후 공개됩니다.</p></div></details>
-        <details class="week"><summary><b>Week 13</b><span>혼재변수와 심슨의 역설</span></summary><div class="week-body"><p>층화 전후의 결론을 비교합니다. 슬라이드는 추후 공개됩니다.</p></div></details>
-        <details class="week"><summary><b>Week 14</b><span>프로젝트 클리닉</span></summary><div class="week-body"><p>팀별 진행 발표와 검증 로그를 점검합니다.</p></div></details>
-        <details class="week"><summary><b>Week 15</b><span>최종 프로젝트 발표</span></summary><div class="week-body"><p>팀별 발표와 질의응답을 진행합니다.</p></div></details>
-      </div>
+      <div class="section-head"><div><div class="eyebrow">SEMESTER MAP</div><h2 id="roadmap-title">주차별 강의</h2></div><p>주차를 선택하면 위의 현재 강의 영역도 함께 바뀝니다. 슬라이드가 준비된 주차는 바로 열 수 있습니다.</p></div>
+      <div class="roadmap" id="roadmap-list"></div>
     </section>
 
     <section class="section course-operation" aria-labelledby="operation-title">
@@ -83,34 +72,6 @@
   <footer class="footer"><span>© 2026 Data Thinking Lab · 경기대학교 응용통계전공</span><span>질문 → 분석 → 검증 → 해석</span></footer>
 </div>
 
-<dialog class="slide-picker" id="slide-picker" aria-labelledby="slide-picker-title">
-  <div class="slide-picker-head">
-    <div>
-      <span class="slide-picker-kicker">LECTURE SLIDES</span>
-      <h2 id="slide-picker-title">강의 주차 선택</h2>
-    </div>
-    <button class="slide-picker-close" id="close-slide-picker" type="button" aria-label="닫기">×</button>
-  </div>
-  <p class="slide-picker-copy">이동할 강의 주차를 선택하세요. 선택한 주차의 첫 슬라이드에서 시작합니다.</p>
-  <fieldset class="slide-options">
-    <legend class="sr-only">강의 주차</legend>
-    <label class="slide-choice">
-      <input type="radio" name="lecture-week" value="slides/week-01-02.html#3" checked>
-      <span class="slide-choice-marker" aria-hidden="true"></span>
-      <span><strong>Week 01</strong><small>EDA의 출발점 · 4가지 원칙</small></span>
-    </label>
-    <label class="slide-choice">
-      <input type="radio" name="lecture-week" value="slides/week-01-02.html#13">
-      <span class="slide-choice-marker" aria-hidden="true"></span>
-      <span><strong>Week 02</strong><small>자료 구조 · 분석 명세</small></span>
-    </label>
-  </fieldset>
-  <div class="slide-picker-actions">
-    <button class="button" id="cancel-slide-picker" type="button">취소</button>
-    <button class="button primary" id="open-selected-week" type="button">선택한 주차 열기 →</button>
-  </div>
-</dialog>
-<script src="main.js"></script>
+<script src="course.js"></script>
 </body>
 </html>
-
