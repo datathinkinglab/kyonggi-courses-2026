@@ -82,6 +82,7 @@
     const notionLink = byId('current-notion-link'); notionLink.href = item.notion || notionCourse; notionLink.textContent = item.notion ? `${item.week}주차 원문 ↗` : '전체 Notion 강의노트 ↗';
     byId('current-card-help').innerHTML = item.slide ? '방향키로 이동 · O 전체 목록<br>N 강사 노트 · 전체 화면 지원' : '해당 주차 슬라이드가 추가되면<br>이 버튼이 자동으로 활성화됩니다.';
     const headerLink = byId('header-slide-link'); headerLink.href = item.slide || '#current-course'; headerLink.textContent = item.slide ? '슬라이드 열기 →' : '준비 예정'; headerLink.classList.toggle('disabled', !item.slide); headerLink.setAttribute('aria-disabled', String(!item.slide));
+    const pdfLink = byId('header-pdf-link'); pdfLink.href = item.slide ? `${item.slide}?print=1` : '#current-course'; pdfLink.textContent = item.slide ? 'PDF 출력' : 'PDF 준비 예정'; pdfLink.classList.toggle('disabled', !item.slide); pdfLink.setAttribute('aria-disabled', String(!item.slide));
     const heroLink = byId('hero-slide-link'); heroLink.href = item.slide || '#current-course'; heroLink.textContent = item.slide ? `${item.week}주차 강의 시작 →` : `${item.week}주차 준비 예정`; heroLink.classList.toggle('disabled', !item.slide); heroLink.setAttribute('aria-disabled', String(!item.slide));
     renderRoadmap(item.week);
     if (updateUrl) history.replaceState(null, '', `${location.pathname}?week=${item.week}${location.hash}`);

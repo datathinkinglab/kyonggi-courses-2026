@@ -51,5 +51,6 @@
   });
   window.addEventListener('hashchange',()=>{current=fromHash();render(false);});
   current=fromHash();render(false);
+  if(new URLSearchParams(location.search).get('print')==='1') window.addEventListener('load',()=>setTimeout(()=>window.print(),250),{once:true});
 })();
 
