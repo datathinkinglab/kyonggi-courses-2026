@@ -1,0 +1,61 @@
+:root {
+  --navy:#13213c;
+  --blue:#0a68b3;
+  --sky:#dff2ff;
+  --coral:#ff6659;
+  --paper:#f7f9fc;
+  --white:#fff;
+  --muted:#667085;
+  --line:#dce3ed;
+  --shadow:0 24px 70px rgba(19,33,60,.12);
+}
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { margin:0; color:var(--navy); background:var(--paper); font-family:Pretendard,"Noto Sans KR","Apple SD Gothic Neo",system-ui,sans-serif; }
+a { color:inherit; }
+.topbar { display:flex; align-items:center; justify-content:space-between; min-height:82px; padding:14px clamp(22px,5vw,76px); border-bottom:1px solid rgba(19,33,60,.08); background:rgba(247,249,252,.94); }
+.topbar .brand { display:block; width:168px; }
+.topbar .brand img { display:block; width:100%; height:auto; }
+.topbar>span { color:var(--muted); font-size:.76rem; font-weight:800; letter-spacing:.14em; }
+main { overflow:hidden; }
+.hero { display:grid; grid-template-columns:minmax(0,1.25fr) minmax(240px,.75fr); align-items:center; gap:40px; min-height:480px; padding:72px clamp(24px,7vw,110px); background:radial-gradient(circle at 80% 28%,rgba(10,104,179,.12),transparent 28%),linear-gradient(135deg,#fff 0%,#f2f7fc 100%); }
+.eyebrow { margin:0 0 18px; color:var(--blue); font-size:.76rem; font-weight:900; letter-spacing:.16em; }
+h1 { margin:0; font-size:clamp(2.7rem,6vw,6.2rem); line-height:.98; letter-spacing:-.07em; }
+h1 em { display:inline-block; margin-top:.12em; color:var(--blue); font-style:normal; }
+.intro { max-width:660px; margin:30px 0 0; color:var(--muted); font-size:clamp(1rem,1.5vw,1.2rem); line-height:1.8; }
+.hero-logo { justify-self:center; width:min(320px,75%); filter:drop-shadow(0 22px 35px rgba(19,33,60,.14)); }
+.courses { padding:82px clamp(24px,7vw,110px) 100px; }
+.section-heading { display:flex; align-items:end; justify-content:space-between; gap:24px; margin-bottom:32px; }
+.section-heading h2 { margin:0; font-size:clamp(2rem,4vw,3.8rem); letter-spacing:-.055em; }
+.section-heading>p { margin:0; color:var(--muted); }
+.course-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:24px; }
+.course-card { position:relative; display:grid; grid-template-rows:auto 1fr auto; min-height:410px; padding:32px; overflow:hidden; border:1px solid var(--line); border-radius:28px; background:var(--white); box-shadow:var(--shadow); }
+.course-card::before { content:""; position:absolute; right:-70px; top:-70px; width:210px; height:210px; border-radius:50%; background:var(--sky); }
+.course-card.consulting::before { background:#ffe2de; }
+.card-number { position:relative; font-size:.82rem; font-weight:900; letter-spacing:.12em; }
+.course-card>div:nth-child(2) { align-self:center; position:relative; }
+.course-tag { margin:0 0 12px; color:var(--blue); font-size:.72rem; font-weight:900; letter-spacing:.12em; }
+.consulting .course-tag { color:#d9473d; }
+.course-card h3 { margin:0 0 18px; font-size:clamp(2rem,3.4vw,3.5rem); letter-spacing:-.055em; }
+.course-card p:not(.course-tag) { max-width:520px; margin:0; color:var(--muted); line-height:1.75; }
+.course-link { position:relative; display:flex; align-items:center; justify-content:space-between; margin-top:28px; padding-top:20px; border-top:1px solid var(--line); font-weight:900; text-decoration:none; }
+.course-link span { display:grid; place-items:center; width:42px; height:42px; border-radius:50%; color:white; background:var(--blue); transition:transform .2s ease; }
+.consulting .course-link span { background:var(--coral); }
+.course-link:hover span,.course-link:focus-visible span { transform:translateX(4px); }
+footer { display:flex; justify-content:space-between; gap:20px; padding:24px clamp(24px,7vw,110px); color:#c8d1df; background:var(--navy); font-size:.82rem; }
+@media(max-width:760px) {
+  .topbar { min-height:68px; padding:12px 18px; }
+  .topbar .brand { width:126px; }
+  .topbar>span { display:none; }
+  .hero { grid-template-columns:1fr; min-height:auto; padding:54px 24px 62px; }
+  .hero-logo { grid-row:1; width:150px; }
+  .hero-copy { grid-row:2; }
+  h1 { font-size:clamp(2.6rem,13vw,4.4rem); }
+  .courses { padding:60px 20px 72px; }
+  .section-heading { align-items:start; flex-direction:column; }
+  .course-grid { grid-template-columns:1fr; }
+  .course-card { min-height:350px; padding:26px; border-radius:22px; }
+  footer { flex-direction:column; padding:24px; }
+}
+@media(prefers-reduced-motion:reduce) { * { scroll-behavior:auto!important; transition:none!important; } }
+
