@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="ko" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>경기대학교 통계컨설팅의 이해 - 2차수 강의 슬라이드</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              800: '#1e40af',
+              900: '#1e3a8a',
+              950: '#071124',
+            },
+            accent: {
+              emerald: '#10b981',
+              cyan: '#06b6d4',
+              amber: '#f59e0b',
+              rose: '#f43f5e',
+              purple: '#a855f7'
+            }
+          },
+          fontFamily: {
+            sans: ['Pretendard', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+    
+    body {
+      font-family: 'Pretendard', -apple-system, sans-serif;
+      overflow: hidden;
+      user-select: text;
+    }
+    
+    .slide-container {
+      perspective: 1000px;
+    }
+
+    .slide {
+      display: none;
+      opacity: 0;
+      transform: translateY(12px) scale(0.99);
+      transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .slide.active {
+      display: flex;
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.6);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(71, 85, 105, 0.8);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(100, 116, 139, 1);
+    }
+
+    /* PDF Print Optimization */
+    @media print {
+      body {
+        overflow: visible !important;
+        background-color: #071124 !important;
+        color: #f8fafc !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      header, footer, #tocModal, .no-print {
+        display: none !important;
+      }
+      main {
+        padding: 0 !important;
+        margin: 0 !important;
+        display: block !important;
+        overflow: visible !important;
+      }
+      .slide-container {
+        display: block !important;
+        height: auto !important;
+        max-width: 100% !important;
+      }
+      .slide {
+        display: flex !important;
+        opacity: 1 !important;
+        transform: none !important;
+        page-break-after: always !important;
+        break-after: page !important;
+        min-height: 100vh !important;
+        padding: 2.5rem 3rem !important;
+        box-sizing: border-box !important;
+        border-bottom: 1px solid #1e293b !important;
+        background-color: #0a1428 !important;
+      }
+    }
+  </style>
+</head>
+<body class="h-full bg-slate-950 text-slate-100 flex flex-col justify-between select-none">
+
+  <!-- Background decorative glows -->
+  <div class="fixed inset-0 pointer-events-none overflow-hidden z-0 no-print">
+    <div class="absolute -top-40 -left-40 w-96 h-96 bg-blue-600/15 rounded-full blur-3xl"></div>
+    <div class="absolute -bottom-40 -right-40 w-96 h-96 bg-cyan-600/15 rounded-full blur-3xl"></div>
+  </div>
+
+  <header class="relative z-20 flex items-center justify-between px-6 py-3.5 border-b border-slate-800/80 bg-slate-900/70 backdrop-blur-md no-print">
+    <div class="flex items-center space-x-3">
+      <div class="h-7 w-2 bg-gradient-to-b from-blue-500 to-cyan-400 rounded-full"></div>
+      <div>
+        <h1 class="text-sm font-semibold tracking-wide text-slate-200">경기대학교 응용통계학과</h1>
+        <p class="text-xs text-blue-400 font-medium">통계컨설팅의 이해 &middot; 2차수 강의 슬라이드</p>
+      </div>
+    </div>
+    
+    <div class="flex items-center space-x-2">
+      <!-- PDF Print Button -->
+      <button id="pdfBtn" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-slate-800/90 hover:bg-slate-700 border border-slate-700 text-xs text-rose-300 hover:text-white transition shadow-sm" title="PDF로 저장하거나 인쇄합니다">
+        <svg class="w-4 h-4 text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+        <span class="font-medium">PDF 출력</span>
+      </button>
+
+      <!-- Table of Contents Toggle -->
+      <button id="tocBtn" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 border border-slate-700 text-xs text-slate-300 hover:text-white transition">
+        <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path></svg>
+        <span class="hidden sm:inline">전체 목차</span>
+      </button>
+
+      <!-- Fullscreen Toggle -->
+      <button id="fsBtn" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 border border-slate-700 text-xs text-slate-300 hover:text-white transition" title="전체화면(F)">
+        <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path></svg>
+        <span class="hidden sm:inline">전체화면 (F)</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="relative z-10 flex-1 flex items-center justify-center p-4 sm:p-8 overflow-y-auto">
+    <div class="w-full max-w-6xl h-full flex flex-col justify-center slide-container">
+
+      <!-- SLIDE 1: Title Slide -->
+      <section class="slide active flex-col justify-center items-start text-left space-y-6">
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-400 text-xs font-semibold tracking-wider uppercase">
+          <span class="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span> Week 02 Core Course
+        </div>
+        <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-tight">
+          통계 컨설팅에서의<br>
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-400 to-emerald-400">
+            AI 네이티브 개발 & 바이브 코딩
+          </span>
+        </h1>
+        <p class="text-slate-400 text-base sm:text-xl max-w-3xl leading-relaxed">
+          수십 장의 정적 보고서(PDF/PPT)를 탈피하여, 의뢰인의 요구사항을 실시간으로 확인·조작하는 인터랙티브 통계 MVP 프로토타입 신속 제작 가이드
+        </p>
+        <div class="pt-4 flex flex-wrap gap-4 border-t border-slate-800/80 w-full text-xs sm:text-sm text-slate-400">
+          <div class="flex items-center gap-2">
+            <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-mono">대상</span> 경기대학교 응용통계학과 4학년
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-mono">구성</span> 2시간 연계 이론 &middot; 실습 순환형
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-mono">도구</span> Cursor / Claude Code / 무료 Web LLM
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 2: Roadmap -->
+      <section class="slide flex-col justify-center space-y-6">
+        <div>
+          <span class="text-xs font-bold tracking-widest text-cyan-400 uppercase">Architecture Roadmap</span>
+          <h2 class="text-2xl sm:text-4xl font-bold text-white mt-1">2차수 커리큘럼 대단원 구조</h2>
+          <p class="text-slate-400 text-xs sm:text-sm mt-1">이론을 듣고 즉시 실습으로 내재화하는 옴니버스 순환형 구성</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 w-full">
+          <!-- Chapter 1 Box -->
+          <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-blue-500/50 transition">
+            <div class="flex items-center justify-between mb-4">
+              <span class="px-2.5 py-1 rounded-md bg-blue-500/20 text-blue-400 text-xs font-bold">대단원 I</span>
+              <span class="text-xs text-slate-400 font-mono">환경 구축 & 기획</span>
+            </div>
+            <h3 class="text-lg font-bold text-slate-100 mb-2">개발 환경 구축과 프로젝트 기획</h3>
+            <ul class="space-y-2 text-xs sm:text-sm text-slate-400">
+              <li class="flex items-start gap-2"><span class="text-blue-400 font-bold">&bull;</span> 통계 컨설팅 패러다임 변화 (보고서 $\rightarrow$ MVP 프로토타입)</li>
+              <li class="flex items-start gap-2"><span class="text-blue-400 font-bold">&bull;</span> 작업 환경 3종 비교 (IDE, CLI, 무료 Web)</li>
+              <li class="flex items-start gap-2"><span class="text-emerald-400 font-bold">&check;</span> <strong>[실습 1]</strong> 환경별 작업공간 & 규칙 파일(Rule File) 세팅</li>
+              <li class="flex items-start gap-2"><span class="text-blue-400 font-bold">&bull;</span> 토큰 & 컨텍스트 윈도우 한계와 1-Page 통계 PRD 설계</li>
+              <li class="flex items-start gap-2"><span class="text-emerald-400 font-bold">&check;</span> <strong>[실습 2]</strong> 가상 의뢰인을 위한 Churn 분석 PRD 작성</li>
+            </ul>
+          </div>
+
+          <!-- Chapter 2 Box -->
+          <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-cyan-500/50 transition">
+            <div class="flex items-center justify-between mb-4">
+              <span class="px-2.5 py-1 rounded-md bg-cyan-500/20 text-cyan-400 text-xs font-bold">대단원 II</span>
+              <span class="text-xs text-slate-400 font-mono">구현 & 품질 검증</span>
+            </div>
+            <h3 class="text-lg font-bold text-slate-100 mb-2">프로토타입 구현과 품질 검증</h3>
+            <ul class="space-y-2 text-xs sm:text-sm text-slate-400">
+              <li class="flex items-start gap-2"><span class="text-cyan-400 font-bold">&bull;</span> 자율 에이전트, MCP 및 프롬프트 7대 실무 원칙</li>
+              <li class="flex items-start gap-2"><span class="text-emerald-400 font-bold">&check;</span> <strong>[실습 3]</strong> Streamlit 인터랙티브 통계 대시보드 신속 생성</li>
+              <li class="flex items-start gap-2"><span class="text-cyan-400 font-bold">&bull;</span> 통계적 환각(Hallucination), 데이터 보안 & Git 롤백 원리</li>
+              <li class="flex items-start gap-2"><span class="text-emerald-400 font-bold">&check;</span> <strong>[실습 4]</strong> $t$-검정 모듈 결합, 에러 디버깅 & 체크포인트 커밋</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 3: Consulting Paradigm Shift -->
+      <section class="slide flex-col justify-center space-y-6">
+        <div>
+          <span class="text-xs font-bold tracking-widest text-blue-400 uppercase">Part I-1. Background & Philosophy</span>
+          <h2 class="text-2xl sm:text-4xl font-bold text-white mt-1">통계 컨설팅 패러다임의 구조적 혁신</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+          <div class="p-6 rounded-2xl bg-slate-900/60 border border-rose-950/70 relative overflow-hidden">
+            <span class="text-xs font-bold px-2 py-0.5 rounded bg-rose-500/20 text-rose-300">과거의 전통적 컨설팅 방식</span>
+            <h3 class="text-base sm:text-lg font-semibold text-slate-200 mt-3 mb-2">워터폴(Waterfall) & 정적 보고서 (PDF/PPT)</h3>
+            <p class="text-xs sm:text-sm text-slate-400 leading-relaxed space-y-1">
+              &bull; 의뢰인 미팅 $\rightarrow$ 데이터 수령 $\rightarrow$ 장기간 코딩 $\rightarrow$ 수십 장의 보고서 제출.<br>
+              &bull; <strong>문제점:</strong> 피드백 주기가 1~2주 이상 지연되며, 의뢰인의 실제 문제 정의와 분석가의 가설이 불일치할 경우 전체 재작업(Rework) 비용 발생.
+            </p>
+          </div>
+
+          <div class="p-6 rounded-2xl bg-slate-900/90 border border-blue-500/40 relative overflow-hidden shadow-lg shadow-blue-500/5">
+            <span class="text-xs font-bold px-2 py-0.5 rounded bg-blue-500/20 text-blue-300">현대적 AI 네이티브 컨설팅 방식</span>
+            <h3 class="text-base sm:text-lg font-semibold text-slate-100 mt-3 mb-2">상호작용 가능한 MVP 프로토타입 시연</h3>
+            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed space-y-1">
+              &bull; 프로젝트 초기 단계에서 작동하는 반응형 웹 대시보드(Streamlit 등)를 1~2시간 내 신속 제작.<br>
+              &bull; <strong>핵심 가치:</strong> <em>"동작하는 구현체는 회의실에서 가장 강력한 디버거이자 토론 도구이다."</em><br>
+              의뢰인과 화면을 직접 조작하며 변수 정의와 분석 방향을 실시간 동기화.
+            </p>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800 text-xs sm:text-sm text-slate-300 flex items-center gap-3">
+          <span class="p-2 rounded-lg bg-blue-600/20 text-blue-400 font-bold text-xs shrink-0">핵심 정리</span>
+          <span>의뢰인은 정적인 수식이나 표보다, <strong>필터를 직접 클릭하고 그룹을 비교하는 동적 화면</strong>을 볼 때 비로소 자신의 진짜 요구사항을 정확하게 설명합니다.</span>
+        </div>
+      </section>
+
+      <!-- SLIDE 4: What is Vibe Coding -->
+      <section class="slide flex-col justify-center space-y-6">
+        <div>
+          <span class="text-xs font-bold tracking-widest text-cyan-400 uppercase">Part I-1. Core Concept</span>
+          <h2 class="text-2xl sm:text-4xl font-bold text-white mt-1">바이브 코딩(Vibe Coding)의 본질과 원리</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 w-full">
+          <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
+            <h3 class="text-base font-bold text-slate-100 flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-blue-400"></span> 하드코딩 vs 바이브 코딩
+            </h3>
+            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+              <strong>전통적 코딩:</strong> 개발자가 문법과 라이브러리 함수(Syntax)를 한 줄씩 직접 타이핑하여 작성.<br><br>
+              <strong>바이브 코딩:</strong> 코더가 직접 타이핑하지 않고, <strong>자연어로 맥락, 도메인 지식, 통계적 제약조건을 지휘(Orchestrate)</strong>하여 AI 에이전트가 코드를 작성·실행·수정하도록 유도하는 AI 네이티브 개발 방식.
+            </p>
+          </div>
+
+          <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
+            <h3 class="text-base font-bold text-slate-100 flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span> 통계학 전공자가 주도권을 갖는 이유
+            </h3>
+            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+              코드를 찍어내는 속도는 AI가 압도하지만, <strong>어떤 가설을 세워야 하는지, 데이터 척도(척도 수준)가 올바른지, 도출된 $p$-value가 유효한지 판별하는 것은 오직 통계학자의 몫</strong>입니다.<br><br>
+              <span class="text-emerald-400 font-semibold">"AI는 정답 제조기가 아니라, 분석가의 통계적 직관을 초고속으로 실현하는 가속기(Speed Multiplier)이다."</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-3 w-full text-center text-xs">
+          <div class="p-3 rounded-xl bg-slate-900/60 border border-slate-800"><span class="text-cyan-300 font-bold block mb-1">1. 의도 지휘</span>자연어로 요구사항 및 스키마 부여</div>
+          <div class="p-3 rounded-xl bg-slate-900/60 border border-slate-800"><span class="text-blue-300 font-bold block mb-1">2. 에이전트 생성</span>파일 생성 및 로컬 코드 자동 작성</div>
+          <div class="p-3 rounded-xl bg-slate-900/60 border border-slate-800"><span class="text-emerald-300 font-bold block mb-1">3. 통계적 검증</span>전공자가 결과 수치 및 로직 확인</div>
+        </div>
+      </section>
+
+      <!-- SLIDE 5: 20 Core Terms of Vibe Coding -->
+      <section class="slide flex-col justify-center space-y-5">
+        <div>
+          <span class="text-xs font-bold tracking-widest text-blue-400 uppercase">Part I-2. Taxonomy</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">바이브 코딩 20대 핵심 용어 체계</h2>
+          <p class="text-slate-400 text-xs mt-0.5">혼란스러운 신조어를 5대 핵심 영역으로 분류하여 맥락을 파악합니다.</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 w-full text-xs">
+          <!-- A. Environment -->
+          <div class="p-3.5 rounded-xl bg-slate-900/90 border border-slate-800">
+            <span class="text-[11px] font-bold text-blue-400 block mb-1.5 border-b border-slate-800 pb-1">A. 작업 환경</span>
+            <ul class="space-y-1 text-slate-300">
+              <li><strong>1. IDE:</strong> Cursor, VS Code</li>
+              <li><strong>2. CLI:</strong> 터미널 에이전트</li>
+              <li><strong>3. Model:</strong> Claude Sonnet 등</li>
+            </ul>
+          </div>
+
+          <!-- B. AI Basics -->
+          <div class="p-3.5 rounded-xl bg-slate-900/90 border border-slate-800">
+            <span class="text-[11px] font-bold text-cyan-400 block mb-1.5 border-b border-slate-800 pb-1">B. 소통 메커니즘</span>
+            <ul class="space-y-1 text-slate-300">
+              <li><strong>4. Prompt:</strong> 지시문</li>
+              <li><strong>5. Context Window:</strong> 기억폭</li>
+              <li><strong>6. Token:</strong> 언어 처리 단위</li>
+            </ul>
+          </div>
+
+          <!-- C. Setup -->
+          <div class="p-3.5 rounded-xl bg-slate-900/90 border border-slate-800">
+            <span class="text-[11px] font-bold text-emerald-400 block mb-1.5 border-b border-slate-800 pb-1">C. 프로젝트 세팅</span>
+            <ul class="space-y-1 text-slate-300">
+              <li><strong>7. PRD:</strong> 요구사항 정의서</li>
+              <li><strong>8. Rule File:</strong> 행동 규칙</li>
+              <li><strong>9. API:</strong> 데이터 통신 규약</li>
+              <li><strong>10. MCP:</strong> 로컬 도구 연결</li>
+            </ul>
+          </div>
+
+          <!-- D. Agentic -->
+          <div class="p-3.5 rounded-xl bg-slate-900/90 border border-slate-800">
+            <span class="text-[11px] font-bold text-purple-400 block mb-1.5 border-b border-slate-800 pb-1">D. 에이전트 생태계</span>
+            <ul class="space-y-1 text-slate-300">
+              <li><strong>11. Agent:</strong> 자율 실행 주체</li>
+              <li><strong>12. Skills:</strong> 단위 기능 호출</li>
+              <li><strong>13. Hooks:</strong> 자동화 트리거</li>
+              <li><strong>14. Orchestration:</strong> 총괄 조율</li>
+              <li><strong>15. Multi-Agent:</strong> 분업 협업</li>
+            </ul>
+          </div>
+
+          <!-- E. Management -->
+          <div class="p-3.5 rounded-xl bg-slate-900/90 border border-slate-800">
+            <span class="text-[11px] font-bold text-amber-400 block mb-1.5 border-b border-slate-800 pb-1">E. 관리 & 배포</span>
+            <ul class="space-y-1 text-slate-300">
+              <li><strong>16. Debugging:</strong> 원문 로그 분석</li>
+              <li><strong>17. Git:</strong> 무한 롤백 안전망</li>
+              <li><strong>18. Commit:</strong> 체크포인트</li>
+              <li><strong>19. Sandbox:</strong> 가상 격리 환경</li>
+              <li><strong>20. Deployment:</strong> 웹/클라우드 출시</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="p-3 rounded-lg bg-blue-950/20 border border-blue-800/30 text-xs text-slate-300">
+          오늘 2차수에서는 <strong>1번부터 10번, 그리고 16번(디버깅)과 17번(Git)</strong>을 직접 손으로 다룹니다.
+        </div>
+      </section>
+
+      <!-- SLIDE 6: Multi-Environment Comparison -->
+      <section class="slide flex-col justify-center space-y-6">
+        <div>
+          <span class="text-xs font-bold tracking-widest text-cyan-400 uppercase">Part I-2. Multi-Environment</span>
+          <h2 class="text-2xl sm:text-4xl font-bold text-white mt-1">학생별 맞춤 3대 실습 작업 환경</h2>
+          <p class="text-slate-400 text-xs sm:text-sm mt-1">자신의 컴퓨터 사양과 환경에 맞춰 자유롭게 선택하여 본 실습을 완주할 수 있습니다.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
+          <!-- Option A -->
+          <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 flex flex-col justify-between">
+            <div>
+              <span class="px-2.5 py-1 rounded-md bg-blue-500/20 text-blue-400 text-xs font-bold">Option A</span>
+              <h3 class="text-base font-bold text-white mt-2">AI Native IDE</h3>
+              <p class="text-xs text-slate-400 mt-0.5 mb-3">Cursor / Windsurf / VS Code + 확장</p>
+              <ul class="text-xs text-slate-300 space-y-2 border-t border-slate-800 pt-3">
+                <li class="flex items-start gap-1.5"><span class="text-blue-400">&check;</span> 파일 인라인 편집 및 다중 파일 자동 생성</li>
+                <li class="flex items-start gap-1.5"><span class="text-blue-400">&check;</span> <code>Ctrl + L</code>(채팅), <code>Ctrl + K</code>(인라인)</li>
+                <li class="flex items-start gap-1.5"><span class="text-blue-400">&check;</span> 에디터 내 터미널에서 즉시 앱 구동</li>
+              </ul>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-800/80 text-[11px] text-blue-300 font-mono">규칙 파일: <code>.cursorrules</code></div>
+          </div>
+
+          <!-- Option B -->
+          <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 flex flex-col justify-between">
+            <div>
+              <span class="px-2.5 py-1 rounded-md bg-purple-500/20 text-purple-400 text-xs font-bold">Option B</span>
+              <h3 class="text-base font-bold text-white mt-2">CLI 자율 에이전트</h3>
+              <p class="text-xs text-slate-400 mt-0.5 mb-3">Claude Code / OpenAI Codex CLI</p>
+              <ul class="text-xs text-slate-300 space-y-2 border-t border-slate-800 pt-3">
+                <li class="flex items-start gap-1.5"><span class="text-purple-400">&check;</span> 터미널 콘솔 기반 대화형 실행</li>
+                <li class="flex items-start gap-1.5"><span class="text-purple-400">&check;</span> 프로젝트 전체 코드베이스 자동 분석</li>
+                <li class="flex items-start gap-1.5"><span class="text-purple-400">&check;</span> 파일 생성 및 오류 자가 수정 루프 지원</li>
+              </ul>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-800/80 text-[11px] text-purple-300 font-mono">규칙 파일: <code>CLAUDE.md</code></div>
+          </div>
+
+          <!-- Option C -->
+          <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 flex flex-col justify-between">
+            <div>
+              <span class="px-2.5 py-1 rounded-md bg-emerald-500/20 text-emerald-400 text-xs font-bold">Option C</span>
+              <h3 class="text-base font-bold text-white mt-2">무료 Web 챗봇 + 샌드박스</h3>
+              <p class="text-xs text-slate-400 mt-0.5 mb-3">ChatGPT / Claude / Gemini Web + Colab</p>
+              <ul class="text-xs text-slate-300 space-y-2 border-t border-slate-800 pt-3">
+                <li class="flex items-start gap-1.5"><span class="text-emerald-400">&check;</span> 유료 구독료 0원, 브라우저에서 즉시 실행</li>
+                <li class="flex items-start gap-1.5"><span class="text-emerald-400">&check;</span> 완전한 단일 파이썬 파일 복사&붙여넣기</li>
+                <li class="flex items-start gap-1.5"><span class="text-emerald-400">&check;</span> 사용자가 직접 코드를 붙여넣는 휴먼-루프</li>
+              </ul>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-800/80 text-[11px] text-emerald-300 font-mono">규칙 적용: 맞춤 지침(Custom Instruction)</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 7: Rule File Principles -->
+      <section class="slide flex-col justify-center space-y-6">
+        <div>
+          <span class="text-xs font-bold tracking-widest text-emerald-400 uppercase">Part I-2. Setup Mechanics</span>
+          <h2 class="text-2xl sm:text-4xl font-bold text-white mt-1">규칙 파일(Rule File)의 원리와 필요성</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 w-full">
+          <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
+            <h3 class="text-base font-bold text-slate-100 flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-cyan-400"></span> 신입 인턴 사원을 위한 업무 매뉴얼
+            </h3>
+            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+              매번 대화를 시작할 때마다 "너는 통계학자야", "한국어로 답해", "소수점 4자리로 출력해"라고 잔소리하지 않도록, <strong>프로젝트 루트 폴더에 항상 상주하는 시스템 지침서</strong>입니다.
+            </p>
+            <div class="p-3 rounded-lg bg-slate-950 border border-slate-800 text-xs text-slate-400 font-mono">
+              대화창마다 반복 지시 <span class="text-rose-400">&cross; 피로도 &amp; 누락</span><br>
+              규칙 파일 1회 고정 <span class="text-emerald-400">&check; 일관된 코드 품질</span>
+            </div>
+          </div>
+
+          <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
+            <h3 class="text-base font-bold text-slate-100 flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-blue-400"></span> 통계 프로젝트 규칙 파일의 3대 필수 요소
+            </h3>
+            <ul class="text-xs sm:text-sm text-slate-300 space-y-2">
+              <li class="p-2.5 rounded-lg bg-slate-950 border border-slate-800">
+                <strong class="text-blue-300">1. Role (페르소나):</strong> 시니어 생물통계학자 및 데이터 엔지니어
+              </li>
+              <li class="p-2.5 rounded-lg bg-slate-950 border border-slate-800">
+                <strong class="text-blue-300">2. Tech Stack:</strong> Python 3.11+, Streamlit, Plotly, Scipy, Statsmodels
+              </li>
+              <li class="p-2.5 rounded-lg bg-slate-950 border border-slate-800">
+                <strong class="text-blue-300">3. Constraints (제약):</strong> seed(42) 기반 가상 데이터, 소수점 4자리 표기, UTF-8
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 8: Hands-on 1 (Rule File Setup) -->
+      <section class="slide flex-col justify-center space-y-5">
+        <div class="flex items-center justify-between">
+          <div>
+            <span class="text-xs font-bold tracking-widest text-emerald-400 uppercase">[실습 1] 실습 환경 세팅</span>
+            <h2 class="text-2xl sm:text-3xl font-bold text-white mt-0.5">프로젝트 규칙 파일(Rule File) 작성 실습</h2>
+          </div>
+          <span class="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-mono border border-emerald-500/20">목표: 페르소나 및 제약 고정</span>
+        </div>
+
+        <!-- Tool Selection Tab Bar -->
+        <div class="flex items-center space-x-2 border-b border-slate-800 pb-2 text-xs">
+          <span class="text-slate-400 mr-2">내 도구 선택:</span>
+          <button onclick="setLab1Tab('ide')" id="tab-ide" class="px-3 py-1 rounded-lg bg-blue-600 text-white font-medium transition">Option A (Cursor)</button>
+          <button onclick="setLab1Tab('cli')" id="tab-cli" class="px-3 py-1 rounded-lg bg-slate-800 text-slate-300 hover:text-white transition">Option B (Claude Code/CLI)</button>
+          <button onclick="setLab1Tab('web')" id="tab-web" class="px-3 py-1 rounded-lg bg-slate-800 text-slate-300 hover:text-white transition">Option C (무료 Web)</button>
+        </div>
+
+        <div id="lab1-desc" class="text-xs sm:text-sm text-slate-300 p-3 rounded-lg bg-slate-900/90 border border-slate-800">
+          프로젝트 루트 폴더에 <strong><code>.cursorrules</code></strong> 파일을 생성하고 아래 공통 규칙을 입력합니다.
+        </div>
+
+        <!-- Code Block Container -->
+        <div class="relative rounded-xl bg-slate-900 border border-slate-800 overflow-hidden">
+          <div class="flex items-center justify-between px-4 py-2 bg-slate-950/80 border-b border-slate-800 text-xs text-slate-400 font-mono">
+            <span>Project Rules Config</span>
+            <button onclick="copyCode('ruleCode')" class="flex items-center gap-1 hover:text-white text-blue-400 transition">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+              <span>규칙 복사하기</span>
+            </button>
+          </div>
+          <pre class="p-4 text-xs font-mono text-slate-200 overflow-x-auto leading-relaxed max-h-52"><code id="ruleCode"># 통계 컨설팅 프로젝트 규칙 (Project Rules)
+
+[Role]
+당신은 시니어 데이터 컨설팅 엔지니어이자 생물통계학자입니다.
+
+[Tech Stack]
+- Python 3.11+, Streamlit, Pandas, Scipy, Statsmodels, Plotly
+- (Web 환경: 단일 완성형 파이썬 스크립트 작성)
+
+[Guidelines]
+1. 모든 통계 분석 결과 출력 시 검정통계량과 p-value는 반드시 소수점 4자리까지 표기합니다.
+2. 클라이언트 데이터 보안을 위해, 외부 데이터 파일이 없으면 항상 `numpy.random.seed(42)` 기반의 100건 재현 가능한 가상 데이터를 생성하여 코드를 작성합니다.
+3. 한국어 폰트 및 텍스트 인코딩(UTF-8)을 엄격히 준수합니다.</code></pre>
+        </div>
+
+        <!-- Verification Test -->
+        <div class="p-3.5 rounded-xl bg-blue-950/30 border border-blue-800/40 text-xs text-slate-300 flex items-center justify-between">
+          <div>
+            <strong class="text-blue-300">규칙 검증 테스트 프롬프트:</strong>
+            <span class="text-slate-400 ml-1">"두 집단 평균 차이 검정을 수행하는 기초 파이썬 함수를 하나 작성해줘."</span>
+          </div>
+          <span class="text-emerald-400 font-semibold text-[11px]">&check; seed 42 & 소수점 4자리 검증</span>
+        </div>
+      </section>
+
+      <!-- SLIDE 9: Token & Context Window Theory -->
+      <section class="slide flex-col justify-center space-y-6">
+        <div>
+          <span class="text-xs font-bold tracking-widest text-blue-400 uppercase">Part I-3. AI Mechanism</span>
+          <h2 class="text-2xl sm:text-4xl font-bold text-white mt-1">토큰(Token)과 컨텍스트 윈도우(Context Window)</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 w-full">
+          <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
+            <h3 class="text-base font-bold text-slate-100 flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-cyan-400"></span> 토큰(Token): AI 언어의 기본 화폐
+            </h3>
+            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+              LLM은 인간의 글자를 문자 그대로 읽는 것이 아니라 형태소/조각 단위의 <strong>'토큰'</strong>으로 변환하여 처리합니다.<br><br>
+              &bull; 영어: 단어당 약 1~1.3 토큰<br>
+              &bull; 한국어: 글자당 1~3 토큰 소비 (상대적으로 컨텍스트 소모가 빠름)<br>
+              &bull; 코드: 들여쓰기와 특수기호 또한 각각 토큰을 차지함.
+            </p>
+          </div>
+
+          <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
+            <h3 class="text-base font-bold text-slate-100 flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span> 컨텍스트 윈도우: AI의 작업 기억 공간
+            </h3>
+            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+              AI가 한 번에 머릿속에 담아둘 수 있는 텍스트의 총량(입력 + 출력)입니다. 책상 크기와 같아서 아무리 넓어도(128k, 200k 토큰) <strong>대화가 길어지면 초기 지시사항이 바닥으로 떨어지는 망각 현상(Context Dropping)</strong>이 필연적으로 발생합니다.
+            </p>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-xl bg-slate-900/90 border border-slate-800 text-xs sm:text-sm text-slate-300">
+          <strong class="text-rose-400">핵심 교훈:</strong> 대화창에 코드를 길게 붙여넣고 대화를 끝없이 이어가는 것은 AI의 기억을 왜곡시키는 지름길입니다. 구조화된 외부 문서(PRD)로 고정해야 합니다.
+        </div>
+      </section>
+
+      <!-- SLIDE 10: Context Dropping & The Need for PRD -->
+      <section class="slide flex-col justify-center space-y-6">
+        <div>
+          <span class="text-xs font-bold tracking-widest text-cyan-400 uppercase">Part I-3. Specification Engineering</span>
+          <h2 class="text-2xl sm:text-4xl font-bold text-white mt-1">컨텍스트 망각과 1-Page 통계 PRD</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 w-full">
+          <div class="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-3">
+            <h3 class="text-base font-bold text-rose-300 flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-rose-400"></span> 흔한 실패 패턴: 모호한 채팅 지시
+            </h3>
+            <div class="p-3 rounded-lg bg-slate-950 text-xs text-slate-300 font-mono border border-slate-800 leading-relaxed">
+              "고객 데이터 분석하는 앱 만들어줘."<br>
+              $\rightarrow$ "아니, Boxplot도 넣어줘."<br>
+              $\rightarrow$ "t-검정도 해줘."<br>
+              $\rightarrow$ "어? 아까 있던 업로드 버튼 어디 갔어?"
+            </div>
+            <p class="text-xs text-slate-400">대화가 누적되면서 AI가 이전 코드를 덮어쓰거나 기존 기능을 임의로 누락시키는 기능 퇴보 발생.</p>
+          </div>
+
+          <div class="p-6 rounded-2xl bg-slate-900/90 border border-blue-500/30 space-y-3">
+            <h3 class="text-base font-bold text-cyan-300 flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-cyan-400"></span> 성공 패턴: 1-Page PRD 명세화
+            </h3>
+            <div class="p-3 rounded-lg bg-slate-950 text-xs text-slate-300 font-mono border border-slate-800 leading-relaxed">
+              # PRD.md 작성<br>
+              1. 목적: 고객 이탈 요인 검증<br>
+              2. 우선순위: Boxplot 및 요약표 렌더링<br>
+              3. 스키마: age, tenure, charges, churn<br>
+              $\rightarrow$ <strong>@PRD.md 참조 호출로 항상 동일 맥락 유지</strong>
+            </div>
+            <p class="text-xs text-slate-300">명세서가 앵커(Anchor) 역할을 하여 대화가 길어져도 프로젝트의 중심축을 완벽히 보존합니다.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 11: 3 Core Elements of Statistical PRD -->
+      <section class="slide flex-col justify-center space-y-6">
+        <div>
+          <span class="text-xs font-bold tracking-widest text-blue-400 uppercase">Part I-3. PRD Architecture</span>
+          <h2 class="text-2xl sm:text-4xl font-bold text-white mt-1">통계 컨설팅 PRD의 3대 필수 요소</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 w-full">
+          <!-- 1. Why -->
+          <div class="p-5 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2.5">
+            <span class="px-2.5 py-1 rounded bg-blue-500/20 text-blue-400 text-xs font-bold font-mono">1. Why</span>
+            <h3 class="text-base font-bold text-white">목적 (Objective)</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              클라이언트가 풀고자 하는 핵심 비즈니스 문제와 통계적 해결 과제를 <strong>단 1줄</strong>로 요약합니다.<br>
+              <em>예: 고객 속성 변수가 이탈 여부(Churn)에 따라 유의미한 차이를 보이는지 시각적·통계적으로 규명한다.</em>
+            </p>
+          </div>
+
+          <!-- 2. What -->
+          <div class="p-5 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2.5">
+            <span class="px-2.5 py-1 rounded bg-cyan-500/20 text-cyan-400 text-xs font-bold font-mono">2. What</span>
+            <h3 class="text-base font-bold text-white">우선순위 (Priority)</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              처음부터 10개를 다 만들려 하지 말고, 오늘 1단계에서 <strong>반드시 작동해야 하는 핵심 기능 1~2개</strong>에 집중합니다.<br>
+              <em>P1: CSV 업로드 (미업로드 시 가상데이터)<br>P2: 사이드바 선택 기반 Boxplot<br>P3: 집단별 기초통계 요약</em>
+            </p>
+          </div>
+
+          <!-- 3. Schema -->
+          <div class="p-5 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2.5">
+            <span class="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-400 text-xs font-bold font-mono">3. Schema</span>
+            <h3 class="text-base font-bold text-white">데이터 스키마 (Schema)</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              변수명, 데이터 타입(정수/실수/범주), 결측치 정책, 타깃 변수 등을 명확히 지정하여 AI의 컬럼명 날조 방지.<br>
+              <em>예: customer_id, age(int), tenure_months(int), monthly_charges(float), churn(0 vs 1)</em>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 12: Hands-on 2 (PRD Template) -->
+      <section class="slide flex-col justify-center space-y-5">
+        <div class="flex items-center justify-between">
+          <div>
+            <span class="text-xs font-bold tracking-widest text-emerald-400 uppercase">[실습 2] 기획 명세화</span>
+            <h2 class="text-2xl sm:text-3xl font-bold text-white mt-0.5">1-Page 통계 PRD 작성 실습</h2>
+          </div>
+          <span class="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-mono border border-emerald-500/20">고객 이탈(Churn) EDA 대시보드</span>
+        </div>
+
+        <div class="relative rounded-xl bg-slate-900 border border-slate-800 overflow-hidden">
+          <div class="flex items-center justify-between px-4 py-2 bg-slate-950/80 border-b border-slate-800 text-xs text-slate-400 font-mono">
+            <span>PRD.md (또는 메모장)</span>
+            <button onclick="copyCode('prdCode')" class="flex items-center gap-1 hover:text-white text-blue-400 transition">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+              <span>PRD 템플릿 복사</span>
+            </button>
+          </div>
+          <pre class="p-4 text-xs font-mono text-slate-200 overflow-x-auto leading-relaxed max-h-56"><code id="prdCode"># 프로젝트: 통계 기반 고객 이탈(Churn) EDA 대시보드 (MVP)
+
+## 1. 프로젝트 목적
+의뢰인이 보유한 고객 데이터의 주요 연속형 변수들이 고객 이탈 여부에 따라 유의미한 차이를 보이는지 시각적·통계적으로 검증한다.
+
+## 2. 필수 구현 기능 (Priority)
+- Priority 1: 데이터 업로드 기능 (미업로드 시 Seed 42 기반 100건 가상 데이터 자동 로드)
+- Priority 2: 사이드바에서 연속형 변수 선택 시 이탈 그룹(0 vs 1) 간 Plotly 상자수염그림(Boxplot) 렌더링
+- Priority 3: 선택된 변수에 대한 두 그룹 간 기초통계량(평균, 표준편차) 비교 요약표 제공
+
+## 3. 데이터 스키마
+- customer_id (str): 고유 식별값
+- age (int): 고객 연령
+- tenure_months (int): 가입 개월 수
+- monthly_charges (float): 월 청구 금액
+- churn (int): 0(유지), 1(이탈)</code></pre>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-slate-900/90 border border-slate-800 text-xs text-slate-300">
+          <strong class="text-cyan-400">AI 피드백 요청 프롬프트:</strong>
+          <code class="ml-1 text-slate-200">"@PRD.md 통계 컨설턴트 관점에서 데이터 탐색 시 누락된 필수 요소 2가지만 보완해줘."</code>
+        </div>
+      </section>
+
+      <!-- SLIDE 13: Agent & MCP Theory -->
+      <section class="slide flex-col justify-center space-y-6">
+        <div>
+          <span class="text-xs font-bold tracking-widest text-cyan-400 uppercase">Part II-1. Autonomous Systems</span>
+          <h2 class="text-2xl sm:text-4xl font-bold text-white mt-1">자율 에이전트(Agent)와 MCP 프로토콜</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 w-full">
+          <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-blue-400"></span> 단순 챗봇 vs 자율 에이전트
+            </h3>
+            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+              &bull; <strong>단순 챗봇 (Chatbot):</strong> 사용자의 말에 대해 화면에 코드 텍스트만 보여주며, 복사/실행/오류 처리는 인간의 몫.<br><br>
+              &bull; <strong>에이전트 (Agent):</strong> 스스로 계획(Plan)을 세우고, 로컬 파일을 직접 생성/수정하며, 터미널 명령을 실행하고 결과 로그를 관찰하여 오류를 자가 교정하는 자율 개발 주체.
+            </p>
+          </div>
+
+          <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span> MCP (Model Context Protocol)의 역할
+            </h3>
+            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+              LLM과 로컬 개발 환경(파일 시스템, 로컬 데이터베이스, 브라우저, GitHub 등)을 표준화된 방식으로 안전하게 연결하는 범용 통신 규약.<br><br>
+              AI 모델이 샌드박스 밖의 로컬 데이터 파일을 안전하게 읽고, 터미널에서 패키지를 설치할 수 있게 해주는 다리(Bridge) 역할을 수행합니다.
+            </p>
+          </div>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800 text-xs text-slate-400">
+          * 무료 웹 버전을 쓰는 학생은 <strong>'사용자 자신이 직접 파일 저장과 터미널 실행을 대신 수행'</strong>함으로써 에이전트 루프(Human-in-the-Loop)를 완성합니다.
+        </div>
+      </section>
+
+      <!-- SLIDE 14: Prompt 7 Principles (Part 1) -->
+      <section class="slide flex-col justify-center space-y-6">
+        <div>
+          <span class="text-xs font-bold tracking-widest text-cyan-400 uppercase">Part II-1. Prompt Engineering</span>
+          <h2 class="text-2xl sm:text-4xl font-bold text-white mt-1">바이브 코딩 7대 프롬프트 원칙 (1~4)</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full text-xs">
+          <!-- Principle 1 -->
+          <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1.5">
+            <span class="px-2 py-0.5 rounded bg-blue-500/20 text-blue-400 font-bold font-mono">원칙 1</span>
+            <h3 class="text-sm font-bold text-white">번호 매긴 리스트 사용 (Numbered List)</h3>
+            <p class="text-slate-400 leading-relaxed">장문의 줄글 서술형 지시문은 AI가 중간 항목을 건너뛸 확률이 매우 높습니다. 지시사항을 1, 2, 3으로 넘버링하면 누락률이 80% 이상 급감합니다.</p>
+          </div>
+
+          <!-- Principle 2 -->
+          <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1.5">
+            <span class="px-2 py-0.5 rounded bg-blue-500/20 text-blue-400 font-bold font-mono">원칙 2</span>
+            <h3 class="text-sm font-bold text-white">데이터 스키마 명시 (Explicit Schema)</h3>
+            <p class="text-slate-400 leading-relaxed">"고객 데이터"라고만 하면 AI가 임의로 컬럼명을 지어냅니다. <code>age, tenure, churn(0 vs 1)</code>처럼 구체적 컬럼명과 타입을 사전에 전달해야 합니다.</p>
+          </div>
+
+          <!-- Principle 3 -->
+          <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1.5">
+            <span class="px-2 py-0.5 rounded bg-blue-500/20 text-blue-400 font-bold font-mono">원칙 3</span>
+            <h3 class="text-sm font-bold text-white">라이브러리 및 시각화 도구 지정</h3>
+            <p class="text-slate-400 leading-relaxed">"Streamlit 프레임워크와 Plotly 인터랙티브 차트 라이브러리를 사용해"처럼 명확한 기술 스택을 못 박아야 불필요한 무거운 라이브러리 사용을 방지합니다.</p>
+          </div>
+
+          <!-- Principle 4 -->
+          <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1.5">
+            <span class="px-2 py-0.5 rounded bg-blue-500/20 text-blue-400 font-bold font-mono">원칙 4</span>
+            <h3 class="text-sm font-bold text-white">점진적 개발 (Step-by-Step Build)</h3>
+            <p class="text-slate-400 leading-relaxed">처음부터 가설검정, 머신러닝, 배포까지 한꺼번에 요구하지 마세요. <strong>[기본 뼈대 화면] $\rightarrow$ [Boxplot 시각화] $\rightarrow$ [t-검정 모듈 결합]</strong> 순서로 살을 붙입니다.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 15: Prompt 7 Principles (Part 2) -->
+      <section class="slide flex-col justify-center space-y-6">
+        <div>
+          <span class="text-xs font-bold tracking-widest text-cyan-400 uppercase">Part II-1. Prompt Engineering</span>
+          <h2 class="text-2xl sm:text-4xl font-bold text-white mt-1">바이브 코딩 7대 프롬프트 원칙 (5~7)</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full text-xs">
+          <!-- Principle 5 -->
+          <div class="p-5 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2">
+            <span class="px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-400 font-bold font-mono">원칙 5</span>
+            <h3 class="text-sm font-bold text-white">에러 원문 전문 복사</h3>
+            <p class="text-slate-400 leading-relaxed">
+              "실행이 안 돼요"라고 하지 마세요.<br>
+              터미널이나 브라우저에 뜬 <strong>붉은색 Traceback 에러 로그 전문을 따옴표나 코드 블록에 그대로 복사</strong>해서 전달해야 정확한 원인을 진단합니다.
+            </p>
+          </div>
+
+          <!-- Principle 6 -->
+          <div class="p-5 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2">
+            <span class="px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-400 font-bold font-mono">원칙 6</span>
+            <h3 class="text-sm font-bold text-white">명시적 파일 컨텍스트 참조</h3>
+            <p class="text-slate-400 leading-relaxed">
+              Cursor/CLI에서는 <code>@PRD.md</code>, <code>@app.py</code>처럼 골뱅이 기호로 파일을 지정하고, 웹에서는 작성된 문서를 직접 인용하여 AI의 환각을 차단합니다.
+            </p>
+          </div>
+
+          <!-- Principle 7 -->
+          <div class="p-5 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2">
+            <span class="px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-400 font-bold font-mono">원칙 7</span>
+            <h3 class="text-sm font-bold text-white">전문가 페르소나 부여</h3>
+            <p class="text-slate-400 leading-relaxed">
+              "시니어 생물통계학자 및 데이터 엔지니어 관점에서 방어적 코드로 작성해줘"와 같은 역할 부여는 예외 처리(Exception handling)와 통계적 엄밀성을 극대화합니다.
+            </p>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-xl bg-slate-900/90 border border-slate-800 text-xs sm:text-sm text-slate-300 flex items-center justify-between">
+          <span><strong>비모범 예시:</strong> "이탈 분석 페이지 만들어줘"</span>
+          <span class="text-emerald-400 font-semibold"><strong>모범 예시:</strong> "@PRD.md 스키마를 준수하여 Streamlit 기반 app.py를 번호 순서대로 생성해줘"</span>
+        </div>
+      </section>
+
+      <!-- SLIDE 16: Hands-on 3 (Streamlit Prototype Build) -->
+      <section class="slide flex-col justify-center space-y-5">
+        <div class="flex items-center justify-between">
+          <div>
+            <span class="text-xs font-bold tracking-widest text-emerald-400 uppercase">[실습 3] 프로토타입 구현</span>
+            <h2 class="text-2xl sm:text-3xl font-bold text-white mt-0.5">Streamlit 통계 대시보드 뼈대 신속 생성</h2>
+          </div>
+          <span class="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-mono border border-emerald-500/20">app.py</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full text-xs">
+          <div class="p-4 rounded-xl bg-slate-900/90 border border-slate-800 space-y-2">
+            <span class="px-2 py-0.5 rounded bg-blue-500/20 text-blue-400 font-bold">Option A &amp; B (Cursor / Claude Code)</span>
+            <p class="text-slate-300">채팅창에 아래 프롬프트를 입력하여 바로 파일 생성 및 패키지 설치 유도:</p>
+            <div class="p-2.5 rounded-lg bg-slate-950 font-mono text-slate-200 border border-slate-800 text-[11px] leading-relaxed">
+              @PRD.md 를 준수하여 Streamlit으로 구동되는 app.py 코드를 작성하고 로컬에서 바로 실행할 수 있도록 패키지 설치 명령어와 함께 생성해줘. 데이터 미업로드 시 Seed 42 기반 100건 가상 데이터 자동 로드 필수.
+            </div>
+          </div>
+
+          <div class="p-4 rounded-xl bg-slate-900/90 border border-slate-800 space-y-2">
+            <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold">Option C (무료 Web LLM 사용자)</span>
+            <p class="text-slate-300">ChatGPT/Claude/Gemini에 PRD 복사 후 다음 프롬프트 전송:</p>
+            <div class="p-2.5 rounded-lg bg-slate-950 font-mono text-slate-200 border border-slate-800 text-[11px] leading-relaxed">
+              위 PRD를 바탕으로 복사해서 바로 실행할 수 있도록 Streamlit app.py 단일 전체 코드를 완전하게 작성해줘. 생략(...) 없이 끝까지 작성해줘.
+            </div>
+          </div>
+        </div>
+
+        <!-- Terminal Run Command -->
+        <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-between">
+          <div class="space-y-1">
+            <span class="text-xs text-slate-400 font-medium">로컬 터미널 실행 명령어:</span>
+            <div class="font-mono text-xs text-cyan-400">
+              pip install streamlit pandas plotly scipy statsmodels &amp;&amp; streamlit run app.py
+            </div>
+          </div>
+          <button onclick="copyText('pip install streamlit pandas plotly scipy statsmodels && streamlit run app.py')" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-200 transition">
+            명령어 복사
+          </button>
+        </div>
+      </section>
+
+      <!-- SLIDE 17: Statistical Hallucination in AI -->
+      <section class="slide flex-col justify-center space-y-6">
+        <div>
+          <span class="text-xs font-bold tracking-widest text-rose-400 uppercase">Part II-2. Quality Assurance</span>
+          <h2 class="text-2xl sm:text-4xl font-bold text-white mt-1">통계적 환각(Statistical Hallucination)</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 w-full">
+          <div class="p-6 rounded-2xl bg-slate-900/70 border border-rose-900/40 space-y-3">
+            <h3 class="text-base font-bold text-rose-300 flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-rose-400"></span> AI가 저지르기 쉬운 통계 오류
+            </h3>
+            <ul class="text-xs sm:text-sm text-slate-300 space-y-2 leading-relaxed">
+              <li>&bull; <strong>가정 생략:</strong> 등분산성(Equal Variance) 만족 여부를 확인하지 않고 일반 Student's $t$-검정을 기본값으로 실행.</li>
+              <li>&bull; <strong>검정 오류:</strong> 독립표본(Independent)과 대응표본(Paired) $t$-검정의 맥락을 혼동.</li>
+              <li>&bull; <strong>가설 방향:</strong> 양측검정(Two-sided)과 단측검정(One-sided)의 $p$-value 계산 착오.</li>
+              <li>&bull; <strong>수식 왜곡:</strong> 자유도(df)나 신뢰구간 산출 공식의 잘못된 모듈 호출.</li>
+            </ul>
+          </div>
+
+          <div class="p-6 rounded-2xl bg-slate-900/90 border border-emerald-500/30 space-y-3">
+            <h3 class="text-base font-bold text-emerald-300 flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span> 통계학 전공자의 검증 원칙
+            </h3>
+            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+              AI가 작성한 파이썬 코드의 <code>scipy.stats.ttest_ind(equal_var=...)</code> 파라미터를 반드시 검토해야 합니다.<br><br>
+              <strong>전제조건 검증 루틴 의무화:</strong><br>
+              1. 분산 동질성 검정 (Levene's Test)<br>
+              2. 결과에 따라 <code>equal_var=True</code> (Student) 또는 <code>equal_var=False</code> (Welch's $t$-test) 분기 처리 코드 강제.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 18: Data Governance & Privacy -->
+      <section class="slide flex-col justify-center space-y-6">
+        <div>
+          <span class="text-xs font-bold tracking-widest text-amber-400 uppercase">Part II-2. Data Governance</span>
+          <h2 class="text-2xl sm:text-4xl font-bold text-white mt-1">데이터 기밀 보호와 클라우드 유출 방지</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 w-full">
+          <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
+            <h3 class="text-base font-bold text-amber-300 flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span> 절대 원본 데이터를 프롬프트에 올리지 말 것
+            </h3>
+            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+              의뢰 기업의 고객 개인정보(이름, 전화번호, 거래내역)나 병원 환자 EMR 데이터를 외부 웹 LLM(ChatGPT 등)에 그대로 복사·붙여넣기하는 행위는 <strong>개인정보보호법 위반 및 컨설팅 계약 해지 사유</strong>입니다.
+            </p>
+          </div>
+
+          <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
+            <h3 class="text-base font-bold text-cyan-300 flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-cyan-400"></span> 안전한 2단계 Mock-Binding 워크플로우
+            </h3>
+            <ol class="text-xs sm:text-sm text-slate-300 space-y-2">
+              <li class="p-2 rounded bg-slate-950 border border-slate-800">
+                <strong>Step 1 (개발):</strong> 컬럼명, 데이터 타입 스키마와 <code>numpy.random.seed(42)</code> 가상 데이터로만 프로토타입 구현.
+              </li>
+              <li class="p-2 rounded bg-slate-950 border border-slate-800">
+                <strong>Step 2 (바인딩):</strong> 완성된 코드를 다운로드하여 인터넷과 차단된 학생/분석가의 로컬 환경에서만 실제 데이터 파일 로드.
+              </li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-slate-900/90 border border-slate-800 text-xs text-slate-400 text-center">
+          "AI에게는 데이터의 형상(Schema)만 가르치고, 데이터의 알맹이(Values)는 절대 보여주지 않는다."
+        </div>
+      </section>
+
+      <!-- SLIDE 19: Version Control & Git Rollback -->
+      <section class="slide flex-col justify-center space-y-6">
+        <div>
+          <span class="text-xs font-bold tracking-widest text-blue-400 uppercase">Part II-2. Code Safety</span>
+          <h2 class="text-2xl sm:text-4xl font-bold text-white mt-1">기능 퇴보(Regression) 방지와 Git 무한 롤백</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 w-full">
+          <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-rose-400"></span> 바이브 코딩 최대의 적: "고칠수록 망가진다"
+            </h3>
+            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+              새로운 통계 기능(예: t-검정)을 추가해달라고 지시했더니, AI가 기존에 정상적으로 동작하던 Plotly 상자수염그림 차트 렌더링 코드를 완전히 삭제하거나 엉뚱한 변수로 교체해버리는 현상이 빈번합니다.
+            </p>
+          </div>
+
+          <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span> Git 커밋: 안전한 게임 세이브 포인트
+            </h3>
+            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+              작동하는 기능 단위(Working Unit)가 완성될 때마다 반드시 Git 커밋을 남겨야 합니다. 코드가 심각하게 꼬이면 언제든지 명령어 한 줄로 직전 정상 상태로 돌아갑니다.
+            </p>
+            <div class="p-2.5 rounded bg-slate-950 font-mono text-cyan-400 text-xs border border-slate-800">
+              git reset --hard HEAD
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 20: Hands-on 4 (Hypothesis Testing Integration) -->
+      <section class="slide flex-col justify-center space-y-5">
+        <div class="flex items-center justify-between">
+          <div>
+            <span class="text-xs font-bold tracking-widest text-emerald-400 uppercase">[실습 4] 가설검정 결합</span>
+            <h2 class="text-2xl sm:text-3xl font-bold text-white mt-0.5">Levene 검정 &amp; $t$-검정 모듈 결합</h2>
+          </div>
+          <span class="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-mono border border-emerald-500/20">Student vs Welch</span>
+        </div>
+
+        <div class="p-4 rounded-xl bg-slate-900/90 border border-slate-800 space-y-2">
+          <strong class="text-cyan-300 text-xs sm:text-sm">가설검정 추가 프롬프트 (정확한 전제조건 분기 지시):</strong>
+          <div class="p-3 rounded-lg bg-slate-950 font-mono text-slate-200 border border-slate-800 text-xs leading-relaxed">
+            app.py에 선택된 변수에 대해 두 그룹(이탈 0 vs 이탈 1) 간 등분산성(Levene's test)을 먼저 검정하고, p-value >= 0.05 이면 Student's t-test를, 미만이면 Welch's t-test를 자동 수행하도록 해줘. 검정통계량($t$), 유의확률($p$-value, 소수점 4자리), 사용된 검정법 명칭을 Streamlit 메트릭 카드로 상단에 시각적으로 강조해 출력해줘.
+          </div>
+          <div class="flex justify-end">
+            <button onclick="copyCode('prompt-ttest')" class="text-xs text-blue-400 hover:text-white transition">프롬프트 복사</button>
+            <span id="prompt-ttest" class="hidden">app.py에 선택된 변수에 대해 두 그룹(이탈 0 vs 이탈 1) 간 등분산성(Levene's test)을 먼저 검정하고, p-value >= 0.05 이면 Student's t-test를, 미만이면 Welch's t-test를 자동 수행하도록 해줘. 검정통계량(t), 유의확률(p-value, 소수점 4자리), 사용된 검정법 명칭을 Streamlit 메트릭 카드로 상단에 시각적으로 강조해 출력해줘.</span>
+          </div>
+        </div>
+
+        <!-- Git Checkpoint Step -->
+        <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-between text-xs">
+          <div>
+            <strong class="text-emerald-400 block mb-1">성공 확인 후 즉시 Git 체크포인트 커밋:</strong>
+            <span class="font-mono text-slate-300">git add app.py &amp;&amp; git commit -m "feat: Levene 및 t-test 자동분기 카드 추가"</span>
+          </div>
+          <button onclick="copyText('git add app.py && git commit -m &quot;feat: Levene 및 t-test 자동분기 카드 추가&quot;')" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 transition">
+            커밋 명령어 복사
+          </button>
+        </div>
+      </section>
+
+      <!-- SLIDE 21: Error Debugging Loop -->
+      <section class="slide flex-col justify-center space-y-6">
+        <div>
+          <span class="text-xs font-bold tracking-widest text-rose-400 uppercase">Part II-2. Debugging Routine</span>
+          <h2 class="text-2xl sm:text-4xl font-bold text-white mt-1">에러 발생 시 디버깅 3단계 루프</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full text-xs">
+          <!-- Step 1 -->
+          <div class="p-5 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2">
+            <span class="px-2 py-0.5 rounded bg-rose-500/20 text-rose-400 font-bold font-mono">Step 1</span>
+            <h3 class="text-sm font-bold text-white">붉은색 Traceback 전체 복사</h3>
+            <p class="text-slate-400 leading-relaxed">
+              "안 돼요", "오류나요"라는 모호한 말은 금물입니다. 터미널 가장 아래에 출력된 에러 유형(<code>KeyError</code>, <code>ValueError</code> 등)과 파일 경로, 행 번호가 포함된 전문을 복사합니다.
+            </p>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="p-5 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2">
+            <span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-400 font-bold font-mono">Step 2</span>
+            <h3 class="text-sm font-bold text-white">AI에게 원인 분석 &amp; 수정 요구</h3>
+            <p class="text-slate-400 leading-relaxed">
+              "아래 에러가 발생했어. 원인을 분석하고 @app.py 코드에서 오류가 발생한 함수 부분만 수정해줘: [에러 로그]"<br>
+              반드시 기존 정상 코드가 유지되도록 주의를 줍니다.
+            </p>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="p-5 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2">
+            <span class="px-2 py-0.5 rounded bg-blue-500/20 text-blue-400 font-bold font-mono">Step 3</span>
+            <h3 class="text-sm font-bold text-white">도저히 해결 안 될 때: 롤백</h3>
+            <p class="text-slate-400 leading-relaxed">
+              수정을 거듭할수록 에러가 눈덩이처럼 불어난다면, 주저하지 말고 이전 커밋으로 원상복구(<code>git reset --hard HEAD</code>)한 뒤 프롬프트를 다시 명확히 작성합니다.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 22: Next Steps & Team Assignment -->
+      <section class="slide flex-col justify-center space-y-6">
+        <div>
+          <span class="text-xs font-bold tracking-widest text-blue-400 uppercase">Part III. Next Steps</span>
+          <h2 class="text-2xl sm:text-4xl font-bold text-white mt-1">향후 차수 연계 안내 & 주차별 과제</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 w-full">
+          <!-- Next Classes Roadmap -->
+          <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
+            <h3 class="text-base sm:text-lg font-bold text-slate-100 flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-cyan-400"></span> 다음 차수 로드맵 (Preview)
+            </h3>
+            <div class="space-y-3 text-xs sm:text-sm text-slate-300">
+              <div class="p-3 rounded-xl bg-slate-950 border border-slate-800/80">
+                <strong class="text-cyan-300">3차수 예고:</strong><br>
+                다중 에이전트(Multi-Agent)를 활용한 통계 결과 자동 해석 리포트 작성 및 고도화 시각화 대시보드
+              </div>
+              <div class="p-3 rounded-xl bg-slate-950 border border-slate-800/80">
+                <strong class="text-blue-300">4차수 예고:</strong><br>
+                머신러닝 예측 모델(로지스틱 회귀 등) 연동 및 클라우드 무료 배포(Streamlit Community Cloud)
+              </div>
+            </div>
+          </div>
+
+          <!-- Assignment Box -->
+          <div class="p-6 rounded-2xl bg-slate-900/80 border border-emerald-500/30 space-y-3">
+            <span class="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-400 text-xs font-bold font-mono">팀별 주차 과제</span>
+            <h3 class="text-base sm:text-lg font-bold text-white">카이제곱 독립성 검정($\chi^2$-test) 확장</h3>
+            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+              오늘 실습한 고객 이탈 대시보드에 새로운 <strong>범주형 변수(예: 결제방식 `payment_method`, 계약유형 `contract_type`)</strong>를 추가하고, 이탈 여부와의 독립성을 검정하는 카이제곱 위젯을 프롬프트로 추가해 보세요.
+            </p>
+            <div class="p-3 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-400 font-mono">
+              제출물: 구동 화면 캡처 또는 GitHub 저장소 링크
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 23: Conclusion & Troubleshooting -->
+      <section class="slide flex-col justify-center space-y-6">
+        <div class="text-center space-y-2">
+          <span class="text-xs font-bold tracking-widest text-emerald-400 uppercase">Class Summary</span>
+          <h2 class="text-2xl sm:text-4xl font-bold text-white">오늘 2차수 수업을 성공적으로 마쳤습니다!</h2>
+          <p class="text-slate-400 text-xs sm:text-sm">바이브 코딩은 타이핑을 대신해주는 도구일 뿐, 통계적 통찰과 문제 해결의 본질은 여러분에게 있습니다.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full text-xs">
+          <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800 text-center">
+            <span class="text-blue-400 font-bold block mb-1">1. Rule File</span>
+            페르소나와 제약사항을 프로젝트에 고정
+          </div>
+          <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800 text-center">
+            <span class="text-cyan-400 font-bold block mb-1">2. 1-Page PRD</span>
+            컨텍스트 망각을 방지하는 명세 기준 문서
+          </div>
+          <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800 text-center">
+            <span class="text-emerald-400 font-bold block mb-1">3. MVP &amp; Git</span>
+            동작하는 구현체와 안전한 커밋 롤백
+          </div>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-blue-950/20 border border-blue-800/30 text-xs text-slate-300 text-center">
+          질의응답 및 로컬 환경 트러블슈팅 세션을 진행합니다. 편하게 질문해 주세요.
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="relative z-20 flex flex-col border-t border-slate-800/80 bg-slate-900/80 backdrop-blur-md no-print">
+    <!-- Progress Line -->
+    <div class="w-full bg-slate-800 h-1">
+      <div id="progressBar" class="bg-gradient-to-r from-blue-500 via-cyan-400 to-emerald-400 h-1 w-0 transition-all duration-300"></div>
+    </div>
+
+    <!-- Controls Row -->
+    <div class="flex items-center justify-between px-6 py-3">
+      <div class="flex items-center space-x-2 text-xs text-slate-400">
+        <span id="slideCounter" class="font-mono text-slate-200 font-bold">01 / 23</span>
+        <span class="hidden md:inline">&middot; 키보드 방향키(←, →), 스페이스바 또는 화면 터치로 이동</span>
+      </div>
+
+      <div class="flex items-center space-x-2">
+        <button id="prevBtn" class="flex items-center space-x-1 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-medium transition">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+          <span class="hidden sm:inline">이전</span>
+        </button>
+        <button id="nextBtn" class="flex items-center space-x-1 px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-medium transition shadow-md shadow-blue-600/20">
+          <span class="hidden sm:inline">다음</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+        </button>
+      </div>
+    </div>
+  </footer>
+
+  <div id="tocModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4 no-print">
+    <div class="w-full max-w-xl bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl space-y-4 max-h-[85vh] flex flex-col">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+        <h3 class="text-base font-bold text-white">전체 슬라이드 목차 (Table of Contents)</h3>
+        <button id="closeTocBtn" class="p-1 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+      <div id="tocList" class="flex-1 overflow-y-auto space-y-1 pr-1 text-xs">
+        <!-- Generated by JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    let currentSlide = 0;
+
+    const slideTitles = [
+      "표지: AI 네이티브 개발 & 바이브 코딩 기초",
+      "커리큘럼: 2차수 대단원 구조 & 로드맵",
+      "Part I-1. 통계 컨설팅 패러다임의 혁신",
+      "Part I-1. 바이브 코딩(Vibe Coding)의 본질과 원리",
+      "Part I-2. 바이브 코딩 20대 핵심 용어 체계",
+      "Part I-2. 학생별 맞춤 실습 작업 환경 (3대 도구군)",
+      "Part I-2. 규칙 파일(Rule File)의 원리와 필요성",
+      "[실습 1] 프로젝트 규칙 파일(Rule File) 작성 실습",
+      "Part I-3. 토큰(Token)과 컨텍스트 윈도우(Context Window)",
+      "Part I-3. 컨텍스트 망각과 1-Page 통계 PRD의 필요성",
+      "Part I-3. 통계 컨설팅 PRD의 3대 필수 요소",
+      "[실습 2] 1-Page 통계 PRD 작성 실습",
+      "Part II-1. 자율 에이전트(Agent)와 MCP 프로토콜",
+      "Part II-1. 바이브 코딩 7대 프롬프트 원칙 (1~4)",
+      "Part II-1. 바이브 코딩 7대 프롬프트 원칙 (5~7)",
+      "[실습 3] Streamlit 통계 대시보드 뼈대 신속 생성",
+      "Part II-2. 통계적 환각(Statistical Hallucination)",
+      "Part II-2. 데이터 기밀 보호와 클라우드 유출 방지",
+      "Part II-2. 기능 퇴보(Regression) 방지와 Git 무한 롤백",
+      "[실습 4] Levene 검정 & t-검정 모듈 결합 실습",
+      "Part II-2. 에러 발생 시 디버깅 3단계 루프",
+      "Part III. 향후 차수 연계 안내 & 팀별 주차 과제",
+      "종합 정리: 트러블슈팅 및 Q&A"
+    ];
+
+    const slideCounter = document.getElementById('slideCounter');
+    const progressBar = document.getElementById('progressBar');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const tocBtn = document.getElementById('tocBtn');
+    const fsBtn = document.getElementById('fsBtn');
+    const pdfBtn = document.getElementById('pdfBtn');
+    const tocModal = document.getElementById('tocModal');
+    const closeTocBtn = document.getElementById('closeTocBtn');
+    const tocList = document.getElementById('tocList');
+
+    function updateSlide(index) {
+      if (index < 0) index = 0;
+      if (index >= totalSlides) index = totalSlides - 1;
+      
+      slides.forEach((slide, i) => {
+        slide.classList.toggle('active', i === index);
+      });
+
+      currentSlide = index;
+      const formattedCur = String(currentSlide + 1).padStart(2, '0');
+      const formattedTot = String(totalSlides).padStart(2, '0');
+      slideCounter.textContent = `${formattedCur} / ${formattedTot}`;
+
+      const progressPercent = ((currentSlide + 1) / totalSlides) * 100;
+      progressBar.style.width = `${progressPercent}%`;
+
+      prevBtn.disabled = currentSlide === 0;
+      prevBtn.classList.toggle('opacity-50', currentSlide === 0);
+      nextBtn.disabled = currentSlide === totalSlides - 1;
+      nextBtn.classList.toggle('opacity-50', currentSlide === totalSlides - 1);
+      
+      window.location.hash = `#${currentSlide + 1}`;
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides - 1) updateSlide(currentSlide + 1);
+    }
+    function prevSlide() {
+      if (currentSlide > 0) updateSlide(currentSlide - 1);
+    }
+
+    nextBtn.addEventListener('click', nextSlide);
+    prevBtn.addEventListener('click', prevSlide);
+
+    // Keyboard navigation
+    window.addEventListener('keydown', (e) => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Enter') {
+        e.preventDefault();
+        nextSlide();
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        prevSlide();
+      } else if (e.key === 'f' || e.key === 'F') {
+        toggleFullScreen();
+      } else if (e.key === 'Escape') {
+        tocModal.classList.add('hidden');
+      }
+    });
+
+    // Touch Swipe handling
+    let touchStartX = 0;
+    let touchEndX = 0;
+    window.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+    window.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      if (touchStartX - touchEndX > 50) nextSlide();
+      if (touchEndX - touchStartX > 50) prevSlide();
+    }, { passive: true });
+
+    // Table of contents builder
+    slideTitles.forEach((title, idx) => {
+      const item = document.createElement('button');
+      item.className = 'w-full text-left px-3 py-2 rounded-lg hover:bg-slate-800 text-slate-300 hover:text-white transition flex items-center justify-between';
+      item.innerHTML = `
+        <span class="font-medium text-slate-200">${title}</span>
+        <span class="font-mono text-slate-500 text-[11px]">${String(idx + 1).padStart(2, '0')}</span>
+      `;
+      item.addEventListener('click', () => {
+        updateSlide(idx);
+        tocModal.classList.add('hidden');
+      });
+      tocList.appendChild(item);
+    });
+
+    tocBtn.addEventListener('click', () => tocModal.classList.remove('hidden'));
+    closeTocBtn.addEventListener('click', () => tocModal.classList.add('hidden'));
+    tocModal.addEventListener('click', (e) => {
+      if (e.target === tocModal) tocModal.classList.add('hidden');
+    });
+
+    // Fullscreen Toggle
+    function toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        if (document.exitFullscreen) document.exitFullscreen();
+      }
+    }
+    fsBtn.addEventListener('click', toggleFullScreen);
+
+    // PDF Print Trigger
+    pdfBtn.addEventListener('click', () => {
+      window.print();
+    });
+
+    // Clipboard Copy Helper
+    window.copyCode = function(elementId) {
+      const el = document.getElementById(elementId);
+      if (!el) return;
+      const text = el.innerText;
+      copyText(text);
+    };
+
+    window.copyText = function(text) {
+      const tempArea = document.createElement('textarea');
+      tempArea.value = text;
+      tempArea.style.position = 'fixed';
+      tempArea.style.opacity = '0';
+      document.body.appendChild(tempArea);
+      tempArea.select();
+      try {
+        document.execCommand('copy');
+        showToast('클립보드에 복사되었습니다.');
+      } catch (err) {
+        console.error('Copy failed', err);
+      }
+      document.body.removeChild(tempArea);
+    };
+
+    function showToast(msg) {
+      const toast = document.createElement('div');
+      toast.className = 'fixed bottom-16 right-6 bg-blue-600 text-white text-xs px-3.5 py-2 rounded-lg shadow-lg z-50 animate-bounce no-print';
+      toast.innerText = msg;
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 2000);
+    }
+
+    // Lab 1 Tab Switcher
+    window.setLab1Tab = function(type) {
+      const desc = document.getElementById('lab1-desc');
+      const btnIde = document.getElementById('tab-ide');
+      const btnCli = document.getElementById('tab-cli');
+      const btnWeb = document.getElementById('tab-web');
+
+      btnIde.className = 'px-3 py-1 rounded-lg bg-slate-800 text-slate-300 hover:text-white transition';
+      btnCli.className = 'px-3 py-1 rounded-lg bg-slate-800 text-slate-300 hover:text-white transition';
+      btnWeb.className = 'px-3 py-1 rounded-lg bg-slate-800 text-slate-300 hover:text-white transition';
+
+      if (type === 'ide') {
+        btnIde.className = 'px-3 py-1 rounded-lg bg-blue-600 text-white font-medium transition';
+        desc.innerHTML = '<strong>Option A (Cursor 사용자):</strong> 프로젝트 루트 폴더에 <code>.cursorrules</code> 파일을 생성하고 아래 공통 규칙을 입력합니다.';
+      } else if (type === 'cli') {
+        btnCli.className = 'px-3 py-1 rounded-lg bg-purple-600 text-white font-medium transition';
+        desc.innerHTML = '<strong>Option B (Claude Code / Codex CLI 사용자):</strong> 프로젝트 루트 폴더에 <code>CLAUDE.md</code> 파일을 생성하고 아래 공통 규칙을 입력합니다.';
+      } else {
+        btnWeb.className = 'px-3 py-1 rounded-lg bg-emerald-600 text-white font-medium transition';
+        desc.innerHTML = '<strong>Option C (무료 Web 사용자):</strong> ChatGPT의 맞춤 설정(Custom Instructions) 또는 대화창 첫 머리에 아래 내용을 [시스템 프롬프트]로 입력합니다.';
+      }
+    };
+
+    // Deep linking
+    window.addEventListener('load', () => {
+      const hash = window.location.hash.replace('#', '');
+      const parsed = parseInt(hash, 10);
+      if (!isNaN(parsed) && parsed >= 1 && parsed <= totalSlides) {
+        updateSlide(parsed - 1);
+      } else {
+        updateSlide(0);
+      }
+    });
+  </script>
+<script>if(new URLSearchParams(location.search).get('print')==='1'){window.addEventListener('load',()=>window.print());}</script>
+</body>
+</html>
