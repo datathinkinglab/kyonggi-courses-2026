@@ -75,6 +75,38 @@
     .badge-glow {
       box-shadow: 0 0 15px -3px currentColor;
     }
+
+    #printSlides, #printToolbar { display: none; }
+    body.print-mode { display: block; background: #fff; color: #172033; }
+    body.print-mode > header, body.print-mode > main,
+    body.print-mode > #overviewModal, body.print-mode > #toast { display: none; }
+    body.print-mode #printSlides { display: block; max-width: 1120px; margin: 0 auto; padding: 24px; }
+    body.print-mode #printToolbar { display: flex; justify-content: space-between; padding: 16px 24px; background: #eef2ff; }
+    body.print-mode #printToolbar button { border: 1px solid #4f46e5; border-radius: 6px; padding: 6px 16px; color: #fff; background: #4f46e5; }
+    .print-page { margin: 0 0 32px; padding: 24px; background: #fff; color: #172033; border: 1px solid #dce3ed; }
+    .print-page h2 { font-size: 24px; font-weight: 800; line-height: 1.35; margin: 8px 0; }
+    .print-page .print-subtitle { margin-bottom: 18px; font-size: 13px; color: #475569; }
+    .print-page * { color: #172033 !important; box-shadow: none !important; text-shadow: none !important; }
+    .print-page .glass-card, .print-page [class*="bg-"] { background: #f8fafc !important; backdrop-filter: none; }
+    .print-page [class*="border-"] { border-color: #cbd5e1 !important; }
+    .print-page pre { white-space: pre-wrap !important; overflow-wrap: anywhere; }
+    .print-page [class*="overflow-"] { overflow: visible !important; max-height: none !important; }
+    .print-page button { display: none !important; }
+    @page { size: A4 landscape; margin: 10mm; }
+    @media print {
+      html, body { display: block !important; background: #fff !important; color: #172033 !important; min-height: 0 !important; }
+      body > header, body > main, #overviewModal, #toast, #printToolbar { display: none !important; }
+      #printSlides, body.print-mode #printSlides { display: block !important; max-width: none; margin: 0; padding: 0; }
+      .print-page { margin: 0; padding: 0; border: 0; break-after: page; page-break-after: always; }
+      .print-page:last-child { break-after: auto; page-break-after: auto; }
+      .print-page h2 { font-size: 19pt; }
+      .print-page .print-subtitle { font-size: 9pt; margin-bottom: 10px; }
+      .print-page .glass-card { break-inside: avoid; }
+      .print-page [class*="text-xs"], .print-page [class*="text-sm"] { font-size: 9pt !important; line-height: 1.45 !important; }
+      .print-page pre { font-size: 8pt !important; line-height: 1.35 !important; }
+      * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+
   </style>
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans selection:bg-indigo-500 selection:text-white">
@@ -155,6 +187,9 @@
     <i class="fa-solid fa-circle-check text-lg"></i>
     <span class="text-sm font-medium" id="toastMsg">복사되었습니다!</span>
   </div>
+
+  <div id="printToolbar"><a href="프롬프트작성법_26_0928.html">슬라이드로 돌아가기</a><button type="button" onclick="window.print()">PDF 출력</button></div>
+  <div id="printSlides"></div>
 
   <script>
     const slidesData = [
@@ -911,6 +946,28 @@
         toast.classList.remove('translate-y-0', 'opacity-100');
       }, 2500);
     }
+
+
+    function renderPrintSlides() {
+      const root = document.getElementById('printSlides');
+      if (root.childElementCount) return;
+      root.innerHTML = slidesData.map(slide => `
+        <section class="print-page" aria-label="슬라이드 ${slide.id}">
+          <p>프롬프트 작성법 · ${slide.id} / ${slidesData.length} · ${slide.tag}</p>
+          <h2>${slide.title}</h2>
+          <p class="print-subtitle">${slide.subtitle}</p>
+          <div>${slide.render()}</div>
+        </section>
+      `).join('');
+    }
+    window.addEventListener('beforeprint', renderPrintSlides);
+    window.addEventListener('load', async () => {
+      if (new URLSearchParams(window.location.search).get('print') !== '1') return;
+      document.body.classList.add('print-mode');
+      renderPrintSlides();
+      if (document.fonts) await document.fonts.ready;
+      requestAnimationFrame(() => requestAnimationFrame(() => window.print()));
+    });
 
     // Initialize presentation on load
     window.addEventListener('DOMContentLoaded', () => {
