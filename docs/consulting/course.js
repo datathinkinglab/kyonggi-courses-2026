@@ -4,7 +4,7 @@
   const currentWeek = 2;
   const weeks = [
     { week: 1, title: '기업 통계컨설팅과 AX의 이해', activity: '수업 안내, 간단한 기업 사례, 관심 기업 후보 탐색', slide: 'slides/week-01.html', slideCount: 24, notion: 'https://app.notion.com/p/3b196f1add768070a79ed3301a0eed07', sessionTitle: '기업의 질문과<br>데이터의 근거', copy: '통계컨설턴트의 역할, AI 활용과 검증, PSDM, 한 학기 프로젝트를 이해합니다.', agenda: ['통계컨설팅과 AX', '바이브코딩의 역할과 검증', '매출 감소 사례와 PSDM', '개인 진단과 팀 전략 프로젝트'] },
-    { week: 2, title: '바이브코딩의 개념과 활용 방식', activity: '자연어 분석 요청, 코드 실행 및 결과 검증', slide: 'slides/week-02.html', slideCount: 23, notion: 'https://app.notion.com/p/3e796f1add768134b2dceafa4090e7f3', sessionTitle: '바이브코딩과<br>통계 분석 실습', copy: 'AI 작업 환경, 규칙 파일과 PRD, 프롬프트 작성, 분석 결과 검증과 오류 수정을 실습합니다.', agenda: ['바이브코딩과 작업 환경', '규칙 파일과 통계 PRD', '프롬프트와 대시보드 실습', '결과 검증과 디버깅'], help: '방향키로 이동 · 목차 버튼<br>F 전체 화면 · PDF 출력' },
+    { week: 2, title: '바이브코딩의 개념과 활용 방식', activity: '자연어 분석 요청, 코드 실행 및 결과 검증', slide: 'slides/week-02.html', slideCount: 23, notion: 'https://app.notion.com/p/3e796f1add768134b2dceafa4090e7f3', sessionTitle: '바이브코딩과<br>통계 분석 실습', copy: 'AI 작업 환경, 규칙 파일과 PRD, 프롬프트 작성, 분석 결과 검증과 오류 수정을 실습합니다.', agenda: ['바이브코딩과 작업 환경', '규칙 파일과 통계 PRD', '프롬프트와 대시보드 실습', '결과 검증과 디버깅'], help: '방향키로 이동 · O 전체 목록<br>N 강사 노트 · 전체 화면 지원' },
     { week: 3, title: '바이브코딩 기반 간단한 대시보드 제작', activity: '샘플 데이터 분석·시각화' },
     { week: 4, title: '대시보드 개선과 웹 배포 실습', activity: '정보 전달 개선과 간단한 배포 경험' },
     { week: 5, title: '통계컨설팅 대상 기업 선정과 문제 정의', activity: '조별 기업 선정, 초기 문제 가설과 분석 질문' },
