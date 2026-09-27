@@ -59,3 +59,15 @@ footer { display:flex; justify-content:space-between; gap:20px; padding:24px cla
 }
 @media(prefers-reduced-motion:reduce) { * { scroll-behavior:auto!important; transition:none!important; } }
 
+
+/* Shared reference material */
+.shared-resources { padding-top:0; }
+.reference-card { min-height:0; gap:24px; }
+.reference-card h3 { font-size:clamp(1.8rem,3vw,2.8rem); }
+.reference-card p:not(.course-tag) { max-width:900px; }
+.reference-usage { margin:20px 0 0; padding-left:1.25em; color:var(--muted); line-height:1.8; }
+.reference-usage li+li { margin-top:8px; }
+.reference-usage strong { color:var(--navy); }
+.reference-actions { display:flex; flex-wrap:wrap; align-items:center; gap:24px; }
+.reference-actions .course-link { flex:1 1 220px; margin-top:0; gap:24px; }
+.reference-actions>a:last-child { color:var(--blue); font-weight:700; }

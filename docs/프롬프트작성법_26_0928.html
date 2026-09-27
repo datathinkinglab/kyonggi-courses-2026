@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>차세대 바이브코딩 & 프롬프트 엔지니어링 마스터클래스</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Pretendard:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Pretendard', 'Plus Jakarta Sans', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+              900: '#312e81',
+            },
+            accent: {
+              cyan: '#06b6d4',
+              emerald: '#10b981',
+              amber: '#f59e0b',
+              violet: '#8b5cf6'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom Scrollbar & Transitions */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #475569;
+    }
+    .slide-transition {
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .glass-card {
+      background: rgba(30, 41, 59, 0.7);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .glass-card-hover {
+      transition: all 0.25s ease;
+    }
+    .glass-card-hover:hover {
+      transform: translateY(-3px);
+      border-color: rgba(99, 102, 241, 0.4);
+      box-shadow: 0 12px 25px -8px rgba(0, 0, 0, 0.5);
+    }
+    .badge-glow {
+      box-shadow: 0 0 15px -3px currentColor;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans selection:bg-indigo-500 selection:text-white">
+
+  <header class="h-16 border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50 px-6 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 via-indigo-500 to-cyan-400 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+        <i class="fa-solid fa-wand-magic-sparkles text-white text-base"></i>
+      </div>
+      <div>
+        <h1 class="text-sm font-bold tracking-tight text-white flex items-center gap-2">
+          <span>차세대 바이브코딩 프롬프트 마스터</span>
+          <span class="text-[10px] px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-400 border border-indigo-500/30">Next-Gen Spec</span>
+        </h1>
+        <p class="text-xs text-slate-400">GPT-6 Astra · Claude Opus 5.5 · Gemini 3.8 Flash 시대의 프롬프트 프로토콜</p>
+      </div>
+    </div>
+
+    <!-- Slide Index Progress & Controls -->
+    <div class="flex items-center gap-4">
+      <div class="hidden md:flex items-center gap-2">
+        <span id="slideIndicator" class="text-xs font-semibold px-2.5 py-1 rounded-md bg-slate-800 text-slate-300 border border-slate-700">1 / 8</span>
+        <div class="w-32 bg-slate-800 rounded-full h-1.5 overflow-hidden">
+          <div id="progressBar" class="bg-gradient-to-r from-indigo-500 to-cyan-400 h-full transition-all duration-300" style="width: 12.5%;"></div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-1.5 bg-slate-800/80 p-1 rounded-xl border border-slate-700">
+        <button id="prevBtn" onclick="prevSlide()" class="p-2 rounded-lg hover:bg-slate-700 text-slate-300 hover:text-white transition disabled:opacity-30 disabled:hover:bg-transparent" title="이전 (←)">
+          <i class="fa-solid fa-chevron-left text-sm"></i>
+        </button>
+        <button id="overviewToggle" onclick="toggleOverview()" class="px-2.5 py-1 rounded-lg hover:bg-slate-700 text-xs font-medium text-slate-300 transition flex items-center gap-1.5">
+          <i class="fa-solid fa-table-cells-large"></i>
+          <span>목차</span>
+        </button>
+        <button id="nextBtn" onclick="nextSlide()" class="p-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white transition shadow-sm" title="다음 (→)">
+          <i class="fa-solid fa-chevron-right text-sm"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div id="overviewModal" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm p-6 overflow-y-auto">
+    <div class="max-w-5xl mx-auto">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-800 mb-6">
+        <div>
+          <h2 class="text-xl font-bold text-white flex items-center gap-2">
+            <i class="fa-solid fa-list-check text-indigo-400"></i> 전체 강의 슬라이드 인덱스
+          </h2>
+          <p class="text-xs text-slate-400">원하는 슬라이드를 클릭하면 즉시 이동합니다.</p>
+        </div>
+        <button onclick="toggleOverview()" class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div id="overviewGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <main class="flex-1 flex items-center justify-center p-4 sm:p-6 md:p-8 relative overflow-hidden">
+    <!-- Ambient Background Lighting -->
+    <div class="absolute -top-40 left-1/4 w-96 h-96 bg-indigo-600/15 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute -bottom-40 right-1/4 w-96 h-96 bg-cyan-600/10 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="w-full max-w-6xl aspect-[16/9.5] min-h-[580px] glass-card rounded-2xl p-6 sm:p-10 flex flex-col justify-between shadow-2xl relative border border-slate-800/80 slide-transition" id="slideFrame">
+      
+      <!-- Slide Content Slot -->
+      <div id="slideContent" class="h-full flex flex-col justify-between">
+        <!-- Dynamic Slide Content will be injected here -->
+      </div>
+
+    </div>
+  </main>
+
+  <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-slate-900 border border-emerald-500/40 text-emerald-400 px-4 py-3 rounded-xl shadow-xl flex items-center gap-3">
+    <i class="fa-solid fa-circle-check text-lg"></i>
+    <span class="text-sm font-medium" id="toastMsg">복사되었습니다!</span>
+  </div>
+
+  <script>
+    const slidesData = [
+      {
+        id: 1,
+        tag: "INTRO & OVERVIEW",
+        badgeColor: "bg-indigo-500/10 text-indigo-400 border-indigo-500/30",
+        title: "바이브코딩(Vibe Coding)의 진화와 패러다임 전환",
+        subtitle: "“코드를 한 줄도 몰라도, 문제와 기능을 말할 수 있다면 누구나 소프트웨어의 창작자가 됩니다.”",
+        render: () => `
+          <div class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+              <div class="glass-card rounded-xl p-5 border border-slate-700/60 glass-card-hover">
+                <div class="w-10 h-10 rounded-lg bg-indigo-500/10 text-indigo-400 flex items-center justify-center mb-3">
+                  <i class="fa-solid fa-laptop-code text-lg"></i>
+                </div>
+                <h3 class="text-base font-bold text-white mb-2">과거: 전통적 개발</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">
+                  문법 암기, IDE 설치, 패키지 매니저, 서버 세팅 등 환경 구축에만 80% 이상의 시간 소모. 비개발자의 진입 장벽 존재.
+                </p>
+                <div class="mt-3 text-[11px] font-mono text-rose-400 bg-rose-950/30 px-2.5 py-1.5 rounded border border-rose-900/40">
+                  <i class="fa-solid fa-xmark mr-1"></i> 코드 오타 1개로 전체 구동 중단
+                </div>
+              </div>
+
+              <div class="glass-card rounded-xl p-5 border border-slate-700/60 glass-card-hover">
+                <div class="w-10 h-10 rounded-lg bg-cyan-500/10 text-cyan-400 flex items-center justify-center mb-3">
+                  <i class="fa-solid fa-comments text-lg"></i>
+                </div>
+                <h3 class="text-base font-bold text-white mb-2">초기 바이브코딩 (2023~24)</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">
+                  자연어로 웹앱 코드를 요청하고 복사-붙여넣기로 로컬 브라우저에서 실행. 하지만 할루시네이션과 긴 컨텍스트 소실 빈번.
+                </p>
+                <div class="mt-3 text-[11px] font-mono text-amber-400 bg-amber-950/30 px-2.5 py-1.5 rounded border border-amber-900/40">
+                  <i class="fa-solid fa-triangle-exclamation mr-1"></i> "기존 기능 삭제", 복잡 로직 오류
+                </div>
+              </div>
+
+              <div class="glass-card rounded-xl p-5 border border-indigo-500/40 bg-indigo-950/20 glass-card-hover shadow-lg shadow-indigo-900/20">
+                <div class="w-10 h-10 rounded-lg bg-indigo-500 text-white flex items-center justify-center mb-3 shadow-md shadow-indigo-500/30">
+                  <i class="fa-solid fa-brain text-lg"></i>
+                </div>
+                <h3 class="text-base font-bold text-indigo-300 mb-2">최신 바이브코딩 (2026 현재)</h3>
+                <p class="text-xs text-slate-300 leading-relaxed">
+                  <b>Claude Opus 5.5</b>, <b>GPT-6 Astra</b>, <b>Gemini 3.8 Flash</b> 도입. 단순 질의응답을 넘어 <b>Effort 자율 추론</b>, <b>컴퓨터 유즈(Computer Use)</b>, <b>자체 반성(Self-Reflection)</b> 기반의 프로덕션급 코드 단일 생성.
+                </p>
+                <div class="mt-3 text-[11px] font-mono text-emerald-400 bg-emerald-950/40 px-2.5 py-1.5 rounded border border-emerald-900/40">
+                  <i class="fa-solid fa-check mr-1"></i> 문제정의 ➔ 검증 조건 명시 ➔ 단일 HTML 배포
+                </div>
+              </div>
+            </div>
+
+            <!-- Core 3 Rules -->
+            <div class="p-4 rounded-xl bg-slate-900/90 border border-slate-800 flex flex-wrap items-center justify-around gap-4 text-center">
+              <div>
+                <span class="text-indigo-400 font-bold text-sm block">1. 무설치 단일 파일</span>
+                <span class="text-xs text-slate-400">index.html 하나로 UI·스타일·로직 완결</span>
+              </div>
+              <div class="w-px h-8 bg-slate-800 hidden sm:block"></div>
+              <div>
+                <span class="text-cyan-400 font-bold text-sm block">2. 즉각 실행 & 제로 빌드</span>
+                <span class="text-xs text-slate-400">브라우저 더블클릭만으로 0.5초 만에 작동</span>
+              </div>
+              <div class="w-px h-8 bg-slate-800 hidden sm:block"></div>
+              <div>
+                <span class="text-emerald-400 font-bold text-sm block">3. 사내 보안 완벽 준수</span>
+                <span class="text-xs text-slate-400">데이터를 외부 서버에 안 올리고 로컬 메모리 처리</span>
+              </div>
+            </div>
+          </div>
+        `
+      },
+      {
+        id: 2,
+        tag: "ENGINE COMPARISON",
+        badgeColor: "bg-cyan-500/10 text-cyan-400 border-cyan-500/30",
+        title: "2026 최신 프론티어 파운데이션 모델 비교 & 특화 전략",
+        subtitle: "“AI 모델마다 최적화된 영역이 다릅니다. 목적에 맞는 최신 엔진을 선택해야 코딩 생산성이 극대화됩니다.”",
+        render: () => `
+          <div class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+              
+              <!-- ChatGPT / OpenAI -->
+              <div class="glass-card rounded-xl p-5 border border-slate-700/70 relative">
+                <div class="flex items-center justify-between mb-3">
+                  <span class="text-xs font-bold px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">OpenAI Series</span>
+                  <i class="fa-solid fa-bolt text-emerald-400"></i>
+                </div>
+                <h3 class="text-base font-bold text-white">GPT-6 Astra / Sol</h3>
+                <p class="text-xs text-slate-400 mt-1">자율 컴퓨터 유즈(Computer Use) & FrontierCode 1위</p>
+                <ul class="mt-4 space-y-2 text-xs text-slate-300">
+                  <li class="flex items-start gap-2">
+                    <i class="fa-solid fa-circle-check text-emerald-400 mt-0.5 text-[10px]"></i>
+                    <span><b>비동기 질의(Asynchronous Q):</b> 불확실한 요구사항 발생 시 자율적으로 핵심만 되물으며 구현 지속</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <i class="fa-solid fa-circle-check text-emerald-400 mt-0.5 text-[10px]"></i>
+                    <span>토큰 소비 65% 절감 및 수식·알고리즘 100% 검증</span>
+                  </li>
+                  <li class="flex items-start gap-2 text-slate-400">
+                    <i class="fa-solid fa-circle-dot text-slate-500 mt-0.5 text-[10px]"></i>
+                    <span><b>추천:</b> 복잡한 KPI 집계, 논리 엔진, 버그 재현 자동화</span>
+                  </li>
+                </ul>
+              </div>
+
+              <!-- Claude Opus 5.5 -->
+              <div class="glass-card rounded-xl p-5 border border-slate-700/70 relative ring-1 ring-amber-500/30">
+                <div class="flex items-center justify-between mb-3">
+                  <span class="text-xs font-bold px-2 py-1 rounded bg-amber-500/20 text-amber-400 border border-amber-500/30">Anthropic 2026.09</span>
+                  <i class="fa-solid fa-feather-pointed text-amber-400"></i>
+                </div>
+                <h3 class="text-base font-bold text-white">Claude Opus 5.5</h3>
+                <p class="text-xs text-slate-400 mt-1">장시간 코딩 에이전트 & 상시 Thinking 탑재</p>
+                <ul class="mt-4 space-y-2 text-xs text-slate-300">
+                  <li class="flex items-start gap-2">
+                    <i class="fa-solid fa-circle-check text-amber-400 mt-0.5 text-[10px]"></i>
+                    <span><b>Thinking 상시 활성화:</b> Effort(추론 강도) 제어로 깊은 버그 분석 및 완성본 축약 없이 출력</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <i class="fa-solid fa-circle-check text-amber-400 mt-0.5 text-[10px]"></i>
+                    <span>전작 대비 실행 비용 40% 절감 & 모던 UI 디자인 톤 우수</span>
+                  </li>
+                  <li class="flex items-start gap-2 text-slate-400">
+                    <i class="fa-solid fa-circle-dot text-slate-500 mt-0.5 text-[10px]"></i>
+                    <span><b>추천:</b> 사내 단일 파일 대시보드 완본 제작, Claude Code 연계</span>
+                  </li>
+                </ul>
+              </div>
+
+              <!-- Gemini 3.8 Flash -->
+              <div class="glass-card rounded-xl p-5 border border-slate-700/70 relative">
+                <div class="flex items-center justify-between mb-3">
+                  <span class="text-xs font-bold px-2 py-1 rounded bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">Google Series</span>
+                  <i class="fa-solid fa-chart-line text-cyan-400"></i>
+                </div>
+                <h3 class="text-base font-bold text-white">Gemini 3.8 Flash / Cyber</h3>
+                <p class="text-xs text-slate-400 mt-1">초고속 워크호스 & 단일 프롬프트 UI/3D 구현</p>
+                <ul class="mt-4 space-y-2 text-xs text-slate-300">
+                  <li class="flex items-start gap-2">
+                    <i class="fa-solid fa-circle-check text-cyan-400 mt-0.5 text-[10px]"></i>
+                    <span><b>초고속 단일 프롬프트:</b> 한 번의 프롬프트로 Three.js 3D 렌더링 및 완성형 웹 인터페이스 즉시 빌드</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <i class="fa-solid fa-circle-check text-cyan-400 mt-0.5 text-[10px]"></i>
+                    <span>사내 방대한 PDF/데이터시트 2M+ 통째 분석 및 실시간 웹 검색</span>
+                  </li>
+                  <li class="flex items-start gap-2 text-slate-400">
+                    <i class="fa-solid fa-circle-dot text-slate-500 mt-0.5 text-[10px]"></i>
+                    <span><b>추천:</b> 고속 프로토타이핑, 대용량 사내 문서 기반 FAQ 웹앱</span>
+                  </li>
+                </ul>
+              </div>
+
+            </div>
+
+            <div class="p-3.5 rounded-lg bg-indigo-950/40 border border-indigo-500/30 flex items-center gap-3">
+              <i class="fa-solid fa-lightbulb text-indigo-400 text-lg"></i>
+              <p class="text-xs text-indigo-200">
+                <b>2026 프롬프트 실무 팁:</b> 이제 "깊게 생각해줘"라는 상투적 문구는 무의미합니다. 모델의 <b>추론 깊이(Effort: medium/high)</b>를 지정하고, <b>[완료 기준]과 [정지 조건]</b>을 명시하는 것이 최신 프롬프팅의 핵심입니다.
+              </p>
+            </div>
+          </div>
+        `
+      },
+      {
+        id: 3,
+        tag: "FRAMEWORK",
+        badgeColor: "bg-emerald-500/10 text-emerald-400 border-emerald-500/30",
+        title: "실무 프롬프트의 기본 뼈대: PTCO 프레임워크",
+        subtitle: "“모호한 질문은 불명확한 쓰레기 코드를 낳습니다. 4가지 구조로 AI의 시야를 좁혀주세요.”",
+        render: () => `
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            
+            <div class="glass-card rounded-xl p-4 border border-slate-700/60 glass-card-hover">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="w-8 h-8 rounded-lg bg-indigo-500/20 text-indigo-400 font-extrabold flex items-center justify-center text-sm">P</span>
+                <h4 class="font-bold text-white text-sm">Persona (페르소나)</h4>
+              </div>
+              <p class="text-[11px] text-indigo-300 font-medium mb-2">“전문가의 자아를 부여하라”</p>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                단순히 '코딩해줘'가 아니라 <b>'15년 차 제조공정 프론트엔드 최적화 전문가'</b>와 같이 직책과 전문성을 부여하여 쓰는 어휘와 설계 수준을 격상시킵니다.
+              </p>
+              <div class="mt-3 p-2 bg-slate-900 rounded text-[11px] font-mono text-slate-300 border border-slate-800">
+                # Persona: 10년 차 B2B SaaS 풀스택 아키텍트
+              </div>
+            </div>
+
+            <div class="glass-card rounded-xl p-4 border border-slate-700/60 glass-card-hover">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-400 font-extrabold flex items-center justify-center text-sm">T</span>
+                <h4 class="font-bold text-white text-sm">Task (핵심 과업)</h4>
+              </div>
+              <p class="text-[11px] text-cyan-300 font-medium mb-2">“동사 중심의 구체적 액션”</p>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                ‘데이터 분석해줘’(X) 대신 <b>‘월별 불량률 추이를 계산하고, 전년 동기 대비 증감률을 산출하여 이상치를 하이라이트하라’</b>(O)와 같이 행동을 명시합니다.
+              </p>
+              <div class="mt-3 p-2 bg-slate-900 rounded text-[11px] font-mono text-slate-300 border border-slate-800">
+                # Task: CSV를 업로드 받아 4대 KPI를 실시간 계산
+              </div>
+            </div>
+
+            <div class="glass-card rounded-xl p-4 border border-slate-700/60 glass-card-hover">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 font-extrabold flex items-center justify-center text-sm">C</span>
+                <h4 class="font-bold text-white text-sm">Context (배경·맥락)</h4>
+              </div>
+              <p class="text-[11px] text-amber-300 font-medium mb-2">“빙산 아래 우리 회사 사정”</p>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                현재 공장의 긴급 납기 일정, 임원 보고 목적, 현장 실무자가 볼 폰트 크기, 브라우저가 오프라인 인트라넷인 사정 등을 제공해야 겉돌지 않습니다.
+              </p>
+              <div class="mt-3 p-2 bg-slate-900 rounded text-[11px] font-mono text-slate-300 border border-slate-800">
+                # Context: 공장 내부망 오프라인 환경, CDN 불가
+              </div>
+            </div>
+
+            <div class="glass-card rounded-xl p-4 border border-slate-700/60 glass-card-hover">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 font-extrabold flex items-center justify-center text-sm">O</span>
+                <h4 class="font-bold text-white text-sm">Output (산출 형태)</h4>
+              </div>
+              <p class="text-[11px] text-emerald-300 font-medium mb-2">“결과 형식의 강력한 강제”</p>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                <b>“외부 라이브러리 없이 순수 HTML/JS 1개 파일로 출력, Tailwind CDN 적용, 생략(...) 없이 전체 실행 가능한 코드 블록 제공”</b>을 규정합니다.
+              </p>
+              <div class="mt-3 p-2 bg-slate-900 rounded text-[11px] font-mono text-slate-300 border border-slate-800">
+                # Output: 단일 .html 파일 (CSS/JS 포함 완본)
+              </div>
+            </div>
+
+          </div>
+        `
+      },
+      {
+        id: 4,
+        tag: "ADVANCED METHOD 1",
+        badgeColor: "bg-violet-500/10 text-violet-400 border-violet-500/30",
+        title: "고급 기법 ① : Ask-Before-Answer (역질문 유도형)",
+        subtitle: "“AI의 섣부른 추측과 환각을 원천 차단하는 가장 우아한 프롬프팅”",
+        render: () => `
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+            
+            <div class="lg:col-span-5 space-y-4">
+              <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800">
+                <h4 class="text-sm font-bold text-rose-400 flex items-center gap-2 mb-2">
+                  <i class="fa-solid fa-circle-xmark"></i> 흔한 실패 패턴 (모호한 지시)
+                </h4>
+                <p class="text-xs text-slate-400">
+                  "납기 이슈 대시보드 웹앱 하나 만들어줘."<br>
+                  ➔ AI가 제멋대로 가상의 컬럼과 쓸모없는 애니메이션을 넣어 현업에서 못 쓰는 코드가 나옴.
+                </p>
+              </div>
+
+              <div class="p-4 rounded-xl bg-indigo-950/40 border border-indigo-500/40 shadow-lg">
+                <h4 class="text-sm font-bold text-indigo-300 flex items-center gap-2 mb-2">
+                  <i class="fa-solid fa-circle-check text-indigo-400"></i> Ask-Before-Answer 공식
+                </h4>
+                <p class="text-xs text-slate-300 leading-relaxed">
+                  <b>"코드를 바로 작성하지 마라. 완성도 높은 웹앱 설계를 위해 필요한 [요구사항 5가지]를 나에게 먼저 번호 매겨 질문하라."</b>
+                </p>
+                <div class="mt-3 text-[11px] text-cyan-300 bg-cyan-950/40 p-2 rounded border border-cyan-800/40">
+                  <i class="fa-solid fa-arrow-turn-down mr-1"></i> 사용자가 답변을 입력하면 AI는 완벽한 맥락을 획득하고 개발 착수!
+                </div>
+              </div>
+            </div>
+
+            <!-- Interactive Copyable Code Template -->
+            <div class="lg:col-span-7">
+              <div class="rounded-xl bg-slate-900 border border-slate-700 overflow-hidden shadow-2xl">
+                <div class="bg-slate-800 px-4 py-2.5 flex items-center justify-between border-b border-slate-700">
+                  <span class="text-xs font-mono font-medium text-slate-300 flex items-center gap-2">
+                    <i class="fa-regular fa-copy text-indigo-400"></i> 프롬프트 템플릿 : 실무 대시보드 기획용
+                  </span>
+                  <button onclick="copyToClipboard('abaTemplate')" class="text-xs px-2.5 py-1 rounded bg-indigo-600 hover:bg-indigo-500 text-white font-medium transition flex items-center gap-1">
+                    <i class="fa-regular fa-clipboard"></i> 복사하기
+                  </button>
+                </div>
+                <pre id="abaTemplate" class="p-4 text-xs font-mono text-slate-300 bg-slate-950 overflow-x-auto leading-relaxed">
+당신은 사내 엔터프라이즈 웹앱 개발을 총괄하는 수석 프론트엔드 아키텍트입니다.
+우리는 [생산라인 납기 지연 이슈 모니터링 대시보드] 단일 HTML 웹앱을 바이브코딩으로 제작하려 합니다.
+
+[중요 지침]
+지금 바로 HTML 코드를 생성하지 마세요.
+실제 공장 실무자가 바로 브라우저에서 사용할 수 있는 완벽한 결과물을 만들기 위해, 
+코드를 짜기 전 나에게 반드시 확인해야 할 [필수 질문 5가지]를 먼저 번호를 매겨 질문해주세요.
+
+예:
+1. 입력받을 CSV/데이터의 정확한 컬럼 구성 (예: 부품명, 지연일수, 공급사)
+2. 최우선으로 시각화할 핵심 KPI 3가지
+3. 차트 라이브러리 허용 여부 (Tailwind CDN, Chart.js 사용 가능 여부)
+4. 이상치(경고) 판단 기준
+5. 사용자의 화면 해상도 또는 주로 사용할 디바이스
+
+내 응답을 받은 후에만 완전한 단일 HTML 코드를 작성하세요.</pre>
+              </div>
+            </div>
+
+          </div>
+        `
+      },
+      {
+        id: 5,
+        tag: "ADVANCED METHOD 2",
+        badgeColor: "bg-blue-500/10 text-blue-400 border-blue-500/30",
+        title: "고급 기법 ② : 2026 최신 추론 프로토콜 (Done Criteria & Stop Condition)",
+        subtitle: "“Claude Opus 5.5와 GPT-6 Astra 시대, 단순 CoT에서 ‘완료 기준과 정지 조건’ 명시로 진화했습니다.”",
+        render: () => `
+          <div class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+              
+              <!-- Done Criteria & Verification -->
+              <div class="glass-card rounded-xl p-5 border border-slate-700/60">
+                <div class="flex items-center justify-between mb-2">
+                  <h4 class="text-sm font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-list-check text-blue-400"></i> 완료 기준 (Done Criteria) 명시
+                  </h4>
+                  <span class="text-[10px] px-2 py-0.5 rounded bg-blue-500/20 text-blue-300">Opus 5.5 Spec</span>
+                </div>
+                <p class="text-xs text-slate-300 leading-relaxed mb-3">
+                  과거처럼 "잘 만들어줘"가 아니라 <b>검증 가능한 완료 기준</b>을 구체화합니다. AI가 자체적으로 테스트를 통과할 때까지 추론하도록 만듭니다.
+                </p>
+                <div class="p-3 bg-slate-900 rounded-lg border border-slate-800 text-[11px] font-mono text-slate-300 leading-normal">
+                  <span class="text-indigo-400 font-bold"># 완료 기준 예시:</span><br>
+                  • [ ] 단일 index.html 파일 내 CSS/JS 완결<br>
+                  • [ ] 합계 계산 시 0으로 나누기(ZeroDivision) 예외 처리<br>
+                  • [ ] 업로드 전 CSV 헤더 검증 통과 여부 시각적 표시
+                </div>
+              </div>
+
+              <!-- Stop & Ask Condition -->
+              <div class="glass-card rounded-xl p-5 border border-slate-700/60">
+                <div class="flex items-center justify-between mb-2">
+                  <h4 class="text-sm font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-hand text-cyan-400"></i> 질문할 조건 (Stop & Ask Condition)
+                  </h4>
+                  <span class="text-[10px] px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300">Astra / Opus</span>
+                </div>
+                <p class="text-xs text-slate-300 leading-relaxed mb-3">
+                  AI가 모르는 영역을 자기 마음대로 상상해서 작성(Hallucination)하지 못하도록 <b>임의 추측을 금지하고 멈춰서 질문할 조건</b>을 선언합니다.
+                </p>
+                <div class="p-3 bg-slate-900 rounded-lg border border-slate-800 text-[11px] font-mono text-slate-300 leading-normal">
+                  <span class="text-cyan-400 font-bold"># 질문 조건 예시:</span><br>
+                  • 필수 컬럼(납기일, 수량) 누락 시 임의 생성 금지<br>
+                  • 3가지 이상 대안이 있을 때 독단 선택 금지 후 질문<br>
+                  • 확인되지 않은 사내 규정은 "[확인 필요]"로 마킹
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Modern Reasoning Box -->
+            <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 flex items-center gap-4">
+              <div class="hidden sm:flex w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-cyan-400 items-center justify-center text-white shrink-0 font-bold">
+                2026
+              </div>
+              <div class="text-xs text-slate-300">
+                <span class="text-indigo-300 font-semibold">최신 프롬프트 패러다임:</span> "단계별로 생각해(Think step by step)"를 직접 입력할 필요가 없습니다. Opus 5.5와 GPT-6는 모델 자체에 <b>사고 엔진(Thinking)</b>이 통합되어 있으므로, 인간은 <b>[검증할 엣지 케이스]</b>와 <b>[멈춰야 할 경계선]</b>만 프롬프트에 명확히 제공하면 됩니다.
+              </div>
+            </div>
+          </div>
+        `
+      },
+      {
+        id: 6,
+        tag: "ITERATION PROTOCOL",
+        badgeColor: "bg-amber-500/10 text-amber-400 border-amber-500/30",
+        title: "바이브코딩 반복 수정(Iteration)의 3대 황금 원칙",
+        subtitle: "“AI는 하나를 고치면 다른 하나를 잊어버립니다. 대화형 수정을 지배하는 규칙”",
+        render: () => `
+          <div class="space-y-5">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+              
+              <div class="glass-card rounded-xl p-5 border border-slate-700/60 glass-card-hover">
+                <div class="flex items-center gap-2 mb-3">
+                  <div class="w-7 h-7 rounded bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold text-xs">01</div>
+                  <h4 class="text-sm font-bold text-white">수정 사항 번호화</h4>
+                </div>
+                <p class="text-xs text-slate-400 leading-relaxed mb-3">
+                  문장으로 주절주절 말하면 AI는 중간 요청을 건너뜁니다. 반드시 <b>1., 2., 3.</b> 리스트 형식으로 지시합니다.
+                </p>
+                <div class="p-2.5 rounded bg-slate-950 border border-slate-800 text-[11px] font-mono text-indigo-300">
+                  1. 상단 카드 폰트 14px로 축소<br>
+                  2. 엑셀 내보내기 버튼 추가<br>
+                  3. 불량률 5% 초과 시 빨간색 경고
+                </div>
+              </div>
+
+              <div class="glass-card rounded-xl p-5 border border-slate-700/60 glass-card-hover">
+                <div class="flex items-center gap-2 mb-3">
+                  <div class="w-7 h-7 rounded bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-xs">02</div>
+                  <h4 class="text-sm font-bold text-white">기존 기능 유지 명시</h4>
+                </div>
+                <p class="text-xs text-slate-400 leading-relaxed mb-3">
+                  새 기능을 추가하면서 잘 작동하던 필터링 기능이 사라지는 참사를 방지하는 <b>방어 주문</b>을 항상 붙입니다.
+                </p>
+                <div class="p-2.5 rounded bg-slate-950 border border-slate-800 text-[11px] font-mono text-amber-300">
+                  "⚠️ 주의: 앞서 구현된 CSV 드래그앤드롭 및 실시간 필터 로직은 100% 온전히 유지할 것"
+                </div>
+              </div>
+
+              <div class="glass-card rounded-xl p-5 border border-slate-700/60 glass-card-hover">
+                <div class="flex items-center gap-2 mb-3">
+                  <div class="w-7 h-7 rounded bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-xs">03</div>
+                  <h4 class="text-sm font-bold text-white">완전한 단일 코드 요청</h4>
+                </div>
+                <p class="text-xs text-slate-400 leading-relaxed mb-3">
+                  AI가 귀찮아서 <code>// 기존 코드 여기에...</code> 생략을 하지 못하도록 '절대 생략 금지'를 엄포합니다.
+                </p>
+                <div class="p-2.5 rounded bg-slate-950 border border-slate-800 text-[11px] font-mono text-emerald-300">
+                  "수정된 파일은 생략(...) 없이 처음부터 끝까지 완전한 하나의 .html 코드로 출력할 것"
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Workflow comparison banner -->
+            <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div class="flex items-center gap-3">
+                <i class="fa-solid fa-arrows-spin text-2xl text-cyan-400 animate-spin" style="animation-duration: 10s;"></i>
+                <div>
+                  <h5 class="text-xs font-bold text-white">바이브코딩 반복 주기 (Loop)</h5>
+                  <p class="text-[11px] text-slate-400">1라운드: 와이어프레임 & 핵심 숫자 ➔ 2라운드: 실무 필터/조건문 ➔ 3라운드: 마감 디자인 & 보안 점검</p>
+                </div>
+              </div>
+              <button onclick="goToSlide(7)" class="px-3.5 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-xs font-semibold text-white transition shrink-0">
+                실전 마스터 프롬프트 보기 <i class="fa-solid fa-arrow-right ml-1"></i>
+              </button>
+            </div>
+          </div>
+        `
+      },
+      {
+        id: 7,
+        tag: "PRODUCTION TEMPLATE",
+        badgeColor: "bg-indigo-500/10 text-indigo-400 border-indigo-500/30",
+        title: "실전 바이브코딩 올인원 마스터 프롬프트",
+        subtitle: "“현업에서 복사하여 바로 사용하는 프로덕션 웹앱 생성용 완전체 프롬프트입니다.”",
+        render: () => `
+          <div class="h-full flex flex-col justify-between space-y-4">
+            <div class="rounded-xl bg-slate-900 border border-slate-700 overflow-hidden shadow-2xl flex-1 flex flex-col">
+              <div class="bg-slate-800 px-4 py-2.5 flex items-center justify-between border-b border-slate-700 shrink-0">
+                <div class="flex items-center gap-2">
+                  <span class="w-3 h-3 rounded-full bg-rose-500"></span>
+                  <span class="w-3 h-3 rounded-full bg-amber-500"></span>
+                  <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+                  <span class="text-xs font-mono font-medium text-slate-300 ml-2">master_vibe_prompt.txt</span>
+                </div>
+                <button onclick="copyToClipboard('masterPromptText')" class="text-xs px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-medium transition flex items-center gap-1.5 shadow">
+                  <i class="fa-regular fa-clipboard"></i> 프롬프트 전체 복사
+                </button>
+              </div>
+              <div class="p-5 bg-slate-950 overflow-y-auto max-h-[300px] text-xs font-mono text-slate-300 leading-relaxed" id="masterPromptText">
+======================================================================
+[ROLE & ENGINE SPEC]
+======================================================================
+당신은 최고 수준의 시니어 풀스택 엔지니어이자 UI/UX 전문 아키텍트입니다.
+(Target Engines: Claude Opus 5.5 / GPT-6 Astra / Gemini 3.8 Flash)
+아래의 현업 요구사항과 프로덕션 규칙을 100% 준수하여 단일 파일 웹앱을 작성하세요.
+
+
+======================================================================
+[1. ARCHITECTURE RULES - 단일 파일 원칙]
+======================================================================
+• 무설치 단일 파일 완결 (Zero External File):
+  - 외부 별도 .js 또는 .css 파일을 일절 분리하지 마세요.
+  - 단 하나의 index.html 파일 내에 HTML, Tailwind CDN, &lt;script&gt;를 모두 통합하세요.
+
+• 제로 빌드 즉시 실행 (Zero Build):
+  - Node.js 설치나 빌드 과정 없이 크롬/엣지 브라우저 더블클릭만으로 0.5초 만에 즉시 구동되어야 합니다.
+
+• 코드 완결성 보장 (No Truncation):
+  - "// ...기존 코드 유지...", "// ...이하 로직 동일..."과 같은 축약 표기를 절대 금지합니다.
+  - 처음 &lt;!DOCTYPE html&gt;부터 끝 &lt;/html&gt;까지 복사 즉시 실행 가능한 완본 코드를 출력하세요.
+
+• 데이터 보안 준수 (Client-Side Only):
+  - 로컬 브라우저 FileReader API를 활용하여 사내 데이터가 외부 서버로 절대 전송되지 않도록 하세요.
+
+
+======================================================================
+[2. CORE UI & FUNCTION REQUIREMENTS]
+======================================================================
+• 디자인 & 톤앤매너:
+  - Tailwind CSS 기반 모던 다크모드/슬레이트(Slate) 테마 및 직관적 시각 계층 구조
+  - 둥근 모서리(rounded-xl), 명확한 여백, 카드 그림자 효과 적용
+
+• 상단 헤더 영역:
+  - 시스템 타이틀 및 상태 뱃지
+  - CSV/데이터 드래그 앤 드롭 업로드 및 파일 선택기
+
+• 핵심 지표 카드 (KPI Dashboard):
+  - 상단 4종 핵심 KPI 카드 (총 수량, 처리율, 지연 건수, 리스크 지수)
+  - 증감률 뱃지 및 아이콘 강조
+
+• 스마트 데이터 테이블 & 인터랙션:
+  - 실시간 검색창 및 상태별 필터 탭 (전체 / 정상 / 지연 / 긴급)
+  - 브라우저 기본 경고창(alert, confirm) 사용 절대 금지 ➔ 커스텀 플로팅 토스트/모달 적용
+
+
+======================================================================
+[3. DONE CRITERIA & STOP CONDITIONS (2026 최신 검증 규칙)]
+======================================================================
+• 완료 기준 (Done Criteria):
+  - [ ] 빈 파일이나 오류 형식의 CSV가 입력되어도 앱이 멈추지 않고 안내 문구 표시
+  - [ ] 계산식에서 분모가 0일 때 NaN이나 Infinity 대신 0% 또는 "-"로 예외 처리
+
+• 질문 및 정지 조건 (Stop Condition):
+  - 필수 데이터 컬럼이나 업무 기준이 모호하여 결과가 크게 왜곡될 위험이 있다면,
+    코드를 임의로 지어내지 말고 필요한 질문 목록을 먼저 번호 매겨 제시하세요.
+
+
+======================================================================
+[4. ACTION]
+======================================================================
+위 설계 지침과 검증 조건을 충실히 반영하여, 지금 즉시 index.html로 저장해 실행할 수 있는 완성된 HTML 코드를 단일 코드 블록으로 출력하세요.</div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-center">
+              <div class="p-2.5 rounded-lg bg-slate-900 border border-slate-800">
+                <span class="text-xs text-slate-400 block">1. 프롬프트 복사</span>
+                <span class="text-xs font-bold text-white">ChatGPT / Claude에 입력</span>
+              </div>
+              <div class="p-2.5 rounded-lg bg-slate-900 border border-slate-800">
+                <span class="text-xs text-slate-400 block">2. 코드 생성 확인</span>
+                <span class="text-xs font-bold text-indigo-400">index.html로 저장</span>
+              </div>
+              <div class="p-2.5 rounded-lg bg-slate-900 border border-slate-800">
+                <span class="text-xs text-slate-400 block">3. 더블클릭 실행</span>
+                <span class="text-xs font-bold text-emerald-400">내부망 업무 도구 완성!</span>
+              </div>
+            </div>
+          </div>
+        `
+      },
+      {
+        id: 8,
+        tag: "SUMMARY & ACTION PLAN",
+        badgeColor: "bg-emerald-500/10 text-emerald-400 border-emerald-500/30",
+        title: "강의 마무리 — 핵심 요약 및 업무 혁신 액션",
+        subtitle: "“AI와 함께하는 코딩은 문법 암기가 아닌 질문과 설명의 예술입니다.”",
+        render: () => `
+          <div class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+              
+              <!-- Takeaway List -->
+              <div class="glass-card rounded-xl p-5 border border-slate-700/60">
+                <h4 class="text-sm font-bold text-white mb-3 flex items-center gap-2">
+                  <i class="fa-solid fa-graduation-cap text-indigo-400"></i> 오늘 학습한 핵심 5계명
+                </h4>
+                <ul class="space-y-2.5 text-xs text-slate-300">
+                  <li class="flex items-start gap-2">
+                    <span class="w-5 h-5 rounded bg-indigo-500/20 text-indigo-300 flex items-center justify-center font-bold text-[10px] shrink-0">1</span>
+                    <span><b>비개발자의 힘:</b> 코드를 못 짜도 요구사항을 상세히 설명할 수 있으면 실무 앱을 만들 수 있다.</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <span class="w-5 h-5 rounded bg-indigo-500/20 text-indigo-300 flex items-center justify-center font-bold text-[10px] shrink-0">2</span>
+                    <span><b>PTCO 구조화:</b> 페르소나, 과업, 배경, 산출형식을 지정해 환각과 오류를 사전에 제거한다.</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <span class="w-5 h-5 rounded bg-indigo-500/20 text-indigo-300 flex items-center justify-center font-bold text-[10px] shrink-0">3</span>
+                    <span><b>답변 전 질문(Ask-Before-Answer):</b> AI에게 모르는 것을 먼저 묻게 만들어 완벽한 맥락을 확보한다.</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <span class="w-5 h-5 rounded bg-indigo-500/20 text-indigo-300 flex items-center justify-center font-bold text-[10px] shrink-0">4</span>
+                    <span><b>수정의 원칙:</b> 번호 매기기 + 기존 기능 유지 + 전체 코드 생략 금지를 항상 지킨다.</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <span class="w-5 h-5 rounded bg-indigo-500/20 text-indigo-300 flex items-center justify-center font-bold text-[10px] shrink-0">5</span>
+                    <span><b>단일 파일 보안:</b> 로컬 .html 구동으로 사내 기밀 유출 없이 안전하게 자동화한다.</span>
+                  </li>
+                </ul>
+              </div>
+
+              <!-- Next Action Blueprint -->
+              <div class="glass-card rounded-xl p-5 border border-indigo-500/30 bg-indigo-950/20 flex flex-col justify-between">
+                <div>
+                  <h4 class="text-sm font-bold text-indigo-300 mb-2 flex items-center gap-2">
+                    <i class="fa-solid fa-rocket text-indigo-400"></i> 내일부터 시작할 나의 첫 바이브코딩 액션
+                  </h4>
+                  <p class="text-xs text-slate-300 leading-relaxed mb-4">
+                    매일 엑셀로 반복 취합하던 지겨운 리포트 1개를 정하세요. 점심시간 20분 동안 GPT/Claude에게 PTCO 프롬프트를 던져 나만의 전용 계산기나 시각화 대시보드로 만들어보세요.
+                  </p>
+                  
+                  <div class="space-y-2">
+                    <div class="flex items-center gap-3 p-2 rounded bg-slate-900/80 border border-slate-800 text-xs">
+                      <i class="fa-regular fa-file-excel text-emerald-400 text-sm"></i>
+                      <span>반복 업무 엑셀 1건 선정 (불량 집계, 납기 보고, 단가 비교)</span>
+                    </div>
+                    <div class="flex items-center gap-3 p-2 rounded bg-slate-900/80 border border-slate-800 text-xs">
+                      <i class="fa-solid fa-terminal text-cyan-400 text-sm"></i>
+                      <span>Ask-Before-Answer 프롬프트로 AI와 인터뷰 3문 3답 진행</span>
+                    </div>
+                    <div class="flex items-center gap-3 p-2 rounded bg-slate-900/80 border border-slate-800 text-xs">
+                      <i class="fa-solid fa-circle-play text-indigo-400 text-sm"></i>
+                      <span>생성된 코드를 바탕화면에 <code>my_tool.html</code>로 저장 후 더블클릭</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+                  <span>Data Thinking Lab × Expert Consulting</span>
+                  <span class="text-indigo-400 font-semibold">Ready for Transformation</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        `
+      }
+    ];
+
+    let currentSlide = 0;
+
+    function renderSlide(index) {
+      if (index < 0 || index >= slidesData.length) return;
+      currentSlide = index;
+      const slide = slidesData[currentSlide];
+
+      // Update Top Nav
+      document.getElementById('slideIndicator').innerText = `${slide.id} / ${slidesData.length}`;
+      document.getElementById('progressBar').style.width = `${((slide.id) / slidesData.length) * 100}%`;
+      document.getElementById('prevBtn').disabled = (currentSlide === 0);
+      document.getElementById('nextBtn').disabled = (currentSlide === slidesData.length - 1);
+
+      // Render Slide Frame
+      const contentEl = document.getElementById('slideContent');
+      contentEl.innerHTML = `
+        <!-- Slide Header -->
+        <div class="mb-5">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full border ${slide.badgeColor}">
+              ${slide.tag}
+            </span>
+            <span class="text-xs text-slate-500 font-mono">SLIDE ${slide.id.toString().padStart(2, '0')}</span>
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-snug">
+            ${slide.title}
+          </h2>
+          <p class="text-sm text-slate-400 mt-1">
+            ${slide.subtitle}
+          </p>
+        </div>
+
+        <!-- Slide Dynamic Body -->
+        <div class="flex-1 py-1">
+          ${slide.render()}
+        </div>
+
+        <!-- Slide Footer Meta -->
+        <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-500">
+          <div class="flex items-center gap-3">
+            <span>바이브코딩 프롬프트 마스터 가이드</span>
+            <span class="hidden sm:inline">•</span>
+            <span class="hidden sm:inline">단일 파일 HTML 생산성 프로토콜</span>
+          </div>
+          <div>
+            키보드 <kbd class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">←</kbd> <kbd class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">→</kbd> 방향키로 이동
+          </div>
+        </div>
+      `;
+
+      // Update overview grid highlighting
+      renderOverviewGrid();
+    }
+
+    function nextSlide() {
+      if (currentSlide < slidesData.length - 1) {
+        renderSlide(currentSlide + 1);
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 0) {
+        renderSlide(currentSlide - 1);
+      }
+    }
+
+    function goToSlide(slideId) {
+      const idx = slidesData.findIndex(s => s.id === slideId);
+      if (idx !== -1) {
+        renderSlide(idx);
+        closeOverview();
+      }
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') {
+        nextSlide();
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        prevSlide();
+      } else if (e.key === 'Escape') {
+        closeOverview();
+      }
+    });
+
+    function toggleOverview() {
+      const modal = document.getElementById('overviewModal');
+      modal.classList.toggle('hidden');
+    }
+
+    function closeOverview() {
+      document.getElementById('overviewModal').classList.add('hidden');
+    }
+
+    function renderOverviewGrid() {
+      const grid = document.getElementById('overviewGrid');
+      grid.innerHTML = slidesData.map(s => `
+        <div onclick="goToSlide(${s.id})" class="cursor-pointer p-4 rounded-xl border transition-all ${s.id === currentSlide + 1 ? 'bg-indigo-950/60 border-indigo-500 ring-2 ring-indigo-500/30' : 'bg-slate-900/60 border-slate-800 hover:border-slate-700'}">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-800 text-slate-300">#${s.id}</span>
+            <span class="text-[10px] text-slate-500">${s.tag}</span>
+          </div>
+          <h4 class="text-xs font-bold text-white line-clamp-2">${s.title}</h4>
+        </div>
+      `).join('');
+    }
+
+    function copyToClipboard(elementId) {
+      const el = document.getElementById(elementId);
+      if (!el) return;
+
+      const text = el.innerText || el.textContent;
+
+      // ExecCommand fallback for iframe reliability
+      const textArea = document.createElement("textarea");
+      textArea.value = text;
+      textArea.style.position = "fixed";
+      textArea.style.opacity = "0";
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+
+      try {
+        const successful = document.execCommand('copy');
+        if (successful) {
+          showToast("클립보드에 프롬프트가 복사되었습니다!");
+        } else {
+          showToast("복사에 실패했습니다. 직접 복사해주세요.");
+        }
+      } catch (err) {
+        showToast("복사 중 오류가 발생했습니다.");
+      }
+      document.body.removeChild(textArea);
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      const msg = document.getElementById('toastMsg');
+      msg.innerText = message;
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      setTimeout(() => {
+        toast.classList.add('translate-y-20', 'opacity-0');
+        toast.classList.remove('translate-y-0', 'opacity-100');
+      }, 2500);
+    }
+
+    // Initialize presentation on load
+    window.addEventListener('DOMContentLoaded', () => {
+      renderSlide(0);
+      renderOverviewGrid();
+    });
+  </script>
+</body>
+</html>
