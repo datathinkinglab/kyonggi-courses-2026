@@ -22,4 +22,4 @@
 @media(max-width:620px){.week2-content h2{font-size:1.8rem;}.week2-content .grid{grid-template-columns:1fr;}.week2-content .flex.items-center.gap-4{flex-wrap:wrap;}.week2-content .overflow-x-auto{max-width:100%;}.week2-content table{min-width:540px;}.week2-content h3{font-size:1.1rem;}.week2-content p,.week2-content li{font-size:.95rem;}.week2-content pre{font-size:.75rem;}}
 @media print{.week2-content h2{font-size:25pt;}.week2-content h3{font-size:15pt;}.week2-content p,.week2-content li{font-size:11pt;}.week2-content pre{font-size:9pt;}.week2-content{gap:0;}}
 .week2-content pre{color:#dce9f6!important;} @media(max-width:620px){.slide{grid-template-rows:auto auto auto;gap:20px;}.week2-content{min-height:auto;}.slide-footer{padding-bottom:8px;}}
-.deck{position:fixed;inset:0;width:100%;margin:0;}.deck-stage{overflow:hidden;}
+.deck{position:fixed;inset:0;width:100%;margin:0;}.deck-stage{overflow:clip;}
