@@ -8,6 +8,13 @@
   let current = Math.max(0, Math.min(slides.length - 1, Number(location.hash.replace('#','')) - 1 || 0));
   let noteOpen = false;
 
+  slides.forEach((slide, index) => {
+    const footerCounter = slide.querySelector('.slide-footer span:last-child');
+    if (footerCounter && /^\d+\s*\/\s*\d+$/.test(footerCounter.textContent.trim())) {
+      footerCounter.textContent = `${String(index + 1).padStart(2, '0')} / ${slides.length}`;
+    }
+  });
+
   function render(pushHash = true) {
     slides.forEach((slide, i) => slide.classList.toggle('active', i === current));
     slides[current].scrollTop = 0;
