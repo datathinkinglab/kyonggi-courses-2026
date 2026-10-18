@@ -1,0 +1,177 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>3차수 자율 실습 · 자료탐색방법론</title><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="midterm.css"><style>.self-study{max-width:1000px;margin:auto;padding:32px 24px 70px}.self-study details{margin:18px 0;padding:20px;background:white;border:1px solid #dbe4ef;border-radius:12px}.self-study summary{font-size:1.25rem;font-weight:bold;cursor:pointer}.self-study pre{overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;padding:18px;background:#edf2f8;font-size:1rem;line-height:1.6}.self-study p{line-height:1.8}.self-study a{color:#18568c}</style></head><body><main class="self-study"><a href="slides/week-03.html">← 3차수 핵심 강의</a><h1>3차수 자율 실습</h1><p>수업 뒤 필요에 따라 선택해서 진행합니다. 추가 필수 제출물은 아닙니다. 준비 셀 두 개를 먼저 실행한 뒤 원하는 활동을 고르세요. 각 활동에서 프롬프트로 코드를 요청하고, 실행 결과를 확인값과 대조합니다.</p><div class="hero-actions"><a class="button primary" href="https://colab.research.google.com/github/datathinkinglab/kyonggi-courses-2026/blob/main/docs/eda/downloads/EDA_week03_selfstudy.ipynb" target="_blank" rel="noopener">Colab 자율 실습</a><a class="button" download href="downloads/EDA_week03_selfstudy.ipynb">노트북 다운로드</a><a class="button" download href="downloads/EDA_week03_selfstudy.py">Python 예시 다운로드</a></div><details><summary>준비 1 · 가상 자료 만들기</summary><p>두 준비 셀을 순서대로 실행하세요. 가상 자료와 기준 요약 함수를 만듭니다.</p><h3>AI에게 요청하기: 자료 만들기</h3>
+<p>아래 프롬프트를 복사해 앞선 자료 준비부터 진행한 같은 AI 대화에 전달하세요. 새 대화라면 앞선 자료와 코드를 함께 제공합니다. 생성된 코드를 Colab에 붙여넣고 확인값과 대조하세요. 아래 Python 셀은 비교용 예시이며 직접 같은 문법을 작성할 필요는 없습니다.</p>
+<pre><code class="language-text">다음 문제를 해결할 Colab용 Python 코드를 작성해줘. 나는 문법을 외우기보다 문제 해결과 결과 확인에 집중하고 있어.
+
+가상 학생 8명의 편도 통학 응답 자료를 만들어줘. 한 행은 학생 한 명이고 단위는 분이야.
+학생 ID: S01,S02,S03,S04,S05,S06,S07,S08
+교통수단: 버스,버스,버스,지하철,지하철,지하철,도보,도보
+시간: 20,40,미응답,30,50,70,10,20
+만족도: 2,3,4,3,미응답,2,5,4
+표 이름은 df, 열 이름은 student_id, mode, minutes, satisfaction으로 해줘.
+미응답은 결측으로 남기고, 전체 표·행/열 수·열별 결측 수·pandas와 NumPy 버전을 출력해줘.
+외부 파일 없이 Colab에서 실행되게 해줘. 결과에서 전체 8명, 시간 결측 1명, 만족도 결측 1명인지 확인하는 방법도 설명해줘.
+
+코드와 함께 입력·처리·출력의 의미를 쉬운 말로 설명해줘. 직접 실행하지 않은 결과는 예상 결과로 구분해줘.
+</code></pre>
+<h3>비교용 예시 코드</h3><pre><code>import pandas as pd
+import numpy as np
+from IPython.display import display
+
+print(&quot;pandas:&quot;, pd.__version__, &quot;numpy:&quot;, np.__version__)
+df = pd.DataFrame({
+    &quot;student_id&quot;: [&quot;S01&quot;, &quot;S02&quot;, &quot;S03&quot;, &quot;S04&quot;, &quot;S05&quot;, &quot;S06&quot;, &quot;S07&quot;, &quot;S08&quot;],
+    &quot;mode&quot;: [&quot;버스&quot;, &quot;버스&quot;, &quot;버스&quot;, &quot;지하철&quot;, &quot;지하철&quot;, &quot;지하철&quot;, &quot;도보&quot;, &quot;도보&quot;],
+    &quot;minutes&quot;: [20, 40, None, 30, 50, 70, 10, 20],
+    &quot;satisfaction&quot;: [2, 3, 4, 3, None, 2, 5, 4]
+})
+display(df)
+print(&quot;행·열:&quot;, df.shape)
+display(df.isna().sum())</code></pre></details><details><summary>준비 2 · 기준 요약 함수 만들기</summary><p>두 준비 셀을 순서대로 실행하세요. 가상 자료와 기준 요약 함수를 만듭니다.</p><h3>AI에게 요청하기: 교통수단별 요약표</h3>
+<p>아래 프롬프트를 복사해 앞선 자료 준비부터 진행한 같은 AI 대화에 전달하세요. 새 대화라면 앞선 자료와 코드를 함께 제공합니다. 생성된 코드를 Colab에 붙여넣고 확인값과 대조하세요. 아래 Python 셀은 비교용 예시이며 직접 같은 문법을 작성할 필요는 없습니다.</p>
+<pre><code class="language-text">다음 문제를 해결할 Colab용 Python 코드를 작성해줘. 나는 문법을 외우기보다 문제 해결과 결과 확인에 집중하고 있어.
+
+df에서 교통수단별 전체 인원·시간 유효 응답 수·시간 결측 수·평균 시간을 한 표로 비교하고 싶어.
+전체 인원은 시간 미응답 학생도 포함하고, 평균은 유효 시간만 사용해줘. 만족도 결측 때문에 시간 응답을 제외하지 마.
+교통수단이 결측인 경우도 별도 집단으로 남겨줘. 시간 응답이 전혀 없으면 평균은 결측이고 0이 아니야.
+다른 자료에도 쓸 수 있게 summarize(data)라는 재사용 계산으로 만들어줘.
+결과 열은 total_n, valid_n, missing_n, mean_minutes 순서로, 평균 오름차순·계산 불가 마지막으로 정렬해줘.
+df의 결과 이름은 summary로 하고 표시만 소수 둘째 자리로 해줘.
+도보 2명·유효 2명·15분, 버스 3명·유효 2명·30분, 지하철 3명·유효 3명·50분인지 확인해줘.
+
+코드와 함께 입력·처리·출력의 의미를 쉬운 말로 설명해줘. 직접 실행하지 않은 결과는 예상 결과로 구분해줘.
+</code></pre>
+<h3>비교용 예시 코드</h3><pre><code>def summarize(data):
+    result = data.groupby(&quot;mode&quot;, dropna=False).agg(
+        total_n=(&quot;student_id&quot;, &quot;size&quot;),
+        valid_n=(&quot;minutes&quot;, &quot;count&quot;),
+        mean_minutes=(&quot;minutes&quot;, &quot;mean&quot;)
+    )
+    result[&quot;missing_n&quot;] = result[&quot;total_n&quot;] - result[&quot;valid_n&quot;]
+    return result[[&quot;total_n&quot;, &quot;valid_n&quot;, &quot;missing_n&quot;, &quot;mean_minutes&quot;]].sort_values(
+        &quot;mean_minutes&quot;, na_position=&quot;last&quot;
+    )
+
+summary = summarize(df)
+display(summary.round(2))</code></pre></details><details><summary>조건에 맞는 학생 선택</summary><p>30분 이상인 시간 응답은 S02·S04·S05·S06 네 명입니다. 경계 30을 포함하는지 확인하세요.</p><h3>AI에게 요청하기: 30분 이상인 학생 선택</h3>
+<p>아래 프롬프트를 복사해 앞선 자료 준비부터 진행한 같은 AI 대화에 전달하세요. 새 대화라면 앞선 자료와 코드를 함께 제공합니다. 생성된 코드를 Colab에 붙여넣고 확인값과 대조하세요. 아래 Python 셀은 비교용 예시이며 직접 같은 문법을 작성할 필요는 없습니다.</p>
+<pre><code class="language-text">다음 문제를 해결할 Colab용 Python 코드를 작성해줘. 나는 문법을 외우기보다 문제 해결과 결과 확인에 집중하고 있어.
+
+df에서 편도 통학 시간이 30분 이상인 학생의 ID·교통수단·시간을 보여줘.
+30분을 포함하고, 시간 미응답은 제외하며 원래 행 순서를 유지해줘.
+선택 결과 이름은 selected로 하고 원자료를 보존해줘.
+결과에 S02,S04,S05,S06이 들어가는지 확인해줘. 30분 초과로 바꾸면 무엇이 달라지는지도 설명해줘.
+
+코드와 함께 입력·처리·출력의 의미를 쉬운 말로 설명해줘. 직접 실행하지 않은 결과는 예상 결과로 구분해줘.
+</code></pre>
+<h3>비교용 예시 코드</h3><pre><code>selected = df.loc[
+    df[&quot;minutes&quot;].notna() &amp; (df[&quot;minutes&quot;] &gt;= 30),
+    [&quot;student_id&quot;, &quot;mode&quot;, &quot;minutes&quot;]
+]
+display(selected)</code></pre></details><details><summary>정렬과 동점 순위</summary><p>시간 오름차순에서 S07이 먼저, 시간 미응답 S03은 마지막입니다. S01·S08의 20분 동점은 같은 순위를 갖는지 확인하세요.</p><h3>AI에게 요청하기: 시간 정렬과 동점 순위</h3>
+<p>아래 프롬프트를 복사해 앞선 자료 준비부터 진행한 같은 AI 대화에 전달하세요. 새 대화라면 앞선 자료와 코드를 함께 제공합니다. 생성된 코드를 Colab에 붙여넣고 확인값과 대조하세요. 아래 Python 셀은 비교용 예시이며 직접 같은 문법을 작성할 필요는 없습니다.</p>
+<pre><code class="language-text">다음 문제를 해결할 Colab용 Python 코드를 작성해줘. 나는 문법을 외우기보다 문제 해결과 결과 확인에 집중하고 있어.
+
+df를 통학 시간이 짧은 순서로 정렬해줘. 동점이면 학생 ID 오름차순, 시간 미응답은 마지막으로 보내줘.
+정렬한 표 이름은 ordered로 해줘. 원자료를 바꾸지 마.
+별도 표 ranks에 학생 ID·시간과 두 종류의 순위를 보여줘. 동점에 평균 순위를 주는 방법과 가장 앞선 순위를 주는 방법을 비교해줘.
+순위 열 이름은 rank_average와 rank_min으로 해줘.
+두 20분 응답의 순위가 각각 2.5 또는 2가 되는지, 미응답 순위는 결측으로 남는지 확인해줘.
+
+코드와 함께 입력·처리·출력의 의미를 쉬운 말로 설명해줘. 직접 실행하지 않은 결과는 예상 결과로 구분해줘.
+</code></pre>
+<h3>비교용 예시 코드</h3><pre><code>ordered = df.sort_values(
+    [&quot;minutes&quot;, &quot;student_id&quot;],
+    ascending=[True, True],
+    na_position=&quot;last&quot;
+)
+ranks = df[[&quot;student_id&quot;, &quot;minutes&quot;]].copy()
+ranks[&quot;rank_average&quot;] = ranks[&quot;minutes&quot;].rank(method=&quot;average&quot;)
+ranks[&quot;rank_min&quot;] = ranks[&quot;minutes&quot;].rank(method=&quot;min&quot;)
+display(ordered[[&quot;student_id&quot;, &quot;minutes&quot;]])
+display(ranks)</code></pre></details><details><summary>행 방향과 열 방향의 평균</summary><p>날짜별 평균은 30·40분, 학생별 평균은 A 25·B 45분입니다. 두 평균이 답하는 질문을 비교하세요.</p><h3>AI에게 요청하기: 같은 자료의 두 가지 평균</h3>
+<p>아래 프롬프트를 복사해 앞선 자료 준비부터 진행한 같은 AI 대화에 전달하세요. 새 대화라면 앞선 자료와 코드를 함께 제공합니다. 생성된 코드를 Colab에 붙여넣고 확인값과 대조하세요. 아래 Python 셀은 비교용 예시이며 직접 같은 문법을 작성할 필요는 없습니다.</p>
+<pre><code class="language-text">다음 문제를 해결할 Colab용 Python 코드를 작성해줘. 나는 문법을 외우기보다 문제 해결과 결과 확인에 집중하고 있어.
+
+가상 학생 A의 이틀 통학 시간은 20분·30분, B는 40분·50분이야.
+practice라는 표에 day1_minutes와 day2_minutes 열로 저장해줘.
+날짜별 학생 평균과 학생별 이틀 평균을 각각 출력해줘.
+모든 값의 단위는 분이야. 결과 30·40분과 25·45분이 무엇을 뜻하는지 설명해줘.
+두 계산이 왜 다른지 표의 행·열을 기준으로 설명하고, 코드의 계산 방향도 쉬운 말로 풀어줘.
+
+코드와 함께 입력·처리·출력의 의미를 쉬운 말로 설명해줘. 직접 실행하지 않은 결과는 예상 결과로 구분해줘.
+</code></pre>
+<h3>비교용 예시 코드</h3><pre><code>practice = pd.DataFrame({&quot;day1_minutes&quot;: [20, 40],
+                         &quot;day2_minutes&quot;: [30, 50]},
+                        index=[&quot;A&quot;, &quot;B&quot;])
+print(&quot;날짜별 학생 평균:&quot;)
+print(practice.mean(axis=0))
+print(&quot;학생별 이틀 평균:&quot;)
+print(practice.mean(axis=1))</code></pre></details><details><summary>특이한 입력으로 시험하기</summary><p>[20,None,40]은 유효 2·결측 1·평균 30. 전부 결측이면 평균은 미정의입니다. 빈 집단을 0분으로 보고하지 않습니다.</p><h3>AI에게 요청하기: 특이한 입력에서 확인</h3>
+<p>아래 프롬프트를 복사해 앞선 자료 준비부터 진행한 같은 AI 대화에 전달하세요. 새 대화라면 앞선 자료와 코드를 함께 제공합니다. 생성된 코드를 Colab에 붙여넣고 확인값과 대조하세요. 아래 Python 셀은 비교용 예시이며 직접 같은 문법을 작성할 필요는 없습니다.</p>
+<pre><code class="language-text">다음 문제를 해결할 Colab용 Python 코드를 작성해줘. 나는 문법을 외우기보다 문제 해결과 결과 확인에 집중하고 있어.
+
+앞서 만든 summarize가 특이한 자료에서도 명세대로 작동하는지 시험해줘.
+별도 시험 집단을 만들고 다음 시간 목록을 각각 넣어줘: [20,20,20], [20], [20,미응답,40], [미응답,미응답], [20,20,200].
+각 시험 자료에는 학생 ID·교통수단·시간을 넣고 시간은 결측을 표현할 수 있는 숫자형으로 만들어줘.
+각 사례 이름과 전체·유효·결측 수·평균을 출력해줘. 원래 df는 바꾸지 마.
+예상 평균 20,20,30,계산 불가,80분을 먼저 적고 실제 결과와 비교해줘.
+
+코드와 함께 입력·처리·출력의 의미를 쉬운 말로 설명해줘. 직접 실행하지 않은 결과는 예상 결과로 구분해줘.
+</code></pre>
+<h3>비교용 예시 코드</h3><pre><code>cases = {
+    &quot;동점&quot;: [20, 20, 20],
+    &quot;단일값&quot;: [20],
+    &quot;일부결측&quot;: [20, None, 40],
+    &quot;전부결측&quot;: [None, None],
+    &quot;극단값&quot;: [20, 20, 200]
+}
+for name, values in cases.items():
+    test_df = pd.DataFrame({
+        &quot;student_id&quot;: [f&quot;T{i}&quot; for i in range(len(values))],
+        &quot;mode&quot;: [&quot;시험&quot;] * len(values),
+        &quot;minutes&quot;: pd.Series(values, dtype=&quot;float64&quot;)
+    })
+    print(name)
+    display(summarize(test_df))</code></pre></details><details><summary>결측을 0으로 바꾼 초안 진단</summary><p>버스 평균이 30에서 20분으로 바뀝니다. 결측과 실제 0의 의미가 왜 다른지 설명하고 수정 프롬프트를 작성하세요.</p><h3>AI에게 요청하기: 진단용 0 대체 사례</h3>
+<p>아래 프롬프트를 복사해 앞선 자료 준비부터 진행한 같은 AI 대화에 전달하세요. 새 대화라면 앞선 자료와 코드를 함께 제공합니다. 생성된 코드를 Colab에 붙여넣고 확인값과 대조하세요. 아래 Python 셀은 비교용 예시이며 직접 같은 문법을 작성할 필요는 없습니다.</p>
+<pre><code class="language-text">다음 문제를 해결할 Colab용 Python 코드를 작성해줘. 나는 문법을 외우기보다 문제 해결과 결과 확인에 집중하고 있어.
+
+결측을 0으로 바꿨을 때 생기는 문제를 보여주는 교육용 진단 코드를 작성해줘.
+df의 원본은 보존하고 시간 미응답을 의도적으로 0으로 채운 복사본 wrong_b를 만들어줘.
+앞서 만든 summarize로 교통수단별 요약을 출력해줘.
+버스 평균이 30분에서 20분으로 변하는 이유를 분모와 함께 설명해줘.
+이 코드는 오류 진단용이며 이번 실습의 올바른 분석 규칙은 미응답을 보존하는 것임을 분명히 해줘.
+
+코드와 함께 입력·처리·출력의 의미를 쉬운 말로 설명해줘. 직접 실행하지 않은 결과는 예상 결과로 구분해줘.
+</code></pre>
+<h3>비교용 예시 코드</h3><pre><code>wrong_b = df.assign(minutes=df[&quot;minutes&quot;].fillna(0))
+display(summarize(wrong_b))</code></pre></details><details><summary>시간과 만족도를 섞은 평균 진단</summary><p>S01에서 (20+2)/2=11이 나오지만 분과 만족도 점수를 섞은 값은 해석할 수 없습니다. 계산 성공과 의미 타당성을 구별하세요.</p><h3>AI에게 요청하기: 진단용 단위 혼합 사례</h3>
+<p>아래 프롬프트를 복사해 앞선 자료 준비부터 진행한 같은 AI 대화에 전달하세요. 새 대화라면 앞선 자료와 코드를 함께 제공합니다. 생성된 코드를 Colab에 붙여넣고 확인값과 대조하세요. 아래 Python 셀은 비교용 예시이며 직접 같은 문법을 작성할 필요는 없습니다.</p>
+<pre><code class="language-text">다음 문제를 해결할 Colab용 Python 코드를 작성해줘. 나는 문법을 외우기보다 문제 해결과 결과 확인에 집중하고 있어.
+
+서로 다른 단위의 숫자를 평균 내는 문제를 보여주는 교육용 진단 코드를 작성해줘.
+df의 minutes와 satisfaction을 학생 한 명씩 가로로 평균 내어 wrong_c로 출력해줘. 원자료를 바꾸지 마.
+S01에서 11이 나오는 계산 과정과 S03에서 만족도 4만 남는 이유를 설명해줘.
+분 단위 통학 시간과 순서형 만족도 점수의 평균을 섞으면 어떤 질문에도 적절한 답이 되지 않는 이유를 알려줘.
+이번 목표인 전체 시간 평균과 교통수단별 시간 평균은 어떤 값들로 구해야 하는지도 설명해줘.
+
+코드와 함께 입력·처리·출력의 의미를 쉬운 말로 설명해줘. 직접 실행하지 않은 결과는 예상 결과로 구분해줘.
+</code></pre>
+<h3>비교용 예시 코드</h3><pre><code>wrong_c = df[[&quot;minutes&quot;, &quot;satisfaction&quot;]].mean(axis=1)
+display(wrong_c)</code></pre></details><details><summary>소수 비교와 허용오차</summary><p>0.1+0.2 == 0.3은 False, np.isclose 비교는 True입니다. 허용오차를 두는 이유를 설명하세요.</p><h3>AI에게 요청하기: 소수 계산 결과 비교</h3>
+<p>아래 프롬프트를 복사해 앞선 자료 준비부터 진행한 같은 AI 대화에 전달하세요. 새 대화라면 앞선 자료와 코드를 함께 제공합니다. 생성된 코드를 Colab에 붙여넣고 확인값과 대조하세요. 아래 Python 셀은 비교용 예시이며 직접 같은 문법을 작성할 필요는 없습니다.</p>
+<pre><code class="language-text">다음 문제를 해결할 Colab용 Python 코드를 작성해줘. 나는 문법을 외우기보다 문제 해결과 결과 확인에 집중하고 있어.
+
+컴퓨터에서 0.1+0.2와 0.3을 비교하는 짧은 Colab 예제를 작성해줘.
+계산값을 실제 저장된 표현으로 보여주고, 두 값의 정확한 동등 비교와 허용오차 비교 결과를 각각 출력해줘.
+절대 허용오차는 0.000000000001로 하고 상대오차는 사용하지 마.
+계산값과 기준값 이름은 actual과 expected로 해줘.
+왜 직접 비교가 False이고 허용오차 비교가 True일 수 있는지 쉬운 말로 설명해줘. 인원 수와 학생 ID에는 이런 근사 비교를 쓰지 않는다는 점도 알려줘.
+
+코드와 함께 입력·처리·출력의 의미를 쉬운 말로 설명해줘. 직접 실행하지 않은 결과는 예상 결과로 구분해줘.
+</code></pre>
+<h3>비교용 예시 코드</h3><pre><code>actual = 0.1 + 0.2
+expected = 0.3
+print(&quot;계산값:&quot;, repr(actual))
+print(&quot;직접 동등 비교:&quot;, actual == expected)
+print(&quot;허용오차 비교:&quot;, np.isclose(actual, expected, rtol=0, atol=1e-12))</code></pre></details><p>코드는 노트북의 각 셀에서 바로 복사할 수 있습니다. Python 예시 파일에도 작성 프롬프트가 주석으로 포함되어 있습니다.</p></main></body></html>
