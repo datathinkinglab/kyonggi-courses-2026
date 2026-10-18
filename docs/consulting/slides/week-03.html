@@ -1,28 +1,33 @@
-<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="경기대학교 통계컨설팅의 이해 3주차 수업 슬라이드"><title>3주차 · 바이브코딩 기반 간단한 대시보드 제작</title><link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="../lessons-03-04.css"></head><body class="deck"><main class="deck-stage" aria-label="3주차 강의 슬라이드"><section class="slide dark active" data-title="바이브코딩 기반 간단한 대시보드 제작" data-notes="도입 5분. 지난 시간의 앱을 열게 합니다. 오늘은 가상 고객 자료로 질문·분모·차트를 연결하고 직접 계산해 확인합니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type ">강의 시작</span></header><div class="slide-body lesson-content"><div class="kicker">3주차</div><h1>바이브코딩 기반<br><span class="accent">대시보드 제작</span></h1><p class="lead">고객의 질문을 지표와 차트로 설명하기</p><img class="logo-slide" src="../assets/logo-circle.png" alt="Data Thinking Lab"></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>01 / 33</span></footer></section>
-<section class="slide  " data-title="오늘의 학습 목표" data-notes="학생에게 각 목표에서 직접 보여줄 결과를 하나씩 말하게 합니다. 2주차의 검정 기능은 유지하되 오늘 필수 범위는 기술통계와 화면의 일관성입니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type ">개념</span></header><div class="slide-body lesson-content"><h2>오늘의 학습 목표</h2><div class="grid-3"><article class="card"><h3>질문과 지표</h3><p>고객 수·이탈 비율·평균의 정의와 분모를 설명합니다.</p></article><article class="card"><h3>차트와 조건</h3><p>분포·집단 비교를 시각화하고 같은 필터를 적용합니다.</p></article><article class="card"><h3>검증과 해석</h3><p>작은 자료로 검산하고 사실과 가설을 구분합니다.</p></article></div><p class="lesson-callout">완성물: 대시보드 v2, 수정 PRD, 검증 기록, 해석 3문장</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>02 / 33</span></footer></section>
-<section class="slide  " data-title="실습 준비와 진행" data-notes="준비 10분. IDE·CLI 사용자는 프로젝트를 열고 웹 AI 사용자는 코드와 PRD를 함께 제공합니다. 도구 연결 문제는 공동 실습으로 우회합니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type practice">실습 안내</span></header><div class="slide-body lesson-content"><h2>실습 준비와 진행</h2><ol class="exercise-steps"><li>2주차 앱과 PRD를 열고 정상 작동본을 별도 보관합니다.</li><li>가상 자료를 고정하고 데이터 점검 규칙을 정합니다.</li><li>KPI와 차트를 만든 뒤 가입기간 필터를 연결합니다.</li><li>8행 검증 자료로 수치를 확인하고 조별로 설명합니다.</li></ol><p class="lesson-callout">미완료 학생은 조원과 공동 실습하거나 제공된 기본 앱으로 시작합니다.</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>03 / 33</span></footer></section>
-<section class="slide blue " data-title="가상 구독 서비스의 의뢰" data-notes="학생들에게 지표 후보를 받습니다. 고객 수, 이탈 비율, 평균 외에 왜 분포가 필요한지도 질문합니다. 실제 사업적 관계를 찾았다고 해석하지 않도록 안내합니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type ">의뢰 상황</span></header><div class="slide-body lesson-content"><h2>가상 구독 서비스의 의뢰</h2><blockquote class="prompt">고객 이탈 현황을 한눈에 보고 싶습니다.<br>가입기간과 월 청구 금액에 따라 어떤 차이가 있는지<br>살펴보고, 추가로 확인할 질문을 정리해주세요.</blockquote><p class="lead">어떤 지표가 운영 담당자의 질문에 답할까요?</p><p>오늘의 데이터는 <strong>학습용 가상 자료</strong>입니다.</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>04 / 33</span></footer></section>
-<section class="slide  " data-title="한 행과 관찰기간의 의미" data-notes="자료의 시간 순서를 말로 설명합니다. 관찰기간은 원자료에 정의되지 않아 수업에서 채택한 가정입니다. 실제 자료에서는 의뢰인에게 확인해야 합니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type ">개념</span></header><div class="slide-body lesson-content"><h2>한 행과 관찰기간의 의미</h2><div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">항목</th><th scope="col">이번 실습의 정의</th></tr></thead><tbody><tr><td>한 행</td><td>기준 시점의 가상 고객 한 명</td></tr><tr><td>가입기간·청구 금액</td><td>기준 시점의 특성</td></tr><tr><td>이탈 여부</td><td>이후 동일한 관찰기간의 결과라고 가정</td></tr><tr><td>분모</td><td>기준 시점의 고객. 이후 이탈한 고객도 포함</td></tr></tbody></table></div><p class="lesson-callout">날짜 변수가 없으므로 월별 추세·전월 대비 증감은 계산할 수 없습니다.</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>05 / 33</span></footer></section>
-<section class="slide  " data-title="데이터 사전" data-notes="CU는 가상 통화단위입니다. 기존 자료에 정의된 단위가 있다면 그것을 사용합니다. 청구 금액의 합계를 회계상 매출이라고 단정하지 않습니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type ">개념</span></header><div class="slide-body lesson-content"><h2>데이터 사전</h2><div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">변수</th><th scope="col">의미</th><th scope="col">형식·단위</th></tr></thead><tbody><tr><td>customer_id</td><td>고객 식별자</td><td>중복 없는 문자열</td></tr><tr><td>age</td><td>연령</td><td>세</td></tr><tr><td>tenure_months</td><td>가입기간</td><td>0 이상 정수, 개월</td></tr><tr><td>monthly_charges</td><td>월 청구 금액</td><td>0 이상 수치, CU</td></tr><tr><td>churn</td><td>이탈 여부</td><td>0=유지, 1=이탈</td></tr></tbody></table></div><p class="lesson-callout">단위가 없는 금액에 임의로 ‘원’을 붙이지 않습니다.</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>06 / 33</span></footer></section>
-<section class="slide  " data-title="가상 자료의 생성 규칙" data-notes="연령 20~69, 가입기간 0~60, 금액 20~120 CU 균등분포, 고객 ID C001~C100을 강의노트와 함께 확인합니다. 같은 시드도 코드가 다르면 결과가 달라질 수 있습니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type ">개념</span></header><div class="slide-body lesson-content"><h2>가상 자료의 생성 규칙</h2><ul class="checklist"><li>기존 2주차 자료가 있으면 같은 파일을 사용합니다.</li><li>없다면 시드 42로 고객 100명을 만들고 생성 코드를 보관합니다.</li><li>이탈 여부는 확률 0.25로 다른 변수와 독립적으로 생성합니다.</li><li>필터 조작과 새로고침 중에는 자료를 재생성하지 않습니다.</li></ul><p class="lesson-callout">생성 확률 0.25와 실제 표본 이탈 비율 25%는 서로 다를 수 있습니다.</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>07 / 33</span></footer></section>
-<section class="slide  " data-title="질문과 지표의 연결" data-notes="각 행의 지표가 서로 다른 질문에 답한다는 점을 확인합니다. 평균 카드만으로 분포를 설명할 수 있는지 반례를 받아봅니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type ">개념</span></header><div class="slide-body lesson-content"><h2>질문과 지표의 연결</h2><div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">질문</th><th scope="col">지표</th><th scope="col">표현</th></tr></thead><tbody><tr><td>몇 명을 분석하는가?</td><td>현재 분석 고객 수</td><td>KPI 카드</td></tr><tr><td>이탈 비중은?</td><td>이탈 고객 수 / 분석 고객 수</td><td>비율과 분자·분모</td></tr><tr><td>청구 수준은?</td><td>평균과 분포</td><td>평균 카드·히스토그램</td></tr><tr><td>집단 차이는?</td><td>유지·이탈 금액 분포</td><td>상자그림·집단별 n</td></tr><tr><td>가입기간별 차이는?</td><td>구간 내 이탈 비율</td><td>구간별 표</td></tr></tbody></table></div></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>08 / 33</span></footer></section>
-<section class="slide  " data-title="같은 12명, 다른 분모" data-notes="칠판 예제 5분. 전체 이탈 고객이 20명인 조건에서 전체 이탈 비율 20%도 계산하게 합니다. 어떤 카드 제목이 맞는지 학생에게 말하게 합니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type practice">계산 예제</span></header><div class="slide-body lesson-content"><h2>같은 12명, 다른 분모</h2><div class="grid-2"><article class="card"><h3>집단 내부의 비율</h3><p>12개월 미만 고객 40명 중 이탈 12명<br><strong>12 ÷ 40 = 30%</strong></p></article><article class="card"><h3>전체에서의 비중</h3><p>전체 고객 100명 중 해당 이탈 12명<br><strong>12 ÷ 100 = 12%</strong></p></article></div><p class="lesson-callout">같은 분자라도 분모가 다르면 답하는 질문이 달라집니다.</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>09 / 33</span></footer></section>
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="경기대학교 통계컨설팅의 이해 3주차 수업 슬라이드"><title>3주차 · 바이브코딩 기반 간단한 대시보드 제작</title><link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="../lessons-03-04.css"></head><body class="deck"><main class="deck-stage" aria-label="3주차 강의 슬라이드"><section class="slide dark active" data-title="바이브코딩 기반 간단한 대시보드 제작" data-notes="도입 5분. 지난 시간의 앱을 열게 합니다. 오늘은 가상 고객 자료로 질문·분모·차트를 연결하고 직접 계산해 확인합니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type ">강의 시작</span></header><div class="slide-body lesson-content"><div class="kicker">3주차</div><h1>바이브코딩 기반<br><span class="accent">대시보드 제작</span></h1><p class="lead">고객의 질문을 지표와 차트로 설명하기</p><img class="logo-slide" src="../assets/logo-circle.png" alt="Data Thinking Lab"></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>01 / 41</span></footer></section>
+<section class="slide  " data-title="오늘의 학습 목표" data-notes="학생에게 각 목표에서 직접 보여줄 결과를 하나씩 말하게 합니다. 2주차의 검정 기능은 유지하되 오늘 필수 범위는 기술통계와 화면의 일관성입니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type ">개념</span></header><div class="slide-body lesson-content"><h2>오늘의 학습 목표</h2><div class="grid-3"><article class="card"><h3>질문과 지표</h3><p>고객 수·이탈 비율·평균의 정의와 분모를 설명합니다.</p></article><article class="card"><h3>차트와 조건</h3><p>분포·집단 비교를 시각화하고 같은 필터를 적용합니다.</p></article><article class="card"><h3>검증과 해석</h3><p>작은 자료로 검산하고 사실과 가설을 구분합니다.</p></article></div><p class="lesson-callout">완성물: 대시보드 v2, 수정 PRD, 검증 기록, 해석 3문장</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>02 / 41</span></footer></section>
+<section class="slide  " data-title="실습 준비와 진행" data-notes="준비 10분. IDE·CLI 사용자는 프로젝트를 열고 웹 AI 사용자는 코드와 PRD를 함께 제공합니다. 도구 연결 문제는 공동 실습으로 우회합니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type practice">실습 안내</span></header><div class="slide-body lesson-content"><h2>실습 준비와 진행</h2><ol class="exercise-steps"><li>2주차 앱과 PRD를 열고 정상 작동본을 별도 보관합니다.</li><li>가상 자료를 고정하고 데이터 점검 규칙을 정합니다.</li><li>KPI와 차트를 만든 뒤 가입기간 필터를 연결합니다.</li><li>8행 검증 자료로 수치를 확인하고 조별로 설명합니다.</li></ol><p class="lesson-callout">미완료 학생은 조원과 공동 실습하거나 제공된 기본 앱으로 시작합니다.</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>03 / 41</span></footer></section>
+<section class="slide  " data-title="실습 자료 다운로드" data-notes="두 CSV는 고정된 학습용 가상 자료입니다. ZIP의 data 폴더에도 같은 CSV가 들어 있습니다. 다운로드한 파일 이름과 행 수를 확인합니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type practice">실습 자료</span></header><div class="slide-body lesson-content"><h2>실습 자료 다운로드</h2><div class="download-links"><a class="button" href="../downloads/sample_churn.csv" download>100행 고객 데이터 CSV</a><a class="button" href="../downloads/validation_8rows.csv" download>8행 검증 데이터 CSV</a><a class="button" href="../downloads/week-03-practice.zip" download>3주차 시작 파일 ZIP</a></div><div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">자료</th><th scope="col">용도</th><th scope="col">처음 확인할 값</th></tr></thead><tbody><tr><td>100행 CSV</td><td>분포·집단 비교 본 실습</td><td>100명, 이탈 21명, 21.0%, 평균 71.6 CU</td></tr><tr><td>8행 CSV</td><td>손계산·필터·오류 검증</td><td>8명, 이탈 3명, 37.5%, 평균 52.5 CU</td></tr><tr><td>3주차 ZIP</td><td>앱·패키지·데이터·PRD·설명서</td><td>전체 압축 해제 후 실행</td></tr></tbody></table></div><p class="lesson-callout">CSV만 받으면 데이터만 저장됩니다. 바로 실행하려면 ZIP을 받습니다.</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>04 / 41</span></footer></section>
+<section class="slide  " data-title="압축 해제와 첫 실행" data-notes="Python 3.12에서 제공 파일을 검증했습니다. 화면이 뜨지 않으면 터미널의 Local URL을 브라우저에 붙여 넣습니다. 압축 안의 파일을 직접 실행하거나 CSV만 받은 상태로 실행하지 않습니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type ">실행 안내</span></header><div class="slide-body lesson-content"><h2>압축 해제와 첫 실행</h2><pre class="code"><code>python -m venv .venv
+.venv\Scripts\python.exe -m pip install -r requirements.txt
+.venv\Scripts\python.exe -m streamlit run app.py</code></pre><p class="lesson-callout">Windows에서는 3주차 ZIP을 모두 푼 폴더에서 터미널을 엽니다.</p><p>macOS/Linux는 실행 경로를 <code>.venv/bin/python</code>으로 바꿉니다. 종료는 터미널에서 Ctrl+C입니다.</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>05 / 41</span></footer></section>
+<section class="slide blue " data-title="가상 구독 서비스의 의뢰" data-notes="학생들에게 지표 후보를 받습니다. 고객 수, 이탈 비율, 평균 외에 왜 분포가 필요한지도 질문합니다. 실제 사업적 관계를 찾았다고 해석하지 않도록 안내합니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type ">의뢰 상황</span></header><div class="slide-body lesson-content"><h2>가상 구독 서비스의 의뢰</h2><blockquote class="prompt">고객 이탈 현황을 한눈에 보고 싶습니다.<br>가입기간과 월 청구 금액에 따라 어떤 차이가 있는지<br>살펴보고, 추가로 확인할 질문을 정리해주세요.</blockquote><p class="lead">어떤 지표가 운영 담당자의 질문에 답할까요?</p><p>오늘의 데이터는 <strong>학습용 가상 자료</strong>입니다.</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>06 / 41</span></footer></section>
+<section class="slide  " data-title="한 행과 관찰기간의 의미" data-notes="자료의 시간 순서를 말로 설명합니다. 관찰기간은 원자료에 정의되지 않아 수업에서 채택한 가정입니다. 실제 자료에서는 의뢰인에게 확인해야 합니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type ">개념</span></header><div class="slide-body lesson-content"><h2>한 행과 관찰기간의 의미</h2><div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">항목</th><th scope="col">이번 실습의 정의</th></tr></thead><tbody><tr><td>한 행</td><td>기준 시점의 가상 고객 한 명</td></tr><tr><td>가입기간·청구 금액</td><td>기준 시점의 특성</td></tr><tr><td>이탈 여부</td><td>이후 동일한 관찰기간의 결과라고 가정</td></tr><tr><td>분모</td><td>기준 시점의 고객. 이후 이탈한 고객도 포함</td></tr></tbody></table></div><p class="lesson-callout">날짜 변수가 없으므로 월별 추세·전월 대비 증감은 계산할 수 없습니다.</p><p class="explanation">가입기간은 기준 시점까지의 길이이고, churn은 그 이후의 결과라는 가정을 사용합니다. 기간 정의가 다른 고객을 한 비율로 섞으면 의미가 달라집니다.</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>07 / 41</span></footer></section>
+<section class="slide  " data-title="데이터 사전" data-notes="CU는 가상 통화단위입니다. 기존 자료에 정의된 단위가 있다면 그것을 사용합니다. 청구 금액의 합계를 회계상 매출이라고 단정하지 않습니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type ">개념</span></header><div class="slide-body lesson-content"><h2>데이터 사전</h2><div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">변수</th><th scope="col">의미</th><th scope="col">형식·단위</th></tr></thead><tbody><tr><td>customer_id</td><td>고객 식별자</td><td>중복 없는 문자열</td></tr><tr><td>age</td><td>연령</td><td>세</td></tr><tr><td>tenure_months</td><td>가입기간</td><td>0 이상 정수, 개월</td></tr><tr><td>monthly_charges</td><td>월 청구 금액</td><td>0 이상 수치, CU</td></tr><tr><td>churn</td><td>이탈 여부</td><td>0=유지, 1=이탈</td></tr></tbody></table></div><p class="lesson-callout">단위가 없는 금액에 임의로 ‘원’을 붙이지 않습니다.</p><p class="explanation">같은 숫자라도 단위와 의미가 다르면 비교할 수 없습니다. customer_id는 계산할 숫자가 아니라 고객을 구분하는 식별자입니다.</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>08 / 41</span></footer></section>
+<section class="slide  " data-title="100행과 8행 자료의 역할" data-notes="같은 자료로 결과를 비교하도록 다운로드한 CSV를 사용합니다. 데이터 선택 메뉴에서 어떤 자료인지 먼저 확인합니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type ">개념</span></header><div class="slide-body lesson-content"><h2>100행과 8행 자료의 역할</h2><div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">자료</th><th scope="col">무엇을 확인하는가?</th><th scope="col">주의</th></tr></thead><tbody><tr><td>100행</td><td>분포·집단별 차이와 범주형 확장</td><td>관계가 실제 사업 원인을 뜻하지 않음</td></tr><tr><td>8행</td><td>손계산·필터·결측 처리</td><td>표본이 작고 검증용으로 구성됨</td></tr></tbody></table></div><p class="lesson-callout">100행 첫 화면: 21명/100명, 21.0%, 평균 71.6 CU</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>09 / 41</span></footer></section>
+<section class="slide  " data-title="가상 자료의 생성 규칙" data-notes="연령 20~69, 가입기간 0~60, 금액 20~120 CU 균등분포, 고객 ID C001~C100을 강의노트와 함께 확인합니다. 같은 시드도 코드가 다르면 결과가 달라질 수 있습니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type ">개념</span></header><div class="slide-body lesson-content"><h2>가상 자료의 생성 규칙</h2><ul class="checklist"><li>기존 2주차 자료가 있으면 같은 파일을 사용합니다.</li><li>없다면 시드 42로 고객 100명을 만들고 생성 코드를 보관합니다.</li><li>이탈 여부는 확률 0.25로 다른 변수와 독립적으로 생성합니다.</li><li>필터 조작과 새로고침 중에는 자료를 재생성하지 않습니다.</li></ul><p class="lesson-callout">생성 확률 0.25와 실제 표본 이탈 비율 25%는 서로 다를 수 있습니다.</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>10 / 41</span></footer></section>
+<section class="slide  " data-title="질문과 지표의 연결" data-notes="각 행의 지표가 서로 다른 질문에 답한다는 점을 확인합니다. 평균 카드만으로 분포를 설명할 수 있는지 반례를 받아봅니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type ">개념</span></header><div class="slide-body lesson-content"><h2>질문과 지표의 연결</h2><div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">질문</th><th scope="col">지표</th><th scope="col">표현</th></tr></thead><tbody><tr><td>몇 명을 분석하는가?</td><td>현재 분석 고객 수</td><td>KPI 카드</td></tr><tr><td>이탈 비중은?</td><td>이탈 고객 수 / 분석 고객 수</td><td>비율과 분자·분모</td></tr><tr><td>청구 수준은?</td><td>평균과 분포</td><td>평균 카드·히스토그램</td></tr><tr><td>집단 차이는?</td><td>유지·이탈 금액 분포</td><td>상자그림·집단별 n</td></tr><tr><td>가입기간별 차이는?</td><td>구간 내 이탈 비율</td><td>구간별 표</td></tr></tbody></table></div></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>11 / 41</span></footer></section>
+<section class="slide  " data-title="같은 12명, 다른 분모" data-notes="칠판 예제 5분. 전체 이탈 고객이 20명인 조건에서 전체 이탈 비율 20%도 계산하게 합니다. 어떤 카드 제목이 맞는지 학생에게 말하게 합니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type practice">계산 예제</span></header><div class="slide-body lesson-content"><h2>같은 12명, 다른 분모</h2><div class="grid-2"><article class="card"><h3>집단 내부의 비율</h3><p>12개월 미만 고객 40명 중 이탈 12명<br><strong>12 ÷ 40 = 30%</strong></p></article><article class="card"><h3>전체에서의 비중</h3><p>전체 고객 100명 중 해당 이탈 12명<br><strong>12 ÷ 100 = 12%</strong></p></article></div><p class="lesson-callout">같은 분자라도 분모가 다르면 답하는 질문이 달라집니다.</p><p class="explanation">30%는 짧은 가입기간 집단 내부의 이탈 비율입니다. 12%는 전체에서 그 집단 이탈 고객이 차지하는 비중으로, 두 값은 서로 다른 질문에 답합니다.</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>12 / 41</span></footer></section>
 <section class="slide  " data-title="실습 1. 질문과 PRD 보완" data-notes="실습 10분. 첫 문장의 사용자와 질문을 학생이 수정하게 합니다. PRD는 기능 목록뿐 아니라 자료 처리와 완료 기준까지 포함해야 합니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type practice">실습</span></header><div class="slide-body lesson-content"><h2>실습 1. 질문과 PRD 보완</h2><div class="prompt-head"><span>PRD 추가 내용</span><button type="button" class="button copy-prompt">요청문 복사</button></div><pre class="code prompt-code"><code>사용자: 가상 구독 서비스 운영 담당자
 질문: 이탈 현황과 가입기간·청구 금액의 차이 탐색
 분석 단위: 고객 한 명
 기간: 기준 시점 특성과 이후 공통 관찰기간을 가정
 필수 기능: KPI 3개, 차트 2개, 가입기간 필터, 구간별 표
 해석: 사실·가설·다음 확인 구분
-완료 기준: 8행 정답 일치, 빈 결과 안내</code></pre><span class="copy-status" aria-live="polite"></span><p class="lesson-callout">조별로 주질문 한 문장과 필요한 지표를 설명합니다.</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>10 / 33</span></footer></section>
-<section class="slide  " data-title="분석 전에 확인할 데이터 오류" data-notes="가입기간은 0 이상 정수이고 금액은 0 이상 유한한 수치여야 합니다. 모든 지표는 같은 정제 자료를 사용합니다. 실제 분석에서의 정책과는 구분되는 수업 공통 규칙입니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type ">개념</span></header><div class="slide-body lesson-content"><h2>분석 전에 확인할 데이터 오류</h2><div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">문제</th><th scope="col">이번 실습의 처리</th></tr></thead><tbody><tr><td>필수 열 누락</td><td>열 이름 안내 후 분석 중단</td></tr><tr><td>고객 ID 누락·중복</td><td>수정 후 다시 입력하도록 안내</td></tr><tr><td>churn 결측·0 또는 1 외 값</td><td>해당 행 제외</td></tr><tr><td>가입기간·금액의 결측·잘못된 수치</td><td>해당 행 제외</td></tr><tr><td>age의 결측</td><td>보고만 하고 이번 필수 분석에서는 유지</td></tr></tbody></table></div><p class="lesson-callout">제외 조건이 겹친 행은 전체 제외 수에서 한 번만 셉니다.</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>11 / 33</span></footer></section>
+완료 기준: 8행 정답 일치, 빈 결과 안내</code></pre><span class="copy-status" aria-live="polite"></span><p class="lesson-callout">조별로 주질문 한 문장과 필요한 지표를 설명합니다.</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>13 / 41</span></footer></section>
+<section class="slide  " data-title="분석 전에 확인할 데이터 오류" data-notes="가입기간은 0 이상 정수이고 금액은 0 이상 유한한 수치여야 합니다. 모든 지표는 같은 정제 자료를 사용합니다. 실제 분석에서의 정책과는 구분되는 수업 공통 규칙입니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type ">개념</span></header><div class="slide-body lesson-content"><h2>분석 전에 확인할 데이터 오류</h2><div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">문제</th><th scope="col">이번 실습의 처리</th></tr></thead><tbody><tr><td>필수 열 누락</td><td>열 이름 안내 후 분석 중단</td></tr><tr><td>고객 ID 누락·중복</td><td>수정 후 다시 입력하도록 안내</td></tr><tr><td>churn 결측·0 또는 1 외 값</td><td>해당 행 제외</td></tr><tr><td>가입기간·금액의 결측·잘못된 수치</td><td>해당 행 제외</td></tr><tr><td>age의 결측</td><td>보고만 하고 이번 필수 분석에서는 유지</td></tr></tbody></table></div><p class="lesson-callout">제외 조건이 겹친 행은 전체 제외 수에서 한 번만 셉니다.</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>14 / 41</span></footer></section>
 <section class="slide  " data-title="데이터 점검 요청문" data-notes="실습 15분. 기존 코드와 PRD를 제공한 뒤 실행합니다. 학생 한 명이 어떤 행을 왜 제외했는지 코드 없이 설명하는 것을 완료 기준으로 삼습니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type practice">AI 실습</span></header><div class="slide-body lesson-content"><h2>데이터 점검 요청문</h2><div class="prompt-head"><span>AI 요청문</span><button type="button" class="button copy-prompt">요청문 복사</button></div><pre class="code prompt-code"><code>기존 앱과 PRD를 읽고 데이터 점검을 추가해줘.
 1. 필수 열 5개와 고객 ID 누락·중복을 확인하고 중단·안내한다.
 2. churn은 0·1, 가입기간은 0 이상 정수, 금액은 0 이상 유한 수치다.
 3. 해당 결측·오류 행은 제외하되 age 결측은 보고만 한다.
 4. 원본 수, 오류 유형별 건수, 중복 없는 제외 수, 최종 수를 표시한다.
 5. 빈 자료에는 안내하고 값을 임의로 보완하지 않는다.
-6. 기존 기능을 보존하고 변경 내용과 확인 방법을 설명한다.</code></pre><span class="copy-status" aria-live="polite"></span></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>12 / 33</span></footer></section>
-<section class="slide  " data-title="KPI 계산 규칙" data-notes="여기서 N은 현재 선택 조건의 분석 고객 수입니다. 계산 중에는 반올림하지 않고 마지막 표시에서 반올림하도록 설명합니다. 통계검정은 기존 규칙대로 소수점 4자리를 유지합니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type ">개념</span></header><div class="slide-body lesson-content"><h2>KPI 계산 규칙</h2><div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">지표</th><th scope="col">계산</th><th scope="col">표시</th></tr></thead><tbody><tr><td>고객 수</td><td>정제·필터 후 행 수 N</td><td>N명</td></tr><tr><td>이탈 비율</td><td>churn=1인 수 / N × 100</td><td>소수점 1자리, 분자·분모</td></tr><tr><td>평균 청구 금액</td><td>청구 금액 합계 / N</td><td>소수점 1자리, CU</td></tr></tbody></table></div><p class="lesson-callout">N=0이면 비율과 평균은 계산 불가입니다. 0%와 구분합니다.</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>13 / 33</span></footer></section>
+6. 기존 기능을 보존하고 변경 내용과 확인 방법을 설명한다.</code></pre><span class="copy-status" aria-live="polite"></span></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>15 / 41</span></footer></section>
+<section class="slide  " data-title="KPI 계산 규칙" data-notes="여기서 N은 현재 선택 조건의 분석 고객 수입니다. 계산 중에는 반올림하지 않고 마지막 표시에서 반올림하도록 설명합니다. 통계검정은 기존 규칙대로 소수점 4자리를 유지합니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type ">개념</span></header><div class="slide-body lesson-content"><h2>KPI 계산 규칙</h2><div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">지표</th><th scope="col">계산</th><th scope="col">표시</th></tr></thead><tbody><tr><td>고객 수</td><td>정제·필터 후 행 수 N</td><td>N명</td></tr><tr><td>이탈 비율</td><td>churn=1인 수 / N × 100</td><td>소수점 1자리, 분자·분모</td></tr><tr><td>평균 청구 금액</td><td>청구 금액 합계 / N</td><td>소수점 1자리, CU</td></tr></tbody></table></div><p class="lesson-callout">N=0이면 비율과 평균은 계산 불가입니다. 0%와 구분합니다.</p><p class="explanation">카드의 분모는 현재 정제·필터를 통과한 고객입니다. 특정 카드만 원자료를 사용하면 표와 차트의 수치가 어긋나므로 계산 입력을 통일합니다.</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>16 / 41</span></footer></section>
 <section class="slide  " data-title="대시보드의 화면 구성" data-notes="화면 설계 5분. 실제 코드 생성 전에 종이나 메모에 배치를 그리게 합니다. 장식보다 질문과 근거의 위치가 명확한지 봅니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type ">개념</span></header><div class="slide-body lesson-content"><h2>대시보드의 화면 구성</h2><pre class="code"><code>질문과 자료 설명
 현재 데이터 이름 · 분석 조건 · 선택 고객 수
 
@@ -31,31 +36,46 @@
 금액 히스토그램             유지·이탈 금액 상자그림
 가입기간 구간별 고객 수·이탈 수·이탈 비율
 확인 사실 · 추가 가설 · 다음 확인
-원자료와 제외 내역</code></pre><p class="lead">상단에서 조건을 확인하고 아래에서 근거를 읽습니다.</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>14 / 33</span></footer></section>
-<section class="slide  " data-title="히스토그램으로 읽는 분포" data-notes="학생 앱에서 구간 폭을 바꿔 시연합니다. 날짜가 없는 히스토그램을 시간 추세처럼 읽지 않도록 확인합니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type ">개념</span></header><div class="slide-body lesson-content"><h2>히스토그램으로 읽는 분포</h2><div class="grid-2"><article class="card"><h3>확인할 내용</h3><p>청구 금액이 어느 구간에 모이는가?<br>분포의 폭과 치우침은 어떠한가?</p></article><article class="card"><h3>화면 표시</h3><p>가로축: 청구 금액 CU<br>세로축: 고객 수<br>구간 폭을 명시</p></article></div><p class="lesson-callout">구간 폭이 바뀌면 모양도 달라집니다. 원하는 결론에 맞춰 고르지 않습니다.</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>15 / 33</span></footer></section>
-<section class="slide  " data-title="상자그림으로 비교하는 집단" data-notes="수염 기준은 사용 도구 설정을 확인해야 합니다. 중앙값과 평균을 구분하고 표본 수가 다른 집단을 비교할 때 주의를 기울이게 합니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type ">개념</span></header><div class="slide-body lesson-content"><h2>상자그림으로 비교하는 집단</h2><div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">표현</th><th scope="col">읽는 내용</th></tr></thead><tbody><tr><td>상자</td><td>1사분위수부터 3사분위수까지의 범위</td></tr><tr><td>가운데 선</td><td>중앙값</td></tr><tr><td>수염·별도 점</td><td>설정에 따른 범위와 관측값</td></tr><tr><td>집단별 n</td><td>유지·이탈 고객 수</td></tr></tbody></table></div><p class="lesson-callout">별도 점으로 표시된 값이 곧 오류라는 뜻은 아닙니다.</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>16 / 33</span></footer></section>
-<section class="slide  " data-title="가입기간 구간의 경계" data-notes="경계값 11·12·23·24를 직접 넣어 보게 합니다. 실수 가입기간은 정제 단계에서 오류로 처리한다는 정책과 연결합니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type ">개념</span></header><div class="slide-body lesson-content"><h2>가입기간 구간의 경계</h2><div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">구간</th><th scope="col">포함하는 가입기간</th><th scope="col">구간 비율의 분모</th></tr></thead><tbody><tr><td>0–11개월</td><td>0 이상 12 미만</td><td>그 구간의 고객 수</td></tr><tr><td>12–23개월</td><td>12 이상 24 미만</td><td>그 구간의 고객 수</td></tr><tr><td>24개월 이상</td><td>24 이상</td><td>그 구간의 고객 수</td></tr></tbody></table></div><p class="lesson-callout">12개월과 24개월이 두 구간에 동시에 들어가지 않게 합니다.</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>17 / 33</span></footer></section>
+원자료와 제외 내역</code></pre><p class="lead">상단에서 조건을 확인하고 아래에서 근거를 읽습니다.</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>17 / 41</span></footer></section>
+<section class="slide  " data-title="앱의 파일과 코드 읽기" data-notes="참고 앱을 무조건 외우기보다 함수에 넣는 자료와 반환값을 확인합니다. 수정할 기능과 관련된 부분부터 AI에 질문합니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type ">개념</span></header><div class="slide-body lesson-content"><h2>앱의 파일과 코드 읽기</h2><div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">파일</th><th scope="col">찾아볼 코드</th><th scope="col">확인할 내용</th></tr></thead><tbody><tr><td>app.py</td><td>st.selectbox, st.metric, st.plotly_chart</td><td>자료 선택·지표·차트 화면</td></tr><tr><td>analysis_core.py</td><td>validate, subset, summary, bands</td><td>정제·필터·계산 순서</td></tr><tr><td>analysis_core.py</td><td>compare_means, category_test</td><td>검정의 집단·방식·예외</td></tr><tr><td>data 폴더</td><td>동일한 두 CSV</td><td>원자료와 계산값 대조</td></tr></tbody></table></div><p class="lesson-callout">화면을 그리는 코드와 계산 코드를 구분하면 오류 원인을 찾기 쉽습니다.</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>18 / 41</span></footer></section>
+<section class="slide  " data-title="데이터 읽기와 지표 계산 코드" data-notes="analysis_core.py 함수의 역할을 실제 파일에서 찾아봅니다. 원자료를 덮어쓰지 않으면 정제 오류를 추적하기 쉽습니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type ">코드 읽기</span></header><div class="slide-body lesson-content"><h2>데이터 읽기와 지표 계산 코드</h2><pre class="code"><code>from pathlib import Path
+import pandas as pd
+raw = pd.read_csv(Path(__file__).parent / &#39;data&#39; / &#39;sample_churn.csv&#39;)
+clean, quality, errors = validate(raw)
+selected = subset(clean, low=0, high=11)
+result = summary(selected)</code></pre><p class="lesson-callout">원자료, 정제 자료, 필터 결과를 다른 이름으로 구분합니다.</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>19 / 41</span></footer></section>
+<section class="slide  " data-title="히스토그램으로 읽는 분포" data-notes="학생 앱에서 구간 폭을 바꿔 시연합니다. 날짜가 없는 히스토그램을 시간 추세처럼 읽지 않도록 확인합니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type ">개념</span></header><div class="slide-body lesson-content"><h2>히스토그램으로 읽는 분포</h2><div class="grid-2"><article class="card"><h3>확인할 내용</h3><p>청구 금액이 어느 구간에 모이는가?<br>분포의 폭과 치우침은 어떠한가?</p></article><article class="card"><h3>화면 표시</h3><p>가로축: 청구 금액 CU<br>세로축: 고객 수<br>구간 폭을 명시</p></article></div><p class="lesson-callout">구간 폭이 바뀌면 모양도 달라집니다. 원하는 결론에 맞춰 고르지 않습니다.</p><p class="explanation">막대의 높이는 해당 금액 구간의 고객 수입니다. 봉우리가 높다고 이탈 비율이 높다는 뜻은 아니며 이탈 여부는 집단 비교로 별도 확인합니다.</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>20 / 41</span></footer></section>
+<section class="slide  " data-title="상자그림으로 비교하는 집단" data-notes="수염 기준은 사용 도구 설정을 확인해야 합니다. 중앙값과 평균을 구분하고 표본 수가 다른 집단을 비교할 때 주의를 기울이게 합니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type ">개념</span></header><div class="slide-body lesson-content"><h2>상자그림으로 비교하는 집단</h2><div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">표현</th><th scope="col">읽는 내용</th></tr></thead><tbody><tr><td>상자</td><td>1사분위수부터 3사분위수까지의 범위</td></tr><tr><td>가운데 선</td><td>중앙값</td></tr><tr><td>수염·별도 점</td><td>설정에 따른 범위와 관측값</td></tr><tr><td>집단별 n</td><td>유지·이탈 고객 수</td></tr></tbody></table></div><p class="lesson-callout">별도 점으로 표시된 값이 곧 오류라는 뜻은 아닙니다.</p><p class="explanation">두 집단의 중앙값·상자 폭·표본 수를 함께 봅니다. 표본 수가 적으면 분포의 모양이 불안정할 수 있으므로 한 장의 차트만으로 결론을 확정하지 않습니다.</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>21 / 41</span></footer></section>
+<section class="slide  " data-title="평균·중앙값·표준편차의 역할" data-notes="집단별 표와 상자그림이 서로 보완하는 이유를 설명합니다. 제공 앱의 groupby 요약표에서 count·mean·std를 확인합니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type ">개념</span></header><div class="slide-body lesson-content"><h2>평균·중앙값·표준편차의 역할</h2><div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">지표</th><th scope="col">읽는 내용</th><th scope="col">주의</th></tr></thead><tbody><tr><td>평균</td><td>전체 합계를 관측 수로 나눈 중심</td><td>큰 값의 영향을 받을 수 있음</td></tr><tr><td>중앙값</td><td>정렬했을 때 가운데 위치</td><td>평균과 차이가 나면 분포를 함께 확인</td></tr><tr><td>표준편차</td><td>평균 주변의 흩어짐</td><td>같은 단위로 비교, 표본 n도 표시</td></tr></tbody></table></div><p class="lesson-callout">평균 하나가 같아도 분포와 산포는 다를 수 있습니다.</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>22 / 41</span></footer></section>
+<section class="slide  " data-title="가입기간 구간의 경계" data-notes="경계값 11·12·23·24를 직접 넣어 보게 합니다. 실수 가입기간은 정제 단계에서 오류로 처리한다는 정책과 연결합니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type ">개념</span></header><div class="slide-body lesson-content"><h2>가입기간 구간의 경계</h2><div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">구간</th><th scope="col">포함하는 가입기간</th><th scope="col">구간 비율의 분모</th></tr></thead><tbody><tr><td>0–11개월</td><td>0 이상 12 미만</td><td>그 구간의 고객 수</td></tr><tr><td>12–23개월</td><td>12 이상 24 미만</td><td>그 구간의 고객 수</td></tr><tr><td>24개월 이상</td><td>24 이상</td><td>그 구간의 고객 수</td></tr></tbody></table></div><p class="lesson-callout">12개월과 24개월이 두 구간에 동시에 들어가지 않게 합니다.</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>23 / 41</span></footer></section>
 <section class="slide  " data-title="실습 2. KPI와 차트 제작" data-notes="실습 25분. 카드 완성 후 차트로 진행합니다. 표의 고객 수 합계와 카드가 같은지, 두 차트가 같은 자료를 사용했는지 학생이 확인합니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type practice">AI 실습</span></header><div class="slide-body lesson-content"><h2>실습 2. KPI와 차트 제작</h2><div class="prompt-head"><span>AI 요청문</span><button type="button" class="button copy-prompt">요청문 복사</button></div><pre class="code prompt-code"><code>정제된 같은 자료로 기능을 하나씩 추가해줘.
 1. 고객 수·이탈 비율·평균 금액 카드 3개를 만든다.
 2. 이탈 비율에는 분자·분모를, 금액에는 CU를 표시한다.
 3. Plotly 히스토그램과 유지·이탈 상자그림을 만든다.
 4. 집단별 n과 가입기간 구간별 고객 수·이탈 수·비율을 보여준다.
 5. 원자료와 점검 결과를 펼쳐 볼 수 있게 한다.
-6. 비율·금액은 소수점 1자리로 표시한다.</code></pre><span class="copy-status" aria-live="polite"></span></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>18 / 33</span></footer></section>
-<section class="slide  " data-title="필터가 바꾸는 분석 대상" data-notes="필터의 적용 순서를 설명합니다. 이탈 여부 필터를 넣으면 이탈 비율이 100%가 되는 혼동이 있어 오늘 필수 화면에서는 제공하지 않습니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type ">개념</span></header><div class="slide-body lesson-content"><h2>필터가 바꾸는 분석 대상</h2><ol class="exercise-steps"><li>원자료에서 오류·결측 처리 규칙을 적용합니다.</li><li>정제 자료에 가입기간 범위를 적용합니다.</li><li>선택한 같은 자료로 카드·차트·표를 계산합니다.</li><li>현재 조건과 대상 수를 설명에도 반영합니다.</li></ol><p class="lesson-callout">전체 수치를 별도로 보여주면 ‘전체 기준’이라고 표시합니다.</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>19 / 33</span></footer></section>
-<section class="slide  " data-title="가입기간 필터 체험" data-notes="시연 7분. 처음에는 전체 8명 37.5%를 보여줍니다. 0~11, 12~36, 6~10을 차례로 입력하고 학생이 예상값을 먼저 말하도록 합니다. 이 예제는 HTML 수업용이며 실제 Streamlit 앱과 구분합니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type ">직접 조작</span></header><div class="slide-body lesson-content"><h2>가입기간 필터 체험</h2><div class="demo" data-demo><div class="demo-filters"><label>가입기간 최솟값 <input data-min type="number" min="0" max="60" value="0"></label><label>최댓값 <input data-max type="number" min="0" max="60" value="60"></label><button type="button" class="button" data-reset>전체 조건</button></div><p class="demo-context" aria-live="polite"></p><div class="grid-3 demo-kpis"><div class="card"><span>분석 고객 수</span><strong data-n></strong></div><div class="card"><span>이탈 비율</span><strong data-rate></strong><small data-ratio></small></div><div class="card"><span>평균 월 청구 금액</span><strong data-mean></strong></div></div><div data-groups></div><p class="source">학습용 가상 자료 8행. 날짜가 없어 월별 이탈률은 계산하지 않습니다.</p></div></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>20 / 33</span></footer></section>
+6. 비율·금액은 소수점 1자리로 표시한다.</code></pre><span class="copy-status" aria-live="polite"></span></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>24 / 41</span></footer></section>
+<section class="slide  " data-title="필터가 바꾸는 분석 대상" data-notes="필터의 적용 순서를 설명합니다. 이탈 여부 필터를 넣으면 이탈 비율이 100%가 되는 혼동이 있어 오늘 필수 화면에서는 제공하지 않습니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type ">개념</span></header><div class="slide-body lesson-content"><h2>필터가 바꾸는 분석 대상</h2><ol class="exercise-steps"><li>원자료에서 오류·결측 처리 규칙을 적용합니다.</li><li>정제 자료에 가입기간 범위를 적용합니다.</li><li>선택한 같은 자료로 카드·차트·표를 계산합니다.</li><li>현재 조건과 대상 수를 설명에도 반영합니다.</li></ol><p class="lesson-callout">전체 수치를 별도로 보여주면 ‘전체 기준’이라고 표시합니다.</p><p class="explanation">필터를 적용하면 화면이 답하는 질문도 ‘전체 고객’에서 ‘선택 기간 고객’으로 바뀝니다. 설명 문장까지 같은 조건을 사용해야 합니다.</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>25 / 41</span></footer></section>
+<section class="slide  " data-title="가입기간 필터 체험" data-notes="시연 7분. 처음에는 전체 8명 37.5%를 보여줍니다. 0~11, 12~36, 6~10을 차례로 입력하고 학생이 예상값을 먼저 말하도록 합니다. 이 예제는 HTML 수업용이며 실제 Streamlit 앱과 구분합니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type ">직접 조작</span></header><div class="slide-body lesson-content"><h2>가입기간 필터 체험</h2><div class="demo" data-demo><div class="demo-filters"><label>가입기간 최솟값 <input data-min type="number" min="0" max="60" value="0"></label><label>최댓값 <input data-max type="number" min="0" max="60" value="60"></label><button type="button" class="button" data-reset>전체 조건</button></div><p class="demo-context" aria-live="polite"></p><div class="grid-3 demo-kpis"><div class="card"><span>분석 고객 수</span><strong data-n></strong></div><div class="card"><span>이탈 비율</span><strong data-rate></strong><small data-ratio></small></div><div class="card"><span>평균 월 청구 금액</span><strong data-mean></strong></div></div><div data-groups></div><p class="source">학습용 가상 자료 8행. 날짜가 없어 월별 이탈률은 계산하지 않습니다.</p></div></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>26 / 41</span></footer></section>
 <section class="slide  " data-title="실습 3. 필터 요청문" data-notes="실습 15분. 앞 슬라이드 예제와 자신들의 앱을 비교하게 합니다. 필터 초기화와 빈 결과를 반드시 실행해 봅니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type practice">AI 실습</span></header><div class="slide-body lesson-content"><h2>실습 3. 필터 요청문</h2><div class="prompt-head"><span>AI 요청문</span><button type="button" class="button copy-prompt">요청문 복사</button></div><pre class="code prompt-code"><code>가입기간의 최솟값·최댓값을 선택하는 필터를 추가해줘.
 1. 양 끝값을 포함하며 정제 이후 적용한다.
 2. 카드·차트·표·설명은 같은 필터 결과를 사용한다.
 3. 현재 범위, 선택 고객 수, 필터 전 전체 고객 수를 표시한다.
 4. 0건이면 비율·평균은 계산 불가로 표시한다.
 5. 한 집단만 남으면 두 집단 검정을 생략한다.
-6. 전체 복귀와 가입기간이 한 값뿐인 경우도 처리한다.</code></pre><span class="copy-status" aria-live="polite"></span></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>21 / 33</span></footer></section>
-<section class="slide  " data-title="빈 결과와 한 집단만 남은 결과" data-notes="학생이 두 경우의 차이를 설명하도록 합니다. 한 집단 내 표본 수가 너무 적거나 분산이 없는 경우의 검정 처리도 별도로 점검해야 합니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type ">개념</span></header><div class="slide-body lesson-content"><h2>빈 결과와 한 집단만 남은 결과</h2><div class="grid-2"><article class="card"><h3>가입기간 6–10개월</h3><p>8행 자료에는 해당 고객이 없습니다.<br>고객 수 0명, 비율·평균 계산 불가</p></article><article class="card"><h3>이탈 여부를 모두 0으로 변경</h3><p>유지 고객만 존재합니다.<br>이탈 비율 0%, 집단 비교 검정 생략</p></article></div><p class="lesson-callout">자료가 없는 경우와 실제 비율이 0%인 경우를 구분합니다.</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>22 / 33</span></footer></section>
-<section class="slide  " data-title="검증 자료 8행" data-notes="표의 T01~T08을 그대로 사용합니다. 총금액 420, 이탈 3명이라는 기준을 다음 계산 문제에 사용합니다. 원자료를 바꾸지 않았는지 확인합니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type ">검증 자료</span></header><div class="slide-body lesson-content"><h2>검증 자료 8행</h2><div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">ID</th><th scope="col">연령</th><th scope="col">가입기간</th><th scope="col">금액 CU</th><th scope="col">이탈</th></tr></thead><tbody><tr><td>T01</td><td>25</td><td>1</td><td>80</td><td>1</td></tr><tr><td>T02</td><td>30</td><td>3</td><td>60</td><td>1</td></tr><tr><td>T03</td><td>35</td><td>5</td><td>40</td><td>0</td></tr><tr><td>T04</td><td>40</td><td>11</td><td>20</td><td>0</td></tr><tr><td>T05</td><td>45</td><td>12</td><td>100</td><td>1</td></tr><tr><td>T06</td><td>50</td><td>18</td><td>60</td><td>0</td></tr><tr><td>T07</td><td>55</td><td>24</td><td>40</td><td>0</td></tr><tr><td>T08</td><td>60</td><td>36</td><td>20</td><td>0</td></tr></tbody></table></div><p class="source">학습용 가상 자료. 본 실습 100행과 별도입니다.</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>23 / 33</span></footer></section>
-<section class="slide blue " data-title="실습 4. 먼저 계산하기" data-notes="계산 5분. 전체 합 420, 0~11 합 200, 12~36 합 220입니다. 먼저 학생이 직접 합산하게 하고 정답은 다음 페이지에서 공개합니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type practice">개별 계산</span></header><div class="slide-body lesson-content"><h2>실습 4. 먼저 계산하기</h2><ul class="checklist"><li>전체 고객 수·이탈 수·이탈 비율·평균을 계산합니다.</li><li>0–11개월과 12–36개월을 각각 계산합니다.</li><li>이탈 집단과 유지 집단의 평균 금액을 비교합니다.</li><li>현재 조건과 계산식, 예상값을 먼저 기록합니다.</li></ul><p class="lesson-callout">손으로 구한 예상값을 앱의 실제 결과와 대조합니다.</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>24 / 33</span></footer></section>
-<section class="slide  " data-title="계산 후 정답 대조" data-notes="정답 확인 5분. 값이 다른 학생에게 자료·필터·제외 조건·계산식을 순서대로 확인하게 합니다. 작은 가상 자료의 차이를 실제 효과나 통계적 유의성으로 해석하지 않습니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type ">정답 확인</span></header><div class="slide-body lesson-content"><h2>계산 후 정답 대조</h2><details class="answer"><summary>계산 후 정답 확인</summary><div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">조건</th><th scope="col">고객 수</th><th scope="col">이탈 수</th><th scope="col">비율</th><th scope="col">평균 CU</th></tr></thead><tbody><tr><td>전체</td><td>8</td><td>3</td><td>37.5%</td><td>52.5</td></tr><tr><td>0–11개월</td><td>4</td><td>2</td><td>50.0%</td><td>50</td></tr><tr><td>12–23개월</td><td>2</td><td>1</td><td>50.0%</td><td>80</td></tr><tr><td>24개월 이상</td><td>2</td><td>0</td><td>0.0%</td><td>30</td></tr><tr><td>12–36개월</td><td>4</td><td>1</td><td>25.0%</td><td>55</td></tr></tbody></table></div></details><p class="lesson-callout">이탈 집단 평균 80.0 CU, 유지 집단 평균 36.0 CU</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>25 / 33</span></footer></section>
-<section class="slide  " data-title="일부러 오류를 넣는 검증" data-notes="실습 10분. 오류 조건을 겹쳐 놓으면 원인 추적이 어려우므로 한 가지씩 조작합니다. 제외 1명 후 총금액은 400입니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type ">개념</span></header><div class="slide-body lesson-content"><h2>일부러 오류를 넣는 검증</h2><div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">변경</th><th scope="col">예상 동작</th></tr></thead><tbody><tr><td>T08 금액을 공란으로</td><td>7명, 3/7 ≈ 42.9%, 평균 ≈ 57.1 CU</td></tr><tr><td>T08 ID를 T01로</td><td>중복 안내 후 분석 중단</td></tr><tr><td>churn 열 이름 변경</td><td>필수 열 누락 안내</td></tr><tr><td>필수 분석값 전부 결측</td><td>분석 가능한 고객 없음</td></tr><tr><td>같은 자료로 새로고침</td><td>같은 조건에서 같은 값</td></tr></tbody></table></div><p class="lesson-callout">매 실험 전에 원래 8행 자료로 되돌립니다.</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>26 / 33</span></footer></section>
+6. 전체 복귀와 가입기간이 한 값뿐인 경우도 처리한다.</code></pre><span class="copy-status" aria-live="polite"></span></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>27 / 41</span></footer></section>
+<section class="slide  " data-title="필터 적용 후 계산 순서" data-notes="범위 양끝을 포함합니다. 같은 selected를 차트·표·해석에도 전달해야 일관성을 지킬 수 있습니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type ">코드 읽기</span></header><div class="slide-body lesson-content"><h2>필터 적용 후 계산 순서</h2><pre class="code"><code>clean = validate(raw)[0]
+selected = clean.loc[clean[&#39;tenure_months&#39;].between(0, 11)]
+n = len(selected)
+k = int(selected[&#39;churn&#39;].sum())
+rate = 100 * k / n if n else None
+mean = selected[&#39;monthly_charges&#39;].mean() if n else None</code></pre><p class="lesson-callout">n=0일 때 None을 계산 불가로 표시하고 0%로 바꾸지 않습니다.</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>28 / 41</span></footer></section>
+<section class="slide  " data-title="빈 결과와 한 집단만 남은 결과" data-notes="학생이 두 경우의 차이를 설명하도록 합니다. 한 집단 내 표본 수가 너무 적거나 분산이 없는 경우의 검정 처리도 별도로 점검해야 합니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type ">개념</span></header><div class="slide-body lesson-content"><h2>빈 결과와 한 집단만 남은 결과</h2><div class="grid-2"><article class="card"><h3>가입기간 6–10개월</h3><p>8행 자료에는 해당 고객이 없습니다.<br>고객 수 0명, 비율·평균 계산 불가</p></article><article class="card"><h3>이탈 여부를 모두 0으로 변경</h3><p>유지 고객만 존재합니다.<br>이탈 비율 0%, 집단 비교 검정 생략</p></article></div><p class="lesson-callout">자료가 없는 경우와 실제 비율이 0%인 경우를 구분합니다.</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>29 / 41</span></footer></section>
+<section class="slide  " data-title="검증 자료 8행" data-notes="표의 T01~T08을 그대로 사용합니다. 총금액 420, 이탈 3명이라는 기준을 다음 계산 문제에 사용합니다. 원자료를 바꾸지 않았는지 확인합니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type ">검증 자료</span></header><div class="slide-body lesson-content"><h2>검증 자료 8행</h2><div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">ID</th><th scope="col">연령</th><th scope="col">가입기간</th><th scope="col">금액 CU</th><th scope="col">이탈</th></tr></thead><tbody><tr><td>T01</td><td>25</td><td>1</td><td>80</td><td>1</td></tr><tr><td>T02</td><td>30</td><td>3</td><td>60</td><td>1</td></tr><tr><td>T03</td><td>35</td><td>5</td><td>40</td><td>0</td></tr><tr><td>T04</td><td>40</td><td>11</td><td>20</td><td>0</td></tr><tr><td>T05</td><td>45</td><td>12</td><td>100</td><td>1</td></tr><tr><td>T06</td><td>50</td><td>18</td><td>60</td><td>0</td></tr><tr><td>T07</td><td>55</td><td>24</td><td>40</td><td>0</td></tr><tr><td>T08</td><td>60</td><td>36</td><td>20</td><td>0</td></tr></tbody></table></div><p class="source">학습용 가상 자료. 본 실습 100행과 별도입니다.</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>30 / 41</span></footer></section>
+<section class="slide blue " data-title="실습 4. 먼저 계산하기" data-notes="계산 5분. 전체 합 420, 0~11 합 200, 12~36 합 220입니다. 먼저 학생이 직접 합산하게 하고 정답은 다음 페이지에서 공개합니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type practice">개별 계산</span></header><div class="slide-body lesson-content"><h2>실습 4. 먼저 계산하기</h2><ul class="checklist"><li>전체 고객 수·이탈 수·이탈 비율·평균을 계산합니다.</li><li>0–11개월과 12–36개월을 각각 계산합니다.</li><li>이탈 집단과 유지 집단의 평균 금액을 비교합니다.</li><li>현재 조건과 계산식, 예상값을 먼저 기록합니다.</li></ul><p class="lesson-callout">손으로 구한 예상값을 앱의 실제 결과와 대조합니다.</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>31 / 41</span></footer></section>
+<section class="slide  " data-title="계산 후 정답 대조" data-notes="정답 확인 5분. 값이 다른 학생에게 자료·필터·제외 조건·계산식을 순서대로 확인하게 합니다. 작은 가상 자료의 차이를 실제 효과나 통계적 유의성으로 해석하지 않습니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type ">정답 확인</span></header><div class="slide-body lesson-content"><h2>계산 후 정답 대조</h2><details class="answer"><summary>계산 후 정답 확인</summary><div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">조건</th><th scope="col">고객 수</th><th scope="col">이탈 수</th><th scope="col">비율</th><th scope="col">평균 CU</th></tr></thead><tbody><tr><td>전체</td><td>8</td><td>3</td><td>37.5%</td><td>52.5</td></tr><tr><td>0–11개월</td><td>4</td><td>2</td><td>50.0%</td><td>50</td></tr><tr><td>12–23개월</td><td>2</td><td>1</td><td>50.0%</td><td>80</td></tr><tr><td>24개월 이상</td><td>2</td><td>0</td><td>0.0%</td><td>30</td></tr><tr><td>12–36개월</td><td>4</td><td>1</td><td>25.0%</td><td>55</td></tr></tbody></table></div></details><p class="lesson-callout">이탈 집단 평균 80.0 CU, 유지 집단 평균 36.0 CU</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>32 / 41</span></footer></section>
+<section class="slide  " data-title="일부러 오류를 넣는 검증" data-notes="실습 10분. 오류 조건을 겹쳐 놓으면 원인 추적이 어려우므로 한 가지씩 조작합니다. 제외 1명 후 총금액은 400입니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type ">개념</span></header><div class="slide-body lesson-content"><h2>일부러 오류를 넣는 검증</h2><div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">변경</th><th scope="col">예상 동작</th></tr></thead><tbody><tr><td>T08 금액을 공란으로</td><td>7명, 3/7 ≈ 42.9%, 평균 ≈ 57.1 CU</td></tr><tr><td>T08 ID를 T01로</td><td>중복 안내 후 분석 중단</td></tr><tr><td>churn 열 이름 변경</td><td>필수 열 누락 안내</td></tr><tr><td>필수 분석값 전부 결측</td><td>분석 가능한 고객 없음</td></tr><tr><td>같은 자료로 새로고침</td><td>같은 조건에서 같은 값</td></tr></tbody></table></div><p class="lesson-callout">매 실험 전에 원래 8행 자료로 되돌립니다.</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>33 / 41</span></footer></section>
+<section class="slide  " data-title="검증 기록 작성 예" data-notes="오류가 없었더라도 무엇을 검증했는지 기록합니다. 성공한 화면 캡처만으로 검증 절차를 설명하지 않습니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type practice">기록 활동</span></header><div class="slide-body lesson-content"><h2>검증 기록 작성 예</h2><div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">확인</th><th scope="col">예상</th><th scope="col">실제</th><th scope="col">조치</th></tr></thead><tbody><tr><td>전체</td><td>37.5%·52.5 CU</td><td>직접 기록</td><td>자료·제외 규칙 대조</td></tr><tr><td>0–11개월</td><td>4명·50.0%</td><td>직접 기록</td><td>분모 확인</td></tr><tr><td>6–10개월</td><td>계산 불가</td><td>직접 기록</td><td>빈 결과 처리</td></tr></tbody></table></div><p class="lesson-callout">불일치를 수정한 뒤 전체 조건과 필터 조건을 모두 다시 확인합니다.</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>34 / 41</span></footer></section>
 <section class="slide  " data-title="수치가 다를 때의 수정 요청" data-notes="AI가 전체 앱을 새로 쓰게 하기보다 재현 가능한 최소 자료를 제공합니다. 수정 후 검증 기록에 예상값과 실제값을 남깁니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type practice">AI 실습</span></header><div class="slide-body lesson-content"><h2>수치가 다를 때의 수정 요청</h2><div class="prompt-head"><span>AI 요청문</span><button type="button" class="button copy-prompt">요청문 복사</button></div><pre class="code prompt-code"><code>아래 조건에서 예상값과 앱 결과가 다르다.
 [현재 코드·자료·필터 조건·예상값·실제값 또는 오류 메시지]
 
@@ -63,14 +83,673 @@
 2. 제외 기준, 분모, 필터 적용 순서와 반올림을 점검한다.
 3. 원인을 설명하고 최소한으로 수정한다.
 4. 기존 정상 기능을 보존한다.
-5. 전체·필터·빈 결과의 재확인 방법을 제시한다.</code></pre><span class="copy-status" aria-live="polite"></span></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>27 / 33</span></footer></section>
-<section class="slide  " data-title="사실과 가설의 구분" data-notes="해석 5분. 생성 자료에서는 원인 가설도 실제 증거가 아니라 조사 질문입니다. AI가 표에 없는 수치를 추가하지 않았는지 확인하게 합니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type ">개념</span></header><div class="slide-body lesson-content"><h2>사실과 가설의 구분</h2><div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">구분</th><th scope="col">작성 예</th></tr></thead><tbody><tr><td>사실</td><td>가상 자료의 0–11개월 고객 4명 중 2명 이탈, 50.0%</td></tr><tr><td>가설</td><td>초기 이용 경험과 관련될 가능성은 추가 검토 필요</td></tr><tr><td>다음 확인</td><td>상품·계약유형·사용 경험을 같은 기준으로 비교</td></tr></tbody></table></div><p class="lesson-callout">집단 차이를 곧바로 원인으로 단정하지 않습니다.</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>28 / 33</span></footer></section>
+5. 전체·필터·빈 결과의 재확인 방법을 제시한다.</code></pre><span class="copy-status" aria-live="polite"></span></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>35 / 41</span></footer></section>
+<section class="slide  " data-title="사실과 가설의 구분" data-notes="해석 5분. 생성 자료에서는 원인 가설도 실제 증거가 아니라 조사 질문입니다. AI가 표에 없는 수치를 추가하지 않았는지 확인하게 합니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type ">개념</span></header><div class="slide-body lesson-content"><h2>사실과 가설의 구분</h2><div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">구분</th><th scope="col">작성 예</th></tr></thead><tbody><tr><td>사실</td><td>가상 자료의 0–11개월 고객 4명 중 2명 이탈, 50.0%</td></tr><tr><td>가설</td><td>초기 이용 경험과 관련될 가능성은 추가 검토 필요</td></tr><tr><td>다음 확인</td><td>상품·계약유형·사용 경험을 같은 기준으로 비교</td></tr></tbody></table></div><p class="lesson-callout">집단 차이를 곧바로 원인으로 단정하지 않습니다.</p><p class="explanation">원자료에서 센 값이 사실이고 그 값을 설명하려는 가능성이 가설입니다. 검증하지 않은 원인 설명을 발견한 사실처럼 쓰지 않습니다.</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>36 / 41</span></footer></section>
 <section class="slide  " data-title="해석 3문장 작성" data-notes="작성 5분. 이탈 집단의 금액이 높다고 가격 인하를 바로 제안할 수 있는지 토의합니다. 상품구성·사용량 등 대안적 설명을 떠올리게 합니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type practice">작성 활동</span></header><div class="slide-body lesson-content"><h2>해석 3문장 작성</h2><pre class="code"><code>[사실] 학습용 가상 자료에서 ______집단은 ___명이고,
        이탈 고객은 ___명, 이탈 비율은 ___%이다.
 [가설] 이 차이는 ______와 관련될 가능성이 있지만,
        이 자료만으로 원인을 확정할 수 없다.
-[다음 확인] ______자료를 확보하고 ______기준으로 비교하겠다.</code></pre><p class="lead">문장의 모든 숫자를 표와 원자료에서 찾을 수 있어야 합니다.</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>29 / 33</span></footer></section>
-<section class="slide  " data-title="선택 심화. AI 역할별 검토" data-notes="빠른 조만 수행합니다. 실제 다중 에이전트 설치 없이 하나의 대화에서도 순차 역할을 적용할 수 있습니다. 사람이 최종 문장을 선택합니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type practice">선택 활동</span></header><div class="slide-body lesson-content"><h2>선택 심화. AI 역할별 검토</h2><div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">역할</th><th scope="col">입력</th><th scope="col">결과</th></tr></thead><tbody><tr><td>분석</td><td>검증된 요약표·분모</td><td>근거 있는 발견 3개</td></tr><tr><td>검토</td><td>발견과 원래 표</td><td>수치 오류·과도한 해석</td></tr><tr><td>설명</td><td>검토한 사실</td><td>운영 담당자용 5문장</td></tr></tbody></table></div><p class="lesson-callout">여러 AI가 동의해도 원자료 검증을 대신하지 않습니다.</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>30 / 33</span></footer></section>
-<section class="slide  " data-title="조별 2분 설명과 피드백" data-notes="교차 설명 10분. 조가 많으면 두 조끼리 동시에 진행합니다. 설명자가 어떤 자료와 조건인지 밝히는지 확인합니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type ">공유</span></header><div class="slide-body lesson-content"><h2>조별 2분 설명과 피드백</h2><ol class="exercise-steps"><li>의뢰 질문과 그 질문에 답하는 화면을 소개합니다.</li><li>가입기간 필터를 바꾸고 분모·값의 변화를 설명합니다.</li><li>확인한 사실 하나와 아직 모르는 점 하나를 말합니다.</li><li>다른 조는 수정 가능한 피드백 한 가지를 남깁니다.</li></ol><p class="lesson-callout">예: “비율 카드에 2/4도 표시하면 분모를 이해하기 쉽겠습니다.”</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>31 / 33</span></footer></section>
-<section class="slide  " data-title="오늘의 제출 확인" data-notes="강의노트의 제출 체크리스트를 열게 합니다. 수업용 기본 과제이며 중간고사 과제 제출 일시를 이 페이지에서 새로 정하지 않습니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type ">제출 안내</span></header><div class="slide-body lesson-content"><h2>오늘의 제출 확인</h2><ul class="checklist"><li>실행 가능한 앱과 수정 PRD·데이터 사전</li><li>가상 자료 또는 재생성 코드, 기본·필터 화면 각 1장</li><li>8행·예외 검증 기록과 해석 3문장</li><li>주요 AI 요청문 2개, 직접 수정한 부분과 조원 역할</li></ul><p class="lesson-callout">질문·분모·검증·해석을 본인의 말로 설명합니다.</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>32 / 33</span></footer></section>
-<section class="slide dark " data-title="4주차. 대시보드 개선과 웹 배포" data-notes="정리 5분. 오늘 수정한 계산 기준과 검증 자료를 다음 시간에도 유지합니다. 내용 근거는 Notion 3주차 강의노트입니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type ">다음 수업</span></header><div class="slide-body lesson-content"><div class="kicker">다음 수업</div><h2>다른 사람이 이해하고<br>사용하는 대시보드</h2><p class="lead">사용자 관찰을 반영해 화면을 개선하고<br>가상 자료로 동작하는 앱을 웹에 배포합니다.</p><div class="hero-actions"><a class="button coral" href="week-04.html">4주차 슬라이드</a><a class="button" href="../index.html?week=3">주차별 강의</a></div></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>33 / 33</span></footer></section></main><div class="progress" aria-hidden="true"></div><div class="slide-counter" aria-live="polite"></div><nav class="deck-controls" aria-label="슬라이드 조작"><a class="control home-control" href="../index.html?week=3" aria-label="메인페이지">⌂</a><button class="control" data-action="prev" aria-label="이전 슬라이드">←</button><button class="control" data-action="overview" aria-label="전체 슬라이드 목록" aria-expanded="false">☷</button><button class="control" data-action="notes" aria-label="강사 노트" aria-expanded="false">N</button><button class="control" data-action="fullscreen" aria-label="전체 화면">⛶</button><button class="control" data-action="next" aria-label="다음 슬라이드">→</button></nav><div class="overview" role="dialog" aria-modal="true" aria-label="슬라이드 목록" hidden></div><aside class="speaker-note" aria-live="polite"></aside><script src="../slides.js"></script><script src="../lessons-03-04.js"></script></body></html>
+[다음 확인] ______자료를 확보하고 ______기준으로 비교하겠다.</code></pre><p class="lead">문장의 모든 숫자를 표와 원자료에서 찾을 수 있어야 합니다.</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>37 / 41</span></footer></section>
+<section class="slide  " data-title="선택 심화. AI 역할별 검토" data-notes="빠른 조만 수행합니다. 실제 다중 에이전트 설치 없이 하나의 대화에서도 순차 역할을 적용할 수 있습니다. 사람이 최종 문장을 선택합니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type practice">선택 활동</span></header><div class="slide-body lesson-content"><h2>선택 심화. AI 역할별 검토</h2><div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">역할</th><th scope="col">입력</th><th scope="col">결과</th></tr></thead><tbody><tr><td>분석</td><td>검증된 요약표·분모</td><td>근거 있는 발견 3개</td></tr><tr><td>검토</td><td>발견과 원래 표</td><td>수치 오류·과도한 해석</td></tr><tr><td>설명</td><td>검토한 사실</td><td>운영 담당자용 5문장</td></tr></tbody></table></div><p class="lesson-callout">여러 AI가 동의해도 원자료 검증을 대신하지 않습니다.</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>38 / 41</span></footer></section>
+<section class="slide  " data-title="조별 2분 설명과 피드백" data-notes="교차 설명 10분. 조가 많으면 두 조끼리 동시에 진행합니다. 설명자가 어떤 자료와 조건인지 밝히는지 확인합니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type ">공유</span></header><div class="slide-body lesson-content"><h2>조별 2분 설명과 피드백</h2><ol class="exercise-steps"><li>의뢰 질문과 그 질문에 답하는 화면을 소개합니다.</li><li>가입기간 필터를 바꾸고 분모·값의 변화를 설명합니다.</li><li>확인한 사실 하나와 아직 모르는 점 하나를 말합니다.</li><li>다른 조는 수정 가능한 피드백 한 가지를 남깁니다.</li></ol><p class="lesson-callout">예: “비율 카드에 2/4도 표시하면 분모를 이해하기 쉽겠습니다.”</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>39 / 41</span></footer></section>
+<section class="slide  " data-title="오늘의 제출 확인" data-notes="강의노트의 제출 체크리스트를 열게 합니다. 수업용 기본 과제이며 중간고사 과제 제출 일시를 이 페이지에서 새로 정하지 않습니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type ">제출 안내</span></header><div class="slide-body lesson-content"><h2>오늘의 제출 확인</h2><ul class="checklist"><li>실행 가능한 앱과 수정 PRD·데이터 사전</li><li>가상 자료 또는 재생성 코드, 기본·필터 화면 각 1장</li><li>8행·예외 검증 기록과 해석 3문장</li><li>주요 AI 요청문 2개, 직접 수정한 부분과 조원 역할</li></ul><p class="lesson-callout">질문·분모·검증·해석을 본인의 말로 설명합니다.</p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>40 / 41</span></footer></section>
+<section class="slide dark " data-title="4주차. 대시보드 개선과 웹 배포" data-notes="정리 5분. 오늘 수정한 계산 기준과 검증 자료를 다음 시간에도 유지합니다. 내용 근거는 Notion 3주차 강의노트입니다."><header class="slide-header"><span>통계컨설팅의 이해 · WEEK 03</span><span class="type ">다음 수업</span></header><div class="slide-body lesson-content"><div class="kicker">다음 수업</div><h2>다른 사람이 이해하고<br>사용하는 대시보드</h2><p class="lead">사용자 관찰을 반영해 화면을 개선하고<br>가상 자료로 동작하는 앱을 웹에 배포합니다.</p><div class="hero-actions"><a class="button coral" href="week-04.html">4주차 슬라이드</a><a class="button" href="../index.html?week=3">주차별 강의</a></div></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76815d83bafa2743148122" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>41 / 41</span></footer></section></main><section class="handout" aria-label="3주차 상세 강의노트" hidden><header><p class="kicker">3주차 상세 강의노트</p><h1>바이브코딩 기반 간단한 대시보드 제작</h1><p>개념 설명과 실습 순서를 이어서 읽고 따라 할 수 있습니다. 슬라이드 모드와 같은 데이터·참고 앱을 사용합니다.</p></header><section id="practice-downloads"><h2>실습 자료와 시작 방법</h2><div class="download-links"><a class="button" href="../downloads/sample_churn.csv" download>100행 고객 데이터 CSV</a><a class="button" href="../downloads/validation_8rows.csv" download>8행 검증 데이터 CSV</a><a class="button" href="../downloads/week-03-practice.zip" download>3주차 시작 파일 ZIP</a></div><p>100행 자료는 전체 고객 100명, 이탈 21명, 비율 21.0%, 평균 월 청구 금액 71.6 CU입니다. 8행 자료는 8명, 이탈 3명, 37.5%, 평균 52.5 CU입니다.</p><pre class="code"><code>python -m venv .venv
+.venv\Scripts\python.exe -m pip install -r requirements.txt
+.venv\Scripts\python.exe -m streamlit run app.py</code></pre><p class="lesson-callout">Windows에서는 3주차 ZIP을 모두 푼 폴더에서 터미널을 엽니다.</p><p>macOS/Linux는 실행 경로를 <code>.venv/bin/python</code>으로 바꿉니다. 종료는 터미널에서 Ctrl+C입니다.</p><h2>파일별 역할</h2><div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">파일</th><th scope="col">찾아볼 코드</th><th scope="col">확인할 내용</th></tr></thead><tbody><tr><td>app.py</td><td>st.selectbox, st.metric, st.plotly_chart</td><td>자료 선택·지표·차트 화면</td></tr><tr><td>analysis_core.py</td><td>validate, subset, summary, bands</td><td>정제·필터·계산 순서</td></tr><tr><td>analysis_core.py</td><td>compare_means, category_test</td><td>검정의 집단·방식·예외</td></tr><tr><td>data 폴더</td><td>동일한 두 CSV</td><td>원자료와 계산값 대조</td></tr></tbody></table></div><p class="lesson-callout">화면을 그리는 코드와 계산 코드를 구분하면 오류 원인을 찾기 쉽습니다.</p><p>실습 ZIP에는 README, PRD, 데이터 사전, 실제 실행 가능한 참고 앱과 두 CSV가 들어 있습니다. 참고 앱을 먼저 실행한 뒤 자신의 요청문으로 기능을 추가·수정하고 검증 기록을 남깁니다.</p></section><article><h1>3주차 | 바이브코딩 기반 간단한 대시보드 제작</h1>
+<blockquote>
+<p><strong>오늘의 질문:</strong> 고객 데이터를 어떤 지표와 차트로 정리해야 의사결정에 필요한 질문에 답할 수 있을까요?</p>
+</blockquote>
+<p>2주차에 작성한 고객 이탈 분석 앱을 발전시켜 <strong>질문 → 지표 → 차트 → 해석</strong>이 연결되는 대시보드를 만듭니다. AI에 기능을 요청하고, 생성된 결과를 실행하고, 작은 자료로 수치를 검증하는 과정을 반복합니다.</p>
+<h2>1. 오늘의 목표와 완성할 결과물</h2>
+<p>수업을 마치면 다음을 할 수 있습니다.</p>
+<ol>
+<li>분석 대상과 분모를 정하고 고객 수·이탈 비율·평균 청구 금액을 계산합니다.</li>
+<li>분포와 집단 비교에 맞는 차트를 선택합니다.</li>
+<li>가입기간 필터가 카드·차트·표에 함께 적용되는지 확인합니다.</li>
+<li>AI가 만든 수치를 직접 계산한 값과 대조합니다.</li>
+<li>확인된 사실과 추가로 검토할 가설을 구분해 설명합니다.</li>
+</ol>
+<p><strong>오늘 완성할 화면</strong></p>
+<pre><code class="language-text">고객 이탈 현황 탐색
+학습용 가상 자료 / 고객 1명당 1행 / 관찰기간 가정 / 금액 단위
+
+현재 조건: 전체 고객 또는 선택한 가입기간 범위
+[고객 수] [이탈 비율: 이탈 고객 수/전체 분석 대상 수] [평균 월 청구 금액]
+
+[청구 금액 히스토그램] [유지·이탈 집단별 청구 금액 상자그림]
+
+가입기간 구간별 고객 수·이탈 수·이탈 비율 표
+확인한 사실 / 추가 가설 / 다음 확인
+원자료 및 데이터 점검 결과
+</code></pre>
+<h3>준비물과 시작 방법</h3>
+<ul>
+<li>2주차의 app.py, PRD, 가상 고객 데이터 또는 데이터 생성 코드</li>
+<li>코드 편집기·AI 도구 또는 무료 웹 AI</li>
+<li>실습 가능한 컴퓨터와 조별 작업 기록</li>
+</ul>
+<p>코드 편집기나 CLI를 쓰는 경우 기존 앱과 PRD를 AI가 읽도록 지정합니다. 웹 AI를 쓰는 경우 <strong>현재 코드와 PRD를 함께 붙여 넣거나 파일로 제공합니다.</strong> 자료를 제공하지 않은 상태에서 AI가 기존 기능을 알고 있다고 가정하지 않습니다.</p>
+<p>2주차 앱이 아직 실행되지 않으면 조원과 공동 작업하거나 교수자가 제공하는 기본 앱으로 시작합니다. 기능 하나를 완성할 때마다 정상 작동본을 따로 저장합니다.</p>
+<h3>오늘 사용할 용어</h3>
+<table>
+<thead>
+<tr>
+<th>용어</th>
+<th>의미</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>대시보드</td>
+<td>질문에 필요한 지표와 차트를 한 화면에서 확인하는 도구</td>
+</tr>
+<tr>
+<td>KPI</td>
+<td>판단에 사용하는 핵심 지표. 오늘은 고객 수·이탈 비율·평균 청구 금액</td>
+</tr>
+<tr>
+<td>EDA</td>
+<td>데이터의 분포와 차이, 오류 등을 탐색하는 과정</td>
+</tr>
+<tr>
+<td>PRD</td>
+<td>누구를 위해 어떤 기능을 만들고 무엇을 완료 기준으로 삼을지 적은 문서</td>
+</tr>
+<tr>
+<td>필터</td>
+<td>조건에 맞는 관측값을 골라 분석 대상을 바꾸는 기능</td>
+</tr>
+<tr>
+<td>분모</td>
+<td>비율 계산의 기준이 되는 전체 대상 수</td>
+</tr>
+</tbody></table>
+<h2>2. 의뢰 상황과 데이터 이해하기</h2>
+<p>가상의 구독 서비스 운영자가 요청했습니다.</p>
+<blockquote>
+<p>“고객 이탈 현황을 한눈에 보고 싶습니다. 가입기간과 월 청구 금액에 따라 어떤 차이가 나타나는지 살펴보고, 추가로 확인할 질문을 정리해주세요.”</p>
+</blockquote>
+<p>오늘의 자료는 <strong>학습용 가상 데이터</strong>입니다. 화면과 설명에도 이를 표시합니다.</p>
+<h3>한 행은 고객 한 명</h3>
+<ul>
+<li>가입기간과 청구 금액은 공통 기준 시점의 값으로 가정합니다.</li>
+<li>churn은 그 이후 <strong>동일한 관찰기간</strong>에 고객이 이탈했는지 나타냅니다.</li>
+<li>기준 시점의 고객이므로 이후 이탈한 고객도 분모에 포함합니다.</li>
+<li>자료에 실제 관찰기간이 정의되어 있지 않으면 위 가정을 PRD에 적습니다.</li>
+<li>날짜 변수가 없으므로 월별 추세·전월 대비 증감은 계산하지 않습니다.</li>
+<li>청구 금액의 합계를 곧바로 회계상 매출로 해석하지 않습니다.</li>
+</ul>
+<h3>데이터 사전</h3>
+<table>
+<thead>
+<tr>
+<th>변수</th>
+<th>의미</th>
+<th>단위·허용값</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>customer_id</td>
+<td>고객 식별자</td>
+<td>중복 없는 문자열</td>
+</tr>
+<tr>
+<td>age</td>
+<td>연령</td>
+<td>세</td>
+</tr>
+<tr>
+<td>tenure_months</td>
+<td>가입기간</td>
+<td>0 이상 정수, 개월</td>
+</tr>
+<tr>
+<td>monthly_charges</td>
+<td>월 청구 금액</td>
+<td>0 이상 수치, 가상 통화단위 CU</td>
+</tr>
+<tr>
+<td>churn</td>
+<td>관찰기간 내 이탈 여부</td>
+<td>0=유지, 1=이탈</td>
+</tr>
+</tbody></table>
+<p>기존 자료에 통화단위가 정의되어 있다면 해당 단위를 사용합니다. 단위가 없는 금액에 임의로 ‘원’을 붙이지 않습니다. 계약유형 등 추가 열은 실제 자료에 있을 때만 사용합니다.</p>
+<h3>데이터가 없는 경우</h3>
+<p>다음 요청문으로 100행을 생성한 뒤, 생성 코드와 파일을 보관합니다.</p>
+<pre><code class="language-text">학습용 고객 데이터 100행을 생성하는 Python 코드를 작성해줘.
+
+1. numpy.random.seed(42)를 사용한다.
+2. customer_id는 C001~C100으로 중복 없이 생성한다.
+3. age는 20~69세 정수, tenure_months는 0~60개월 정수로 생성한다.
+4. monthly_charges는 20~120 CU의 균등분포에서 생성하고
+   소수점 한 자리로 저장한다.
+5. churn은 확률 0.25의 베르누이 분포에서
+   다른 변수와 독립적으로 생성한다.
+6. 생성한 데이터를 sample_churn.csv로 저장하고 생성 코드를 보존한다.
+7. 앱이 이 파일을 읽도록 하며, 필터를 바꿀 때 재생성하지 않는다.
+8. 화면에 &#39;학습용 가상 데이터&#39;와 생성 규칙을 표시한다.
+</code></pre>
+<p><strong>기억하기:</strong> 0.25는 생성 확률입니다. 생성된 100명의 이탈 비율이 반드시 25%인 것은 아닙니다. 같은 난수 시드라도 생성 코드가 다르면 자료가 달라질 수 있습니다. 코드와 파일을 함께 고정하세요.</p>
+<p>독립적으로 생성된 변수 사이에 표본상 차이가 보여도 실제 고객의 행동 관계를 발견했다고 해석하지 않습니다.</p>
+<h2>3. 분석 전에 질문과 지표 정하기</h2>
+<h3>지표의 정의</h3>
+<table>
+<thead>
+<tr>
+<th>질문</th>
+<th>계산·비교</th>
+<th>화면</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>현재 분석 대상은 몇 명인가?</td>
+<td>정제 후 필터 조건을 만족한 고객 수</td>
+<td>고객 수 카드</td>
+</tr>
+<tr>
+<td>이탈한 고객의 비중은?</td>
+<td>이탈 고객 수 ÷ 현재 분석 대상 고객 수 × 100</td>
+<td>비율 카드, 분자·분모 병기</td>
+</tr>
+<tr>
+<td>청구 수준은 어느 정도인가?</td>
+<td>현재 대상의 월 청구 금액 합계 ÷ 고객 수</td>
+<td>평균 카드와 분포</td>
+</tr>
+<tr>
+<td>유지·이탈 집단은 어떻게 다른가?</td>
+<td>집단별 청구 금액 분포</td>
+<td>상자그림과 집단별 고객 수</td>
+</tr>
+<tr>
+<td>가입기간 구간별 차이는?</td>
+<td>구간 내 이탈 고객 수 ÷ 해당 구간 고객 수</td>
+<td>구간별 표</td>
+</tr>
+</tbody></table>
+<h3>먼저 풀어보기: 분모가 바뀌면 답도 바뀝니다</h3>
+<p>전체 고객 100명 중 20명이 이탈했습니다. 가입기간 12개월 미만 고객은 40명이고, 그중 이탈 고객은 12명입니다.</p>
+<ol>
+<li>전체 이탈 비율은 얼마인가요?</li>
+<li>12개월 미만 집단 내부의 이탈 비율은 얼마인가요?</li>
+<li>전체 고객 중 ‘12개월 미만이면서 이탈’인 고객의 비중은 얼마인가요?</li>
+<li>2번과 3번을 같은 지표 이름으로 표시하면 어떤 오해가 생길까요?</li>
+</ol>
+<p>답: 1번 20%, 2번 30%, 3번 12%입니다. 2번의 분모는 40명, 3번의 분모는 100명입니다.</p>
+<p>이 수업의 ‘이탈 비율’은 주어진 자료와 관찰기간의 비율입니다. 기업이 사용하는 월별 이탈률과 같다고 가정하지 않습니다.</p>
+<h3>나의 질문–지표 설계표</h3>
+<table>
+<thead>
+<tr>
+<th>분석 질문</th>
+<th>사용할 변수</th>
+<th>지표와 분모</th>
+<th>적합한 차트</th>
+<th>알 수 없는 점</th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h2>4. 실습 1 — 데이터 점검과 PRD 보완</h2>
+<h3>4-1. 데이터 점검 순서</h3>
+<ol>
+<li>필수 열 다섯 개가 모두 있는지 확인합니다.</li>
+<li>고객 ID의 누락과 중복을 확인합니다.</li>
+<li>숫자여야 할 값에 문자·결측값이 있는지 확인합니다.</li>
+<li>churn이 0·1인지, 가입기간이 0 이상 정수인지 확인합니다.</li>
+<li>제외 기준을 적용한 뒤 원본 수·제외 수·최종 분석 수를 기록합니다.</li>
+</ol>
+<h3>이번 실습의 공통 처리 규칙</h3>
+<table>
+<thead>
+<tr>
+<th>문제</th>
+<th>처리</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>필수 열 누락</td>
+<td>누락 열 이름 안내, 분석 중단</td>
+</tr>
+<tr>
+<td>고객 ID 누락·중복</td>
+<td>문제 안내, 수정 후 다시 입력</td>
+</tr>
+<tr>
+<td>churn 결측 또는 0·1 외 값</td>
+<td>해당 행 제외</td>
+</tr>
+<tr>
+<td>가입기간 결측·음수·소수 또는 수치 변환 불가</td>
+<td>해당 행 제외</td>
+</tr>
+<tr>
+<td>청구 금액 결측·음수 또는 수치 변환 불가</td>
+<td>해당 행 제외</td>
+</tr>
+<tr>
+<td>age 결측</td>
+<td>누락 보고, 이번 필수 분석에서는 행 유지</td>
+</tr>
+<tr>
+<td>여러 제외 조건을 동시에 만족</td>
+<td>전체 제외 수에서 한 번만 계산</td>
+</tr>
+<tr>
+<td>유효 자료가 0행</td>
+<td>분석 가능한 고객이 없다는 안내</td>
+</tr>
+</tbody></table>
+<p>수치 변환 후 무한대 등 유효한 계산값이 아닌 값도 오류로 처리합니다. 실제 기업 자료의 처리 정책은 분석 목적에 따라 정해야 합니다. 오늘은 카드·차트·표가 같은 정제 자료를 사용하도록 합니다.</p>
+<h3>복사해서 쓰는 요청문 1</h3>
+<pre><code class="language-text">현재 app.py와 PRD를 참고해 데이터 점검 기능을 추가해줘.
+
+1. 필수 열은 customer_id, age, tenure_months,
+   monthly_charges, churn이다.
+2. 열 누락, 고객 ID의 누락·중복은 분석을 중단하고 안내한다.
+3. churn은 0 또는 1, 가입기간은 0 이상 정수,
+   청구 금액은 0 이상 유한한 수치여야 한다.
+   숫자로 변환할 수 없는 값과 결측값이 있는 해당 행은 제외한다.
+4. age의 결측은 보고만 하고 이번 분석에서 행을 제외하지 않는다.
+5. 원본 수, 오류 유형별 건수, 중복 없이 센 전체 제외 수,
+   최종 분석 대상 수를 표시한다.
+6. 빈 자료에는 안내를 제공하고 값을 임의로 채우지 않는다.
+7. 기존 기능을 보존하고 변경 내용과 확인 방법을 설명한다.
+</code></pre>
+<h3>PRD에 추가할 내용</h3>
+<pre><code class="language-text">사용자: 가상 구독 서비스의 운영 담당자
+목적: 이탈 현황과 가입기간·청구 금액의 차이 탐색
+분석 단위: 고객 한 명
+기간: 기준 시점의 특성과 이후 공통 관찰기간의 이탈 여부를 가정
+데이터: 기존 가상 자료 또는 공통 규칙으로 생성한 100행
+정제 정책: 본 강의노트의 공통 처리 규칙
+필수 기능: KPI 3개, 차트 2개, 가입기간 필터, 구간별 표, 원자료 확인
+해석: 사실·가설·다음 확인을 구분
+완료 기준: 8행 검증 자료와 수치 일치, 빈 결과 안내
+</code></pre>
+<p><strong>완료 확인</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> 원본 고객 수와 최종 분석 고객 수를 구분할 수 있습니다.</li>
+<li><input disabled="" type="checkbox"> 제외한 행의 이유를 설명할 수 있습니다.</li>
+<li><input disabled="" type="checkbox"> 카드·차트·표에 사용할 데이터가 같습니다.</li>
+</ul>
+<h2>5. 실습 2 — KPI와 차트 만들기</h2>
+<h3>5-1. 차트는 질문에 맞춰 선택합니다</h3>
+<table>
+<thead>
+<tr>
+<th>차트</th>
+<th>읽을 내용</th>
+<th>확인할 표시</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>히스토그램</td>
+<td>청구 금액이 어느 구간에 많이 모여 있는가?</td>
+<td>가로축 CU, 세로축 고객 수, 구간 폭</td>
+</tr>
+<tr>
+<td>상자그림</td>
+<td>유지·이탈 집단의 중앙값과 산포는 어떻게 다른가?</td>
+<td>유지·이탈 라벨, 집단별 고객 수</td>
+</tr>
+<tr>
+<td>비율 막대그래프</td>
+<td>가입기간 구간별 이탈 비율은 다른가?</td>
+<td>구간별 분모와 표본 수</td>
+</tr>
+<tr>
+<td>선그래프</td>
+<td>시간에 따른 변화</td>
+<td>날짜가 없는 이번 자료에서는 사용하지 않음</td>
+</tr>
+</tbody></table>
+<p>상자그림의 상자는 보통 1사분위수부터 3사분위수까지의 범위를, 가운데 선은 중앙값을 보여줍니다. 수염과 별도 점은 설정에 따른 범위와 관측값을 표시합니다. 점이 따로 보인다는 이유만으로 오류 자료라고 판단하지 않습니다.</p>
+<p>히스토그램의 모양은 구간 폭에 따라 달라질 수 있습니다. 같은 자료를 여러 설정으로 확인하되, 원하는 결론이 나오도록 설정을 고르지 않습니다.</p>
+<h3>복사해서 쓰는 요청문 2</h3>
+<pre><code class="language-text">검증을 통과한 동일한 데이터로 다음 기능을 단계별로 추가해줘.
+각 단계가 실행되는지 확인한 뒤 다음 단계로 진행하자.
+
+1. 고객 수, 이탈 비율, 평균 월 청구 금액 카드 3개를 만든다.
+2. 이탈 비율은 현재 분석 대상 중 churn=1인 고객 수를
+   현재 분석 대상 수로 나눈 값이다. 분자와 분모를 함께 표시한다.
+3. Plotly로 청구 금액 히스토그램과 churn별 상자그림을 만든다.
+   집단 이름은 유지·이탈로 표시하고 각 집단의 고객 수도 표시한다.
+4. 가입기간을 0~11개월, 12~23개월, 24개월 이상으로 나누어
+   구간별 고객 수·이탈 수·이탈 비율 표를 만든다.
+5. 원자료와 점검 결과를 펼쳐서 볼 수 있게 한다.
+6. 같은 파일·조건이면 새로고침해도 결과가 같아야 한다.
+7. 비율·금액은 소수점 1자리로 표시한다.
+   기존 통계검정 기능의 검정통계량과 p-value는 소수점 4자리로 표시한다.
+</code></pre>
+<p><strong>완료 확인</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> 고객 수 카드와 구간별 표의 고객 수 합계가 같습니다.</li>
+<li><input disabled="" type="checkbox"> 비율 카드에 분자와 분모가 함께 보입니다.</li>
+<li><input disabled="" type="checkbox"> 금액 단위 CU, 유지·이탈 라벨, 집단별 표본 수가 보입니다.</li>
+<li><input disabled="" type="checkbox"> 차트에서 확인한 내용을 원자료와 대조할 수 있습니다.</li>
+</ul>
+<h2>6. 실습 3 — 필터와 해석 연결하기</h2>
+<h3>필터의 원리</h3>
+<p><strong>원자료 → 데이터 점검·정제 → 가입기간 필터 → 카드·차트·표·설명</strong></p>
+<p>가입기간의 최솟값과 최댓값을 선택하고 양 끝값을 모두 포함합니다. 결과 화면에는 현재 조건을 표시합니다.</p>
+<p>예를 들어 0–11개월을 선택하면 카드와 차트의 분석 대상도 그 구간의 고객으로 바뀝니다. 전체 기준 수치를 별도로 보여준다면 ‘전체 기준’이라고 표시합니다.</p>
+<p>이번 필수 화면에는 이탈 여부 필터를 추가하지 않습니다. 이탈 고객만 남긴 결과의 100%를 전체 현황으로 오해할 수 있기 때문입니다.</p>
+<h3>복사해서 쓰는 요청문 3</h3>
+<pre><code class="language-text">가입기간 범위를 고르는 필터를 추가해줘.
+
+1. 최솟값·최댓값을 포함하며 정제 이후에 적용한다.
+2. 카드·차트·구간별 표·해석은 모두 같은 필터 결과를 사용한다.
+3. 현재 범위, 선택 고객 수, 필터 전 전체 고객 수를 표시한다.
+4. 결과가 0건이면 비율·평균은 &#39;계산 불가&#39;로 표시하고 안내한다.
+5. 유지·이탈 중 한 집단만 있으면 그 사실을 표시한다.
+   두 집단 검정은 생략한다. 두 집단이 있더라도 표본 수와
+   분산 등 검정에 필요한 조건을 충족하는지 확인한다.
+6. 전체 조건으로 되돌릴 수 있게 한다.
+7. 한 가지 가입기간 값만 있는 자료에서도 오류 없이 처리한다.
+</code></pre>
+<h3>사실 → 가설 → 다음 확인</h3>
+<pre><code class="language-text">[사실] 학습용 가상 자료에서 현재 선택한 ______집단은 ___명이고,
+       이탈 고객은 ___명, 이탈 비율은 ___%이다.
+[가설] 이 차이는 ______와 관련될 가능성이 있지만,
+       이 자료만으로 원인을 확정할 수 없다.
+[다음 확인] 판단을 위해 ______자료를 추가로 확보하고,
+            ______기준으로 비교하겠다.
+</code></pre>
+<p><strong>생각해보기:</strong> 이탈 고객의 평균 청구 금액이 더 높으면 바로 가격 인하를 제안해도 될까요? 상품 구성·사용량·가입기간 중 추가로 확인하고 싶은 자료와 이유를 적어보세요.</p>
+<p>p-value 하나로 결론을 결정하지 않습니다. 집단별 표본 수, 차이의 크기, 분포, 수집 방식도 확인합니다. 분산 검정만으로 독립성이나 분석 설계가 적합한지까지 확인되는 것은 아닙니다.</p>
+<p><strong>완료 확인</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> 필터를 바꾸면 카드·차트·표가 함께 바뀝니다.</li>
+<li><input disabled="" type="checkbox"> 현재 조건이 결과 위에 표시됩니다.</li>
+<li><input disabled="" type="checkbox"> 결과가 없을 때 비율과 평균을 0으로 표시하지 않습니다.</li>
+<li><input disabled="" type="checkbox"> 해석문의 모든 수치를 화면에서 찾을 수 있습니다.</li>
+</ul>
+<h2>7. 실습 4 — 8행 자료로 직접 검증하기</h2>
+<p>다음 자료는 <strong>100행 본 실습 자료와 별개의 계산 검증용 자료</strong>입니다. 먼저 손으로 계산한 뒤 앱의 값과 비교합니다.</p>
+<p>아래 내용을 그대로 validation_8rows.csv로 저장하거나 AI에 동일한 데이터프레임을 만들도록 요청합니다.</p>
+<pre><code class="language-csv">customer_id,age,tenure_months,monthly_charges,churn
+T01,25,1,80,1
+T02,30,3,60,1
+T03,35,5,40,0
+T04,40,11,20,0
+T05,45,12,100,1
+T06,50,18,60,0
+T07,55,24,40,0
+T08,60,36,20,0
+</code></pre>
+<h3>7-1. 먼저 계산할 문제</h3>
+<ol>
+<li>전체 고객 수·이탈 수·이탈 비율·평균 청구 금액을 구합니다.</li>
+<li>0–11개월, 12–23개월, 24개월 이상을 각각 계산합니다.</li>
+<li>가입기간 12–36개월을 선택했을 때의 결과를 구합니다.</li>
+<li>이탈 집단과 유지 집단의 평균 청구 금액을 계산합니다.</li>
+<li>6–10개월을 선택하면 앱이 무엇을 표시해야 할지 설명합니다.</li>
+</ol>
+<h3>나의 검증 기록</h3>
+<table>
+<thead>
+<tr>
+<th>조건</th>
+<th>예상 고객 수·비율·평균</th>
+<th>앱의 결과</th>
+<th>일치 여부</th>
+<th>수정한 내용</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>전체</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>0–11개월</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>12–23개월</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>24개월 이상</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>12–36개월</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>6–10개월</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h3>7-2. 계산 후 확인하는 정답</h3>
+<details open><summary>정답과 계산 과정 펼치기</summary>
+
+
+<table>
+<thead>
+<tr>
+<th>조건</th>
+<th>고객 수</th>
+<th>이탈 수</th>
+<th>이탈 비율</th>
+<th>평균 월 청구 금액</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>전체</td>
+<td>8</td>
+<td>3</td>
+<td>37.5%</td>
+<td>52.5 CU</td>
+</tr>
+<tr>
+<td>0–11개월</td>
+<td>4</td>
+<td>2</td>
+<td>50.0%</td>
+<td>50.0 CU</td>
+</tr>
+<tr>
+<td>12–23개월</td>
+<td>2</td>
+<td>1</td>
+<td>50.0%</td>
+<td>80.0 CU</td>
+</tr>
+<tr>
+<td>24개월 이상</td>
+<td>2</td>
+<td>0</td>
+<td>0.0%</td>
+<td>30.0 CU</td>
+</tr>
+<tr>
+<td>12–36개월</td>
+<td>4</td>
+<td>1</td>
+<td>25.0%</td>
+<td>55.0 CU</td>
+</tr>
+</tbody></table>
+<ul>
+<li>전체 이탈 비율: 3 ÷ 8 × 100 = 37.5%</li>
+<li>전체 평균: (80 + 60 + 40 + 20 + 100 + 60 + 40 + 20) ÷ 8 = 52.5 CU</li>
+<li>이탈 집단 평균: (80 + 60 + 100) ÷ 3 = 80.0 CU</li>
+<li>유지 집단 평균: (40 + 20 + 60 + 40 + 20) ÷ 5 = 36.0 CU</li>
+<li>6–10개월: 해당 고객 0명. 비율·평균은 계산 불가입니다.</li>
+</ul>
+<p>이는 작은 가상 자료의 계산 확인값입니다. 실제 기업에 일반화하거나 통계적 유의성을 입증하는 값으로 사용하지 않습니다.</p>
+</details>
+
+<h3>7-3. 일부러 문제를 만들어 확인하기</h3>
+<p>각 실험은 원래 8행 자료로 되돌린 다음 수행합니다.</p>
+<table>
+<thead>
+<tr>
+<th>바꿀 내용</th>
+<th>기대 결과</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>T08의 청구 금액을 공란으로 변경</td>
+<td>원본 8행, 제외 1행, 분석 7명, 이탈 비율 약 42.9%, 평균 약 57.1 CU</td>
+</tr>
+<tr>
+<td>T08의 ID를 T01로 변경</td>
+<td>중복 ID 안내, 분석 중단</td>
+</tr>
+<tr>
+<td>churn 열 이름 변경</td>
+<td>필수 열 누락 안내</td>
+</tr>
+<tr>
+<td>churn을 모두 0으로 변경</td>
+<td>이탈 비율 0%, 이탈 집단 없음, 두 집단 검정 생략</td>
+</tr>
+<tr>
+<td>필수 분석값을 모두 결측으로 변경</td>
+<td>분석 가능한 고객 없음 안내</td>
+</tr>
+<tr>
+<td>같은 파일·조건으로 새로고침</td>
+<td>같은 결과</td>
+</tr>
+</tbody></table>
+<h3>값이 다를 때의 확인 순서</h3>
+<ol>
+<li>현재 읽은 파일과 필터 조건이 같은지 확인합니다.</li>
+<li>원본 수와 제외 수를 확인합니다.</li>
+<li>이탈 비율의 분자·분모를 확인합니다.</li>
+<li>계산은 원래 수치로 하고 표시 단계에서 반올림했는지 확인합니다.</li>
+<li>원인을 찾은 뒤 가장 작은 부분부터 수정합니다.</li>
+</ol>
+<h3>복사해서 쓰는 요청문 4</h3>
+<pre><code class="language-text">다음 자료와 조건에서 예상 결과와 앱 결과가 다르다.
+
+[사용한 자료 또는 문제가 재현되는 최소 자료]
+[현재 필터 조건]
+[예상 수치와 앱이 보여준 수치]
+[현재 코드 또는 오류 메시지]
+
+1. 같은 자료와 조건인지 먼저 확인한다.
+2. 데이터 제외 기준, 분모, 필터 적용 순서를 점검한다.
+3. 원인을 설명하고 최소한의 수정안을 제시한다.
+4. 다른 정상 기능을 보존한다.
+5. 수정 후 전체·필터·빈 결과를 다시 확인할 방법을 알려준다.
+</code></pre>
+<h2>8. 조별 공유와 제출 안내</h2>
+<h3>2분 동안 설명하기</h3>
+<ol>
+<li>의뢰인의 질문과 이를 보여주는 화면을 소개합니다.</li>
+<li>필터를 한 번 바꾸고 분모와 결과가 어떻게 달라졌는지 말합니다.</li>
+<li>확인한 사실 하나와 아직 알 수 없는 것 하나를 말합니다.</li>
+</ol>
+<p>다른 조는 수정 가능한 피드백 한 가지를 남깁니다. 예: “이탈 비율 카드에 2/4도 표시하면 분모를 이해하기 쉽겠습니다.”</p>
+<h3>제출할 것</h3>
+<ul>
+<li><input disabled="" type="checkbox"> 실행 가능한 앱 파일 또는 코드 저장소</li>
+<li><input disabled="" type="checkbox"> 수정한 PRD와 데이터 사전</li>
+<li><input disabled="" type="checkbox"> 가상 자료 또는 동일하게 생성하는 코드</li>
+<li><input disabled="" type="checkbox"> 기본 화면과 필터 적용 화면 각 1장</li>
+<li><input disabled="" type="checkbox"> 8행 자료와 예외 상황 검증 기록</li>
+<li><input disabled="" type="checkbox"> 사실·가설·다음 확인으로 구성한 해석 3문장</li>
+<li><input disabled="" type="checkbox"> 주요 AI 요청문 2개와 직접 수정한 부분</li>
+<li><input disabled="" type="checkbox"> 조원별 역할과 기여 내용</li>
+</ul>
+<h3>스스로 점검할 기준</h3>
+<table>
+<thead>
+<tr>
+<th>기준</th>
+<th>확인 질문</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>질문·지표</td>
+<td>분석 단위·분모·단위를 설명할 수 있는가?</td>
+</tr>
+<tr>
+<td>정확성</td>
+<td>직접 계산한 값과 앱이 일치하는가?</td>
+</tr>
+<tr>
+<td>화면 일관성</td>
+<td>같은 조건이 카드·차트·표에 적용되는가?</td>
+</tr>
+<tr>
+<td>해석</td>
+<td>사실과 가설을 구분하고 한계를 적었는가?</td>
+</tr>
+<tr>
+<td>과정</td>
+<td>어떤 오류를 어떻게 고쳤는지 설명할 수 있는가?</td>
+</tr>
+</tbody></table>
+<h2>9. 선택 활동 — 역할을 나누어 AI 결과 검토하기</h2>
+<p>필수 실습을 마쳤다면 하나의 AI 대화에서도 다음 역할을 순서대로 적용해보세요.</p>
+<table>
+<thead>
+<tr>
+<th>역할</th>
+<th>입력</th>
+<th>출력</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>분석 역할</td>
+<td>검증된 요약표와 분모 정의</td>
+<td>수치에 근거한 발견 3개</td>
+</tr>
+<tr>
+<td>검토 역할</td>
+<td>발견 3개와 원래 표</td>
+<td>수치 오류·과도한 해석 지적</td>
+</tr>
+<tr>
+<td>설명 역할</td>
+<td>검토한 사실</td>
+<td>운영 담당자용 설명 5문장</td>
+</tr>
+</tbody></table>
+<p>AI 답변이 서로 일치해도 원자료 검증이 끝난 것은 아닙니다. 조원이 표와 대조하고 최종 문장을 선택합니다.</p>
+<h2>10. 오늘의 핵심과 다음 수업</h2>
+<ul>
+<li><strong>질문을 먼저 정합니다.</strong> 지표마다 무엇에 답하는지 설명합니다.</li>
+<li><strong>분모와 단위를 밝힙니다.</strong> 필터를 바꾸면 분석 대상도 달라집니다.</li>
+<li><strong>차트와 원자료를 연결합니다.</strong> 보기 좋은 화면에 정확한 수치가 담겨야 합니다.</li>
+<li><strong>AI 결과를 검증합니다.</strong> 작은 자료로 직접 계산하고 예외 상황도 확인합니다.</li>
+<li><strong>사실과 가설을 구분합니다.</strong> 집단 간 차이를 바로 원인으로 해석하지 않습니다.</li>
+</ul>
+<p>4주차에는 다른 조가 사용자 역할을 맡아 화면을 사용합니다. 피드백을 반영해 설명과 화면을 개선하고 가상 데이터로 동작하는 앱을 웹에 배포합니다.</p>
+<h3>앞선 수업으로 돌아가기</h3>
+<ul>
+<li><a href="https://app.notion.com/p/3b096f1add7680318b68eab65a95c2c4">통계컨설팅의 이해</a></li>
+<li><a href="https://app.notion.com/p/3b196f1add768070a79ed3301a0eed07">1주차: 기업 통계컨설팅과 AX의 이해</a></li>
+<li><a href="https://app.notion.com/p/7be96f1add7683a182f6816546ff9ba5">2주차: 바이브코딩의 개념과 활용 방식</a></li>
+</ul>
+</article><section><h2>배포·실행 확인 기준</h2><p>같은 자료와 조건에서 같은 값이 나오는지 확인합니다. 예외를 시험한 뒤에는 원본 파일로 복귀하고, 관측값이 없는 경우의 계산 불가를 0%와 구분합니다. 통계검정 결과는 표본 수·차이의 크기·수집 방식과 함께 해석합니다.</p><p>참고 앱은 Welch를 기본으로 제공하며 Levene 분기는 학습용 선택입니다. Levene p≥0.05로 등분산이나 설계의 타당성을 입증하지 않습니다. 100행 자료에서만 계약유형 카이제곱 예제를 사용하며, 실제 기업의 원인이나 효과로 일반화하지 않습니다.</p></section></section><div class="study-toolbar"><button type="button" class="button" id="reading-toggle" aria-pressed="false">자세히 읽기</button><a class="button" href="../downloads/week-03-practice.zip" download>실습 파일 ZIP</a></div><div class="progress" aria-hidden="true"></div><div class="slide-counter" aria-live="polite"></div><nav class="deck-controls" aria-label="슬라이드 조작"><a class="control home-control" href="../index.html?week=3" aria-label="메인페이지">⌂</a><button class="control" data-action="prev" aria-label="이전 슬라이드">←</button><button class="control" data-action="overview" aria-label="전체 슬라이드 목록" aria-expanded="false">☷</button><button class="control" data-action="notes" aria-label="강사 노트" aria-expanded="false">N</button><button class="control" data-action="fullscreen" aria-label="전체 화면">⛶</button><button class="control" data-action="next" aria-label="다음 슬라이드">→</button></nav><div class="overview" role="dialog" aria-modal="true" aria-label="슬라이드 목록" hidden></div><aside class="speaker-note" aria-live="polite"></aside><script src="../slides.js"></script><script src="../lessons-03-04.js"></script></body></html>

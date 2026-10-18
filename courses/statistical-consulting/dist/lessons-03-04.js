@@ -1,4 +1,8 @@
 (() => {
+  const readButton=document.getElementById('reading-toggle'),handout=document.querySelector('.handout');
+  function setReading(open){document.body.classList.toggle('reading-mode',open);if(handout)handout.hidden=!open;if(readButton){readButton.textContent=open?'슬라이드로 보기':'자세히 읽기';readButton.setAttribute('aria-pressed',String(open));}window.scrollTo(0,0);}
+  if(readButton&&handout){readButton.addEventListener('click',()=>setReading(!document.body.classList.contains('reading-mode')));if(new URLSearchParams(location.search).get('read')==='1')setReading(true);}
+  document.addEventListener('keydown',e=>{if(document.body.classList.contains('reading-mode')){if(e.key==='Escape'){setReading(false);e.preventDefault();}if(['ArrowLeft','ArrowRight','PageDown','PageUp',' ','Home','End','o','O','n','N','Escape'].includes(e.key))e.stopImmediatePropagation();}},true);
   const data=[{t:1,c:80,y:1},{t:3,c:60,y:1},{t:5,c:40,y:0},{t:11,c:20,y:0},{t:12,c:100,y:1},{t:18,c:60,y:0},{t:24,c:40,y:0},{t:36,c:20,y:0}];
   document.querySelectorAll('[data-demo]').forEach(root=>{
     const low=root.querySelector('[data-min]'),high=root.querySelector('[data-max]');
