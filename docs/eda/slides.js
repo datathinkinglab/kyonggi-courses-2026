@@ -83,7 +83,7 @@
     const from = Math.max(1, Number(printParams.get('from')) || 1);
     const to = Math.min(slides.length, Number(printParams.get('to')) || slides.length);
     slides.forEach((slide, index) => slide.classList.toggle('print-skip', index + 1 < from || index + 1 > to));
-    const weekLabel = from === 3 ? '1주차' : from === 13 ? '2주차' : '강의슬라이드';
+    const weekLabel = from === 3 ? '1차수' : from === 13 ? '2차수' : '강의슬라이드';
     document.title = `자료탐색방법론_${weekLabel}`;
     window.addEventListener('load', () => window.setTimeout(() => window.print(), 350), { once: true });
   }

@@ -14,7 +14,7 @@
 | ZIP에 포함할 파일 | **보고서 PDF 1개 + 실행 결과를 남긴 Colab 노트북(.ipynb) 1개** |
 | 보고서 파일명 | 학번_이름_중간고사_보고서.pdf |
 | 노트북 파일명 | 학번_이름_중간고사.ipynb |
-| 평가 범위 | **1~4주차**: 탐색 질문·자료 구조·분석 명세·결과 검증·줄기와 잎 그림·히스토그램 |
+| 평가 범위 | **1~4차수**: 탐색 질문·자료 구조·분석 명세·결과 검증·줄기와 잎 그림·히스토그램 |
 | 평가 비중 | 과제 100점 만점, **전체 성적의 30%** |
 
 이번 중간고사는 과제 제출형으로 진행합니다. 공유 링크만 보내지 말고 **PDF와 .ipynb 파일을 ZIP으로 묶어 이메일에 첨부**하세요. 본문에는 학번·이름·사용한 AI 도구를 적고, 발송 후 보낸편지함에서 받는 주소와 첨부 파일을 확인하세요.
@@ -137,9 +137,9 @@
 
 ## 참고 강의
 
-- [1주차: 탐색적 자료분석의 출발점](https://datathinkinglab.github.io/kyonggi-courses-2026/eda/slides/week-01-02.html#3)
-- [2주차: 자료 구조와 분석 명세](https://datathinkinglab.github.io/kyonggi-courses-2026/eda/slides/week-01-02.html#13)
-- [3주차: 코드 읽기와 결과 검증](https://datathinkinglab.github.io/kyonggi-courses-2026/eda/slides/week-03.html)
-- [4주차: 줄기와 잎 그림, 히스토그램](https://datathinkinglab.github.io/kyonggi-courses-2026/eda/slides/week-04.html)
+- [1차수: 탐색적 자료분석의 출발점](https://datathinkinglab.github.io/kyonggi-courses-2026/eda/slides/week-01-02.html#3)
+- [2차수: 자료 구조와 분석 명세](https://datathinkinglab.github.io/kyonggi-courses-2026/eda/slides/week-01-02.html#13)
+- [3차수: 코드 읽기와 결과 검증](https://datathinkinglab.github.io/kyonggi-courses-2026/eda/slides/week-03.html)
+- [4차수: 줄기와 잎 그림, 히스토그램](https://datathinkinglab.github.io/kyonggi-courses-2026/eda/slides/week-04.html)
 
-이 과제의 필수 내용은 1~4주차 학습 범위입니다. 5주차 이후의 상자그림·분포 변환·가설검정 등은 필수로 요구하지 않습니다.
+이 과제의 필수 내용은 1~4차수 학습 범위입니다. 5차수 이후의 상자그림·분포 변환·가설검정 등은 필수로 요구하지 않습니다.

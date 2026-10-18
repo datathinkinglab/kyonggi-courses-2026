@@ -12,7 +12,7 @@
     slides[current].scrollTop=0;
     counter.textContent=`${current+1} / ${slides.length}`;
     progress.style.width=`${(current+1)/slides.length*100}%`;
-    document.title=`${document.body.dataset.week}주차 ${current+1}. ${slides[current].dataset.title} · 자료탐색방법론`;
+    document.title=`${document.body.dataset.week}차수 ${current+1}. ${slides[current].dataset.title} · 자료탐색방법론`;
     if(hash)history.replaceState(null,'',`#${current+1}`);
   }
   function go(delta){current=Math.max(0,Math.min(slides.length-1,current+delta));render();}
