@@ -1,0 +1,34 @@
+.assignment-header{display:flex;gap:12px;align-items:center;justify-content:flex-end;padding:16px clamp(20px,5vw,70px);background:white;border-bottom:1px solid var(--line);}
+.assignment-header .brand-lockup{margin-right:auto;}
+.assignment-shell{max-width:1120px;margin:0 auto;padding:58px 34px 70px;}
+.assignment-shell h1{font-size:clamp(2.3rem,5vw,4.4rem);line-height:1.16;letter-spacing:-.05em;color:var(--navy);margin:20px 0;}
+.assignment-lead{font-size:1.2rem;color:var(--muted);max-width:780px;}
+.assignment-keyfacts{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:32px 0 38px;}
+.assignment-keyfacts>div{padding:20px 24px;border:1px solid var(--line);border-radius:14px;background:white;}
+.assignment-keyfacts span,.assignment-keyfacts strong{display:block;}
+.assignment-keyfacts span{font-size:.9rem;color:var(--muted);}
+.assignment-keyfacts strong{font-size:1.13rem;margin-top:6px;overflow-wrap:anywhere;}
+.assignment-keyfacts>div:first-child{border-top:4px solid var(--coral);}
+.email-copy{font:inherit;font-size:.87rem;font-weight:700;margin-top:10px;border:1px solid var(--line);border-radius:8px;padding:7px 12px;background:var(--paper);color:var(--blue);cursor:pointer;}
+.assignment-resources{padding:26px;border-radius:18px;background:#eaf1f8;margin:30px 0 46px;}
+.assignment-resources h2,.submission-final h2{font-size:1.6rem;line-height:1.4;margin:0 0 12px;}
+.resource-actions{display:flex;flex-wrap:wrap;gap:10px;margin:20px 0;}
+.assignment-resources summary{font-weight:800;color:var(--blue);cursor:pointer;padding:8px 0;}
+.assignment-resources a{overflow-wrap:anywhere;}
+.assignment-content{font-size:18px;line-height:1.85;word-break:keep-all;overflow-wrap:anywhere;}
+.assignment-content h2{font-size:1.8rem;line-height:1.35;letter-spacing:-.03em;margin:46px 0 18px;border-bottom:2px solid var(--line);padding-bottom:13px;color:var(--navy);}
+.assignment-content h3{font-size:1.3rem;line-height:1.4;margin:30px 0 12px;color:var(--blue);}
+.assignment-content p{margin:14px 0;}
+.assignment-content li{margin:8px 0;}
+.assignment-content table{width:100%;border-collapse:collapse;background:white;margin:20px 0;font-size:17px;}
+.assignment-content th,.assignment-content td{border:1px solid var(--line);padding:12px 16px;text-align:left;vertical-align:top;}
+.assignment-content th{background:#eaf1f8;color:var(--blue);}
+.assignment-content table:first-of-type td:first-child{white-space:nowrap;}
+.assignment-content blockquote{border-left:5px solid var(--coral);margin:20px 0;padding:5px 20px;background:white;}
+.assignment-content input[type=checkbox]{width:16px;height:16px;}
+.submission-final{margin-top:42px;border-top:5px solid var(--coral);padding:30px;background:white;border-radius:0 0 18px 18px;}
+.submission-final p{font-size:18px;line-height:1.8;overflow-wrap:anywhere;}
+.submission-final .mail-help{font-size:.9rem;color:var(--muted);}
+.assignment-page a:focus-visible,.assignment-page button:focus-visible,.assignment-page summary:focus-visible{outline:3px solid var(--coral);outline-offset:4px;}
+@media(max-width:650px){.assignment-header{padding:12px 16px;gap:7px;}.assignment-header .brand-logo{width:100px;}.assignment-header .button{font-size:12px;padding:8px 10px;min-height:38px;}.assignment-shell{padding:34px 18px 48px;}.assignment-keyfacts{grid-template-columns:1fr;gap:12px;}.assignment-shell h1{font-size:2.3rem;}.assignment-content{font-size:17px;}.assignment-content h2{font-size:1.5rem;}.assignment-content table{display:block;overflow-x:auto;font-size:15px;}.assignment-content th,.assignment-content td{padding:10px 12px;}.assignment-resources,.submission-final{padding:20px;}.resource-actions{display:grid;}.assignment-keyfacts strong{font-size:1.05rem;}}
+@media print{@page{size:A4;margin:16mm;}.assignment-header,.resource-actions,.email-copy,.assignment-resources details,.submission-final .button,.footer{display:none!important;}body{background:white;}.assignment-shell{padding:0;max-width:none;}.assignment-shell h1{font-size:26pt;}.assignment-keyfacts{gap:10px;margin:18px 0;}.assignment-keyfacts>div{padding:12px;}.assignment-keyfacts strong{font-size:11pt;}.assignment-keyfacts span{font-size:9pt;}.assignment-lead,.assignment-content{font-size:11pt;line-height:1.6;}.assignment-content h2{font-size:16pt;break-after:avoid;margin-top:24px;}.assignment-content h3{font-size:13pt;break-after:avoid;}.assignment-content table{font-size:10pt;display:table;}.assignment-content th,.assignment-content td{padding:7px 10px;}.assignment-content tr{break-inside:avoid;}.assignment-resources,.submission-final{break-inside:avoid;padding:15px;margin:15px 0;}.assignment-content a{color:inherit;text-decoration:none;}}

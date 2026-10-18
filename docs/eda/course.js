@@ -34,7 +34,7 @@
     { week: 5, title: "중심위치와 저항성", activity: "평균·중앙값·분위수·IQR과 저항성을 학습합니다." },
     { week: 6, title: "5수요약과 상자그림", activity: "울타리와 이상점, 그룹별 분포 비교를 다룹니다." },
     { week: 7, title: "재표현: 변환의 사다리", activity: "여러 변환을 적용하고 왜도의 변화를 비교합니다." },
-    { week: 8, title: "중간고사", activity: "앞선 주차의 핵심 개념과 탐색 과정을 평가합니다." },
+    { week: 8, title: "중간고사 개인 과제", activity: "1~4주차 범위 · 2026년 11월 1일(일) 23:59 한국시간까지 lee.seungmook@gmail.com으로 이메일 제출합니다.", assignment: "midterm.html", sessionTitle: "AI와 함께 대기시간<br>분석을 개선하라", copy: "공통 자료로 질문·프롬프트·실행·검증·해석을 수행하는 개인 과제입니다. 보고서 PDF와 Colab 노트북을 ZIP으로 묶어 이메일에 첨부하세요. 전체 성적의 30%에 반영합니다.", agenda: ["공통 질문과 나의 탐색 질문", "AI 분석과 표·그림 생성", "초안 진단과 검증 3종 세트", "11월 1일 23:59 이메일 제출"] },
     { week: 9, title: "표준화와 Box–Cox", activity: "표준화·로버스트 표준화·Box–Cox 변환을 다룹니다." },
     { week: 10, title: "확률분포와 Q–Q 플롯", activity: "정규분포와 확률플롯을 이용해 분포 적합성을 살펴봅니다." },
     { week: 11, title: "여러 분포와 플롯 진단", activity: "연속·이산분포의 꼬리와 비대칭을 진단합니다." },
@@ -51,6 +51,7 @@
   };
 
   const printUrl = (item) => {
+    if (item.assignment) return new URL(item.assignment + "?print=1", location.href).href;
     if (!item.slide) return "#current-course";
     const url = new URL(item.slide, location.href);
     url.searchParams.set("print", "1");
@@ -65,7 +66,7 @@
     select.replaceChildren(...weeks.map((item) => {
       const option = document.createElement("option");
       option.value = item.week;
-      option.textContent = item.slide ? `${item.week}주차` : `${item.week}주차 · 준비 예정`;
+      option.textContent = item.assignment ? `${item.week}주차 · 중간고사 과제` : item.slide ? `${item.week}주차` : `${item.week}주차 · 준비 예정`;
       option.selected = item.week === selected;
       return option;
     }));
@@ -75,7 +76,7 @@
   function renderPicker(selected) {
     byId("week-radio-list").replaceChildren(...weeks.map((item) => {
       const label = document.createElement("label");
-      label.className = `week-radio${item.slide ? " available" : ""}`;
+      label.className = `week-radio${item.slide || item.assignment ? " available" : ""}`;
       const input = document.createElement("input");
       input.type = "radio";
       input.name = "course-week";
@@ -92,7 +93,7 @@
   function renderRoadmap(selected) {
     byId("roadmap-list").replaceChildren(...weeks.map((item) => {
       const details = document.createElement("details");
-      details.className = `week${item.slide ? " available" : ""}`;
+      details.className = `week${item.slide || item.assignment ? " available" : ""}`;
       details.open = item.week === selected;
       const summary = document.createElement("summary");
       const code = document.createElement("b");
@@ -109,11 +110,11 @@
       const copy = document.createElement("p");
       copy.textContent = item.activity;
       body.append(copy);
-      if (item.slide) {
+      if (item.slide || item.assignment) {
         const link = document.createElement("a");
         link.className = "button primary";
-        link.href = item.slide;
-        link.textContent = `${item.week}주차 슬라이드 열기 →`;
+        link.href = item.slide || item.assignment;
+        link.textContent = item.assignment ? "중간고사 과제 안내" : `${item.week}주차 슬라이드 열기 →`;
         body.append(link);
       } else {
         const pending = document.createElement("small");
@@ -134,7 +135,7 @@
     byId("current-week-label").textContent = `WEEK ${String(item.week).padStart(2, "0")}`;
     byId("current-week-title").textContent = item.title;
     byId("current-week-activity").textContent = item.activity;
-    byId("current-week-meta").textContent = item.slide ? `${item.week}주차 · ${item.slideCount} SLIDES` : `${item.week}주차 · 준비 예정`;
+    byId("current-week-meta").textContent = item.assignment ? "중간고사 · 개인 과제 · 성적 30%" : item.slide ? `${item.week}주차 · ${item.slideCount} SLIDES` : `${item.week}주차 · 준비 예정`;
     byId("current-session-title").innerHTML = item.sessionTitle || item.title;
     byId("current-session-copy").textContent = item.copy || item.activity;
     byId("current-agenda").replaceChildren(...(item.agenda || ["해당 주차 강의자료를 준비하고 있습니다."]).map((text) => {
@@ -144,35 +145,35 @@
     }));
 
     const slideLink = byId("current-slide-link");
-    slideLink.href = item.slide || "#roadmap";
-    slideLink.textContent = item.slide ? `${item.week}주차 슬라이드 열기 →` : `${item.week}주차 슬라이드 준비 예정`;
-    slideLink.classList.toggle("disabled", !item.slide);
-    slideLink.setAttribute("aria-disabled", String(!item.slide));
+    slideLink.href = item.slide || item.assignment || "#roadmap";
+    slideLink.textContent = item.assignment ? "중간고사 과제 안내" : item.slide ? `${item.week}주차 슬라이드 열기 →` : `${item.week}주차 슬라이드 준비 예정`;
+    slideLink.classList.toggle("disabled", !(item.slide || item.assignment));
+    slideLink.setAttribute("aria-disabled", String(!(item.slide || item.assignment)));
 
     const notionLink = byId("current-notion-link");
     notionLink.href = item.notion || notionCourse;
     notionLink.textContent = item.notion ? `${item.week}주차 원문 ↗` : "전체 Notion 강의노트 ↗";
-    byId("current-card-help").innerHTML = item.slide
+    byId("current-card-help").innerHTML = item.assignment ? "개인 과제 · 1~4주차 범위<br>11월 1일 23:59 이메일 제출" : item.slide
       ? ([3, 4].includes(item.week) ? "방향키 이동 · O 전체 목차<br>전체 읽기 · 코드 복사 · Colab 실습" : "방향키로 이동 · O 전체 목록<br>N 강사 노트 · 전체 화면 지원")
       : "해당 주차 슬라이드가 추가되면<br>이 버튼이 자동으로 활성화됩니다.";
 
     const headerLink = byId("header-slide-link");
-    headerLink.href = item.slide || "#current-course";
-    headerLink.textContent = item.slide ? "슬라이드 열기 →" : "준비 예정";
-    headerLink.classList.toggle("disabled", !item.slide);
-    headerLink.setAttribute("aria-disabled", String(!item.slide));
+    headerLink.href = item.slide || item.assignment || "#current-course";
+    headerLink.textContent = item.assignment ? "과제 안내" : item.slide ? "슬라이드 열기 →" : "준비 예정";
+    headerLink.classList.toggle("disabled", !(item.slide || item.assignment));
+    headerLink.setAttribute("aria-disabled", String(!(item.slide || item.assignment)));
 
     const pdfLink = byId("header-pdf-link");
     pdfLink.href = printUrl(item);
-    pdfLink.textContent = item.slide ? "PDF 출력" : "PDF 준비 예정";
-    pdfLink.classList.toggle("disabled", !item.slide);
-    pdfLink.setAttribute("aria-disabled", String(!item.slide));
+    pdfLink.textContent = item.assignment ? "과제 안내 출력" : item.slide ? "PDF 출력" : "PDF 준비 예정";
+    pdfLink.classList.toggle("disabled", !(item.slide || item.assignment));
+    pdfLink.setAttribute("aria-disabled", String(!(item.slide || item.assignment)));
 
     const heroLink = byId("hero-slide-link");
-    heroLink.href = item.slide || "#current-course";
-    heroLink.textContent = item.slide ? `${item.week}주차 강의 시작 →` : `${item.week}주차 준비 예정`;
-    heroLink.classList.toggle("disabled", !item.slide);
-    heroLink.setAttribute("aria-disabled", String(!item.slide));
+    heroLink.href = item.slide || item.assignment || "#current-course";
+    heroLink.textContent = item.assignment ? "중간고사 과제 보기" : item.slide ? `${item.week}주차 강의 시작 →` : `${item.week}주차 준비 예정`;
+    heroLink.classList.toggle("disabled", !(item.slide || item.assignment));
+    heroLink.setAttribute("aria-disabled", String(!(item.slide || item.assignment)));
 
     renderRoadmap(item.week);
     if (updateUrl) history.replaceState(null, "", `${location.pathname}?week=${item.week}${location.hash}`);
