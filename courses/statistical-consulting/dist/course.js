@@ -1,6 +1,6 @@
 (() => {
   const notionCourse = 'https://app.notion.com/p/3b096f1add7680318b68eab65a95c2c4';
-  // 학기 진행에 맞춰 이 숫자만 바꾸면 메인 화면의 기본 주차가 함께 변경됩니다.
+  // 학기 진행에 맞춰 이 숫자만 바꾸면 메인 화면의 기본 차수가 함께 변경됩니다.
   const currentWeek = 2;
   const weeks = [
     { week: 1, title: '기업 통계컨설팅과 AX의 이해', activity: '수업 안내, 간단한 기업 사례, 관심 기업 후보 탐색', slide: 'slides/week-01.html', slideCount: 24, notion: 'https://app.notion.com/p/3b196f1add768070a79ed3301a0eed07', sessionTitle: '기업의 질문과<br>데이터의 근거', copy: '통계컨설턴트의 역할, AI 활용과 검증, PSDM, 한 학기 프로젝트를 이해합니다.', agenda: ['통계컨설팅과 AX', '바이브코딩의 역할과 검증', '매출 감소 사례와 PSDM', '개인 진단과 팀 전략 프로젝트'] },
@@ -31,7 +31,7 @@
     select.replaceChildren(...weeks.map(item => {
       const option = document.createElement('option');
       option.value = item.week;
-      option.textContent = item.slide ? `${item.week}주차` : `${item.week}주차 · 준비 예정`;
+      option.textContent = item.slide ? `${item.week}차` : `${item.week}차 · 준비 예정`;
       option.selected = item.week === selected;
       return option;
     }));
@@ -55,12 +55,12 @@
       const details = document.createElement('details');
       details.className = 'week' + (item.slide ? ' available' : ''); details.open = item.week === selected;
       const summary = document.createElement('summary');
-      const code = document.createElement('b'); code.textContent = `WEEK ${String(item.week).padStart(2, '0')}`;
+      const code = document.createElement('b'); code.textContent = `SESSION ${String(item.week).padStart(2, '0')}`;
       const title = document.createElement('span'); title.textContent = item.title; summary.append(code, title);
       summary.addEventListener('click', event => { event.preventDefault(); selectWeek(item.week, true, true); });
       const body = document.createElement('div'); body.className = 'week-body';
       const copy = document.createElement('p'); copy.textContent = item.activity; body.append(copy);
-      if (item.slide) { const link = document.createElement('a'); link.className = 'button primary'; link.href = item.slide; link.textContent = `${item.week}주차 슬라이드 열기 →`; body.append(link); }
+      if (item.slide) { const link = document.createElement('a'); link.className = 'button primary'; link.href = item.slide; link.textContent = `${item.week}차 슬라이드 열기 →`; body.append(link); }
       else { const pending = document.createElement('small'); pending.textContent = '슬라이드 준비 예정'; body.append(pending); }
       details.append(summary, body); return details;
     }));
@@ -70,20 +70,20 @@
     const item = weeks.find(entry => entry.week === number) || weeks[0];
     document.querySelectorAll('input[name="course-week"]').forEach(input => input.checked = Number(input.value) === item.week);
     byId('header-week-select').value = String(item.week);
-    byId('current-week-label').textContent = `WEEK ${String(item.week).padStart(2, '0')}`;
+    byId('current-week-label').textContent = `SESSION ${String(item.week).padStart(2, '0')}`;
     byId('current-week-title').textContent = item.title;
     byId('current-week-activity').textContent = item.activity;
-    byId('current-week-meta').textContent = item.slide ? `${item.week}주차 · ${item.slideCount || ''} SLIDES` : `${item.week}주차 · 준비 예정`;
+    byId('current-week-meta').textContent = item.slide ? `${item.week}차 · ${item.slideCount || ''} SLIDES` : `${item.week}차 · 준비 예정`;
     byId('current-session-title').innerHTML = item.sessionTitle || item.title;
     byId('current-session-copy').textContent = item.copy || item.activity;
     byId('current-agenda').replaceChildren(...(item.agenda || ['강의계획에 따라 자료를 준비하고 있습니다.']).map(text => { const li = document.createElement('li'); li.textContent = text; return li; }));
     const slideLink = byId('current-slide-link');
-    slideLink.href = item.slide || '#roadmap'; slideLink.textContent = item.slide ? `${item.week}주차 슬라이드 열기 →` : `${item.week}주차 슬라이드 준비 예정`; slideLink.classList.toggle('disabled', !item.slide); slideLink.setAttribute('aria-disabled', String(!item.slide));
-    const notionLink = byId('current-notion-link'); notionLink.href = item.notion || notionCourse; notionLink.textContent = item.notion ? `${item.week}주차 원문 ↗` : '전체 Notion 강의노트 ↗';
-    byId('current-card-help').innerHTML = item.slide ? (item.help || '방향키로 이동 · O 전체 목록<br>N 강사 노트 · 전체 화면 지원') : '해당 주차 슬라이드가 추가되면<br>이 버튼이 자동으로 활성화됩니다.';
+    slideLink.href = item.slide || '#roadmap'; slideLink.textContent = item.slide ? `${item.week}차 슬라이드 열기 →` : `${item.week}차 슬라이드 준비 예정`; slideLink.classList.toggle('disabled', !item.slide); slideLink.setAttribute('aria-disabled', String(!item.slide));
+    const notionLink = byId('current-notion-link'); notionLink.href = item.notion || notionCourse; notionLink.textContent = item.notion ? `${item.week}차 원문 ↗` : '전체 Notion 강의노트 ↗';
+    byId('current-card-help').innerHTML = item.slide ? (item.help || '방향키로 이동 · O 전체 목록<br>N 강사 노트 · 전체 화면 지원') : '해당 차수 슬라이드가 추가되면<br>이 버튼이 자동으로 활성화됩니다.';
     const headerLink = byId('header-slide-link'); headerLink.href = item.slide || '#current-course'; headerLink.textContent = item.slide ? '슬라이드 열기 →' : '준비 예정'; headerLink.classList.toggle('disabled', !item.slide); headerLink.setAttribute('aria-disabled', String(!item.slide));
     const pdfLink = byId('header-pdf-link'); pdfLink.href = item.slide ? `${item.slide}?print=1` : '#current-course'; pdfLink.textContent = item.slide ? 'PDF 출력' : 'PDF 준비 예정'; pdfLink.classList.toggle('disabled', !item.slide); pdfLink.setAttribute('aria-disabled', String(!item.slide));
-    const heroLink = byId('hero-slide-link'); heroLink.href = item.slide || '#current-course'; heroLink.textContent = item.slide ? `${item.week}주차 강의 시작 →` : `${item.week}주차 준비 예정`; heroLink.classList.toggle('disabled', !item.slide); heroLink.setAttribute('aria-disabled', String(!item.slide));
+    const heroLink = byId('hero-slide-link'); heroLink.href = item.slide || '#current-course'; heroLink.textContent = item.slide ? `${item.week}차 강의 시작 →` : `${item.week}차 준비 예정`; heroLink.classList.toggle('disabled', !item.slide); heroLink.setAttribute('aria-disabled', String(!item.slide));
     renderRoadmap(item.week);
     if (updateUrl) history.replaceState(null, '', `${location.pathname}?week=${item.week}${location.hash}`);
     if (scrollToCurrent) byId('current-course').scrollIntoView({ behavior: 'smooth', block: 'start' });
