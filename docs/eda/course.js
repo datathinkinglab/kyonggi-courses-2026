@@ -34,14 +34,13 @@
     { week: 5, title: "중심위치와 저항성", activity: "평균·중앙값·분위수·IQR과 저항성을 학습합니다." },
     { week: 6, title: "5수요약과 상자그림", activity: "울타리와 이상점, 그룹별 분포 비교를 다룹니다." },
     { week: 7, title: "재표현: 변환의 사다리", activity: "여러 변환을 적용하고 왜도의 변화를 비교합니다." },
-    { week: 8, title: "강의 준비 예정", activity: "8차수 강의 내용은 추후 안내합니다." },
-    { week: 9, title: "표준화와 Box–Cox", activity: "표준화·로버스트 표준화·Box–Cox 변환을 다룹니다." },
-    { week: 10, title: "확률분포와 Q–Q 플롯", activity: "정규분포와 확률플롯을 이용해 분포 적합성을 살펴봅니다." },
-    { week: 11, title: "여러 분포와 플롯 진단", activity: "연속·이산분포의 꼬리와 비대칭을 진단합니다." },
-    { week: 12, title: "이원 자료와 빈도표", activity: "주변합·비율·모자이크 플롯으로 범주형 관계를 탐색합니다." },
-    { week: 13, title: "혼재변수와 심슨의 역설", activity: "층화 전후의 결론을 비교하고 혼재변수를 점검합니다." },
-    { week: 14, title: "프로젝트 클리닉", activity: "팀별 진행 발표와 분석 근거, 검증 로그를 점검합니다." },
-    { week: 15, title: "최종 프로젝트 발표", activity: "팀별 최종 분석 결과를 발표하고 질의응답을 진행합니다." }
+    { week: 8, title: "표준화와 Box–Cox", activity: "표준화·로버스트 표준화·Box–Cox 변환을 다룹니다." },
+    { week: 9, title: "확률분포와 Q–Q 플롯", activity: "정규분포와 확률플롯을 이용해 분포 적합성을 살펴봅니다." },
+    { week: 10, title: "여러 분포와 플롯 진단", activity: "연속·이산분포의 꼬리와 비대칭을 진단합니다." },
+    { week: 11, title: "이원 자료와 빈도표", activity: "주변합·비율·모자이크 플롯으로 범주형 관계를 탐색합니다." },
+    { week: 12, title: "혼재변수와 심슨의 역설", activity: "층화 전후의 결론을 비교하고 혼재변수를 점검합니다." },
+    { week: 13, title: "프로젝트 클리닉", activity: "팀별 진행 발표와 분석 근거, 검증 로그를 점검합니다." },
+    { week: 14, title: "최종 프로젝트 발표", activity: "팀별 최종 분석 결과를 발표하고 질의응답을 진행합니다." }
   ];
 
   const byId = (id) => document.getElementById(id);
