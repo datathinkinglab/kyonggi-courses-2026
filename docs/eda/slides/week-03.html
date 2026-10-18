@@ -1,31 +1,51 @@
 <!doctype html>
-<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="자료탐색방법론 3차수 핵심 강의. 한 가지 오류 진단 실습으로 AI 코드의 계산 대상과 결과를 검증합니다."><title>3차수 · 코드 읽기와 결과 검증</title><link rel="icon" href="../assets/logo-circle.png"><link rel="stylesheet" href="../styles.css?v=sessions-20261018"><link rel="stylesheet" href="../eda-detailed.css?v=20261018"></head><body class="deck detailed-deck" data-week="3"><main class="deck-stage"><section class="slide dark cover" data-title="평균이 같아도 분석은 틀릴 수 있다" data-notes="핵심 질문"><header class="slide-header"><span>자료탐색방법론 · 3차수</span><span class="type">핵심 질문</span></header><div class="slide-body detailed-content"><h2>평균이 같아도 분석은 틀릴 수 있다</h2><p><strong>3차수 · 코드 읽기와 결과 검증</strong></p>
-<p>AI에게 코드를 요청하고, 결과를 믿을 근거를 만듭니다.</p>
-<p>오늘의 핵심 질문: <strong>숫자만 같으면 올바른 분석일까요?</strong></p>
-</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 핵심 강의노트</a><span>01 / 22</span></footer></section>
-<section class="slide " data-title="오늘은 한 사례를 끝까지 해결합니다" data-notes="개념·해석"><header class="slide-header"><span>자료탐색방법론 · 3차수</span><span class="type">개념·해석</span></header><div class="slide-body detailed-content"><h2>오늘은 한 사례를 끝까지 해결합니다</h2><ol>
-<li>그럴듯한 초안을 보고 먼저 판단합니다.</li>
-<li>사라진 학생을 찾아 AI에게 수정을 요청합니다.</li>
-<li>자료 한 값을 바꿔 수정이 작동하는지 확인합니다.</li>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="3차수: AI가 분석 조건을 지켰는지 확인하고 자신의 말로 수정을 요청한 뒤 실제 근거로 검증하는 수업."><title>3차수 · AI 분석 결과를 확인하고 고치는 법</title><link rel="icon" href="../assets/logo-circle.png"><link rel="stylesheet" href="../styles.css?v=sessions-20261018"><link rel="stylesheet" href="../eda-detailed.css?v=20261018"></head><body class="deck detailed-deck" data-week="3"><main class="deck-stage"><section class="slide dark cover" data-title="AI 분석 결과를 확인하고 고치는 법" data-notes="학습 목표"><header class="slide-header"><span>자료탐색방법론 · 3차수</span><span class="type">학습 목표</span></header><div class="slide-body detailed-content"><h2>AI 분석 결과를 확인하고 고치는 법</h2><p><strong>3차수 · AI와 함께 분석하는 사람의 역할</strong></p>
+<p>AI가 계산한 결과를 보고, <strong>내가 요청한 조건을 지켰는지 확인하고 수정</strong>합니다.</p>
+<p>오늘의 산출물: <strong>발견한 문제 → 내가 보낸 수정 요청 → 확인한 근거</strong></p>
+</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 핵심 강의노트</a><span>01 / 24</span></footer></section>
+<section class="slide " data-title="2차수의 요청이 실제로 지켜졌을까요?" data-notes="수업의 연결"><header class="slide-header"><span>자료탐색방법론 · 3차수</span><span class="type">수업의 연결</span></header><div class="slide-body detailed-content"><h2>2차수의 요청이 실제로 지켜졌을까요?</h2><div class="table-wrap"><table class="data-table"><thead><tr><th>차수</th><th>우리가 하는 일</th></tr></thead><tbody><tr><td>1차수</td><td>자료를 보고 질문하기</td></tr><tr><td>2차수</td><td>질문과 분석 조건을 AI에게 전달하기</td></tr><tr><td>3차수 · 오늘</td><td>AI가 조건을 지켰는지 확인하고 수정하기</td></tr><tr><td>4차수</td><td>그림도 자료를 제대로 표현하는지 확인하기</td></tr></tbody></table></div><p>2차수의 명세를 <strong>실제 결과와 대조하는 과정</strong>이 오늘의 학습입니다.</p>
+</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 핵심 강의노트</a><span>02 / 24</span></footer></section>
+<section class="slide " data-title="수업 뒤 이 세 가지를 할 수 있으면 됩니다" data-notes="도달 목표"><header class="slide-header"><span>자료탐색방법론 · 3차수</span><span class="type">도달 목표</span></header><div class="slide-body detailed-content"><h2>수업 뒤 이 세 가지를 할 수 있으면 됩니다</h2><ol>
+<li><strong>확인하기:</strong> 어떤 응답이 계산에 포함됐는지 묻습니다.</li>
+<li><strong>고치기:</strong> 바뀌어야 할 규칙을 자신의 말로 AI에게 전달합니다.</li>
+<li><strong>검증하기:</strong> 수정된 결과가 맞는 이유를 인원과 계산으로 설명합니다.</li>
 </ol>
-<p>산출물은 <strong>수정 전후 비교표와 검증 근거 3문장</strong>입니다. 문법을 외우거나 코드를 직접 작성할 필요는 없습니다.</p>
-<p>정렬·순위·축 등은 마지막의 <strong>자율 실습</strong>에서 따로 이어갑니다.</p>
-</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 핵심 강의노트</a><span>02 / 22</span></footer></section>
-<section class="slide " data-title="지하철 평균은 둘 다 50분입니다" data-notes="개념·해석"><header class="slide-header"><span>자료탐색방법론 · 3차수</span><span class="type">개념·해석</span></header><div class="slide-body detailed-content"><h2>지하철 평균은 둘 다 50분입니다</h2><div class="table-wrap"><table class="data-table"><thead><tr><th>분석</th><th>평균</th><th>학생 수</th></tr></thead><tbody><tr><td>초안: 전체 열의 결측 행 삭제</td><td>50분</td><td>2명</td></tr><tr><td>수정: 시간 응답을 보존</td><td>50분</td><td>3명</td></tr></tbody></table></div><p>어느 쪽이 질문에 맞을까요? <strong>평균만 보고는 두 분석을 구별할 수 없습니다.</strong> 먼저 누가 포함됐는지 확인합니다.</p>
-</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 핵심 강의노트</a><span>03 / 22</span></footer></section>
-<section class="slide " data-title="자료부터 확인합니다" data-notes="개념·해석"><header class="slide-header"><span>자료탐색방법론 · 3차수</span><span class="type">개념·해석</span></header><div class="slide-body detailed-content"><h2>자료부터 확인합니다</h2><div class="table-wrap"><table class="data-table"><thead><tr><th>ID</th><th>교통수단</th><th>시간(분)</th><th>만족도</th></tr></thead><tbody><tr><td>S01</td><td>버스</td><td>20</td><td>2</td></tr><tr><td>S02</td><td>버스</td><td>40</td><td>3</td></tr><tr><td>S03</td><td>버스</td><td>미응답</td><td>4</td></tr><tr><td>S04</td><td>지하철</td><td>30</td><td>3</td></tr><tr><td>S05</td><td>지하철</td><td>50</td><td>미응답</td></tr><tr><td>S06</td><td>지하철</td><td>70</td><td>2</td></tr><tr><td>S07</td><td>도보</td><td>10</td><td>5</td></tr><tr><td>S08</td><td>도보</td><td>20</td><td>4</td></tr></tbody></table></div><p>교육용 가상 학생 8명입니다. <strong>S03은 시간만, S05는 만족도만 미응답</strong>입니다. 실제 학생 전체로 일반화하지 않습니다.</p>
-</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 핵심 강의노트</a><span>04 / 22</span></footer></section>
-<section class="slide " data-title="무엇을 구할지 먼저 고정합니다" data-notes="개념·해석"><header class="slide-header"><span>자료탐색방법론 · 3차수</span><span class="type">개념·해석</span></header><div class="slide-body detailed-content"><h2>무엇을 구할지 먼저 고정합니다</h2><p><strong>질문:</strong> 교통수단별 편도 통학 시간은 어떻게 다른가?</p>
+<p>Python 문법을 직접 작성하는 능력을 평가하지 않습니다. 코드는 AI에게 요청하고, 우리는 질문·기준·근거를 판단합니다.</p>
+</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 핵심 강의노트</a><span>03 / 24</span></footer></section>
+<section class="slide " data-title="미션: 이 통학 시간 보고서를 사용해도 될까요?" data-notes="상황"><header class="slide-header"><span>자료탐색방법론 · 3차수</span><span class="type">상황</span></header><div class="slide-body detailed-content"><h2>미션: 이 통학 시간 보고서를 사용해도 될까요?</h2><p>학생들에게 교통수단별 통학 시간을 안내하려고 합니다. AI에게 다음과 같이 요청했다고 가정합니다.</p>
+<blockquote>
+<p>교통수단별 편도 통학 시간 평균을 구해줘. 시간 미응답은 평균에서 제외하고, 어떤 응답을 사용했는지 함께 확인할 수 있게 해줘.</p>
+</blockquote>
+<p>이제 여러분은 <strong>보고서를 검토하는 담당자</strong>입니다. 계산 결과와 근거를 확인해 사용할지 판단하세요.</p>
+<p>이후의 보고서는 수업을 위해 준비한 초안입니다.</p>
+</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 핵심 강의노트</a><span>04 / 24</span></footer></section>
+<section class="slide " data-title="먼저 판단해 보세요" data-notes="판단 활동"><header class="slide-header"><span>자료탐색방법론 · 3차수</span><span class="type">판단 활동</span></header><div class="slide-body detailed-content"><h2>먼저 판단해 보세요</h2><div class="table-wrap"><table class="data-table"><thead><tr><th>교통수단</th><th>평균 통학 시간</th></tr></thead><tbody><tr><td>버스</td><td>30분</td></tr><tr><td>지하철</td><td>50분</td></tr><tr><td>도보</td><td>15분</td></tr></tbody></table></div><p><strong>① 그대로 사용한다　② 판단을 보류한다　③ 추가 자료를 요청한다</strong></p>
+<p>하나를 고르고 이유를 한 문장으로 적으세요. 무엇을 더 보면 판단할 수 있을까요?</p>
+<p>아직 초안의 처리 방법과 포함된 응답은 공개하지 않습니다.</p>
+</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 핵심 강의노트</a><span>05 / 24</span></footer></section>
+<section class="slide " data-title="추가 자료가 왔습니다: 원자료와 포함된 ID" data-notes="문제 발견"><header class="slide-header"><span>자료탐색방법론 · 3차수</span><span class="type">문제 발견</span></header><div class="slide-body detailed-content"><h2>추가 자료가 왔습니다: 원자료와 포함된 ID</h2><div class="table-wrap"><table class="data-table"><thead><tr><th>ID</th><th>교통수단</th><th>시간(분)</th><th>만족도</th></tr></thead><tbody><tr><td>S01</td><td>버스</td><td>20</td><td>2</td></tr><tr><td>S02</td><td>버스</td><td>40</td><td>3</td></tr><tr><td>S03</td><td>버스</td><td>미응답</td><td>4</td></tr><tr><td>S04</td><td>지하철</td><td>30</td><td>3</td></tr><tr><td>S05</td><td>지하철</td><td>50</td><td>미응답</td></tr><tr><td>S06</td><td>지하철</td><td>70</td><td>2</td></tr><tr><td>S07</td><td>도보</td><td>10</td><td>5</td></tr><tr><td>S08</td><td>도보</td><td>20</td><td>4</td></tr></tbody></table></div><p><strong>초안에 포함된 ID:</strong> S01·S02·S04·S06·S07·S08</p>
+<p>한 행은 가상 학생 한 명입니다. 분석 질문과 대조하여 포함·제외가 적절한지 판단하세요.</p>
+</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 핵심 강의노트</a><span>06 / 24</span></footer></section>
+<section class="slide " data-title="정답을 보기 전에 문제를 자신의 말로 적으세요" data-notes="진단 활동"><header class="slide-header"><span>자료탐색방법론 · 3차수</span><span class="type">진단 활동</span></header><div class="slide-body detailed-content"><h2>정답을 보기 전에 문제를 자신의 말로 적으세요</h2><p>두 자료를 대조해 다음을 기록합니다.</p>
 <ul>
-<li>시간 결측은 시간 통계에서만 제외합니다.</li>
-<li>만족도 결측 때문에 시간 응답을 버리지 않습니다.</li>
-<li>원자료를 보존하고 전체·유효·결측 수와 평균을 함께 보고합니다.</li>
+<li>질문에 답하는 데 필요한 변수는 무엇인가요?</li>
+<li>빠진 학생은 누구이며, 제외할 이유가 있나요?</li>
+<li>평균 숫자만 보면 이 문제를 알 수 있나요?</li>
 </ul>
-<p>이 조건이 코드가 맞는지 판단할 기준입니다.</p>
-</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 핵심 강의노트</a><span>05 / 22</span></footer></section>
-<section class="slide " data-title="실행 전에 확인값을 정합니다" data-notes="개념·해석"><header class="slide-header"><span>자료탐색방법론 · 3차수</span><span class="type">개념·해석</span></header><div class="slide-body detailed-content"><h2>실행 전에 확인값을 정합니다</h2><div class="table-wrap"><table class="data-table"><thead><tr><th>교통수단</th><th>전체</th><th>시간 유효</th><th>시간 결측</th><th>평균(분)</th></tr></thead><tbody><tr><td>버스</td><td>3</td><td>2</td><td>1</td><td>30</td></tr><tr><td>지하철</td><td>3</td><td>3</td><td>0</td><td>50</td></tr><tr><td>도보</td><td>2</td><td>2</td><td>0</td><td>15</td></tr></tbody></table></div><p>버스: (20+40)÷2=30. 지하철: (30+50+70)÷3=50. <strong>평균과 분모를 함께</strong> 적어 두세요.</p>
-</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 핵심 강의노트</a><span>06 / 22</span></footer></section>
-<section class="slide generation-prompt-slide" data-title="① 초안을 만들어 진단합니다" data-notes="AI 요청"><header class="slide-header"><span>자료탐색방법론 · 3차수</span><span class="type">AI 요청</span></header><div class="slide-body detailed-content"><h2>① 초안을 만들어 진단합니다</h2><p>아래 요청을 AI에 전달하고 생성한 코드를 Colab에서 실행하세요. 이 초안에는 <strong>의도적으로 잘못된 삭제 기준</strong>이 있습니다. 다음 장은 비교용 예시입니다.</p>
+<div class="copy-head"><strong>나의 진단 기록</strong><button type="button" class="copy-button">내용 복사</button></div><pre class="code prompt-code"  tabindex="0"><code>발견한 문제: [어떤 응답이 왜 잘못 처리되었나?]
+근거: [원자료와 포함 ID에서 무엇을 확인했나?]
+AI에게 더 물을 질문: [무엇을 설명해 달라고 할 것인가?]</code></pre><p class="copy-status" role="status" aria-live="polite"></p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 핵심 강의노트</a><span>07 / 24</span></footer></section>
+<section class="slide " data-title="해설: 만족도 미응답이 시간 응답까지 지웠습니다" data-notes="진단 해설"><header class="slide-header"><span>자료탐색방법론 · 3차수</span><span class="type">진단 해설</span></header><div class="slide-body detailed-content"><h2>해설: 만족도 미응답이 시간 응답까지 지웠습니다</h2><p>초안은 <strong>어느 열이든 미응답이면 그 학생의 행 전체를 삭제</strong>했습니다.</p>
+<ul>
+<li>S03: 시간이 미응답이므로 시간 평균에서는 제외합니다.</li>
+<li>S05: 시간 50분은 있지만 만족도만 미응답입니다. 통학 시간 질문에서는 이 응답을 사용할 수 있습니다.</li>
+</ul>
+<p>이 사례의 문제는 <strong>질문과 관계없는 결측 때문에 사용할 수 있는 시간 응답이 사라진 것</strong>입니다.</p>
+</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 핵심 강의노트</a><span>08 / 24</span></footer></section>
+<section class="slide " data-title="평균이 같아도 계산 대상은 다릅니다" data-notes="핵심 원리"><header class="slide-header"><span>자료탐색방법론 · 3차수</span><span class="type">핵심 원리</span></header><div class="slide-body detailed-content"><h2>평균이 같아도 계산 대상은 다릅니다</h2><div class="table-wrap"><table class="data-table"><thead><tr><th>처리</th><th>포함된 지하철 시간</th><th>평균</th></tr></thead><tbody><tr><td>초안</td><td>30·70분 / 2명</td><td>50분</td></tr><tr><td>질문에 맞는 처리</td><td>30·50·70분 / 3명</td><td>50분</td></tr></tbody></table></div><p>같은 50분이라는 결과에 서로 다른 계산 대상이 숨어 있습니다. <strong>평균뿐 아니라 누구를 포함했고 몇 명으로 나눴는지 확인해야 합니다.</strong></p>
+<p>이것이 오늘 결측 사례를 사용하는 이유입니다. 같은 태도를 다른 AI 분석에도 적용합니다.</p>
+</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 핵심 강의노트</a><span>09 / 24</span></footer></section>
+<section class="slide generation-prompt-slide" data-title="이제 같은 초안을 Colab에서 재현합니다" data-notes="AI 요청"><header class="slide-header"><span>자료탐색방법론 · 3차수</span><span class="type">AI 요청</span></header><div class="slide-body detailed-content"><h2>이제 같은 초안을 Colab에서 재현합니다</h2><p>화면에서 발견한 문제를 실제 분석 과정에서 확인합니다. 아래 프롬프트를 AI에게 전달하고 생성한 코드를 실행하세요. 다음 장은 비교용 예시입니다.</p>
 <div class="copy-head"><strong>자료 준비와 진단용 초안</strong><button type="button" class="copy-button">작성 프롬프트 복사</button></div><pre class="code prompt-code" data-generation-prompt="1" tabindex="0"><code>Colab용 Python 자료를 만들어줘. 한 행은 가상 학생 한 명이야.
 student_id: S01,S02,S03,S04,S05,S06,S07,S08
 mode: 버스,버스,버스,지하철,지하철,지하철,도보,도보
@@ -34,8 +54,8 @@ satisfaction: 2,3,4,3,None,2,5,4
 표 이름은 df로 하고 미응답은 결측으로 보존해줘.
 진단용 초안으로 df.dropna() 후 교통수단별 시간 유효 수와 평균을 출력해줘. 이것이 아직 검증되지 않은 초안임을 표시하고 원자료도 보여줘.
 
-문법 암기보다 결과 검증이 목적이야. 코드의 입력·선택·계산·출력을 쉬운 말로 설명하고, 실행하지 않은 결과는 예상값이라고 밝혀줘.</code></pre><p class="copy-status" role="status" aria-live="polite"></p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 핵심 강의노트</a><span>07 / 22</span></footer></section>
-<section class="slide " data-title="① 비교용 예시 코드" data-notes="Colab 실습"><header class="slide-header"><span>자료탐색방법론 · 3차수</span><span class="type">Colab 실습</span></header><div class="slide-body detailed-content"><h2>① 비교용 예시 코드</h2><div class="copy-head"><strong>셀 1 · 자료와 초안</strong><button type="button" class="copy-button">Python 코드 복사</button></div><pre class="code python-code"  tabindex="0"><code>import pandas as pd
+문법 암기보다 결과 검증이 목적이야. 코드의 입력·선택·계산·출력을 쉬운 말로 설명하고, 실행하지 않은 결과는 예상값이라고 밝혀줘.</code></pre><p class="copy-status" role="status" aria-live="polite"></p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 핵심 강의노트</a><span>10 / 24</span></footer></section>
+<section class="slide " data-title="자료 준비 · 비교용 예시 코드" data-notes="Colab 실습"><header class="slide-header"><span>자료탐색방법론 · 3차수</span><span class="type">Colab 실습</span></header><div class="slide-body detailed-content"><h2>자료 준비 · 비교용 예시 코드</h2><div class="copy-head"><strong>셀 1 · 원자료와 초안 재현</strong><button type="button" class="copy-button">Python 코드 복사</button></div><pre class="code python-code"  tabindex="0"><code>import pandas as pd
 from IPython.display import display
 df = pd.DataFrame({
     &quot;student_id&quot;: [&quot;S01&quot;,&quot;S02&quot;,&quot;S03&quot;,&quot;S04&quot;,&quot;S05&quot;,&quot;S06&quot;,&quot;S07&quot;,&quot;S08&quot;],
@@ -46,25 +66,23 @@ df = pd.DataFrame({
 wrong = df.dropna()  # 진단할 초안: 어느 열이든 결측이면 삭제
 draft = wrong.groupby(&quot;mode&quot;)[&quot;minutes&quot;].agg([&quot;count&quot;,&quot;mean&quot;])
 display(df)
-display(draft)</code></pre><p class="copy-status" role="status" aria-live="polite"></p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 핵심 강의노트</a><span>08 / 22</span></footer></section>
-<section class="slide " data-title="오류 메시지는 없지만 응답이 사라졌습니다" data-notes="개념·해석"><header class="slide-header"><span>자료탐색방법론 · 3차수</span><span class="type">개념·해석</span></header><div class="slide-body detailed-content"><h2>오류 메시지는 없지만 응답이 사라졌습니다</h2><div class="table-wrap"><table class="data-table"><thead><tr><th>교통수단</th><th>초안 유효 수</th><th>초안 평균(분)</th></tr></thead><tbody><tr><td>버스</td><td>2</td><td>30</td></tr><tr><td>지하철</td><td>2</td><td>50</td></tr><tr><td>도보</td><td>2</td><td>15</td></tr></tbody></table></div><p>초안은 S03과 S05를 제외합니다. S03의 시간은 미응답이지만, <strong>S05의 50분은 사용할 수 있는 응답</strong>입니다.</p>
-<p>버스의 전체 인원도 초안 표에서는 알 수 없습니다. 정상 실행과 올바른 분석은 별개입니다.</p>
-</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 핵심 강의노트</a><span>09 / 22</span></footer></section>
-<section class="slide " data-title="AI에게 무엇을 고쳐 달라고 해야 할까요?" data-notes="개념·해석"><header class="slide-header"><span>자료탐색방법론 · 3차수</span><span class="type">개념·해석</span></header><div class="slide-body detailed-content"><h2>AI에게 무엇을 고쳐 달라고 해야 할까요?</h2><p>“틀렸어, 다시 해줘” 대신 <strong>바뀌어야 할 규칙</strong>을 말합니다.</p>
-<blockquote>
-<p>만족도 미응답 때문에 시간 응답을 지우지 마. 시간 통계의 결측 처리만 따로 해줘. 전체·유효·결측 수를 구분하고 빠진 학생 ID를 보여줘.</p>
-</blockquote>
-<p>수정의 목표는 평균을 바꾸는 것이 아니라 <strong>질문에 맞는 학생을 포함하는 것</strong>입니다.</p>
-</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 핵심 강의노트</a><span>10 / 22</span></footer></section>
-<section class="slide generation-prompt-slide" data-title="② 삭제 기준을 수정하도록 요청합니다" data-notes="AI 요청"><header class="slide-header"><span>자료탐색방법론 · 3차수</span><span class="type">AI 요청</span></header><div class="slide-body detailed-content"><h2>② 삭제 기준을 수정하도록 요청합니다</h2><div class="copy-head"><strong>같은 AI 대화에서 이어서 요청</strong><button type="button" class="copy-button">작성 프롬프트 복사</button></div><pre class="code prompt-code" data-generation-prompt="2" tabindex="0"><code>앞서 만든 df의 진단용 초안을 수정해줘.
+display(draft)</code></pre><p class="copy-status" role="status" aria-live="polite"></p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 핵심 강의노트</a><span>11 / 24</span></footer></section>
+<section class="slide " data-title="예시를 보기 전에 직접 수정 요청을 만드세요" data-notes="수정 활동"><header class="slide-header"><span>자료탐색방법론 · 3차수</span><span class="type">수정 활동</span></header><div class="slide-body detailed-content"><h2>예시를 보기 전에 직접 수정 요청을 만드세요</h2><p>AI에게 “다시 해줘”라고만 말하면 무엇이 바뀌어야 할지 불분명합니다. <strong>문제와 바뀌어야 할 기준</strong>을 적어 요청하세요. 작성한 요청을 먼저 사용한 뒤 다음 장의 예시와 비교합니다.</p>
+<div class="copy-head"><strong>내 말로 작성하는 수정 요청</strong><button type="button" class="copy-button">내용 복사</button></div><pre class="code prompt-code"  tabindex="0"><code>나의 수정 요청:
+분석 질문은 [무엇]이야.
+현재 [어떤 응답]이 [어떤 이유]로 잘못 처리됐어.
+[바뀌어야 할 처리 기준]으로 수정해줘.
+원자료는 보존하고 [확인하고 싶은 인원·결과]를 보여줘.
+어떤 처리가 달라졌는지도 설명해줘.</code></pre><p class="copy-status" role="status" aria-live="polite"></p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 핵심 강의노트</a><span>12 / 24</span></footer></section>
+<section class="slide generation-prompt-slide" data-title="수정 요청 예시 · 내 요청과 비교하세요" data-notes="AI 요청"><header class="slide-header"><span>자료탐색방법론 · 3차수</span><span class="type">AI 요청</span></header><div class="slide-body detailed-content"><h2>수정 요청 예시 · 내 요청과 비교하세요</h2><div class="copy-head"><strong>어떤 기준과 확인 항목을 더할 수 있나요?</strong><button type="button" class="copy-button">작성 프롬프트 복사</button></div><pre class="code prompt-code" data-generation-prompt="2" tabindex="0"><code>앞서 만든 df의 진단용 초안을 수정해줘.
 질문은 교통수단별 편도 통학 시간 비교야. 원자료는 보존해줘.
 시간 결측은 시간 통계에서만 제외하고 만족도 결측 때문에 시간 응답을 지우지 마. 결측을 0으로 채우지 마.
 교통수단별 전체·시간 유효·시간 결측 수·평균을 출력해줘.
 초안에서 제외된 학생 ID와 제외 이유를 보여주고, S05가 남는지 확인해줘.
 수정 전후 평균이 같아도 수정이 필요한 이유를 설명해줘.
 
-문법 암기보다 결과 검증이 목적이야. 코드의 입력·선택·계산·출력을 쉬운 말로 설명하고, 실행하지 않은 결과는 예상값이라고 밝혀줘.</code></pre><p class="copy-status" role="status" aria-live="polite"></p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 핵심 강의노트</a><span>11 / 22</span></footer></section>
-<section class="slide " data-title="② 비교용 예시 코드" data-notes="Colab 실습"><header class="slide-header"><span>자료탐색방법론 · 3차수</span><span class="type">Colab 실습</span></header><div class="slide-body detailed-content"><h2>② 비교용 예시 코드</h2><div class="copy-head"><strong>셀 2 · 수정과 인원 확인</strong><button type="button" class="copy-button">Python 코드 복사</button></div><pre class="code python-code"  tabindex="0"><code>summary = df.groupby(&quot;mode&quot;).agg(
+문법 암기보다 결과 검증이 목적이야. 코드의 입력·선택·계산·출력을 쉬운 말로 설명하고, 실행하지 않은 결과는 예상값이라고 밝혀줘.</code></pre><p class="copy-status" role="status" aria-live="polite"></p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 핵심 강의노트</a><span>13 / 24</span></footer></section>
+<section class="slide " data-title="수정 결과 · 비교용 예시 코드" data-notes="Colab 실습"><header class="slide-header"><span>자료탐색방법론 · 3차수</span><span class="type">Colab 실습</span></header><div class="slide-body detailed-content"><h2>수정 결과 · 비교용 예시 코드</h2><div class="copy-head"><strong>셀 2 · 수정과 인원 확인</strong><button type="button" class="copy-button">Python 코드 복사</button></div><pre class="code python-code"  tabindex="0"><code>summary = df.groupby(&quot;mode&quot;).agg(
     total_n=(&quot;student_id&quot;, &quot;size&quot;),
     valid_n=(&quot;minutes&quot;, &quot;count&quot;),
     mean_minutes=(&quot;minutes&quot;, &quot;mean&quot;)
@@ -73,23 +91,25 @@ summary[&quot;missing_n&quot;] = summary[&quot;total_n&quot;] - summary[&quot;va
 display(summary[[&quot;total_n&quot;,&quot;valid_n&quot;,&quot;missing_n&quot;,&quot;mean_minutes&quot;]])
 print(&quot;초안이 제외한 ID:&quot;, df.loc[~df.index.isin(wrong.index), &quot;student_id&quot;].tolist())
 assert summary.loc[&quot;지하철&quot;, &quot;valid_n&quot;] == 3
-assert summary.loc[&quot;버스&quot;, &quot;valid_n&quot;] == 2</code></pre><p class="copy-status" role="status" aria-live="polite"></p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 핵심 강의노트</a><span>12 / 22</span></footer></section>
-<section class="slide " data-title="평균은 그대로, 분석 근거는 바뀝니다" data-notes="개념·해석"><header class="slide-header"><span>자료탐색방법론 · 3차수</span><span class="type">개념·해석</span></header><div class="slide-body detailed-content"><h2>평균은 그대로, 분석 근거는 바뀝니다</h2><div class="table-wrap"><table class="data-table"><thead><tr><th>항목</th><th>초안</th><th>수정</th></tr></thead><tbody><tr><td>지하철 포함 ID</td><td>S04, S06</td><td>S04, S05, S06</td></tr><tr><td>지하철 시간 유효 수</td><td>2</td><td>3</td></tr><tr><td>지하철 평균(분)</td><td>50</td><td>50</td></tr><tr><td>버스 전체 / 유효 / 결측</td><td>전체·결측 불명확</td><td>3 / 2 / 1</td></tr></tbody></table></div><p>수정 결과가 앞서 정한 확인값과 일치하는지 봅니다. <strong>“평균이 같으니 수정 불필요”라는 판단을 피하세요.</strong></p>
-</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 핵심 강의노트</a><span>13 / 22</span></footer></section>
-<section class="slide " data-title="③ 한 값을 바꿔 두 규칙을 시험합니다" data-notes="개념·해석"><header class="slide-header"><span>자료탐색방법론 · 3차수</span><span class="type">개념·해석</span></header><div class="slide-body detailed-content"><h2>③ 한 값을 바꿔 두 규칙을 시험합니다</h2><p>실험용 복사본에서 <strong>S05의 시간만 50→80분</strong>으로 바꿉니다. 원자료의 50분은 남겨 둡니다.</p>
-<ul>
-<li>시간 응답 보존: (30+80+70)÷3=<strong>60분</strong></li>
-<li>전체 열 결측 삭제: S05가 빠져 (30+70)÷2=<strong>50분</strong></li>
-</ul>
-<p>앞에서는 숨겨졌던 삭제 오류가 드러납니다. 이 값 변경은 시험용이며 실제 응답을 수정하는 작업이 아닙니다.</p>
-</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 핵심 강의노트</a><span>14 / 22</span></footer></section>
-<section class="slide generation-prompt-slide" data-title="③ 반례와 별도 계산을 요청합니다" data-notes="AI 요청"><header class="slide-header"><span>자료탐색방법론 · 3차수</span><span class="type">AI 요청</span></header><div class="slide-body detailed-content"><h2>③ 반례와 별도 계산을 요청합니다</h2><div class="copy-head"><strong>규칙이 작동하는지 확인</strong><button type="button" class="copy-button">작성 프롬프트 복사</button></div><pre class="code prompt-code" data-generation-prompt="3" tabindex="0"><code>수정한 분석을 시험해줘. 원자료 df를 복사한 changed에서만 S05의 minutes를 50에서 80으로 바꿔줘.
+assert summary.loc[&quot;버스&quot;, &quot;valid_n&quot;] == 2</code></pre><p class="copy-status" role="status" aria-live="polite"></p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 핵심 강의노트</a><span>14 / 24</span></footer></section>
+<section class="slide " data-title="수정 후 무엇이 달라졌나요?" data-notes="수정 해설"><header class="slide-header"><span>자료탐색방법론 · 3차수</span><span class="type">수정 해설</span></header><div class="slide-body detailed-content"><h2>수정 후 무엇이 달라졌나요?</h2><div class="table-wrap"><table class="data-table"><thead><tr><th>항목</th><th>초안</th><th>수정</th></tr></thead><tbody><tr><td>지하철 포함 ID</td><td>S04·S06</td><td>S04·S05·S06</td></tr><tr><td>지하철 시간 유효 수</td><td>2명</td><td>3명</td></tr><tr><td>지하철 평균</td><td>50분</td><td>50분</td></tr><tr><td>버스 전체 / 유효 / 결측</td><td>전체·결측 불명확</td><td>3 / 2 / 1</td></tr></tbody></table></div><p>평균 변화가 아니라 <strong>요청한 기준이 반영됐는지</strong>를 확인합니다.</p>
+<p>수정한 평균은 버스 30분·지하철 50분·도보 15분입니다. S05의 시간 응답이 보존됐는지 확인하세요.</p>
+</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 핵심 강의노트</a><span>15 / 24</span></footer></section>
+<section class="slide " data-title="“수정했습니다”라는 답변을 어떻게 확인할까요?" data-notes="검증 활동"><header class="slide-header"><span>자료탐색방법론 · 3차수</span><span class="type">검증 활동</span></header><div class="slide-body detailed-content"><h2>“수정했습니다”라는 답변을 어떻게 확인할까요?</h2><p>평균이 계속 같다면 수정이 제대로 됐는지 무엇을 더 확인할 수 있을까요?</p>
+<ol>
+<li>수정 전후에 포함된 ID와 인원을 비교해 보세요.</li>
+<li><strong>실험용 복사본의 값 하나를 바꾸면</strong>, 두 처리 방식의 차이가 더 잘 드러날까요?</li>
+</ol>
+<p>바꿔 볼 학생·값과 예상 결과를 먼저 적으세요. 실제 응답은 보존합니다.</p>
+</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 핵심 강의노트</a><span>16 / 24</span></footer></section>
+<section class="slide generation-prompt-slide" data-title="검증 요청 예시 · 한 값만 바꿔 시험합니다" data-notes="AI 요청"><header class="slide-header"><span>자료탐색방법론 · 3차수</span><span class="type">AI 요청</span></header><div class="slide-body detailed-content"><h2>검증 요청 예시 · 한 값만 바꿔 시험합니다</h2><p>예시에서는 실험용 복사본의 S05 시간만 50→80분으로 바꿉니다. 코드를 실행하기 전에 두 방식의 평균을 예상해 보세요.</p>
+<div class="copy-head"><strong>규칙이 제대로 반영됐는지 확인</strong><button type="button" class="copy-button">작성 프롬프트 복사</button></div><pre class="code prompt-code" data-generation-prompt="3" tabindex="0"><code>수정한 분석을 시험해줘. 원자료 df를 복사한 changed에서만 S05의 minutes를 50에서 80으로 바꿔줘.
 시간만 기준으로 계산한 지하철 평균과 전체 열 dropna() 후 평균을 비교해줘. 두 계산에 포함된 ID도 보여줘.
 별도 리스트 [30,80,70]의 합계/개수로 올바른 평균을 독립 확인해줘.
 전체 열 삭제가 틀린 이유를 포함된 학생과 분모를 근거로 설명해줘. 이 실험용 자료를 원자료와 섞지 마.
 
-문법 암기보다 결과 검증이 목적이야. 코드의 입력·선택·계산·출력을 쉬운 말로 설명하고, 실행하지 않은 결과는 예상값이라고 밝혀줘.</code></pre><p class="copy-status" role="status" aria-live="polite"></p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 핵심 강의노트</a><span>15 / 22</span></footer></section>
-<section class="slide " data-title="③ 비교용 예시 코드" data-notes="Colab 실습"><header class="slide-header"><span>자료탐색방법론 · 3차수</span><span class="type">Colab 실습</span></header><div class="slide-body detailed-content"><h2>③ 비교용 예시 코드</h2><div class="copy-head"><strong>셀 3 · 값 변경과 독립 확인</strong><button type="button" class="copy-button">Python 코드 복사</button></div><pre class="code python-code"  tabindex="0"><code>changed = df.copy()
+문법 암기보다 결과 검증이 목적이야. 코드의 입력·선택·계산·출력을 쉬운 말로 설명하고, 실행하지 않은 결과는 예상값이라고 밝혀줘.</code></pre><p class="copy-status" role="status" aria-live="polite"></p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 핵심 강의노트</a><span>17 / 24</span></footer></section>
+<section class="slide " data-title="검증 · 비교용 예시 코드" data-notes="Colab 실습"><header class="slide-header"><span>자료탐색방법론 · 3차수</span><span class="type">Colab 실습</span></header><div class="slide-body detailed-content"><h2>검증 · 비교용 예시 코드</h2><div class="copy-head"><strong>셀 3 · 값 변경과 다른 계산 경로</strong><button type="button" class="copy-button">Python 코드 복사</button></div><pre class="code python-code"  tabindex="0"><code>changed = df.copy()
 changed.loc[changed[&quot;student_id&quot;] == &quot;S05&quot;, &quot;minutes&quot;] = 80
 valid = changed.loc[changed[&quot;mode&quot;] == &quot;지하철&quot;, &quot;minutes&quot;].dropna()
 bad = changed.dropna().query('mode == &quot;지하철&quot;')
@@ -98,34 +118,36 @@ print(&quot;포함 ID:&quot;, changed.loc[valid.index, &quot;student_id&quot;].t
 print(&quot;초안 ID:&quot;, bad[&quot;student_id&quot;].tolist())
 print(&quot;별도 계산:&quot;, sum([30,80,70]) / len([30,80,70]))
 assert valid.mean() == 60 and bad[&quot;minutes&quot;].mean() == 50
-assert df.loc[df[&quot;student_id&quot;] == &quot;S05&quot;, &quot;minutes&quot;].iloc[0] == 50</code></pre><p class="copy-status" role="status" aria-live="polite"></p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 핵심 강의노트</a><span>16 / 22</span></footer></section>
-<section class="slide " data-title="결과를 믿을 근거 세 가지" data-notes="개념·해석"><header class="slide-header"><span>자료탐색방법론 · 3차수</span><span class="type">개념·해석</span></header><div class="slide-body detailed-content"><h2>결과를 믿을 근거 세 가지</h2><div class="table-wrap"><table class="data-table"><thead><tr><th>확인</th><th>이번 실습의 근거</th></tr></thead><tbody><tr><td>손계산</td><td>원자료 버스 30분, 지하철 50분과 유효 수 확인</td></tr><tr><td>다른 계산 경로</td><td>변경 자료의 리스트 합계/개수와 pandas 평균이 모두 60분</td></tr><tr><td>반례 투입</td><td>S05를 80분으로 바꾸면 올바른 기준 60분, 초안 기준 50분</td></tr></tbody></table></div><p>한 사례에서 통과했다고 모든 입력에서 옳다는 뜻은 아닙니다. 전부 결측인 집단 등은 자율 실습에서 추가 확인합니다.</p>
-</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 핵심 강의노트</a><span>17 / 22</span></footer></section>
-<section class="slide " data-title="코드에서는 네 가지만 물어봅니다" data-notes="개념·해석"><header class="slide-header"><span>자료탐색방법론 · 3차수</span><span class="type">개념·해석</span></header><div class="slide-body detailed-content"><h2>코드에서는 네 가지만 물어봅니다</h2><ol>
-<li><strong>입력:</strong> 내가 준 자료와 열을 쓰는가?</li>
-<li><strong>선택:</strong> 어떤 학생이 남고 사라지는가?</li>
-<li><strong>계산:</strong> 무엇을 더하고 몇 명으로 나누는가?</li>
-<li><strong>출력:</strong> 단위·인원·정렬이 요청과 같은가?</li>
+assert df.loc[df[&quot;student_id&quot;] == &quot;S05&quot;, &quot;minutes&quot;].iloc[0] == 50</code></pre><p class="copy-status" role="status" aria-live="polite"></p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 핵심 강의노트</a><span>18 / 24</span></footer></section>
+<section class="slide " data-title="검증 해설: 숨겨졌던 처리 차이가 드러납니다" data-notes="검증 해설"><header class="slide-header"><span>자료탐색방법론 · 3차수</span><span class="type">검증 해설</span></header><div class="slide-body detailed-content"><h2>검증 해설: 숨겨졌던 처리 차이가 드러납니다</h2><div class="table-wrap"><table class="data-table"><thead><tr><th>실험용 복사본의 처리</th><th>계산</th><th>평균</th></tr></thead><tbody><tr><td>시간 응답 보존</td><td>(30+80+70)÷3</td><td>60분</td></tr><tr><td>전체 열의 결측 행 삭제</td><td>(30+70)÷2</td><td>50분</td></tr></tbody></table></div><p>올바른 기준에서는 바뀐 S05의 응답이 평균에 반영됩니다. 초안은 여전히 S05를 버리므로 결과가 바뀌지 않습니다.</p>
+<p><strong>별도 리스트의 합계÷개수도 60분인지</strong> 확인합니다. 원자료의 S05는 50분으로 남아 있어야 합니다.</p>
+</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 핵심 강의노트</a><span>19 / 24</span></footer></section>
+<section class="slide " data-title="결과를 믿을 근거를 남깁니다" data-notes="검증 습관"><header class="slide-header"><span>자료탐색방법론 · 3차수</span><span class="type">검증 습관</span></header><div class="slide-body detailed-content"><h2>결과를 믿을 근거를 남깁니다</h2><div class="table-wrap"><table class="data-table"><thead><tr><th>확인 방법</th><th>이번 사례에서 한 일</th></tr></thead><tbody><tr><td>손계산 대조</td><td>원자료의 평균과 유효 수를 직접 확인</td></tr><tr><td>다른 계산 경로</td><td>pandas 평균과 별도 리스트 합계÷개수 비교</td></tr><tr><td>반례로 시험</td><td>S05의 값 변경으로 두 처리 규칙의 차이 확인</td></tr></tbody></table></div><p>같은 AI에게 “맞아?”라고 다시 묻는 것만으로는 충분하지 않습니다. <strong>원자료·인원·별도 계산·시험 결과</strong>를 근거로 남기세요. 한 사례에서 통과해도 모든 입력에서 옳다는 뜻은 아닙니다.</p>
+</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 핵심 강의노트</a><span>20 / 24</span></footer></section>
+<section class="slide " data-title="어떤 AI 분석에도 이 네 질문을 적용하세요" data-notes="다른 분석으로 확장"><header class="slide-header"><span>자료탐색방법론 · 3차수</span><span class="type">다른 분석으로 확장</span></header><div class="slide-body detailed-content"><h2>어떤 AI 분석에도 이 네 질문을 적용하세요</h2><ol>
+<li><strong>입력:</strong> 내가 준 자료와 열을 사용했는가?</li>
+<li><strong>선택:</strong> 어떤 응답이 남고 사라졌는가?</li>
+<li><strong>계산:</strong> 무엇을 몇 개로 나누었는가?</li>
+<li><strong>출력:</strong> 단위·인원·정렬이 요청과 맞는가?</li>
 </ol>
-<p>함수 이름을 모르면 AI에게 “이 줄에서 빠지는 학생 ID와 이유를 설명해줘”라고 요청하세요.</p>
-</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 핵심 강의노트</a><span>18 / 22</span></footer></section>
-<section class="slide " data-title="나머지 함정은 원리만 짚습니다" data-notes="개념·해석"><header class="slide-header"><span>자료탐색방법론 · 3차수</span><span class="type">개념·해석</span></header><div class="slide-body detailed-content"><h2>나머지 함정은 원리만 짚습니다</h2><div class="table-wrap"><table class="data-table"><thead><tr><th>함정</th><th>무엇이 바뀌는가?</th></tr></thead><tbody><tr><td>결측을 0으로 채움</td><td>모르는 시간을 실제 0분으로 바꿈. 버스 평균 30→20분</td></tr><tr><td>정렬과 순위 혼동</td><td>정렬은 행 순서, 순위는 각 값의 위치를 나타내는 값</td></tr><tr><td>축·단위 혼합</td><td>학생별 평균과 변수별 평균을 혼동하거나 분과 만족도를 섞음</td></tr><tr><td>소수 직접 비교</td><td>0.1+0.2를 0.3과 직접 비교하면 표현 오차가 드러날 수 있음</td></tr></tbody></table></div><p>각 항목을 지금 추가 실행하지 않습니다. 필요할 때 아래 자율 실습에서 프롬프트로 확인하세요.</p>
-</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 핵심 강의노트</a><span>19 / 22</span></footer></section>
-<section class="slide " data-title="오늘의 기록은 이 정도면 충분합니다" data-notes="개념·해석"><header class="slide-header"><span>자료탐색방법론 · 3차수</span><span class="type">개념·해석</span></header><div class="slide-body detailed-content"><h2>오늘의 기록은 이 정도면 충분합니다</h2><p>수정 전후 표와 아래 기록을 Colab 텍스트 셀에 남기세요. 코드 양보다 <strong>수정 이유와 실제 확인한 근거</strong>를 봅니다.</p>
-<div class="copy-head"><strong>검증 기록</strong><button type="button" class="copy-button">내용 복사</button></div><pre class="code prompt-code"  tabindex="0"><code>분석 질문: 교통수단별 편도 통학 시간 비교
-발견한 문제: [누구의 어떤 응답이 잘못 제외되었나?]
-수정 요청: [AI에게 전달한 실제 요청]
-검증 근거: [인원·손계산·값 변경 전후 비교]
-해석: [확인된 사실과 이 자료의 한계]</code></pre><p class="copy-status" role="status" aria-live="polite"></p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 핵심 강의노트</a><span>20 / 22</span></footer></section>
-<section class="slide " data-title="추가 실습은 필요할 때 따로 합니다" data-notes="개념·해석"><header class="slide-header"><span>자료탐색방법론 · 3차수</span><span class="type">개념·해석</span></header><div class="slide-body detailed-content"><h2>추가 실습은 필요할 때 따로 합니다</h2><p><strong>자율 실습은 선택 활동이며, 이번 수업의 추가 필수 제출물이 아닙니다.</strong></p>
-<ul>
-<li>조건 선택·정렬·순위·축의 차이</li>
-<li>전부 결측·단일값 등 특이한 입력</li>
-<li>결측 0 대체·단위 혼합·소수 비교</li>
-</ul>
-<p>각 활동에 작성 프롬프트·비교 코드·확인값을 묶었습니다. 준비 셀을 먼저 실행한 후 원하는 활동을 골라 진행하세요.</p>
-<div class="resource-links"><a class="button primary" href="../week03-self-study.html">자율 실습 안내</a><a class="button" href="../downloads/EDA_week03_selfstudy.ipynb" download>자율 실습 노트북</a></div></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 핵심 강의노트</a><span>21 / 22</span></footer></section>
-<section class="slide " data-title="기억할 것은 평균보다 계산 대상입니다" data-notes="개념·해석"><header class="slide-header"><span>자료탐색방법론 · 3차수</span><span class="type">개념·해석</span></header><div class="slide-body detailed-content"><h2>기억할 것은 평균보다 계산 대상입니다</h2><p><strong>질문 → AI 요청 → 실행 → 포함된 응답 확인 → 수정 → 검증</strong></p>
-<p>평균이 같아도 빠진 학생이 다르면 분석이 틀릴 수 있습니다. AI에게 코드를 맡기되, 어떤 응답을 어떤 기준으로 계산했는지 확인하세요.</p>
-<p>다음 차수에서는 같은 태도로 줄기와 잎 그림과 히스토그램의 구간·범위·빈도 합계를 확인합니다.</p>
-</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 핵심 강의노트</a><span>22 / 22</span></footer></section></main><nav class="study-toolbar" aria-label="강의 보기"><a href="../index.html?week=3">강의 홈</a><button id="reading-toggle" type="button" aria-pressed="false">전체 읽기</button><a href="https://colab.research.google.com/github/datathinkinglab/kyonggi-courses-2026/blob/main/docs/eda/downloads/EDA_week03.ipynb" target="_blank" rel="noopener">Colab 실습</a><button id="print-deck" type="button">PDF 출력</button></nav><div class="deck-controls" aria-label="슬라이드 이동"><button class="control" data-action="prev" aria-label="이전 페이지">←</button><button class="control" data-action="overview" aria-label="전체 목차">☷</button><button class="control" data-action="fullscreen" aria-label="전체 화면">⛶</button><button class="control" data-action="next" aria-label="다음 페이지">→</button></div><div class="slide-counter" role="status" aria-live="polite"></div><div class="progress"></div><div class="overview" role="dialog" aria-modal="true" aria-label="슬라이드 목차"><button class="overview-close" type="button">목차 닫기 ×</button></div><script src="../eda-detailed.js?v=sessions-20261018"></script></body></html>
+<p>코드를 모두 해독할 필요는 없습니다. AI에게 “이 줄에서 제외되는 ID와 이유를 보여줘”라고 요청하고 실제 자료와 비교하세요.</p>
+</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 핵심 강의노트</a><span>21 / 24</span></footer></section>
+<section class="slide " data-title="최종 산출물은 코드가 아니라 판단의 기록입니다" data-notes="학습 결과"><header class="slide-header"><span>자료탐색방법론 · 3차수</span><span class="type">학습 결과</span></header><div class="slide-body detailed-content"><h2>최종 산출물은 코드가 아니라 판단의 기록입니다</h2><p>수정 전후 표와 아래 세 가지를 Colab 텍스트 셀에 남깁니다.</p>
+<p><strong>확인 기준:</strong> 문제를 근거로 설명했는가? 수정 조건을 구체적으로 전달했는가? 실제 확인한 결과를 남겼는가?</p>
+<div class="copy-head"><strong>오늘의 학습 기록</strong><button type="button" class="copy-button">내용 복사</button></div><pre class="code prompt-code"  tabindex="0"><code>1. 발견한 문제
+[어떤 응답이 왜 잘못 처리됐는지 작성]
+
+2. 내가 보낸 수정 요청
+[예시를 그대로 옮기지 말고 실제 보낸 요청 기록]
+
+3. 확인한 근거
+[포함 ID·인원·계산·값 변경 결과 중 실제 확인한 내용 기록]</code></pre><p class="copy-status" role="status" aria-live="polite"></p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 핵심 강의노트</a><span>22 / 24</span></footer></section>
+<section class="slide " data-title="추가 문법·처리 사례는 자율 실습으로 이어갑니다" data-notes="자율 실습"><header class="slide-header"><span>자료탐색방법론 · 3차수</span><span class="type">자율 실습</span></header><div class="slide-body detailed-content"><h2>추가 문법·처리 사례는 자율 실습으로 이어갑니다</h2><div class="table-wrap"><table class="data-table"><thead><tr><th>주제</th><th>기억할 원리</th></tr></thead><tbody><tr><td>조건 선택·정렬·순위</td><td>대상 선택·행 순서·값의 순위를 구별</td></tr><tr><td>결측과 0·특이한 입력</td><td>모르는 값과 실제 0을 구별하고 경계 사례 확인</td></tr><tr><td>축·단위·소수 비교</td><td>계산 방향·단위·허용오차를 확인</td></tr></tbody></table></div><p>7개 활동은 <strong>선택형 자율 실습</strong>입니다. 이번 수업의 추가 필수 제출물이 아닙니다. 각 활동에 작성 프롬프트·비교 코드·확인값이 있습니다.</p>
+<div class="resource-links"><a class="button primary" href="../week03-self-study.html">자율 실습 안내</a><a class="button" href="../downloads/EDA_week03_selfstudy.ipynb" download>자율 실습 노트북</a></div></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 핵심 강의노트</a><span>23 / 24</span></footer></section>
+<section class="slide dark" data-title="AI에게 맡기되, 내 질문대로 했는지 확인합니다" data-notes="오늘의 정리"><header class="slide-header"><span>자료탐색방법론 · 3차수</span><span class="type">오늘의 정리</span></header><div class="slide-body detailed-content"><h2>AI에게 맡기되, 내 질문대로 했는지 확인합니다</h2><p><strong>확인 → 수정 요청 → 검증</strong></p>
+<p>오늘의 경험을 자신의 말로 설명해 보세요.</p>
+<blockquote>
+<p>AI가 평균을 계산해 줬지만, 어떤 응답을 빼고 계산했는지 확인했습니다. 잘못 빠진 응답을 발견해 수정 요청을 했고, 수정된 결과도 확인했습니다.</p>
+</blockquote>
+<p>이 가상 소표본으로 실제 학생 전체나 인과관계를 단정하지 않습니다. 다음 차수에서는 <strong>그림에도 같은 확인 과정</strong>을 적용합니다.</p>
+</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 핵심 강의노트</a><span>24 / 24</span></footer></section></main><nav class="study-toolbar" aria-label="강의 보기"><a href="../index.html?week=3">강의 홈</a><button id="reading-toggle" type="button" aria-pressed="false">전체 읽기</button><a href="https://colab.research.google.com/github/datathinkinglab/kyonggi-courses-2026/blob/main/docs/eda/downloads/EDA_week03.ipynb" target="_blank" rel="noopener">Colab 실습</a><button id="print-deck" type="button">PDF 출력</button></nav><div class="deck-controls" aria-label="슬라이드 이동"><button class="control" data-action="prev" aria-label="이전 페이지">←</button><button class="control" data-action="overview" aria-label="전체 목차">☷</button><button class="control" data-action="fullscreen" aria-label="전체 화면">⛶</button><button class="control" data-action="next" aria-label="다음 페이지">→</button></div><div class="slide-counter" role="status" aria-live="polite"></div><div class="progress"></div><div class="overview" role="dialog" aria-modal="true" aria-label="슬라이드 목차"><button class="overview-close" type="button">목차 닫기 ×</button></div><script src="../eda-detailed.js?v=sessions-20261018"></script></body></html>

@@ -29,7 +29,7 @@
       copy: "자료의 행과 열이 의미하는 바를 정하고, 결측 처리와 출력 기준을 재현 가능한 요청으로 구체화합니다.",
       agenda: ["관측 단위·관측치·변수·값", "명목·순서·구간·비율 척도", "자료 사전과 결측 처리", "AI 분석 명세 비교 실습"]
     },
-    { week: 3, title: "코드 읽기와 결과 검증", activity: "평균이 같아도 잘못된 분석을 진단·수정·검증하는 핵심 실습 하나에 집중합니다.", slide: "slides/week-03.html", slideCount: 22, printFrom: 1, printTo: 22, notion: "https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea", sessionTitle: "평균이 같아도 분석은 틀릴 수 있다", copy: "핵심 실습 하나로 계산 대상·분모를 확인합니다. 나머지 활동은 별도 자율 실습으로 이어갑니다.", agenda: ["그럴듯한 초안 진단","AI에 삭제 기준 수정 요청","한 값 변경으로 검증","선택형 자율 실습 안내"] },
+    { week: 3, title: "AI 분석 결과를 확인하고 고치는 법", activity: "AI가 요청한 조건을 지켰는지 확인하고, 자신의 말로 수정 요청을 한 뒤 실제 근거로 검증합니다.", slide: "slides/week-03.html", slideCount: 24, printFrom: 1, printTo: 24, notion: "https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea", sessionTitle: "AI 분석 결과를<br>확인하고 고치는 법", copy: "결과를 먼저 판단하고, 문제 발견 → 수정 요청 → 검증의 과정을 직접 수행합니다. 추가 활동은 별도 자율 실습으로 이어갑니다.", agenda: ["AI 보고서를 먼저 판단하기","원자료와 대조해 문제 발견","내 말로 수정 요청하기","실제 근거로 검증하고 기록"] },
     { week: 4, title: "줄기와 잎 그림, 히스토그램", activity: "줄기와 잎 그림·히스토그램을 손으로 만들고 구간 폭·시작점·경계를 비교합니다.", slide: "slides/week-04.html", slideCount: 61, printFrom: 1, printTo: 61, notion: "https://app.notion.com/p/3fd96f1add76814ab4e0c6a9ceb60c29", sessionTitle: "줄기와 잎 그림, 히스토그램", copy: "상세 설명·손계산·복사 가능한 Python과 프롬프트·검증 해설·과제를 슬라이드에서 확인합니다.", agenda: ["줄기와 잎 그림 손그림","빈도표와 히스토그램","구간 폭·시작점 변화 실험","경계값 검증과 해석"] },
     { week: 5, title: "중심위치와 저항성", activity: "평균·중앙값·분위수·IQR과 저항성을 학습합니다." },
     { week: 6, title: "5수요약과 상자그림", activity: "울타리와 이상점, 그룹별 분포 비교를 다룹니다." },
