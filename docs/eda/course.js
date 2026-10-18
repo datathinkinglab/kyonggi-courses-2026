@@ -29,8 +29,8 @@
       copy: "자료의 행과 열이 의미하는 바를 정하고, 결측 처리와 출력 기준을 재현 가능한 요청으로 구체화합니다.",
       agenda: ["관측 단위·관측치·변수·값", "명목·순서·구간·비율 척도", "자료 사전과 결측 처리", "AI 분석 명세 비교 실습"]
     },
-    { week: 3, title: "코드 읽기와 결과 검증", activity: "결측 처리, 부분세트·정렬, 검증 3종 세트를 다룹니다." },
-    { week: 4, title: "줄기와 잎 · 히스토그램", activity: "분포의 모양과 구간 폭에 따른 표현 차이를 탐색합니다." },
+    { week: 3, title: "코드 읽기와 결과 검증", activity: "결측 처리·행 선택·정렬부터 오류 진단과 검증 3종 세트까지 직접 실행합니다.", slide: "slides/week-03.html", slideCount: 58, printFrom: 1, printTo: 58, notion: "https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea", sessionTitle: "코드 읽기와 결과 검증", copy: "상세 설명·손계산·복사 가능한 Python과 프롬프트·검증 해설·과제를 슬라이드에서 확인합니다.", agenda: ["결측·부분세트·정렬","손계산과 기준 집계","오류 진단과 검증 3종 세트","AI 실습과 검증 로그"] },
+    { week: 4, title: "줄기와 잎 그림, 히스토그램", activity: "줄기와 잎 그림·히스토그램을 손으로 만들고 구간 폭·시작점·경계를 비교합니다.", slide: "slides/week-04.html", slideCount: 52, printFrom: 1, printTo: 52, notion: "https://app.notion.com/p/3fd96f1add76814ab4e0c6a9ceb60c29", sessionTitle: "줄기와 잎 그림, 히스토그램", copy: "상세 설명·손계산·복사 가능한 Python과 프롬프트·검증 해설·과제를 슬라이드에서 확인합니다.", agenda: ["줄기와 잎 그림 손그림","빈도표와 히스토그램","구간 폭·시작점 변화 실험","경계값 검증과 해석"] },
     { week: 5, title: "중심위치와 저항성", activity: "평균·중앙값·분위수·IQR과 저항성을 학습합니다." },
     { week: 6, title: "5수요약과 상자그림", activity: "울타리와 이상점, 그룹별 분포 비교를 다룹니다." },
     { week: 7, title: "재표현: 변환의 사다리", activity: "여러 변환을 적용하고 왜도의 변화를 비교합니다." },
@@ -153,7 +153,7 @@
     notionLink.href = item.notion || notionCourse;
     notionLink.textContent = item.notion ? `${item.week}주차 원문 ↗` : "전체 Notion 강의노트 ↗";
     byId("current-card-help").innerHTML = item.slide
-      ? "방향키로 이동 · O 전체 목록<br>N 강사 노트 · 전체 화면 지원"
+      ? ([3, 4].includes(item.week) ? "방향키 이동 · O 전체 목차<br>전체 읽기 · 코드 복사 · Colab 실습" : "방향키로 이동 · O 전체 목록<br>N 강사 노트 · 전체 화면 지원")
       : "해당 주차 슬라이드가 추가되면<br>이 버튼이 자동으로 활성화됩니다.";
 
     const headerLink = byId("header-slide-link");

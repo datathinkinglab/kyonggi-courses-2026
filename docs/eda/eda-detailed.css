@@ -1,0 +1,60 @@
+/* Detailed lessons extend the existing EDA palette, typography and slide layout. */
+.detailed-deck .slide{padding:28px clamp(28px,4.3vw,72px) 90px;grid-template-rows:auto minmax(0,1fr) auto;}
+.detailed-deck .slide:not(.active){transform:none;}
+.detailed-deck .slide-body,.detailed-deck .table-wrap{min-width:0;}
+.detailed-content{justify-content:center;gap:14px;padding:18px 0;min-height:0;}
+.section-label{color:var(--blue);font-size:14px;font-weight:800;line-height:1.35;}
+.dark .section-label{color:#b4cce8;}
+.detailed-content h2{font-size:clamp(30px,3.4vw,49px);line-height:1.2;letter-spacing:-.045em;margin:0 0 10px;}
+.detailed-content h3{font-size:24px;line-height:1.3;margin:0 0 12px;}
+.detailed-content p,.detailed-content li{font-size:clamp(20px,1.7vw,26px);line-height:1.6;word-break:keep-all;overflow-wrap:anywhere;margin:0 0 13px;}
+.detailed-content ul,.detailed-content ol{margin:0;padding-left:1.45em;}
+.detailed-content li{margin-bottom:10px;}
+.detailed-content .lead{font-size:clamp(26px,2.5vw,36px);line-height:1.55;}
+.detailed-content strong{color:var(--blue);}
+.dark .detailed-content strong{color:white;}
+.detailed-content a{color:var(--blue);text-underline-offset:4px;}
+.dark .detailed-content a{color:white;}
+.slide-footer a{color:inherit;text-underline-offset:3px;}
+.detailed-content code:not(pre code){font:0.9em/1.4 Consolas,monospace;background:#e6edf6;padding:2px 5px;border-radius:4px;color:#10385f;}
+.detailed-content blockquote{border-left:6px solid var(--coral);padding:14px 22px;margin:8px 0;background:white;}
+.detailed-content .table-wrap{width:100%;overflow:auto;}
+.detailed-content .data-table{font-size:clamp(17px,1.5vw,22px);}
+.detailed-content .data-table th,.detailed-content .data-table td{padding:11px 15px;line-height:1.45;}
+.copy-head{display:flex;justify-content:space-between;align-items:center;gap:14px;color:var(--blue);font-size:17px;}
+.copy-button{border:0;border-radius:9px;padding:10px 18px;background:var(--coral);color:white;font:700 16px/1.35 inherit;cursor:pointer;min-height:42px;flex-shrink:0;}
+.copy-button:hover{background:#d94738;}
+.copy-button:focus-visible,.study-toolbar button:focus-visible,.study-toolbar a:focus-visible,.control:focus-visible{outline:3px solid var(--coral);outline-offset:4px;}
+.detailed-content .execution-hint{font-size:18px;line-height:1.45;color:var(--muted);margin-bottom:0;}
+.detailed-content pre.code{margin:0;padding:20px 25px;font:clamp(16px,1.3vw,20px)/1.55 Consolas,'Courier New',monospace;white-space:pre;tab-size:4;max-height:47vh;overflow:auto;flex-shrink:1;min-height:60px;}
+.detailed-content pre.code code{font:inherit;color:inherit;}
+.detailed-content pre.prompt-code{white-space:pre-wrap;overflow-wrap:anywhere;word-break:keep-all;font-family:'Malgun Gothic',system-ui,sans-serif;line-height:1.65;}
+.detailed-content .copy-status{font-size:14px;line-height:1.4;min-height:20px;color:var(--blue);margin:0;}
+.answer{border-left:6px solid var(--coral);padding:18px 24px;background:#eaf1f8;}
+.answer p:last-child{margin:0;}
+.detailed-content figure{margin:0;min-height:0;}
+.detailed-content figure img{display:block;width:100%;max-height:40vh;object-fit:contain;background:white;}
+.detailed-content figcaption{font-size:clamp(19px,1.65vw,25px);line-height:1.55;margin-top:18px;}
+.resource-links{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px;}
+.resource-links a.button{font-size:17px;}
+.detailed-deck .cover h2{font-size:clamp(44px,6vw,82px);max-width:1100px;}
+.detailed-deck .cover .logo-slide{max-width:360px;max-height:125px;object-fit:contain;margin:8px 0 0;}
+.study-toolbar{position:fixed;z-index:15;left:110px;bottom:19px;display:flex;gap:8px;}
+.study-toolbar button,.study-toolbar a{font:700 14px/1.4 'Malgun Gothic',system-ui,sans-serif;background:white;color:var(--navy);border:1px solid var(--line);padding:9px 13px;border-radius:8px;cursor:pointer;text-decoration:none;}
+.overview{align-content:start;}
+.overview .overview-close{grid-column:1/-1;position:sticky;top:0;background:var(--coral);border:0;color:white;font-size:18px;font-weight:bold;padding:14px;cursor:pointer;border-radius:8px;}
+.overview .thumb{min-height:105px;font-size:19px;line-height:1.45;}
+.reading-mode{height:auto;overflow:auto;background:var(--paper);}
+.reading-mode .deck-stage{height:auto;}
+.reading-mode .slide{position:relative;opacity:1;visibility:visible;transform:none;display:block;min-height:0;height:auto;max-width:1240px;margin:24px auto;padding:32px 45px;border-bottom:1px solid var(--line);}
+.reading-mode .slide-body{padding:20px 0;min-height:0;}
+.reading-mode .detailed-content p,.reading-mode .detailed-content li{font-size:21px;}
+.reading-mode .detailed-content pre.code{max-height:none;overflow:auto;font-size:18px;}
+.reading-mode .slide-footer{margin-top:18px;}
+.reading-mode .deck-controls,.reading-mode .slide-counter,.reading-mode .progress{display:none;}
+.reading-mode .study-toolbar{left:0;right:0;top:0;bottom:auto;padding:10px 4vw;justify-content:flex-end;background:var(--navy);}
+.reading-mode .deck-stage{padding-top:60px;}
+@media(max-height:780px) and (min-width:901px){.detailed-content{gap:9px;padding:10px 0;}.detailed-content h2{font-size:34px;margin-bottom:7px;}.detailed-content p,.detailed-content li{font-size:20px;line-height:1.5;margin-bottom:10px;}.detailed-content .data-table{font-size:17px;}.detailed-content .data-table th,.detailed-content .data-table td{padding:8px 12px;}.detailed-content pre.code{font-size:16px;max-height:43vh;}.detailed-content figcaption{font-size:20px;}.detailed-deck .slide{padding-top:22px;}}
+@media(max-width:900px){.detailed-deck .slide{padding:22px 24px 138px;}.detailed-content{justify-content:flex-start;}.detailed-content h2{font-size:32px;}.detailed-content p,.detailed-content li{font-size:20px;}.study-toolbar{left:20px;right:20px;bottom:72px;gap:6px;}.study-toolbar button,.study-toolbar a{font-size:12px;padding:8px 10px;}.detailed-content pre.code{max-height:50vh;font-size:16px;flex-shrink:0;}.detailed-content .data-table{font-size:16px;}.reading-mode .slide{padding:25px 22px;}}
+@media(max-width:480px){.study-toolbar{left:12px;right:12px;justify-content:space-between;}.study-toolbar button,.study-toolbar a{font-size:11px;padding:8px;}.detailed-content h2{font-size:28px;}.detailed-content p,.detailed-content li{font-size:18px;}.copy-button{font-size:14px;padding:9px 12px;}.copy-head{font-size:15px;}.detailed-content pre.code{font-size:15px;padding:16px;}.detailed-content .table-wrap{overflow-x:auto;}.detailed-content .data-table{min-width:600px;}.slide-footer{font-size:11px;}.detailed-content figure img{max-height:45vh;}}
+@media print{@page{size:A4 landscape;margin:0;}.detailed-deck{height:auto!important;overflow:visible!important;}.detailed-deck .slide{position:relative!important;display:grid!important;opacity:1!important;visibility:visible!important;transform:none!important;transition:none!important;height:210mm!important;min-height:0!important;width:297mm!important;max-width:none!important;margin:0!important;padding:12mm 15mm!important;break-after:page;overflow:hidden!important;print-color-adjust:exact;-webkit-print-color-adjust:exact;}.detailed-content{gap:8px;justify-content:center;}.detailed-content h2{font-size:27pt!important;}.detailed-content p,.detailed-content li,.detailed-content figcaption{font-size:14pt!important;line-height:1.45;}.detailed-content .data-table{font-size:12pt!important;min-width:0;}.detailed-content .data-table th,.detailed-content .data-table td{padding:6px 10px;}.detailed-content pre.code{max-height:none!important;overflow:visible!important;font-size:10pt!important;line-height:1.3;padding:12px 16px;white-space:pre-wrap;overflow-wrap:anywhere;}.detailed-content pre.prompt-code{font-size:12pt!important;line-height:1.5;}.detailed-content .execution-hint{font-size:10pt!important;}.detailed-content figure img{max-height:115mm;}.copy-button,.copy-status,.study-toolbar,.deck-controls,.overview,.slide-counter,.progress{display:none!important;}.slide-header,.slide-footer,.section-label{font-size:9pt!important;}.detailed-content .copy-head{font-size:11pt!important;}.detailed-deck .cover h2{font-size:42pt!important;}.reading-mode .deck-stage{padding:0;}}

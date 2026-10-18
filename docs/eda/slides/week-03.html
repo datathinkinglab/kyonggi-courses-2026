@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="자료탐색방법론 3주차 상세 강의 슬라이드. 개념·손계산·Colab 실습·복사 가능한 Python과 프롬프트·검증·과제."><title>3주차 · 코드 읽기와 결과 검증</title><link rel="icon" href="../assets/logo-circle.png"><link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="../eda-detailed.css?v=20261018"></head><body class="deck detailed-deck" data-week="3"><main class="deck-stage"><section class="slide dark cover active" data-title="코드 읽기와 결과 검증" data-notes="경기대학교 응용통계전공 · 2026학년도 2학기"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type">강의</span></header><div class="slide-body detailed-content"><div class="section-label">경기대학교 응용통계전공 · 2026학년도 2학기</div><h2>코드 읽기와 결과 검증</h2><p class="lead">코드의 계산 대상과 분모를 읽고, 결과를 믿을 근거를 만듭니다.</p><p>이승묵 · Data Thinking Lab</p><img class="logo-slide" src="../assets/logo-circle.png" alt="Data Thinking Lab"></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>01 / 58</span></footer></section>
+<section class="slide " data-title="슬라이드와 Colab 사용법" data-notes="수업 준비"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type practice">실습 준비</span></header><div class="slide-body detailed-content"><div class="section-label">수업 준비</div><h2>슬라이드와 Colab 사용법</h2><ol><li>방향키로 이동하고 O 키로 전체 목차를 엽니다. 전체 읽기에서는 모든 페이지를 이어서 볼 수 있습니다.</li><li><strong>Python 코드 복사</strong>를 누른 뒤 Colab 코드 셀에 붙여넣고 위에서 아래로 실행합니다. 셀 번호를 확인하세요.</li><li><strong>프롬프트 복사</strong>는 요청문만 복사합니다. AI에는 앞서 만든 자료 코드도 함께 전달하세요.</li><li>오류 진단 예제는 의도적으로 잘못된 결과를 만듭니다. 뒤의 해설·수정·검증까지 비교합니다.</li></ol><div class="resource-links"><a class="button primary" href="https://colab.research.google.com/" target="_blank" rel="noopener">Colab 열기</a><a class="button" href="../downloads/EDA_week03.ipynb" download>실습 노트북 받기</a><a class="button" href="../downloads/EDA_week03.py" download>전체 Python 코드</a></div></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>02 / 58</span></footer></section>
+<section class="slide " data-title="수업 목표" data-notes="수업 안내"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type">개념·해석</span></header><div class="slide-body detailed-content"><div class="section-label">수업 안내</div><h2>수업 목표</h2><p><strong>오늘의 목표</strong></p>
+<ol>
+<li>생성된 코드를 입력·행 선택·계산·출력으로 나누어 설명한다.</li>
+<li>결측의 뜻과 처리 대상을 구별하고 전체·유효·결측 수를 보고한다.</li>
+<li>부분세트, 정렬, 순위와 축의 방향을 설명한다.</li>
+<li>손계산·대안 방법·극단 사례로 결과를 검증한다.</li>
+<li>실행 오류와 분석 오류를 구별하고 수정 근거를 기록한다.</li>
+</ol>
+</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>03 / 58</span></footer></section>
+<section class="slide " data-title="지난 시간에서 이어지는 질문" data-notes="지난 시간에서 이어지는 질문"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type">개념·해석</span></header><div class="slide-body detailed-content"><div class="section-label">지난 시간에서 이어지는 질문</div><h2>지난 시간에서 이어지는 질문</h2><p>2주차에는 자료 출처·대상 변수·결측 처리·출력 형태를 명세에 담았습니다. 이번 주에는 **“그 명세가 코드에 제대로 구현되었는가?”**를 확인합니다.
+실행이 끝났다는 사실은 계산 대상과 분모가 맞다는 증거가 아닙니다. 평균이 우연히 같아도 사용한 학생이 다를 수 있습니다. 오늘의 산출물은 <strong>코드 해독표, 오류 수정 전후 결과, 검증 로그, 해석 3–5문장</strong>입니다.</p>
+</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>04 / 58</span></footer></section>
+<section class="slide " data-title="강의 운영안 · 3시간 배정" data-notes="지난 시간에서 이어지는 질문"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type">기준표</span></header><div class="slide-body detailed-content"><div class="section-label">지난 시간에서 이어지는 질문</div><h2>강의 운영안 · 3시간 배정</h2><div class="table-wrap"><table class="data-table">
+	<tr>
+		<th>시간</th>
+		<th>활동</th>
+		<th>확인할 산출물</th>
+	</tr>
+	<tr>
+		<td>0–40분</td>
+		<td>코드 읽기·결측·부분세트·정렬</td>
+		<td>한 줄 설명과 계산 대상</td>
+	</tr>
+	<tr>
+		<td>40–60분</td>
+		<td>손계산 워밍업</td>
+		<td>인원·유효 수·합계·평균 기준값</td>
+	</tr>
+	<tr>
+		<td>60–120분</td>
+		<td>AI와 오류 코드 진단</td>
+		<td>문제·원인·수정·전후 비교</td>
+	</tr>
+	<tr>
+		<td>120–150분</td>
+		<td>검증 3종 세트</td>
+		<td>독립 대조와 극단 사례 결과</td>
+	</tr>
+	<tr>
+		<td>150–180분</td>
+		<td>해석·토론·기록</td>
+		<td>확인된 사실과 남은 한계</td>
+	</tr>
+</table></div></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>05 / 58</span></footer></section>
+<section class="slide " data-title="실습 준비: 같은 자료, 같은 출발점" data-notes="실습 준비: 같은 자료, 같은 출발점"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type">개념·해석</span></header><div class="slide-body detailed-content"><div class="section-label">실습 준비: 같은 자료, 같은 출발점</div><h2>실습 준비: 같은 자료, 같은 출발점</h2><p>2주차와 동일한 <strong>교육용 가상 학생 8명</strong>입니다. 실제 학생 조사 결과가 아닙니다. 한 행은 학생 한 명의 평소 편도 통학 응답이며 시간 단위는 분입니다.</p>
+
+<ul>
+<li><code>student_id</code>: 식별자. 수치 집계 대상이 아닙니다.</li>
+<li><code>mode</code>: 주 교통수단. 명목형이며 이번 원자료에는 결측이 없습니다.</li>
+<li><code>minutes</code>: 편도 통학 시간. <code>None</code>은 미응답이고 0분을 뜻하지 않습니다.</li>
+<li><code>satisfaction</code>: 만족도 1–5의 순서형 응답. 시간 평균에 섞지 않습니다.</li>
+</ul>
+
+<p>새 Colab 노트북을 만들고 아래 셀부터 순서대로 실행합니다. 실험은 복사본에서 하고 원자료 <code>df</code>를 보존합니다.</p>
+</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>06 / 58</span></footer></section>
+<section class="slide code-slide" data-title="실습 준비: 같은 자료, 같은 출발점 · 실행 코드" data-notes="실습 준비: 같은 자료, 같은 출발점"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type practice">Colab 실습</span></header><div class="slide-body detailed-content"><div class="section-label">실습 준비: 같은 자료, 같은 출발점</div><h2>실습 준비: 같은 자료, 같은 출발점 · 실행 코드</h2><p class="execution-hint">새 Colab 노트북의 첫 코드 셀입니다. 전체 코드를 복사해 실행하세요.</p><div class="copy-head"><strong>Python 코드 · 셀 01</strong><button class="copy-button" type="button">Python 코드 복사</button></div><pre class="code python-code" tabindex="0" aria-label="Python 코드 · 셀 01"><code>import pandas as pd
+import numpy as np
+from IPython.display import display
+
+print(&quot;pandas:&quot;, pd.__version__, &quot;numpy:&quot;, np.__version__)
+df = pd.DataFrame({
+    &quot;student_id&quot;: [&quot;S01&quot;, &quot;S02&quot;, &quot;S03&quot;, &quot;S04&quot;, &quot;S05&quot;, &quot;S06&quot;, &quot;S07&quot;, &quot;S08&quot;],
+    &quot;mode&quot;: [&quot;버스&quot;, &quot;버스&quot;, &quot;버스&quot;, &quot;지하철&quot;, &quot;지하철&quot;, &quot;지하철&quot;, &quot;도보&quot;, &quot;도보&quot;],
+    &quot;minutes&quot;: [20, 40, None, 30, 50, 70, 10, 20],
+    &quot;satisfaction&quot;: [2, 3, 4, 3, None, 2, 5, 4]
+})
+display(df)
+print(&quot;행·열:&quot;, df.shape)
+display(df.isna().sum())</code></pre><p class="copy-status" role="status" aria-live="polite"></p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>07 / 58</span></footer></section>
+<section class="slide " data-title="실습 준비: 같은 자료, 같은 출발점 · 결과와 설명" data-notes="실습 준비: 같은 자료, 같은 출발점"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type">개념·해석</span></header><div class="slide-body detailed-content"><div class="section-label">실습 준비: 같은 자료, 같은 출발점</div><h2>실습 준비: 같은 자료, 같은 출발점 · 결과와 설명</h2><p><strong>예상 점검:</strong> 8행·4열, 시간 결측 S03 1건, 만족도 결측 S05 1건. 숫자 열의 저장 자료형은 환경에 따라 달라질 수 있습니다.</p>
+</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>08 / 58</span></footer></section>
+<section class="slide " data-title="코드를 읽는 네 가지 질문" data-notes="코드를 읽는 네 가지 질문"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type">개념·해석</span></header><div class="slide-body detailed-content"><div class="section-label">코드를 읽는 네 가지 질문</div><h2>코드를 읽는 네 가지 질문</h2><ol>
+<li><strong>입력:</strong> 실제 자료와 열 이름을 사용하는가?</li>
+<li><strong>선택:</strong> 누구의 어떤 값이 남고 사라지는가?</li>
+<li><strong>계산:</strong> 합계·분모·집단·축·결측 규칙은 무엇인가?</li>
+<li><strong>출력:</strong> 결과의 단위와 정렬이 명세와 같은가?</li>
+</ol>
+</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>09 / 58</span></footer></section>
+<section class="slide code-slide" data-title="코드를 읽는 네 가지 질문 · 실행 코드" data-notes="코드를 읽는 네 가지 질문"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type practice">Colab 실습</span></header><div class="slide-body detailed-content"><div class="section-label">코드를 읽는 네 가지 질문</div><h2>코드를 읽는 네 가지 질문 · 실행 코드</h2><p class="execution-hint">앞선 Python 셀을 실행한 뒤 새 코드 셀에 붙여넣으세요. 아래 코드는 전체가 복사됩니다.</p><div class="copy-head"><strong>Python 코드 · 셀 02</strong><button class="copy-button" type="button">Python 코드 복사</button></div><pre class="code python-code" tabindex="0" aria-label="Python 코드 · 셀 02"><code>mask = (df[&quot;mode&quot;] == &quot;버스&quot;) &amp; df[&quot;minutes&quot;].notna()
+bus = df.loc[mask, [&quot;student_id&quot;, &quot;minutes&quot;]].copy()
+bus_mean = bus[&quot;minutes&quot;].mean()
+display(bus)
+print(&quot;버스 유효 응답 수:&quot;, len(bus), &quot;평균(분):&quot;, bus_mean)</code></pre><p class="copy-status" role="status" aria-live="polite"></p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>10 / 58</span></footer></section>
+<section class="slide " data-title="코드를 읽는 네 가지 질문 · 결과와 설명" data-notes="코드를 읽는 네 가지 질문"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type">기준표</span></header><div class="slide-body detailed-content"><div class="section-label">코드를 읽는 네 가지 질문</div><h2>코드를 읽는 네 가지 질문 · 결과와 설명</h2><div class="table-wrap"><table class="data-table">
+	<tr>
+		<th>코드</th>
+		<th>자신의 말로 해독하기</th>
+	</tr>
+	<tr>
+		<td><code>df[&quot;mode&quot;] == &quot;버스&quot;</code></td>
+		<td>각 행이 버스 이용자인지 True/False로 표시</td>
+	</tr>
+	<tr>
+		<td><code>minutes.notna()</code></td>
+		<td>시간이 기록된 행인지 확인</td>
+	</tr>
+	<tr>
+		<td><code>&amp;</code>와 괄호</td>
+		<td>두 조건을 모두 충족하는 행 선택</td>
+	</tr>
+	<tr>
+		<td><code>df.loc[mask, 열 목록]</code></td>
+		<td>조건을 만족하는 행과 지정한 열 선택</td>
+	</tr>
+	<tr>
+		<td><code>.copy()</code></td>
+		<td>별도 실습용 표 만들기</td>
+	</tr>
+	<tr>
+		<td><code>.mean()</code></td>
+		<td>선택된 유효 시간의 평균 계산</td>
+	</tr>
+</table></div></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>11 / 58</span></footer></section>
+<section class="slide " data-title="코드를 읽는 네 가지 질문 · 결과와 설명" data-notes="코드를 읽는 네 가지 질문"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type">개념·해석</span></header><div class="slide-body detailed-content"><div class="section-label">코드를 읽는 네 가지 질문</div><h2>코드를 읽는 네 가지 질문 · 결과와 설명</h2><p>위 코드는 S01·S02만 선택하고 평균 30분을 냅니다. <code>loc</code>는 라벨·조건, <code>iloc</code>는 정수 위치로 선택합니다. 정렬 후 첫 행의 인덱스 라벨이 0이라는 보장은 없습니다. 행 조건을 연결할 때는 각 조건을 괄호로 묶고 <code>&amp;</code>(그리고) 또는 <code>|</code>(또는)를 사용합니다. <a href="https://pandas.pydata.org/docs/user_guide/indexing.html">pandas: 행·열 선택</a></p>
+</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>12 / 58</span></footer></section>
+<section class="slide " data-title="0, 결측, 적용되지 않음을 구별하기" data-notes="결측 처리: 지우기 전에 무엇이 빠졌는지 묻기"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type">개념·해석</span></header><div class="slide-body detailed-content"><div class="section-label">결측 처리: 지우기 전에 무엇이 빠졌는지 묻기</div><h2>0, 결측, 적용되지 않음을 구별하기</h2><p>0분은 측정된 값입니다. 결측은 값이 알려지지 않은 상태입니다. 설문에서 해당되지 않아 건너뛴 값과 응답 거부도 발생 맥락이 다릅니다. 먼저 자료 사전과 수집 과정을 확인합니다.
+이 수업에서는 시간 통계에 유효 시간만 사용하고, 전체 인원과 결측 수는 원자료에서 셉니다. <strong>미응답을 0이나 평균으로 자동 대체하지 않습니다.</strong> 이는 실습 명세이며 모든 자료에 적용되는 최적 처리법은 아닙니다.</p>
+</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>13 / 58</span></footer></section>
+<section class="slide " data-title="응답하지 않은 이유도 분석의 일부입니다" data-notes="결측 처리: 지우기 전에 무엇이 빠졌는지 묻기"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type">개념·해석</span></header><div class="slide-body detailed-content"><div class="section-label">결측 처리: 지우기 전에 무엇이 빠졌는지 묻기</div><h2>응답하지 않은 이유도 분석의 일부입니다</h2><p>시간이 긴 학생이 응답을 더 꺼렸다면 관측된 응답의 평균은 전체 학생의 평균과 다를 수 있습니다. 이 8행만으로 결측의 원인을 확정할 수는 없습니다. 결측을 제외해 계산했다는 설명과, 그 계산을 누구에게 일반화할 수 있는지는 구별합니다.</p>
+</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>14 / 58</span></footer></section>
+<section class="slide code-slide" data-title="변수별 제외와 행 전체 삭제 · 실행 코드" data-notes="결측 처리: 지우기 전에 무엇이 빠졌는지 묻기"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type practice">Colab 실습</span></header><div class="slide-body detailed-content"><div class="section-label">결측 처리: 지우기 전에 무엇이 빠졌는지 묻기</div><h2>변수별 제외와 행 전체 삭제 · 실행 코드</h2><p class="execution-hint">앞선 Python 셀을 실행한 뒤 새 코드 셀에 붙여넣으세요. 아래 코드는 전체가 복사됩니다.</p><div class="copy-head"><strong>Python 코드 · 셀 03</strong><button class="copy-button" type="button">Python 코드 복사</button></div><pre class="code python-code" tabindex="0" aria-label="Python 코드 · 셀 03"><code>complete = df.dropna()                    # 어느 열이든 결측이면 행 삭제
+time_only = df.dropna(subset=[&quot;minutes&quot;]) # 시간 결측일 때만 행 삭제
+print(&quot;전체 열 완전 사례:&quot;, complete[&quot;student_id&quot;].tolist())
+print(&quot;유효 시간 사례:&quot;, time_only[&quot;student_id&quot;].tolist())</code></pre><p class="copy-status" role="status" aria-live="polite"></p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>15 / 58</span></footer></section>
+<section class="slide " data-title="변수별 제외와 행 전체 삭제 · 결과와 설명" data-notes="결측 처리: 지우기 전에 무엇이 빠졌는지 묻기"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type">개념·해석</span></header><div class="slide-body detailed-content"><div class="section-label">결측 처리: 지우기 전에 무엇이 빠졌는지 묻기</div><h2>변수별 제외와 행 전체 삭제 · 결과와 설명</h2><p>전체 열 기준은 6행, 시간 기준은 7행입니다. S05는 시간이 50분이므로 시간 분석에서는 남아야 합니다. <code>dropna</code>의 기본 동작은 결측이 하나라도 있는 행 삭제이며 <code>subset</code>으로 판단할 열을 지정합니다. <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.dropna.html">pandas: dropna</a></p>
+</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>16 / 58</span></footer></section>
+<section class="slide " data-title="결측 처리 기록 원칙" data-notes="결측 처리: 지우기 전에 무엇이 빠졌는지 묻기"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type">개념·해석</span></header><div class="slide-body detailed-content"><div class="section-label">결측 처리: 지우기 전에 무엇이 빠졌는지 묻기</div><h2>결측 처리 기록 원칙</h2><ul>
+<li>전체·유효·결측 수를 함께 보고합니다.</li>
+<li>제외한 ID와 제외 이유를 확인합니다.</li>
+<li>분석에 필요한 변수의 결측만 해당 계산에서 제외합니다.</li>
+<li>삭제·대체가 응답자 구성과 결과를 어떻게 바꾸는지 비교합니다.</li>
+<li>현재 자료에서는 <strong>관측된 응답자의 요약</strong>까지만 해석합니다.</li>
+</ul>
+</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>17 / 58</span></footer></section>
+<section class="slide code-slide" data-title="조건을 명확히 쓰기 · 실행 코드" data-notes="부분세트·정렬·순위와 축"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type practice">Colab 실습</span></header><div class="slide-body detailed-content"><div class="section-label">부분세트·정렬·순위와 축</div><h2>조건을 명확히 쓰기 · 실행 코드</h2><p class="execution-hint">앞선 Python 셀을 실행한 뒤 새 코드 셀에 붙여넣으세요. 아래 코드는 전체가 복사됩니다.</p><div class="copy-head"><strong>Python 코드 · 셀 04</strong><button class="copy-button" type="button">Python 코드 복사</button></div><pre class="code python-code" tabindex="0" aria-label="Python 코드 · 셀 04"><code>selected = df.loc[
+    df[&quot;minutes&quot;].notna() &amp; (df[&quot;minutes&quot;] &gt;= 30),
+    [&quot;student_id&quot;, &quot;mode&quot;, &quot;minutes&quot;]
+]
+display(selected)</code></pre><p class="copy-status" role="status" aria-live="polite"></p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>18 / 58</span></footer></section>
+<section class="slide " data-title="조건을 명확히 쓰기 · 결과와 설명" data-notes="부분세트·정렬·순위와 축"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type">개념·해석</span></header><div class="slide-body detailed-content"><div class="section-label">부분세트·정렬·순위와 축</div><h2>조건을 명확히 쓰기 · 결과와 설명</h2><p>예상 ID는 S02·S04·S05·S06입니다. “30분 이상”에는 30분을 포함합니다. 결측 포함 여부와 <code>&gt;</code>·<code>&gt;=</code>의 차이를 확인합니다.</p>
+</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>19 / 58</span></footer></section>
+<section class="slide code-slide" data-title="정렬은 행을 재배열하고, 순위는 값을 붙입니다 · 실행 코드" data-notes="부분세트·정렬·순위와 축"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type practice">Colab 실습</span></header><div class="slide-body detailed-content"><div class="section-label">부분세트·정렬·순위와 축</div><h2>정렬은 행을 재배열하고, 순위는 값을 붙입니다 · 실행 코드</h2><p class="execution-hint">앞선 Python 셀을 실행한 뒤 새 코드 셀에 붙여넣으세요. 아래 코드는 전체가 복사됩니다.</p><div class="copy-head"><strong>Python 코드 · 셀 05</strong><button class="copy-button" type="button">Python 코드 복사</button></div><pre class="code python-code" tabindex="0" aria-label="Python 코드 · 셀 05"><code>ordered = df.sort_values(
+    [&quot;minutes&quot;, &quot;student_id&quot;],
+    ascending=[True, True],
+    na_position=&quot;last&quot;
+)
+ranks = df[[&quot;student_id&quot;, &quot;minutes&quot;]].copy()
+ranks[&quot;rank_average&quot;] = ranks[&quot;minutes&quot;].rank(method=&quot;average&quot;)
+ranks[&quot;rank_min&quot;] = ranks[&quot;minutes&quot;].rank(method=&quot;min&quot;)
+display(ordered[[&quot;student_id&quot;, &quot;minutes&quot;]])
+display(ranks)</code></pre><p class="copy-status" role="status" aria-live="polite"></p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>20 / 58</span></footer></section>
+<section class="slide " data-title="정렬은 행을 재배열하고, 순위는 값을 붙입니다 · 결과와 설명" data-notes="부분세트·정렬·순위와 축"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type">개념·해석</span></header><div class="slide-body detailed-content"><div class="section-label">부분세트·정렬·순위와 축</div><h2>정렬은 행을 재배열하고, 순위는 값을 붙입니다 · 결과와 설명</h2><p>시간 오름차순 ID는 S07·S01·S08·S04·S02·S05·S06·S03입니다. 동점에서는 ID로 순서를 정하고 결측은 마지막에 놓았습니다. 두 20분의 평균 순위는 각각 2.5, 최소 순위는 각각 2입니다. 30분은 두 방식에서 모두 4위이며 S03의 순위는 결측으로 남습니다. 정렬·동점 규칙을 임의로 바꾸지 않습니다. <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.sort_values.html">정렬</a>, <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.rank.html">순위</a></p>
+</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>21 / 58</span></footer></section>
+<section class="slide code-slide" data-title="축은 “어느 방향으로 줄여 계산하는가?” · 실행 코드" data-notes="부분세트·정렬·순위와 축"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type practice">Colab 실습</span></header><div class="slide-body detailed-content"><div class="section-label">부분세트·정렬·순위와 축</div><h2>축은 “어느 방향으로 줄여 계산하는가?” · 실행 코드</h2><p class="execution-hint">앞선 Python 셀을 실행한 뒤 새 코드 셀에 붙여넣으세요. 아래 코드는 전체가 복사됩니다.</p><div class="copy-head"><strong>Python 코드 · 셀 06</strong><button class="copy-button" type="button">Python 코드 복사</button></div><pre class="code python-code" tabindex="0" aria-label="Python 코드 · 셀 06"><code>practice = pd.DataFrame({&quot;day1_minutes&quot;: [20, 40],
+                         &quot;day2_minutes&quot;: [30, 50]},
+                        index=[&quot;A&quot;, &quot;B&quot;])
+print(&quot;날짜별 학생 평균:&quot;)
+print(practice.mean(axis=0))
+print(&quot;학생별 이틀 평균:&quot;)
+print(practice.mean(axis=1))</code></pre><p class="copy-status" role="status" aria-live="polite"></p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>22 / 58</span></footer></section>
+<section class="slide " data-title="축은 “어느 방향으로 줄여 계산하는가?” · 결과와 설명" data-notes="부분세트·정렬·순위와 축"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type">개념·해석</span></header><div class="slide-body detailed-content"><div class="section-label">부분세트·정렬·순위와 축</div><h2>축은 “어느 방향으로 줄여 계산하는가?” · 결과와 설명</h2><p>두 열은 모두 분 단위입니다. <code>axis=0</code>은 행 방향을 줄여 날짜별 30·40분을, <code>axis=1</code>은 열 방향을 줄여 학생별 25·45분을 냅니다. 기본 결측 제외 규칙도 함께 확인합니다. 서로 다른 단위의 열을 행 평균으로 합치면 산술 계산은 가능해도 의미가 없습니다. <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.mean.html">pandas: mean</a></p>
+</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>23 / 58</span></footer></section>
+<section class="slide " data-title="손계산 워밍업과 기준 코드" data-notes="손계산 워밍업과 기준 코드"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type">개념·해석</span></header><div class="slide-body detailed-content"><div class="section-label">손계산 워밍업과 기준 코드</div><h2>손계산 워밍업과 기준 코드</h2><p>AI 결과를 보기 전에 다음 값을 적습니다. 전체 시간 유효값은 20·40·30·50·70·10·20이고 합계는 240분입니다.</p>
+</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>24 / 58</span></footer></section>
+<section class="slide " data-title="손계산 워밍업과 기준 코드 · 결과와 설명" data-notes="손계산 워밍업과 기준 코드"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type">기준표</span></header><div class="slide-body detailed-content"><div class="section-label">손계산 워밍업과 기준 코드</div><h2>손계산 워밍업과 기준 코드 · 결과와 설명</h2><div class="table-wrap"><table class="data-table">
+	<tr>
+		<th>집단</th>
+		<th>전체 수</th>
+		<th>유효 수</th>
+		<th>결측 수</th>
+		<th>합계(분)</th>
+		<th>평균(분)</th>
+	</tr>
+	<tr>
+		<td>도보</td>
+		<td>2</td>
+		<td>2</td>
+		<td>0</td>
+		<td>30</td>
+		<td>15</td>
+	</tr>
+	<tr>
+		<td>버스</td>
+		<td>3</td>
+		<td>2</td>
+		<td>1</td>
+		<td>60</td>
+		<td>30</td>
+	</tr>
+	<tr>
+		<td>지하철</td>
+		<td>3</td>
+		<td>3</td>
+		<td>0</td>
+		<td>150</td>
+		<td>50</td>
+	</tr>
+	<tr>
+		<td>전체</td>
+		<td>8</td>
+		<td>7</td>
+		<td>1</td>
+		<td>240</td>
+		<td>240 ÷ 7 ≈ 34.29</td>
+	</tr>
+</table></div></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>25 / 58</span></footer></section>
+<section class="slide " data-title="손계산 워밍업과 기준 코드 · 결과와 설명" data-notes="손계산 워밍업과 기준 코드"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type">개념·해석</span></header><div class="slide-body detailed-content"><div class="section-label">손계산 워밍업과 기준 코드</div><h2>손계산 워밍업과 기준 코드 · 결과와 설명</h2><p>전체 평균은 집단 평균 세 개의 단순평균 약 31.67분이 아닙니다. 유효 응답 수를 가중한 평균 <code>(15×2 + 30×2 + 50×3) ÷ 7</code>입니다.</p>
+</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>26 / 58</span></footer></section>
+<section class="slide code-slide" data-title="손계산 워밍업과 기준 코드 · 실행 코드" data-notes="손계산 워밍업과 기준 코드"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type practice">Colab 실습</span></header><div class="slide-body detailed-content"><div class="section-label">손계산 워밍업과 기준 코드</div><h2>손계산 워밍업과 기준 코드 · 실행 코드</h2><p class="execution-hint">앞선 Python 셀을 실행한 뒤 새 코드 셀에 붙여넣으세요. 아래 코드는 전체가 복사됩니다.</p><div class="copy-head"><strong>Python 코드 · 셀 07</strong><button class="copy-button" type="button">Python 코드 복사</button></div><pre class="code python-code" tabindex="0" aria-label="Python 코드 · 셀 07"><code>def summarize(data):
+    result = data.groupby(&quot;mode&quot;, dropna=False).agg(
+        total_n=(&quot;student_id&quot;, &quot;size&quot;),
+        valid_n=(&quot;minutes&quot;, &quot;count&quot;),
+        mean_minutes=(&quot;minutes&quot;, &quot;mean&quot;)
+    )
+    result[&quot;missing_n&quot;] = result[&quot;total_n&quot;] - result[&quot;valid_n&quot;]
+    return result[[&quot;total_n&quot;, &quot;valid_n&quot;, &quot;missing_n&quot;, &quot;mean_minutes&quot;]].sort_values(
+        &quot;mean_minutes&quot;, na_position=&quot;last&quot;
+    )
+
+summary = summarize(df)
+display(summary.round(2))</code></pre><p class="copy-status" role="status" aria-live="polite"></p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>27 / 58</span></footer></section>
+<section class="slide " data-title="손계산 워밍업과 기준 코드 · 결과와 설명" data-notes="손계산 워밍업과 기준 코드"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type">개념·해석</span></header><div class="slide-body detailed-content"><div class="section-label">손계산 워밍업과 기준 코드</div><h2>손계산 워밍업과 기준 코드 · 결과와 설명</h2><p><code>size</code>는 집단 행 수, <code>count</code>는 시간 비결측 수입니다. <code>dropna=False</code>는 교통수단이 결측인 경우도 별도 집단으로 남기려는 설정입니다. 시간 결측 제외와 집단 기준 결측 제외는 다른 문제입니다. 실제 교통수단 결측의 의미는 추가 확인해야 합니다. 반올림은 출력 사본에 적용합니다. <a href="https://pandas.pydata.org/docs/user_guide/groupby.html">pandas: groupby</a></p>
+</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>28 / 58</span></footer></section>
+<section class="slide " data-title="① 손계산 대조" data-notes="검증 3종 세트"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type">개념·해석</span></header><div class="slide-body detailed-content"><div class="section-label">검증 3종 세트</div><h2>① 손계산 대조</h2><p>집단별 분모·합계·평균을 위 기준값과 비교합니다. 값만 맞는지 보지 말고 사용한 ID도 확인합니다.</p>
+</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>29 / 58</span></footer></section>
+<section class="slide code-slide" data-title="① 손계산 대조 · 실행 코드" data-notes="검증 3종 세트"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type practice">Colab 실습</span></header><div class="slide-body detailed-content"><div class="section-label">검증 3종 세트</div><h2>① 손계산 대조 · 실행 코드</h2><p class="execution-hint">앞선 Python 셀을 실행한 뒤 새 코드 셀에 붙여넣으세요. 아래 코드는 전체가 복사됩니다.</p><div class="copy-head"><strong>Python 코드 · 셀 08</strong><button class="copy-button" type="button">Python 코드 복사</button></div><pre class="code python-code" tabindex="0" aria-label="Python 코드 · 셀 08"><code>assert summary.loc[&quot;버스&quot;, &quot;total_n&quot;] == 3
+assert summary.loc[&quot;버스&quot;, &quot;valid_n&quot;] == 2
+assert summary.loc[&quot;버스&quot;, &quot;missing_n&quot;] == 1
+assert np.isclose(summary.loc[&quot;버스&quot;, &quot;mean_minutes&quot;], 30, rtol=0, atol=1e-10)
+assert summary[&quot;total_n&quot;].sum() == len(df)
+assert summary[&quot;valid_n&quot;].sum() == df[&quot;minutes&quot;].notna().sum()</code></pre><p class="copy-status" role="status" aria-live="polite"></p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>30 / 58</span></footer></section>
+<section class="slide " data-title="① 손계산 대조 · 결과와 설명" data-notes="검증 3종 세트"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type">개념·해석</span></header><div class="slide-body detailed-content"><div class="section-label">검증 3종 세트</div><h2>① 손계산 대조 · 결과와 설명</h2><p><code>assert</code>는 조건이 거짓이면 멈춰 의심할 부분을 드러냅니다. 모든 검사를 통과해도 검사하지 않은 오류는 남을 수 있습니다.</p>
+</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>31 / 58</span></footer></section>
+<section class="slide " data-title="② 대안 방법 교차확인" data-notes="검증 3종 세트"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type">개념·해석</span></header><div class="slide-body detailed-content"><div class="section-label">검증 3종 세트</div><h2>② 대안 방법 교차확인</h2><p>같은 <code>mean()</code>을 다시 호출하는 대신 Python 목록에서 합계÷개수를 계산합니다. 이번 방법은 집계 경로를 달리 확인하지만 원자료 자체의 수집 오류까지 확인하지는 못합니다.</p>
+</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>32 / 58</span></footer></section>
+<section class="slide code-slide" data-title="② 대안 방법 교차확인 · 실행 코드" data-notes="검증 3종 세트"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type practice">Colab 실습</span></header><div class="slide-body detailed-content"><div class="section-label">검증 3종 세트</div><h2>② 대안 방법 교차확인 · 실행 코드</h2><p class="execution-hint">앞선 Python 셀을 실행한 뒤 새 코드 셀에 붙여넣으세요. 아래 코드는 전체가 복사됩니다.</p><div class="copy-head"><strong>Python 코드 · 셀 09</strong><button class="copy-button" type="button">Python 코드 복사</button></div><pre class="code python-code" tabindex="0" aria-label="Python 코드 · 셀 09"><code>for mode in [&quot;도보&quot;, &quot;버스&quot;, &quot;지하철&quot;]:
+    values = [float(x) for x in df.loc[df[&quot;mode&quot;] == mode, &quot;minutes&quot;]
+              if pd.notna(x)]
+    manual = sum(values) / len(values) if values else np.nan
+    calculated = summary.loc[mode, &quot;mean_minutes&quot;]
+    same = (pd.isna(manual) and pd.isna(calculated)) or np.isclose(
+        calculated, manual, rtol=0, atol=1e-10
+    )
+    print(mode, &quot;목록 계산:&quot;, manual, &quot;집계:&quot;, calculated, &quot;일치:&quot;, same)
+    assert same</code></pre><p class="copy-status" role="status" aria-live="polite"></p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>33 / 58</span></footer></section>
+<section class="slide " data-title="② 대안 방법 교차확인 · 결과와 설명" data-notes="검증 3종 세트"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type">개념·해석</span></header><div class="slide-body detailed-content"><div class="section-label">검증 3종 세트</div><h2>② 대안 방법 교차확인 · 결과와 설명</h2><p>숫자 비교에서 허용오차는 값의 단위·크기와 목적에 맞춰 정합니다. 여기의 1e-10분은 작은 교육용 계산의 수치 오차 점검 기준입니다. 실질적인 통학 시간 차이 판정 기준이 아닙니다.</p>
+</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>34 / 58</span></footer></section>
+<section class="slide " data-title="③ 극단 사례 투입" data-notes="검증 3종 세트"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type">개념·해석</span></header><div class="slide-body detailed-content"><div class="section-label">검증 3종 세트</div><h2>③ 극단 사례 투입</h2><p>원본을 바꾸지 않고 함수에 별도 입력을 넣습니다. 예상 반응을 먼저 기록하고 출력과 대조합니다.</p>
+</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>35 / 58</span></footer></section>
+<section class="slide code-slide" data-title="③ 극단 사례 투입 · 실행 코드" data-notes="검증 3종 세트"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type practice">Colab 실습</span></header><div class="slide-body detailed-content"><div class="section-label">검증 3종 세트</div><h2>③ 극단 사례 투입 · 실행 코드</h2><p class="execution-hint">앞선 Python 셀을 실행한 뒤 새 코드 셀에 붙여넣으세요. 아래 코드는 전체가 복사됩니다.</p><div class="copy-head"><strong>Python 코드 · 셀 10</strong><button class="copy-button" type="button">Python 코드 복사</button></div><pre class="code python-code" tabindex="0" aria-label="Python 코드 · 셀 10"><code>cases = {
+    &quot;동점&quot;: [20, 20, 20],
+    &quot;단일값&quot;: [20],
+    &quot;일부결측&quot;: [20, None, 40],
+    &quot;전부결측&quot;: [None, None],
+    &quot;극단값&quot;: [20, 20, 200]
+}
+for name, values in cases.items():
+    test_df = pd.DataFrame({
+        &quot;student_id&quot;: [f&quot;T{i}&quot; for i in range(len(values))],
+        &quot;mode&quot;: [&quot;시험&quot;] * len(values),
+        &quot;minutes&quot;: pd.Series(values, dtype=&quot;float64&quot;)
+    })
+    print(name)
+    display(summarize(test_df))</code></pre><p class="copy-status" role="status" aria-live="polite"></p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>36 / 58</span></footer></section>
+<section class="slide " data-title="③ 극단 사례 투입 · 결과와 설명" data-notes="검증 3종 세트"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type">기준표</span></header><div class="slide-body detailed-content"><div class="section-label">검증 3종 세트</div><h2>③ 극단 사례 투입 · 결과와 설명</h2><div class="table-wrap"><table class="data-table">
+	<tr>
+		<th>입력</th>
+		<th>전체·유효·결측 수</th>
+		<th>평균 예상</th>
+	</tr>
+	<tr>
+		<td>20, 20, 20</td>
+		<td>3·3·0</td>
+		<td>20분</td>
+	</tr>
+	<tr>
+		<td>20</td>
+		<td>1·1·0</td>
+		<td>20분</td>
+	</tr>
+	<tr>
+		<td>20, 결측, 40</td>
+		<td>3·2·1</td>
+		<td>30분</td>
+	</tr>
+	<tr>
+		<td>결측, 결측</td>
+		<td>2·0·2</td>
+		<td>결측, 0분이 아님</td>
+	</tr>
+	<tr>
+		<td>20, 20, 200</td>
+		<td>3·3·0</td>
+		<td>80분</td>
+	</tr>
+</table></div></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>37 / 58</span></footer></section>
+<section class="slide " data-title="③ 극단 사례 투입 · 결과와 설명" data-notes="검증 3종 세트"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type">개념·해석</span></header><div class="slide-body detailed-content"><div class="section-label">검증 3종 세트</div><h2>③ 극단 사례 투입 · 결과와 설명</h2><p>200분 때문에 평균이 커졌다는 것은 계산 오류의 증거가 아닙니다. 이상점의 원인을 확인하고 이후 저항성 단원에서 대표값의 민감성을 다룹니다.</p>
+</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>38 / 58</span></footer></section>
+<section class="slide " data-title="오류 코드 진단 실습" data-notes="오류 코드 진단 실습"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type">개념·해석</span></header><div class="slide-body detailed-content"><div class="section-label">오류 코드 진단 실습</div><h2>오류 코드 진단 실습</h2><p>각 사례는 <strong>원래 질문 → 코드가 실제로 한 일 → 결과에 미친 영향 → 최소 수정 → 검증</strong> 순서로 설명합니다. 정답을 보기 전에 짝과 원인을 찾아보세요.</p>
+</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>39 / 58</span></footer></section>
+<section class="slide code-slide" data-title="사례 A · 결측 일괄 삭제: 평균이 같아도 틀린 처리 · 실행 코드" data-notes="오류 코드 진단 실습"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type practice">Colab 실습</span></header><div class="slide-body detailed-content"><div class="section-label">오류 코드 진단 실습</div><h2>사례 A · 결측 일괄 삭제: 평균이 같아도 틀린 처리 · 실행 코드</h2><p class="execution-hint">앞선 Python 셀을 실행한 뒤 새 코드 셀에 붙여넣으세요. 아래 코드는 전체가 복사됩니다.</p><div class="copy-head"><strong>Python 코드 · 셀 11</strong><button class="copy-button" type="button">Python 코드 복사</button></div><pre class="code python-code" tabindex="0" aria-label="Python 코드 · 셀 11"><code>wrong_a = df.dropna().groupby(&quot;mode&quot;).agg(
+    total_n=(&quot;student_id&quot;, &quot;size&quot;),
+    valid_n=(&quot;minutes&quot;, &quot;count&quot;),
+    mean_minutes=(&quot;minutes&quot;, &quot;mean&quot;)
+)
+display(wrong_a)</code></pre><p class="copy-status" role="status" aria-live="polite"></p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>40 / 58</span></footer></section>
+<section class="slide " data-title="사례 A · 결측 일괄 삭제: 평균이 같아도 틀린 처리 · 결과와 설명" data-notes="오류 코드 진단 실습"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type">개념·해석</span></header><div class="slide-body detailed-content"><div class="section-label">오류 코드 진단 실습</div><h2>사례 A · 결측 일괄 삭제: 평균이 같아도 틀린 처리 · 결과와 설명</h2><p>질문: 왜 지하철 평균이 50분으로 같아도 명세를 충족하지 못할까요?</p>
+</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>41 / 58</span></footer></section>
+<section class="slide " data-title="사례 A · 결측 일괄 삭제: 평균이 같아도 틀린 처리 · 결과와 설명" data-notes="오류 코드 진단 실습"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type">해설</span></header><div class="slide-body detailed-content"><div class="section-label">오류 코드 진단 실습</div><h2>사례 A · 결측 일괄 삭제: 평균이 같아도 틀린 처리 · 결과와 설명</h2><aside class="answer"><h3>진단과 수정 근거</h3><p>S03·S05가 삭제됩니다. 버스 전체 수가 3→2, 지하철 전체·유효 수가 3→2로 바뀝니다. S05의 50분이 나머지 30·70분의 평균과 같아 지하철 평균 오류가 숨겨집니다. 원자료를 <code>summarize(df)</code>로 집계해야 전체 인원·유효·결측을 보존합니다. 시간만 필요한 별도 표는 <code>df.dropna(subset=[&quot;minutes&quot;])</code>로 만들 수 있지만 그 표의 행 수는 전체 인원이 아닙니다.
+확장: 복사본에서 S05의 시간을 80으로 바꾸면 올바른 지하철 평균은 60분, 일괄 삭제 평균은 50분입니다. 이는 처리 오류의 영향을 드러내는 실험이며 실제 관측값 수정이 아닙니다.</p>
+</aside></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>42 / 58</span></footer></section>
+<section class="slide code-slide" data-title="사례 A · 결측 일괄 삭제: 평균이 같아도 틀린 처리 · 실행 코드" data-notes="오류 코드 진단 실습"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type practice">Colab 실습</span></header><div class="slide-body detailed-content"><div class="section-label">오류 코드 진단 실습</div><h2>사례 A · 결측 일괄 삭제: 평균이 같아도 틀린 처리 · 실행 코드</h2><p class="execution-hint">앞선 Python 셀을 실행한 뒤 새 코드 셀에 붙여넣으세요. 아래 코드는 전체가 복사됩니다.</p><div class="copy-head"><strong>Python 코드 · 셀 12</strong><button class="copy-button" type="button">Python 코드 복사</button></div><pre class="code python-code" tabindex="0" aria-label="Python 코드 · 셀 12"><code>changed = df.copy()
+changed.loc[changed[&quot;student_id&quot;] == &quot;S05&quot;, &quot;minutes&quot;] = 80
+print(&quot;시간 응답 보존:&quot;, summarize(changed).loc[&quot;지하철&quot;, &quot;mean_minutes&quot;])
+print(&quot;일괄 삭제:&quot;, changed.dropna().groupby(&quot;mode&quot;)[&quot;minutes&quot;].mean().loc[&quot;지하철&quot;])</code></pre><p class="copy-status" role="status" aria-live="polite"></p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>43 / 58</span></footer></section>
+<section class="slide code-slide" data-title="사례 B · 0으로 채우기: 결측과 실제 값을 혼동 · 실행 코드" data-notes="오류 코드 진단 실습"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type practice">Colab 실습</span></header><div class="slide-body detailed-content"><div class="section-label">오류 코드 진단 실습</div><h2>사례 B · 0으로 채우기: 결측과 실제 값을 혼동 · 실행 코드</h2><p class="execution-hint">앞선 Python 셀을 실행한 뒤 새 코드 셀에 붙여넣으세요. 아래 코드는 전체가 복사됩니다.</p><div class="copy-head"><strong>Python 코드 · 셀 13</strong><button class="copy-button" type="button">Python 코드 복사</button></div><pre class="code python-code" tabindex="0" aria-label="Python 코드 · 셀 13"><code>wrong_b = df.assign(minutes=df[&quot;minutes&quot;].fillna(0))
+display(summarize(wrong_b))</code></pre><p class="copy-status" role="status" aria-live="polite"></p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>44 / 58</span></footer></section>
+<section class="slide " data-title="사례 B · 0으로 채우기: 결측과 실제 값을 혼동 · 결과와 설명" data-notes="오류 코드 진단 실습"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type">해설</span></header><div class="slide-body detailed-content"><div class="section-label">오류 코드 진단 실습</div><h2>사례 B · 0으로 채우기: 결측과 실제 값을 혼동 · 결과와 설명</h2><aside class="answer"><h3>진단과 수정 근거</h3><p>버스 평균은 20분, 전체 평균은 240÷8=30분으로 바뀝니다. 시간 미응답을 0분 응답으로 바꿨기 때문입니다. 올바른 이번 명세는 결측을 보존하고 시간 계산만 유효 응답에 대해 수행하는 것입니다. <code>summarize(df)</code>로 돌아가 전체·유효·결측 수를 비교하세요.</p>
+</aside></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>45 / 58</span></footer></section>
+<section class="slide code-slide" data-title="사례 C · 축 오류와 의미 오류 · 실행 코드" data-notes="오류 코드 진단 실습"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type practice">Colab 실습</span></header><div class="slide-body detailed-content"><div class="section-label">오류 코드 진단 실습</div><h2>사례 C · 축 오류와 의미 오류 · 실행 코드</h2><p class="execution-hint">앞선 Python 셀을 실행한 뒤 새 코드 셀에 붙여넣으세요. 아래 코드는 전체가 복사됩니다.</p><div class="copy-head"><strong>Python 코드 · 셀 14</strong><button class="copy-button" type="button">Python 코드 복사</button></div><pre class="code python-code" tabindex="0" aria-label="Python 코드 · 셀 14"><code>wrong_c = df[[&quot;minutes&quot;, &quot;satisfaction&quot;]].mean(axis=1)
+display(wrong_c)</code></pre><p class="copy-status" role="status" aria-live="polite"></p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>46 / 58</span></footer></section>
+<section class="slide " data-title="사례 C · 축 오류와 의미 오류 · 결과와 설명" data-notes="오류 코드 진단 실습"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type">해설</span></header><div class="slide-body detailed-content"><div class="section-label">오류 코드 진단 실습</div><h2>사례 C · 축 오류와 의미 오류 · 결과와 설명</h2><aside class="answer"><h3>진단과 수정 근거</h3><p>행별로 분과 만족도 점수를 평균 내므로 통학 시간 평균이 아닙니다. S01은 (20+2)÷2=11이라는 무의미한 혼합값이 되고, S03은 시간 결측을 건너뛰어 만족도 4만 남습니다. 전체 시간 평균은 <code>df[&quot;minutes&quot;].mean()</code>으로 계산하며 약 34.29분입니다. 교통수단별 질문이라면 <code>summarize(df)</code>를 사용합니다. <code>axis=0</code>으로만 바꾸어도 만족도 평균의 척도 문제까지 해결되는 것은 아닙니다.</p>
+</aside></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>47 / 58</span></footer></section>
+<section class="slide code-slide" data-title="사례 D · 부동소수 동등 비교 · 실행 코드" data-notes="오류 코드 진단 실습"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type practice">Colab 실습</span></header><div class="slide-body detailed-content"><div class="section-label">오류 코드 진단 실습</div><h2>사례 D · 부동소수 동등 비교 · 실행 코드</h2><p class="execution-hint">앞선 Python 셀을 실행한 뒤 새 코드 셀에 붙여넣으세요. 아래 코드는 전체가 복사됩니다.</p><div class="copy-head"><strong>Python 코드 · 셀 15</strong><button class="copy-button" type="button">Python 코드 복사</button></div><pre class="code python-code" tabindex="0" aria-label="Python 코드 · 셀 15"><code>actual = 0.1 + 0.2
+expected = 0.3
+print(&quot;계산값:&quot;, repr(actual))
+print(&quot;직접 동등 비교:&quot;, actual == expected)
+print(&quot;허용오차 비교:&quot;, np.isclose(actual, expected, rtol=0, atol=1e-12))</code></pre><p class="copy-status" role="status" aria-live="polite"></p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>48 / 58</span></footer></section>
+<section class="slide " data-title="사례 D · 부동소수 동등 비교 · 결과와 설명" data-notes="오류 코드 진단 실습"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type">개념·해석</span></header><div class="slide-body detailed-content"><div class="section-label">오류 코드 진단 실습</div><h2>사례 D · 부동소수 동등 비교 · 결과와 설명</h2><p>컴퓨터는 일부 소수를 이진수로 정확히 표현하지 못합니다. 위 직접 비교는 False지만 허용오차 비교는 True입니다. NumPy는 절대오차와 기준값에 대한 상대오차를 사용합니다. 비교 전에 단위와 허용오차의 근거를 정하고, 큰 오류를 통과시키려고 오차를 넓히지 않습니다. 개수·ID에는 근사 비교를 쓰지 않습니다. 결측 여부는 <code>isna()</code>로 따로 확인합니다. <a href="https://numpy.org/doc/stable/reference/generated/numpy.isclose.html">NumPy: isclose</a></p>
+</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>49 / 58</span></footer></section>
+<section class="slide " data-title="AI에 진단을 요청하는 명세" data-notes="AI에 진단을 요청하는 명세"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type">개념·해석</span></header><div class="slide-body detailed-content"><div class="section-label">AI에 진단을 요청하는 명세</div><h2>AI에 진단을 요청하는 명세</h2><p>먼저 본인이 예상값을 기록한 뒤 자료 생성 코드와 의심 코드를 함께 전달합니다.</p>
+</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>50 / 58</span></footer></section>
+<section class="slide code-slide" data-title="AI에 진단을 요청하는 명세 · 요청문" data-notes="AI에 진단을 요청하는 명세"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type practice">실습</span></header><div class="slide-body detailed-content"><div class="section-label">AI에 진단을 요청하는 명세</div><h2>AI에 진단을 요청하는 명세 · 요청문</h2><p class="execution-hint">자료 생성 코드와 함께 AI에 전달하고 실제 응답·수정 내역을 기록하세요.</p><div class="copy-head"><strong>AI 프롬프트</strong><button class="copy-button" type="button">프롬프트 복사</button></div><pre class="code prompt-code" tabindex="0" aria-label="AI 프롬프트"><code>이 자료는 가상 학생 8명의 편도 통학 응답이며 단위는 분입니다.
+목표는 교통수단별 전체 인원·시간 유효 수·시간 결측 수·평균을 비교하는 것입니다.
+원자료를 보존하고 시간 결측만 시간 계산에서 제외해야 합니다.
+만족도 결측 때문에 시간 응답을 제외하거나 시간을 0으로 대체하지 마세요.
+첨부한 의심 코드의 각 줄이 어떤 행과 열을 사용하는지 설명해주세요.
+문제 코드, 명세 위반 이유, 영향받은 ID·분모, 최소 수정 코드를 제시하세요.
+기준값은 도보 2·2·0·15분, 버스 3·2·1·30분, 지하철 3·3·0·50분입니다.
+평균이 같아도 인원과 사용 ID가 달라졌는지 확인해주세요.
+손계산, Python 목록의 합계÷개수, 전부 결측 입력으로 검증해주세요.
+실제 실행하지 않았다면 실행 결과라고 표현하지 말고 예상 결과로 구분해주세요.</code></pre><p class="copy-status" role="status" aria-live="polite"></p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>51 / 58</span></footer></section>
+<section class="slide " data-title="AI에 진단을 요청하는 명세 · 결과와 설명" data-notes="AI에 진단을 요청하는 명세"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type">개념·해석</span></header><div class="slide-body detailed-content"><div class="section-label">AI에 진단을 요청하는 명세</div><h2>AI에 진단을 요청하는 명세 · 결과와 설명</h2><p>AI에게 “맞나요?”라고 다시 물어보는 것은 보조 점검입니다. 같은 잘못된 가정을 반복할 수 있으므로 본인의 기준값과 별도 계산을 남깁니다.</p>
+</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>52 / 58</span></footer></section>
+<section class="slide code-slide" data-title="기록 양식 · 복사 자료" data-notes="검증 로그와 해석"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type">기록 양식</span></header><div class="slide-body detailed-content"><div class="section-label">검증 로그와 해석</div><h2>기록 양식 · 복사 자료</h2><p class="execution-hint">내용 전체를 복사해 텍스트 셀에 기록하거나 예상 결과와 비교하세요.</p><div class="copy-head"><strong>기록·출력 예시</strong><button class="copy-button" type="button">내용 복사</button></div><pre class="code prompt-code" tabindex="0" aria-label="기록·출력 예시"><code>분석 질문·명세:
+자료 출처·한 행의 의미·단위:
+사용 도구·실행일·라이브러리 버전:
+의심 코드와 해당 줄의 역할:
+실행 전 예상값·예상 사용 ID:
+실제 결과·사용 ID·전체/유효/결측 수:
+불일치 원인:
+수정 코드·변경 이유:
+손계산 대조:
+대안 방법 대조:
+극단 사례 입력·예상·관측 결과:
+재시작 후 전체 실행 결과:
+해석과 아직 확인하지 못한 점:</code></pre><p class="copy-status" role="status" aria-live="polite"></p></div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>53 / 58</span></footer></section>
+<section class="slide " data-title="검증된 해석 예" data-notes="검증 로그와 해석"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type">개념·해석</span></header><div class="slide-body detailed-content"><div class="section-label">검증 로그와 해석</div><h2>검증된 해석 예</h2><p>이 가상 자료에서 관측된 시간 응답의 평균은 도보 15분, 버스 30분, 지하철 50분입니다. 버스는 3명 중 2명만 시간에 응답했고 다른 두 집단에는 시간 결측이 없습니다. 따라서 평균과 유효 응답 수를 함께 보아야 합니다. 이 차이가 교통수단의 인과효과이거나 실제 경기대학교 학생 전체의 차이라는 결론은 낼 수 없습니다.</p>
+</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>54 / 58</span></footer></section>
+<section class="slide " data-title="토론 질문" data-notes="검증 로그와 해석"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type">개념·해석</span></header><div class="slide-body detailed-content"><div class="section-label">검증 로그와 해석</div><h2>토론 질문</h2><ol>
+<li>일괄 삭제 뒤 평균이 같았는데도 왜 오류라고 판단했나요?</li>
+<li>전부 결측인 집단의 평균 0분과 계산 불가를 왜 구별해야 하나요?</li>
+<li>별도 함수로 같은 결과를 얻어도 무엇은 검증되지 않나요?</li>
+<li>긴 통학 시간을 가진 학생이 덜 응답했다면 관측 평균을 어떻게 해석해야 하나요?</li>
+</ol>
+</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>55 / 58</span></footer></section>
+<section class="slide " data-title="개인 실습 과제" data-notes="개인 실습 과제"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type">개념·해석</span></header><div class="slide-body detailed-content"><div class="section-label">개인 실습 과제</div><h2>개인 실습 과제</h2><p><strong>제출 방식·기한·배점은 강의 소개와 LMS의 최신 공지를 따릅니다. 아래 항목을 하나의 재현 가능한 Colab 노트북으로 구성합니다.</strong></p>
+
+<ol>
+<li>자료·질문·명세와 실행 환경을 기록합니다.</li>
+<li>사례 A·B·C를 진단하고 코드의 역할을 자신의 말로 설명합니다.</li>
+<li>수정 전후의 사용 ID·전체·유효·결측 수와 결과를 비교합니다.</li>
+<li>검증 3종 세트를 수행하고 기대값과 실제값을 로그에 남깁니다.</li>
+<li>AI 요청 원문·실제 응답·수정 내용을 첨부합니다.</li>
+<li>새 실행 세션에서 위에서 아래로 실행한 뒤 해석 3–5문장을 작성합니다.</li>
+</ol>
+
+<p><strong>선택 확장:</strong> 사례 D, S05=80 실험, 동점 순위 규칙 비교를 추가합니다. 검증 없이 결과만 제출하지 않습니다.</p>
+</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>56 / 58</span></footer></section>
+<section class="slide " data-title="오늘의 정리와 다음 주" data-notes="오늘의 정리와 다음 주"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type">개념·해석</span></header><div class="slide-body detailed-content"><div class="section-label">오늘의 정리와 다음 주</div><h2>오늘의 정리와 다음 주</h2><ul>
+<li>실행 성공과 분석 타당성은 다른 확인 사항입니다.</li>
+<li>평균뿐 아니라 사용 ID와 분모·결측 수도 검증합니다.</li>
+<li>결측 처리는 명세와 수집 맥락에 근거해야 합니다.</li>
+<li>부분세트·정렬·순위·축을 자신의 말로 설명합니다.</li>
+<li>손계산·다른 경로·극단 사례를 학기 내내 적용합니다.</li>
+</ul>
+
+<p><strong>다음 주:</strong> 줄기와 잎 그림과 히스토그램을 손으로 만들고, 코드 결과와 구간 폭에 따른 분포 인상의 변화를 확인합니다.</p>
+</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>57 / 58</span></footer></section>
+<section class="slide " data-title="연결 자료와 참고" data-notes="연결 자료와 참고"><header class="slide-header"><span>자료탐색방법론 · WEEK 03</span><span class="type">개념·해석</span></header><div class="slide-body detailed-content"><div class="section-label">연결 자료와 참고</div><h2>연결 자료와 참고</h2><ul>
+<li><a href="https://app.notion.com/p/3d396f1add76818f87edd9e72d854a93">강의 소개와 전체 계획</a></li>
+<li><a href="https://app.notion.com/p/3d196f1add768148a985d21d826ca92b">1주차: 탐색적 자료분석이란 무엇인가</a></li>
+<li><a href="https://app.notion.com/p/3d396f1add7680af9fbaf004faccfa7c">2주차: 자료의 구조와 분석 명세</a></li>
+<li><a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.dropna.html">pandas 공식 문서: dropna</a></li>
+<li><a href="https://pandas.pydata.org/docs/user_guide/indexing.html">pandas 공식 문서: 행·열 선택</a></li>
+<li><a href="https://numpy.org/doc/stable/reference/generated/numpy.isclose.html">NumPy 공식 문서: isclose</a></li>
+</ul>
+
+<p>실습 자료는 교육 목적으로 만든 가상 자료입니다. 수업 운영안의 시간은 활동 배분 예시이며 휴식·토론 속도에 맞춰 조정합니다. 필수 실습은 결측 처리·행 선택·검증 3종 세트이고, 동점 순위와 부동소수 비교는 보충 활동으로 사용할 수 있습니다.</p>
+</div><footer class="slide-footer"><a href="https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea" target="_blank" rel="noopener">Notion 3주차 강의노트</a><span>58 / 58</span></footer></section></main><nav class="study-toolbar" aria-label="강의 보기"><a href="../index.html?week=3">강의 홈</a><button id="reading-toggle" type="button" aria-pressed="false">전체 읽기</button><a href="https://colab.research.google.com/github/datathinkinglab/kyonggi-courses-2026/blob/main/docs/eda/downloads/EDA_week03.ipynb" target="_blank" rel="noopener">Colab 실습</a><button id="print-deck" type="button">PDF 출력</button></nav><div class="deck-controls" aria-label="슬라이드 이동"><button class="control" data-action="prev" aria-label="이전 페이지">←</button><button class="control" data-action="overview" aria-label="전체 목차">☷</button><button class="control" data-action="fullscreen" aria-label="전체 화면">⛶</button><button class="control" data-action="next" aria-label="다음 페이지">→</button></div><div class="slide-counter" role="status" aria-live="polite"></div><div class="progress"></div><div class="overview" role="dialog" aria-modal="true" aria-label="슬라이드 목차"><button class="overview-close" type="button">목차 닫기 ×</button></div><script src="../eda-detailed.js?v=20261018"></script></body></html>
