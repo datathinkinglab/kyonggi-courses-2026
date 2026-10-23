@@ -1,0 +1,2613 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>5차수 · 중심위치와 저항성 | 경기대학교 자료탐색분석</title>
+  <!-- Pretendard Font -->
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <!-- Highlight.js for Code Syntax Highlighting -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+  <!-- MathJax for LaTeX Rendering -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)'], ['$', '$']],
+        displayMath: [['\\[', '\\]'], ['$$', '$$']]
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <style>
+    :root {
+      --kgu-blue: #003876;
+      --kgu-blue-light: #1d4ed8;
+      --kgu-accent: #0284c7;
+      --orange-accent: #ea580c;
+      --green-accent: #16a34a;
+      --purple-accent: #7c3aed;
+      --red-accent: #dc2626;
+      --bg-dark: #0f172a;
+      --bg-slide: #ffffff;
+      --bg-subtle: #f8fafc;
+      --bg-card: #f1f5f9;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --border-color: #e2e8f0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top Navigation Bar */
+    .top-bar {
+      height: 54px;
+      background: #090d16;
+      color: #f8fafc;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      border-bottom: 1px solid #1e293b;
+      flex-shrink: 0;
+      z-index: 100;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .brand-badge {
+      background: var(--kgu-blue-light);
+      color: #fff;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      letter-spacing: 0.5px;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-btn {
+      background: #1e293b;
+      color: #e2e8f0;
+      border: 1px solid #334155;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .nav-btn:hover {
+      background: #334155;
+      color: #fff;
+    }
+
+    /* Progress Bar */
+    .progress-track {
+      height: 4px;
+      background: #1e293b;
+      width: 100%;
+      flex-shrink: 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #3b82f6, #06b6d4);
+      width: 5%;
+      transition: width 0.3s ease;
+    }
+
+    /* Main Slide Viewport */
+    .viewport {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 18px 28px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .slide {
+      display: none;
+      width: 100%;
+      max-width: 1280px;
+      height: 100%;
+      max-height: 820px;
+      background: var(--bg-slide);
+      border-radius: 16px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      padding: 32px 44px;
+      flex-direction: column;
+      overflow-y: auto;
+      position: relative;
+      animation: fadeIn 0.25s ease-out;
+    }
+
+    .slide.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Slide Header */
+    .slide-header {
+      margin-bottom: 18px;
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-shrink: 0;
+    }
+
+    .section-tag {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--kgu-blue-light);
+      background: #dbeafe;
+      padding: 3px 10px;
+      border-radius: 99px;
+      margin-bottom: 6px;
+    }
+
+    .slide-title {
+      font-size: 1.7rem;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: -0.02em;
+    }
+
+    .slide-step-badge {
+      font-size: 0.82rem;
+      color: var(--kgu-blue);
+      background: #e0f2fe;
+      border: 1px solid #bae6fd;
+      padding: 5px 12px;
+      border-radius: 8px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    /* Slide Content Layouts */
+    .slide-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    .grid-40-60 {
+      display: grid;
+      grid-template-columns: 42% 56%;
+      gap: 2%;
+      align-items: start;
+    }
+
+    .grid-60-40 {
+      display: grid;
+      grid-template-columns: 56% 42%;
+      gap: 2%;
+      align-items: start;
+    }
+
+    /* Cards & Callouts */
+    .card {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 16px 20px;
+    }
+
+    .card-title {
+      font-size: 1.06rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--kgu-blue);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .callout {
+      border-left: 4px solid var(--kgu-blue-light);
+      background: #eff6ff;
+      padding: 12px 16px;
+      border-radius: 0 10px 10px 0;
+      font-size: 0.95rem;
+    }
+
+    .callout.warn {
+      border-left-color: var(--orange-accent);
+      background: #fff7ed;
+    }
+
+    .callout.success {
+      border-left-color: var(--green-accent);
+      background: #f0fdf4;
+    }
+
+    .callout.danger {
+      border-left-color: var(--red-accent);
+      background: #fef2f2;
+    }
+
+    .math-box {
+      background: #f8fafc;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 12px 18px;
+      text-align: center;
+      margin: 6px 0;
+    }
+
+    /* Tables */
+    table.lecture-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+      background: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+    }
+
+    table.lecture-table th {
+      background: #1e293b;
+      color: #fff;
+      font-weight: 600;
+      text-align: left;
+      padding: 9px 14px;
+    }
+
+    table.lecture-table td {
+      padding: 9px 14px;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-main);
+    }
+
+    table.lecture-table tr:nth-child(even) td {
+      background: #f8fafc;
+    }
+
+    table.lecture-table td.num, table.lecture-table th.num {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Tabs for Prompt vs Code */
+    .tab-container {
+      display: flex;
+      flex-direction: column;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .tab-header {
+      display: flex;
+      background: #f1f5f9;
+      border-bottom: 1px solid #cbd5e1;
+      padding: 6px 10px 0 10px;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .tab-btn {
+      padding: 8px 16px;
+      border: 1px solid transparent;
+      border-bottom: none;
+      border-radius: 8px 8px 0 0;
+      background: transparent;
+      color: #475569;
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: inherit;
+      transition: all 0.15s;
+    }
+
+    .tab-btn:hover {
+      background: #e2e8f0;
+      color: #0f172a;
+    }
+
+    .tab-btn.active {
+      background: #1e222a;
+      color: #38bdf8;
+      border-color: #334155;
+    }
+
+    .tab-btn.prompt-tab.active {
+      background: #0f172a;
+      color: #facc15;
+    }
+
+    .tab-pane {
+      display: none;
+    }
+
+    .tab-pane.active {
+      display: block;
+    }
+
+    /* Code & Prompt Blocks */
+    .code-wrapper {
+      position: relative;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid #334155;
+      background: #282c34;
+    }
+
+    .tab-pane .code-wrapper {
+      border: none;
+      border-radius: 0;
+    }
+
+    .code-header {
+      background: #1e222a;
+      color: #94a3b8;
+      padding: 8px 14px;
+      font-size: 0.8rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #334155;
+    }
+
+    .prompt-box {
+      background: #0f172a;
+      color: #f8fafc;
+      padding: 16px 18px;
+      font-family: 'Pretendard', monospace;
+      font-size: 0.9rem;
+      line-height: 1.65;
+      white-space: pre-wrap;
+    }
+
+    .copy-btn {
+      background: #2563eb;
+      color: #ffffff;
+      border: none;
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: background 0.2s;
+    }
+
+    .copy-btn:hover {
+      background: #1d4ed8;
+    }
+
+    pre {
+      margin: 0;
+      padding: 14px;
+      overflow-x: auto;
+      font-size: 0.84rem;
+      line-height: 1.5;
+    }
+
+    .console-out {
+      background: #090d16;
+      color: #a7f3d0;
+      font-family: 'Consolas', 'Monaco', monospace;
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: 0.84rem;
+      line-height: 1.48;
+      white-space: pre-wrap;
+      border: 1px solid #1e293b;
+    }
+
+    /* Data Chips */
+    .data-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 12px;
+      background: #f1f5f9;
+      border-radius: 10px;
+      border: 1px solid #cbd5e1;
+    }
+
+    .data-chip {
+      background: #fff;
+      border: 1px solid #94a3b8;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      color: #1e293b;
+      position: relative;
+    }
+
+    .data-chip small {
+      display: block;
+      font-size: 0.65rem;
+      color: #64748b;
+      font-weight: 500;
+      text-align: center;
+    }
+
+    .data-chip.highlight-med {
+      background: #ffedd5;
+      border-color: #ea580c;
+      color: #c2410c;
+    }
+
+    .data-chip.highlight-mode {
+      background: #dcfce7;
+      border-color: #16a34a;
+      color: #15803d;
+    }
+
+    .data-chip.highlight-ext {
+      background: #fee2e2;
+      border-color: #dc2626;
+      color: #b91c1c;
+    }
+
+    .data-chip.missing {
+      background: #e2e8f0;
+      border-style: dashed;
+      color: #64748b;
+    }
+
+    /* Action Buttons */
+    .action-btn {
+      background: var(--kgu-blue-light);
+      color: #fff;
+      border: none;
+      padding: 9px 18px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.92rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+      font-family: inherit;
+      box-shadow: 0 4px 6px -1px rgba(29, 78, 216, 0.25);
+    }
+
+    .action-btn:hover {
+      background: var(--kgu-blue);
+      transform: translateY(-1px);
+    }
+
+    .action-btn.green {
+      background: var(--green-accent);
+      box-shadow: 0 4px 6px -1px rgba(22, 163, 74, 0.25);
+    }
+
+    .action-btn.green:hover {
+      background: #15803d;
+    }
+
+    .action-btn.orange {
+      background: var(--orange-accent);
+      box-shadow: 0 4px 6px -1px rgba(234, 88, 12, 0.25);
+    }
+
+    .action-btn.orange:hover {
+      background: #c2410c;
+    }
+
+    .action-btn.purple {
+      background: var(--purple-accent);
+      box-shadow: 0 4px 6px -1px rgba(124, 58, 237, 0.25);
+    }
+
+    /* Cover Slide Specifics */
+    .cover-slide {
+      background: linear-gradient(135deg, #00234b 0%, #0f172a 100%);
+      color: #fff;
+      justify-content: center;
+      padding: 60px;
+    }
+
+    .cover-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(59, 130, 246, 0.2);
+      border: 1px solid rgba(96, 165, 250, 0.4);
+      color: #93c5fd;
+      padding: 6px 16px;
+      border-radius: 99px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      width: fit-content;
+      margin-bottom: 20px;
+    }
+
+    .cover-title {
+      font-size: 3rem;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 16px;
+      letter-spacing: -0.02em;
+    }
+
+    .cover-question {
+      font-size: 1.4rem;
+      color: #38bdf8;
+      font-weight: 600;
+      margin-bottom: 36px;
+      padding-left: 16px;
+      border-left: 4px solid #38bdf8;
+    }
+
+    /* Bottom Controls */
+    .bottom-bar {
+      height: 56px;
+      background: #090d16;
+      border-top: 1px solid #1e293b;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      color: #cbd5e1;
+      flex-shrink: 0;
+    }
+
+    .slide-counter {
+      font-weight: 700;
+      font-size: 0.95rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .control-group {
+      display: flex;
+      gap: 10px;
+    }
+
+    .ctrl-btn {
+      background: #1d4ed8;
+      color: #fff;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      transition: opacity 0.2s;
+    }
+
+    .ctrl-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    /* Modals (TOC, Hand-calc Answer, Code Popups) */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.82);
+      backdrop-filter: blur(3px);
+      z-index: 300;
+      align-items: center;
+      justify-content: center;
+      padding: 28px;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal-box {
+      background: #fff;
+      width: 100%;
+      max-width: 1020px;
+      max-height: 88vh;
+      border-radius: 16px;
+      padding: 24px 30px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+      animation: fadeIn 0.2s ease-out;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 12px;
+      margin-bottom: 16px;
+      flex-shrink: 0;
+    }
+
+    .modal-body {
+      overflow-y: auto;
+      padding-right: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .toc-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap: 10px;
+      overflow-y: auto;
+      padding-right: 6px;
+    }
+
+    .toc-item {
+      padding: 10px 14px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.88rem;
+      transition: all 0.15s;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .toc-item:hover {
+      background: #eff6ff;
+      border-color: var(--kgu-blue-light);
+    }
+
+    .toc-num {
+      background: #e2e8f0;
+      color: #1e293b;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 0.78rem;
+    }
+
+    ul.lecture-list {
+      padding-left: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    ul.lecture-list li::marker {
+      color: var(--kgu-blue-light);
+    }
+
+    .step-badge {
+      display: inline-block;
+      background: var(--kgu-blue);
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.76rem;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-right: 6px;
+    }
+  </style>
+<style>
+/* Site integration: print every slide, including inactive slides. */
+@media print {
+  @page { size: A4 landscape; margin: 8mm; }
+  html, body { height: auto !important; overflow: visible !important; background: white !important; display: block !important; }
+  .top-bar, .progress-track, .bottom-bar, .controls, .modal-overlay { display: none !important; }
+  .viewport { display: block !important; padding: 0 !important; overflow: visible !important; }
+  .slide { display: flex !important; width: 100% !important; height: auto !important; max-height: none !important; max-width: none !important; overflow: visible !important; border-radius: 0 !important; box-shadow: none !important; padding: 12px !important; animation: none !important; break-before: page; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  .slide:first-child { break-before: auto; }
+  .tab-pane { display: block !important; }
+  pre { white-space: pre-wrap !important; overflow: visible !important; }
+  .copy-btn { display: none !important; }
+}
+</style>
+</head>
+<body>
+
+  <!-- Top Bar -->
+  <header class="top-bar">
+    <div class="brand">
+      <span class="brand-badge">KGU 2026-2</span>
+      <span>자료탐색분석 (EDA) · 5차수: 중심위치와 저항성</span>
+    </div>
+    <div class="top-actions">
+      <button class="nav-btn" onclick="openModal('tocModal')"><i class="fa-solid fa-table-cells-large"></i> 전체 슬라이드 목차 (M)</button>
+      <button class="nav-btn" onclick="window.print()"><i class="fa-solid fa-print"></i> 인쇄 / PDF</button>
+    </div>
+  </header>
+
+  <!-- Progress Bar -->
+  <div class="progress-track">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+
+  <!-- Slide Viewport -->
+  <main class="viewport">
+
+    <!-- ==================== SLIDE 1: 표지 ==================== -->
+    <section class="slide cover-slide active" data-title="표지: 5차수 중심위치와 저항성">
+      <div class="cover-badge">
+        <i class="fa-solid fa-chart-simple"></i> 경기대학교 응용통계전공 · 2026학년도 2학기
+      </div>
+      <h1 class="cover-title">5차수 · 중심위치와 저항성<br><span style="font-size: 1.95rem; font-weight: 600; color: #cbd5e1;">평균 · 중앙값 · 최빈값 · 분위수 · IQR의 수리적 원리와 실습</span></h1>
+      <p class="cover-question">
+        “대표값 하나를 고르기 전에, 무엇을 대표하려는지 설명할 수 있는가?”
+      </p>
+      <div class="grid-3" style="margin-top: 10px;">
+        <div style="background: rgba(255,255,255,0.08); padding: 18px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.15);">
+          <div style="color: #93c5fd; font-weight: 700; font-size: 0.85rem; margin-bottom: 6px;">수강 대상 및 전제</div>
+          <div style="font-size: 0.95rem; color: #f8fafc;">통계학개론을 이수한 대학생<br><span style="color: #cbd5e1; font-size: 0.85rem;">(Python 문법 선수지식 불필요)</span></div>
+        </div>
+        <div style="background: rgba(255,255,255,0.08); padding: 18px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.15);">
+          <div style="color: #93c5fd; font-weight: 700; font-size: 0.85rem; margin-bottom: 6px;">학습 흐름</div>
+          <div style="font-size: 0.95rem; color: #f8fafc;">수리적 원리 이해 → 손계산 예측<br><span style="color: #cbd5e1; font-size: 0.85rem;">→ AI 프롬프트 작성 → Colab 검증</span></div>
+        </div>
+        <div style="background: rgba(255,255,255,0.08); padding: 18px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.15);">
+          <div style="color: #93c5fd; font-weight: 700; font-size: 0.85rem; margin-bottom: 6px;">수업 준비물</div>
+          <div style="font-size: 0.95rem; color: #f8fafc;">계산기, 필기도구, Google Colab,<br>선택한 생성형 AI 도구</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 2: 수업 연결 & 학습 목표 ==================== -->
+    <section class="slide" data-title="기존 수업과의 연결 및 학습 목표">
+      <div class="slide-header">
+        <div>
+          <span class="section-tag">0. 오리엔테이션</span>
+          <h2 class="slide-title">기존 차수와의 연결 및 오늘의 학습 목표</h2>
+        </div>
+        <span class="slide-step-badge">Intro · 학습 목표</span>
+      </div>
+      <div class="slide-body">
+        <div class="grid-40-60">
+          <div class="card">
+            <div class="card-title"><i class="fa-solid fa-link"></i> 1~4차수 흐름과 오늘의 위치</div>
+            <ul class="lecture-list" style="font-size: 0.95rem;">
+              <li><strong>1차수:</strong> EDA의 기본 철학과 저항성(Resistance) 입문</li>
+              <li><strong>2차수:</strong> 관측 단위 · 변수 척도 · 분석 명세 작성법</li>
+              <li><strong>3차수:</strong> 문제 발견 → 수정 요청 → 실제 근거로 검증</li>
+              <li><strong>4차수:</strong> 분포 모양 · 줄기와 잎 그림 · 히스토그램</li>
+              <li style="color: var(--kgu-blue-light); font-weight: 700;"><strong>5차수(오늘):</strong> 4차수에서 소개한 <u>평균 34.35분과 중앙값 31분이 왜 다른지</u> 수리적으로 규명하고 직접 검증한다.</li>
+            </ul>
+            <div class="callout warn" style="margin-top: 14px; font-size: 0.88rem;">
+              <strong>수업 운영 원칙:</strong> 이론 설명 후 손계산으로 먼저 예측하고, AI 프롬프트와 Colab 코드로 교차 검증합니다. 코드 타이핑 속도는 평가하지 않습니다.
+            </div>
+          </div>
+
+          <div class="card" style="background: #fff; border-width: 2px;">
+            <div class="card-title"><i class="fa-solid fa-bullseye"></i> 수업이 끝나면 할 수 있는 5가지 (학습 목표)</div>
+            <ol class="lecture-list" style="font-size: 0.96rem; gap: 11px;">
+              <li><strong>정의와 목적 구별:</strong> 평균 · 중앙값 · 최빈값의 수리적 정의와 실제 사용 목적을 설명한다.</li>
+              <li><strong>핵심 성질 비교:</strong> 평균의 <u>균형점(무게중심) 성질</u>과 중앙값의 <u>순서 기반 성질</u>을 구별한다.</li>
+              <li><strong>저항성 실험 및 예측:</strong> 관측치 하나를 바꿨을 때 평균과 중앙값의 변화를 수식으로 계산하고 저항성을 설명한다.</li>
+              <li><strong>분위수와 산포 계산:</strong> 지정된 선형 보간 규칙(<code>method="linear"</code>)으로 사분위수(\(Q_1, Q_2, Q_3\))와 \(IQR\)을 정확히 계산한다.</li>
+              <li><strong>책임 있는 통계 보고:</strong> 대표값을 선택한 이유, 유효 관측 수, 결측 처리 원칙, 분위수 계산 규칙을 함께 보고한다.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 3: 학습 로드맵 ==================== -->
+    <section class="slide" data-title="5차수 전체 학습 로드맵">
+      <div class="slide-header">
+        <div>
+          <span class="section-tag">0. 강사용/학생용 안내</span>
+          <h2 class="slide-title">5차수 전체 학습 로드맵</h2>
+        </div>
+        <span class="slide-step-badge">Roadmap</span>
+      </div>
+      <div class="slide-body">
+        <table class="lecture-table">
+          <thead>
+            <tr>
+              <th style="width: 18%;">학습 단계</th>
+              <th style="width: 54%;">주요 학습 내용</th>
+              <th style="width: 28%;">학습 방식</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Step 1 · 출발 질문</strong></td>
+              <td>4차수 통학 자료 복습과 대표값 선택 질문: “누구에게 필요한 대표값인가?”</td>
+              <td>개념 질문 · 분포도 연결</td>
+            </tr>
+            <tr>
+              <td><strong>Step 2 · 중심위치 원리</strong></td>
+              <td>평균(균형점·최소제곱) · 중앙값(순서·최소절대거리) · 최빈값의 수리적 원리</td>
+              <td>이론 학습 · 수식 유도</td>
+            </tr>
+            <tr>
+              <td><strong>Step 3 · 저항성 실험</strong></td>
+              <td>저항성(Resistance)의 정의, 한 값 변경 예측 수식(\(\Delta/n\)), 대표값과 분포 모양</td>
+              <td>이론 · 결과 예측</td>
+            </tr>
+            <tr>
+              <td><strong>Step 4 · 분위수와 IQR</strong></td>
+              <td>백분위수 · 사분위수(\(Q_1, Q_2, Q_3\)) 선형 보간 규칙 · \(IQR\)과 표준편차 비교</td>
+              <td>이론 · 보간 시연</td>
+            </tr>
+            <tr style="background: #eff6ff;">
+              <td><strong>Step 5 · 손계산 실습</strong></td>
+              <td>소자료(\(n=8\)) 손계산 활동 (분모·정렬·보간 직접 계산 후 팝업 정답 대조)</td>
+              <td>개인 풀이 · 짝과 비교</td>
+            </tr>
+            <tr style="background: #eff6ff;">
+              <td><strong>Step 6 · Colab 검증</strong></td>
+              <td>AI 분석 명세/프롬프트 작성 → 기존 통학 자료(\(n=20\)) Colab 실행 및 값 교체 실험</td>
+              <td>프롬프트 작성 · 코드 검증</td>
+            </tr>
+            <tr>
+              <td><strong>Step 7 · 정리 및 심화</strong></td>
+              <td>표준 해석문 작성 · 종료 질문 5선 · 심화(가중평균·절사평균) · 가정용 자가 실습</td>
+              <td>종합 정리 · 자가 과제</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="grid-2" style="margin-top: 4px;">
+          <div class="callout">
+            <strong><i class="fa-solid fa-laptop-code"></i> 실습 방식 안내:</strong> 모든 Colab 실습은 <strong>① AI에게 지시할 프롬프트</strong>를 먼저 확인하여 직접 생성해 본 뒤, <strong>② 비교용 정답 코드 탭/팝업</strong>을 열어 결과를 검증합니다.
+          </div>
+          <div class="callout success">
+            <strong><i class="fa-solid fa-house-laptop"></i> 가정용 자가 실습 수록:</strong> 슬라이드 마지막(20~21쪽)에 집에서 혼자 연습할 수 있는 <strong>별도 실습 문제와 샘플 CSV 파일 다운로드, 프롬프트, 정답 코드</strong>가 제공됩니다.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 4: 출발 질문과 데이터셋 ==================== -->
+    <section class="slide" data-title="1. 출발 질문: 누구에게 필요한 대표값인가?">
+      <div class="slide-header">
+        <div>
+          <span class="section-tag">1. 출발 질문</span>
+          <h2 class="slide-title">누구에게 필요한 대표값인가? (교육용 통학 시간 자료)</h2>
+        </div>
+        <span class="slide-step-badge">Section 1</span>
+      </div>
+      <div class="slide-body">
+        <p style="font-size: 0.96rem; color: var(--text-muted);">
+          4차수에서 사용한 <strong>교육용 가상 학생 22명의 편도 통학 시간(단위: 분)</strong>입니다. (실제 경기대 조사 자료가 아닌 교육용 통제 데이터)
+        </p>
+
+        <!-- Data Strip with indices -->
+        <div class="data-strip">
+          <div class="data-chip"><small>x(1)</small>10</div>
+          <div class="data-chip"><small>x(2)</small>12</div>
+          <div class="data-chip"><small>x(3)</small>15</div>
+          <div class="data-chip"><small>x(4)</small>18</div>
+          <div class="data-chip highlight-mode"><small>x(5)·최빈</small>20</div>
+          <div class="data-chip highlight-mode"><small>x(6)·최빈</small>20</div>
+          <div class="data-chip"><small>x(7)</small>22</div>
+          <div class="data-chip"><small>x(8)</small>25</div>
+          <div class="data-chip"><small>x(9)</small>28</div>
+          <div class="data-chip highlight-med"><small>x(10)</small>30</div>
+          <div class="data-chip highlight-med"><small>x(11)</small>32</div>
+          <div class="data-chip"><small>x(12)</small>35</div>
+          <div class="data-chip"><small>x(13)</small>38</div>
+          <div class="data-chip"><small>x(14)</small>40</div>
+          <div class="data-chip"><small>x(15)</small>42</div>
+          <div class="data-chip"><small>x(16)</small>45</div>
+          <div class="data-chip"><small>x(17)</small>50</div>
+          <div class="data-chip"><small>x(18)</small>55</div>
+          <div class="data-chip"><small>x(19)</small>60</div>
+          <div class="data-chip highlight-ext"><small>x(20)</small>90</div>
+          <div class="data-chip missing"><small>결측 1</small>미응답</div>
+          <div class="data-chip missing"><small>결측 2</small>미응답</div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title"><i class="fa-solid fa-database"></i> 데이터 구조와 보존 원칙</div>
+            <ul class="lecture-list" style="font-size: 0.94rem;">
+              <li><strong>관측 단위:</strong> 학생 1명 (전체 \(N=22\))</li>
+              <li><strong>유효 응답 수:</strong> \(n = 20\)명 / <strong>결측(미응답):</strong> \(2\)명</li>
+              <li><strong>엄격한 데이터 보존 규칙:</strong>
+                <br>① 미응답을 임의로 <code>0분</code>으로 바꾸지 않는다.
+                <br>② <code>90분</code>을 “너무 크다”는 이유로 임의 삭제하지 않는다.
+              </li>
+            </ul>
+          </div>
+
+          <div class="card" style="border-color: var(--kgu-blue-light); background: #eff6ff;">
+            <div class="card-title"><i class="fa-solid fa-circle-question"></i> 서로 다른 두 가지 질문을 구별하자</div>
+            <div style="margin-bottom: 10px; padding: 10px; background: #fff; border-radius: 8px; border-left: 4px solid #2563eb;">
+              <strong>질문 A:</strong> “유효 응답 학생들의 편도 통학 시간을 <u>모두 더하면</u> 몇 분인가?”<br>
+              <span style="font-size: 0.88rem; color: var(--text-muted);">→ <strong>전체 합계(687분)와 산술평균(34.35분)</strong>에 연결</span>
+            </div>
+            <div style="padding: 10px; background: #fff; border-radius: 8px; border-left: 4px solid #ea580c;">
+              <strong>질문 B:</strong> “응답 학생들의 통학 시간 순서에서 <u>가운데 위치</u>는 몇 분인가?”<br>
+              <span style="font-size: 0.88rem; color: var(--text-muted);">→ <strong>정렬된 순서의 중앙값(31.0분)</strong>에 연결</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 5: 그림 5-1 분포와 대표값 ==================== -->
+    <section class="slide" data-title="그림 5-1: 분포의 오른쪽 꼬리와 대표값 연결">
+      <div class="slide-header">
+        <div>
+          <span class="section-tag">1. 출발 질문 · 시각화 연결</span>
+          <h2 class="slide-title">그림 5-1 · 통학 시간 분포 위의 평균(34.35분)과 중앙값(31분)</h2>
+        </div>
+        <span class="slide-step-badge">Figure 5-1</span>
+      </div>
+      <div class="slide-body">
+        <!-- SVG Figure 5-1: Dotplot + Histogram overlay with Mean & Median -->
+        <div class="card" style="background: #fff; padding: 16px 24px; text-align: center;">
+          <svg viewBox="0 0 900 250" style="width: 100%; max-height: 240px;">
+            <line x1="60" y1="190" x2="860" y2="190" stroke="#334155" stroke-width="2" />
+            <g font-size="13" fill="#475569" text-anchor="middle" font-weight="600">
+              <line x1="60" y1="190" x2="60" y2="198" stroke="#334155" stroke-width="1.5"/><text x="60" y="216">0</text>
+              <line x1="140" y1="190" x2="140" y2="198" stroke="#334155" stroke-width="1.5"/><text x="140" y="216">10</text>
+              <line x1="220" y1="190" x2="220" y2="198" stroke="#334155" stroke-width="1.5"/><text x="220" y="216">20</text>
+              <line x1="300" y1="190" x2="300" y2="198" stroke="#334155" stroke-width="1.5"/><text x="300" y="216">30</text>
+              <line x1="380" y1="190" x2="380" y2="198" stroke="#334155" stroke-width="1.5"/><text x="380" y="216">40</text>
+              <line x1="460" y1="190" x2="460" y2="198" stroke="#334155" stroke-width="1.5"/><text x="460" y="216">50</text>
+              <line x1="540" y1="190" x2="540" y2="198" stroke="#334155" stroke-width="1.5"/><text x="540" y="216">60</text>
+              <line x1="620" y1="190" x2="620" y2="198" stroke="#334155" stroke-width="1.5"/><text x="620" y="216">70</text>
+              <line x1="700" y1="190" x2="700" y2="198" stroke="#334155" stroke-width="1.5"/><text x="700" y="216">80</text>
+              <line x1="780" y1="190" x2="780" y2="198" stroke="#334155" stroke-width="1.5"/><text x="780" y="216">90</text>
+              <line x1="860" y1="190" x2="860" y2="198" stroke="#334155" stroke-width="1.5"/><text x="860" y="216">100 (분)</text>
+            </g>
+
+            <!-- Subtle Histogram Bins -->
+            <rect x="140" y="110" width="80" height="80" fill="#e2e8f0" opacity="0.6" stroke="#cbd5e1"/>
+            <rect x="220" y="90" width="80" height="100" fill="#e2e8f0" opacity="0.6" stroke="#cbd5e1"/>
+            <rect x="300" y="110" width="80" height="80" fill="#e2e8f0" opacity="0.6" stroke="#cbd5e1"/>
+            <rect x="380" y="130" width="80" height="60" fill="#e2e8f0" opacity="0.6" stroke="#cbd5e1"/>
+            <rect x="460" y="150" width="80" height="40" fill="#e2e8f0" opacity="0.6" stroke="#cbd5e1"/>
+            <rect x="540" y="170" width="80" height="20" fill="#e2e8f0" opacity="0.6" stroke="#cbd5e1"/>
+            <rect x="780" y="170" width="80" height="20" fill="#fee2e2" opacity="0.6" stroke="#fca5a5"/>
+
+            <!-- Dots for 20 observations -->
+            <g fill="#334155">
+              <circle cx="140" cy="176" r="7" />
+              <circle cx="156" cy="176" r="7" />
+              <circle cx="180" cy="176" r="7" />
+              <circle cx="204" cy="176" r="7" />
+              <circle cx="220" cy="176" r="7" fill="#16a34a" />
+              <circle cx="220" cy="158" r="7" fill="#16a34a" />
+              <circle cx="236" cy="176" r="7" />
+              <circle cx="260" cy="176" r="7" />
+              <circle cx="284" cy="176" r="7" />
+              <circle cx="300" cy="176" r="7" />
+              <circle cx="316" cy="176" r="7" />
+              <circle cx="340" cy="176" r="7" />
+              <circle cx="364" cy="176" r="7" />
+              <circle cx="380" cy="176" r="7" />
+              <circle cx="396" cy="176" r="7" />
+              <circle cx="420" cy="176" r="7" />
+              <circle cx="460" cy="176" r="7" />
+              <circle cx="500" cy="176" r="7" />
+              <circle cx="540" cy="176" r="7" />
+              <circle cx="780" cy="176" r="9" fill="#d97706" stroke="#78350f" stroke-width="2"/>
+            </g>
+
+            <!-- Median Line: 31 -->
+            <line x1="308" y1="25" x2="308" y2="190" stroke="#ea580c" stroke-width="3.5" stroke-dasharray="7,4"/>
+            <rect x="175" y="18" width="126" height="30" rx="6" fill="#ea580c"/>
+            <text x="238" y="38" fill="#fff" font-size="13" font-weight="700" text-anchor="middle">중앙값 31.0분</text>
+
+            <!-- Mean Line: 34.35 -->
+            <line x1="334.8" y1="25" x2="334.8" y2="190" stroke="#1d4ed8" stroke-width="3.5"/>
+            <rect x="342" y="18" width="134" height="30" rx="6" fill="#1d4ed8"/>
+            <text x="409" y="38" fill="#fff" font-size="13" font-weight="700" text-anchor="middle">평균 34.35분</text>
+
+            <!-- Annotation for 90 -->
+            <path d="M 780 155 Q 780 95 690 95" fill="none" stroke="#b45309" stroke-width="2"/>
+            <rect x="530" y="70" width="290" height="44" rx="8" fill="#fef3c7" stroke="#f59e0b"/>
+            <text x="675" y="89" fill="#92400e" font-size="12.5" font-weight="700" text-anchor="middle">오른쪽 긴 꼬리 관측값 (90분)</text>
+            <text x="675" y="106" fill="#b45309" font-size="11.5" text-anchor="middle">※ '오류'가 아닌 실제 장거리 통학 응답 (평균을 오른쪽으로 당김)</text>
+          </svg>
+        </div>
+
+        <div class="grid-2">
+          <div class="callout warn">
+            <strong><i class="fa-solid fa-comments"></i> 학생에게 묻기:</strong><br>
+            “평균이 34.35분이라는 말은 <u>학생 대부분이 34.35분쯤 걸린다</u>는 뜻인가요?”
+          </div>
+          <div class="callout success">
+            <strong><i class="fa-solid fa-lightbulb"></i> 핵심 해설:</strong><br>
+            <strong>아닙니다!</strong> 실제 응답 중 34.35분인 학생은 한 명도 없습니다(32분과 35분 사이). 평균은 수치적 균형점일 뿐이며, <strong>대부분의 학생이 어디에 몰려 있는지는 원자료나 분포 그림(히스토그램·점그림)을 함께 봐야</strong> 알 수 있습니다.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 6: 2.1 평균의 정의와 두 가지 수리적 성질 ==================== -->
+    <section class="slide" data-title="2.1 평균: 모두의 크기를 반영하는 균형점">
+      <div class="slide-header">
+        <div>
+          <span class="section-tag">2. 중심위치의 세 가지 측도</span>
+          <h2 class="slide-title">2.1 산술평균(Mean): 모두의 크기를 반영하는 균형점</h2>
+        </div>
+        <span class="slide-step-badge">Section 2.1</span>
+      </div>
+      <div class="slide-body">
+        <div class="grid-40-60">
+          <div class="card">
+            <div class="card-title"><i class="fa-solid fa-calculator"></i> 산술평균의 정의와 분모 규칙</div>
+            <div class="math-box">
+              \[ \bar{x} = \frac{1}{n}\sum_{i=1}^{n} x_i = \frac{687}{20} = 34.35\text{분} \]
+            </div>
+            <ul class="lecture-list" style="font-size: 0.93rem; margin-top: 10px;">
+              <li>유효 관측값 \(x_1, \ldots, x_n\)의 합계(\(687\)분)를 <strong>유효 관측 수 \(n=20\)</strong>으로 나눈 값입니다.</li>
+              <li style="color: var(--red-accent); font-weight: 600;"><strong>주의:</strong> 전체 학생 \(22\)명을 분모로 쓰면(\(687/22 \approx 31.23\)), 미응답 2명을 사실상 <code>0분</code> 통학으로 취급하는 심각한 왜곡이 발생합니다.</li>
+            </ul>
+          </div>
+
+          <div class="card" style="background: #fff;">
+            <div class="card-title"><i class="fa-solid fa-scale-balanced"></i> 평균이 가진 두 가지 구조적 성질 (판서 핵심)</div>
+            
+            <div style="margin-bottom: 12px; padding: 12px 14px; background: #f8fafc; border-radius: 8px; border-left: 4px solid var(--kgu-blue);">
+              <strong>성질 1 · 편차의 합은 항상 0이다 (무게중심 / 균형점)</strong>
+              <div style="margin: 6px 0;">
+                \[ \sum_{i=1}^{n}(x_i - \bar{x}) = \sum_{i=1}^{n} x_i - n\bar{x} = 0 \]
+              </div>
+              <p style="font-size: 0.88rem; color: var(--text-muted);">
+                작은 값들의 음(-)의 편차와 큰 값들의 양(+)의 편차가 정확히 상쇄됩니다. 수직선 위에 같은 무게의 추를 올려놓았을 때 수평을 이루는 <strong>시소의 받침점(균형점)</strong>입니다.
+              </p>
+            </div>
+
+            <div style="padding: 12px 14px; background: #f8fafc; border-radius: 8px; border-left: 4px solid var(--purple-accent);">
+              <strong>성질 2 · 제곱거리의 합을 최소화한다 (최소제곱 성질)</strong>
+              <div style="margin: 6px 0; font-size: 0.92rem;">
+                임의의 기준값 \(a\)에 대하여:
+                \[ \sum_{i=1}^{n}(x_i - a)^2 = \sum_{i=1}^{n}\{(x_i - \bar{x}) + (\bar{x} - a)\}^2 = \sum_{i=1}^{n}(x_i - \bar{x})^2 + \underbrace{n(a - \bar{x})^2}_{\ge 0} \]
+              </div>
+              <p style="font-size: 0.88rem; color: var(--text-muted);">
+                미분 없이도 마지막 항 \(n(a-\bar{x})^2 \ge 0\)이므로 <strong>\(a = \bar{x}\)일 때 제곱오차 합이 최소</strong>가 됨을 알 수 있습니다. 거리가 2배면 제곱거리는 4배가 되므로, 평균이 극단값에 민감한 것은 단순 계산 실수가 아니라 <strong>제곱거리를 줄이려는 평균의 구조적 본질</strong>입니다.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 7: 2.2 중앙값의 정의와 성질 ==================== -->
+    <section class="slide" data-title="2.2 중앙값: 크기보다 정렬된 위치에 주목">
+      <div class="slide-header">
+        <div>
+          <span class="section-tag">2. 중심위치의 세 가지 측도</span>
+          <h2 class="slide-title">2.2 중앙값(Median): 크기보다 정렬된 순서에 주목한다</h2>
+        </div>
+        <span class="slide-step-badge">Section 2.2</span>
+      </div>
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title"><i class="fa-solid fa-arrow-down-1-9"></i> 순서통계량(Order Statistics)과 중앙값 정의</div>
+            <p style="font-size: 0.92rem; margin-bottom: 8px;">
+              오름차순 정렬한 값을 \(x_{(1)} \le x_{(2)} \le \cdots \le x_{(n)}\)으로 표기합니다.<br>
+              <span style="color: var(--orange-accent); font-weight: 600;">※ 괄호 첨자 \((i)\)는 원래 학생 번호가 아니라 <strong>정렬 후 순서</strong>입니다!</span>
+            </p>
+            <div class="math-box" style="font-size: 0.95rem;">
+              \[ \operatorname{Med}(x) = \begin{cases} x_{((n+1)/2)}, & n\text{이 홀수} \\[6pt] \dfrac{x_{(n/2)} + x_{(n/2+1)}}{2}, & n\text{이 짝수} \end{cases} \]
+            </div>
+            <div class="callout" style="margin-top: 10px; font-size: 0.9rem;">
+              <strong>통학 자료 (\(n=20\), 짝수) 계산:</strong><br>
+              10번째 값 \(x_{(10)}=30\)과 11번째 값 \(x_{(11)}=32\)의 평균:<br>
+              \[ \operatorname{Med}(x) = \frac{30 + 32}{2} = 31\text{분} \]
+              <span style="font-size: 0.84rem; color: var(--text-muted);">(실제 31분이라고 응답한 학생은 없지만 중앙값으로 사용 가능)</span>
+            </div>
+          </div>
+
+          <div class="card" style="background: #fff;">
+            <div class="card-title"><i class="fa-solid fa-compass-drafting"></i> 중앙값의 해석 주의점과 수리적 성질</div>
+            
+            <div style="margin-bottom: 12px; padding: 12px; background: #fff7ed; border-radius: 8px; border: 1px solid #fed7aa;">
+              <strong>주의 · 동점(Ties)이 있을 때의 절반 해석</strong>
+              <p style="font-size: 0.89rem; margin-top: 4px;">
+                중앙값 <u>이하</u>와 <u>이상</u>에는 각각 적어도 절반(\(50\%\))의 관측이 있습니다. 단, 동점이 많으면 “엄격히 작은 값과 큰 값이 정확히 절반씩”이라는 설명은 틀릴 수 있습니다.<br>
+                <strong>반례:</strong> <code>[1, 2, 2, 2, 9]</code>에서 중앙값은 <code>2</code>이지만, 2보다 엄격히 작은 값은 <code>1</code> 한 개(20%)뿐입니다.
+              </p>
+            </div>
+
+            <div style="padding: 12px; background: #f8fafc; border-radius: 8px; border: 1px solid #cbd5e1;">
+              <strong>성질 · 절대거리의 합을 최소화한다 (최소절대편차)</strong>
+              <div style="margin: 6px 0; text-align: center; font-weight: 700;">
+                \[ \min_{a} \sum_{i=1}^{n} |x_i - a| \implies a = \operatorname{Med}(x) \]
+              </div>
+              <p style="font-size: 0.88rem; color: var(--text-muted);">
+                기준점 \(a\)를 오른쪽으로 \(\delta\)만큼 옮기면, 왼쪽 점들과의 거리는 \(\delta\)씩 늘어나고 오른쪽 점들과의 거리는 \(\delta\)씩 줄어듭니다. 따라서 <strong>양쪽 점의 개수가 같아지는 정중앙</strong>에서 절대거리 합이 최소가 됩니다. (짝수 표본에서는 가운데 두 값 사이의 모든 점이 최소값을 만들며 관례상 두 값의 평균을 보고)
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 8: 2.3 최빈값과 2.4 목적별 선택 ==================== -->
+    <section class="slide" data-title="2.3 최빈값 및 2.4 목적에 따른 대표값 선택">
+      <div class="slide-header">
+        <div>
+          <span class="section-tag">2. 중심위치의 세 가지 측도</span>
+          <h2 class="slide-title">2.3 최빈값(Mode)의 한계와 2.4 목적별 대표값 선택</h2>
+        </div>
+        <span class="slide-step-badge">Section 2.3 – 2.4</span>
+      </div>
+      <div class="slide-body">
+        <div class="grid-3">
+          <div class="card">
+            <div class="card-title"><i class="fa-solid fa-repeat"></i> 최빈값 ≠ 과반수</div>
+            <p style="font-size: 0.9rem;">
+              통학 자료에서 <code>20분</code>이 2회, 나머지는 1회씩 관측되므로 최빈값은 <strong>20분</strong>입니다.<br><br>
+              그러나 비율은 \(2/20 = \mathbf{10\%}\)에 불과합니다. <strong>“가장 자주 나온 값”이 “대다수(과반수)가 선택한 값”을 뜻하지는 않습니다.</strong> 최고 빈도가 여러 개면 공동 최빈값을 모두 보고합니다.
+            </p>
+          </div>
+
+          <div class="card">
+            <div class="card-title"><i class="fa-solid fa-tags"></i> 측정 척도와 대표값</div>
+            <p style="font-size: 0.9rem;">
+              <strong>명목척도(교통수단):</strong> 최빈 범주 사용 가능. 단, <code>버스=1, 지하철=2, 도보=3</code> 코드의 평균 <code>1.8</code>은 아무 의미가 없습니다.<br><br>
+              <strong>순서척도(만족도 등급):</strong> 중앙 범주는 해석 가능하나, 등급 간격이 동일하다는 근거 없이 숫자 평균을 내는 것은 주의해야 합니다.
+            </p>
+          </div>
+
+          <div class="card">
+            <div class="card-title"><i class="fa-solid fa-chart-area"></i> 연속형 자료와 봉우리</div>
+            <p style="font-size: 0.9rem;">
+              연속형 자료는 측정 정밀도에 따라 정확히 같은 값이 아예 없을 수 있습니다.<br><br>
+              <strong>원자료의 최빈값</strong>과 <strong>히스토그램의 최고 빈도 구간(Bin)</strong>, <strong>밀도곡선의 봉우리(Peak)</strong>는 서로 구별해야 합니다(구간 폭에 따라 달라짐).
+            </p>
+          </div>
+        </div>
+
+        <table class="lecture-table" style="margin-top: 4px;">
+          <thead>
+            <tr>
+              <th style="width: 28%;">분석 목적 (무엇을 요약하려는가?)</th>
+              <th style="width: 24%;">우선 살펴볼 대표값</th>
+              <th style="width: 48%;">반드시 함께 확인·보고할 항목</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>합계와 연결되는 평균적 부담</strong></td>
+              <td><span style="color: var(--kgu-blue-light); font-weight: 700;">산술평균 (Mean)</span></td>
+              <td>유효 관측 수(\(n\)), 전체 합계(\(\sum x_i\)), 극단값 존재 여부, 분포 모양</td>
+            </tr>
+            <tr>
+              <td><strong>정렬했을 때 가운데 위치 (전형적 순서)</strong></td>
+              <td><span style="color: var(--orange-accent); font-weight: 700;">중앙값 (Median)</span></td>
+              <td>사분위수(\(Q_1, Q_3\)), 사분위범위(\(IQR\)), 유효 표본 수</td>
+            </tr>
+            <tr>
+              <td><strong>가장 흔한 범주 또는 최다 기록값</strong></td>
+              <td><span style="color: var(--green-accent); font-weight: 700;">최빈값 (Mode) · 빈도</span></td>
+              <td>공동 최빈값 유무, 전체 유효 수 대비 해당 빈도의 비율(%)</td>
+            </tr>
+            <tr>
+              <td><strong>분포 전체의 종합적 이해</strong></td>
+              <td><strong>여러 수치 요약 + 그래프</strong></td>
+              <td>비대칭 꼬리 방향, 봉우리 개수(다봉성), 결측 수, 데이터 수집 맥락</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 9: 3. 저항성과 평균/중앙값 비교 ==================== -->
+    <section class="slide" data-title="3. 저항성: 한 값이 결론을 얼마나 움직이는가?">
+      <div class="slide-header">
+        <div>
+          <span class="section-tag">3. 저항성 (Resistance)</span>
+          <h2 class="slide-title">한 관측값의 변화가 결론을 얼마나 움직이는가?</h2>
+        </div>
+        <span class="slide-step-badge">Section 3.1 – 3.2</span>
+      </div>
+      <div class="slide-body">
+        <div class="callout" style="font-size: 1rem;">
+          <strong>저항성(Resistance)의 정의:</strong> 일부 관측값의 급격한 변화(극단값·입력 오류 등)가 통계적 요약값에 지나치게 큰 영향을 주지 않는 성질입니다.
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title"><i class="fa-solid fa-arrow-trend-up"></i> 3.1 평균의 변화를 수식으로 예측하기</div>
+            <p style="font-size: 0.92rem;">
+              \(n=20\)명 중 한 학생의 값을 \(x_j\)에서 \(x_j + \Delta\)로 <strong>교체</strong>(인원 \(n=20\) 유지)하면 새로운 평균은 정확히 \(\Delta / n\)만큼 변합니다:
+            </p>
+            <div class="math-box">
+              \[ \bar{x}_{\mathrm{new}} = \bar{x} + \frac{\Delta}{n} \]
+            </div>
+            <ul class="lecture-list" style="font-size: 0.9rem; margin-top: 8px;">
+              <li><code>90분 → 190분</code> 교체 (\(\Delta = +100\)):
+                <br>\(\bar{x}_{\mathrm{new}} = 34.35 + \frac{100}{20} = 34.35 + 5 = \mathbf{39.35\text{분}}\)</li>
+              <li><code>90분 → 990분</code> 교체 (\(\Delta = +900\)):
+                <br>\(\bar{x}_{\mathrm{new}} = 34.35 + \frac{900}{20} = 34.35 + 45 = \mathbf{79.35\text{분}}\)</li>
+              <li style="color: var(--red-accent);">한 값만 한없이 키우면 평균도 한없이 끌려갑니다(<strong>비저항적</strong>).</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <div class="card-title"><i class="fa-solid fa-shield-halved"></i> 3.2 중앙값은 왜 31분 그대로인가? (그리고 반례)</div>
+            <p style="font-size: 0.92rem;">
+              <code>90분</code>은 이미 정렬된 20개 중 가장 큰 값(\(x_{(20)}\))입니다. 이 값을 <code>190</code>이나 <code>990</code>으로 키워도 <strong>가운데 10번째(30분)·11번째(32분) 값의 순서와 크기는 전혀 바뀌지 않으므로</strong> 중앙값은 계속 <strong>31분</strong>입니다.
+            </p>
+            <div class="callout warn" style="margin-top: 12px; font-size: 0.9rem;">
+              <strong>핵심 구별: ‘저항적(Resistant)’ ≠ ‘절대 불변(Invariant)’</strong><br>
+              중앙값이 어떤 변화에도 절대 안 변한다는 뜻이 아닙니다!<br>
+              <strong>반례:</strong> <code>[1, 2, 3, 4, 5]</code> (중앙값 <strong>3</strong>)에서 가운데 값 <code>3</code>을 <code>100</code>으로 바꾸면 정렬 결과는 <code>[1, 2, 4, 5, 100]</code>이 되어 중앙값은 <strong>4</strong>로 변합니다.<br>
+              → <em>“가운데 순서를 건드리지 않는 극단값 변화에 저항적이다”</em>라고 정확히 이해해야 합니다.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 10: 그림 5-2 실험 시각화 및 오해 방지 ==================== -->
+    <section class="slide" data-title="그림 5-2: 값 교체 실험과 분포 모양의 관계">
+      <div class="slide-header">
+        <div>
+          <span class="section-tag">3. 저항성 · 실험 시각화 및 주의점</span>
+          <h2 class="slide-title">그림 5-2 · 한 관측 교체 실험 결과와 저항성의 한계</h2>
+        </div>
+        <span class="slide-step-badge">Figure 5-2 & Section 3.3–3.4</span>
+      </div>
+      <div class="slide-body">
+        <div class="grid-60-40">
+          <!-- Exact match to session-5-figure-1.png -->
+          <div class="card" style="background: #fff; text-align: center; padding: 14px;">
+            <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted); margin-bottom: 6px;">
+              [Colab 출력 그래프 재현: <code>session-5-figure-1.png</code> — 새 관측 추가가 아닌 1개 관측 교체 (\(n=20\) 유지)]
+            </div>
+            <svg viewBox="0 0 680 360" style="width: 100%; max-height: 310px; background: #fff;">
+              <text x="360" y="26" font-size="16" font-weight="700" text-anchor="middle" fill="#0f172a">One value replaced; valid n=20</text>
+              <rect x="70" y="40" width="580" height="260" fill="none" stroke="#0f172a" stroke-width="1.2"/>
+              
+              <g font-size="12.5" fill="#0f172a" text-anchor="end">
+                <line x1="65" y1="290" x2="70" y2="290" stroke="#0f172a"/><text x="60" y="294">30</text>
+                <line x1="65" y1="242" x2="70" y2="242" stroke="#0f172a"/><text x="60" y="246">40</text>
+                <line x1="65" y1="194" x2="70" y2="194" stroke="#0f172a"/><text x="60" y="198">50</text>
+                <line x1="65" y1="146" x2="70" y2="146" stroke="#0f172a"/><text x="60" y="150">60</text>
+                <line x1="65" y1="98" x2="70" y2="98" stroke="#0f172a"/><text x="60" y="102">70</text>
+                <line x1="65" y1="50" x2="70" y2="50" stroke="#0f172a"/><text x="60" y="54">80</text>
+              </g>
+              <text x="22" y="170" font-size="13.5" fill="#0f172a" text-anchor="middle" transform="rotate(-90, 22, 170)">Location (minutes)</text>
+
+              <g font-size="12.5" fill="#0f172a" text-anchor="middle">
+                <line x1="160" y1="300" x2="160" y2="305" stroke="#0f172a"/><text x="160" y="322">200</text>
+                <line x1="276" y1="300" x2="276" y2="305" stroke="#0f172a"/><text x="276" y="322">400</text>
+                <line x1="392" y1="300" x2="392" y2="305" stroke="#0f172a"/><text x="392" y="322">600</text>
+                <line x1="508" y1="300" x2="508" y2="305" stroke="#0f172a"/><text x="508" y="322">800</text>
+                <line x1="624" y1="300" x2="624" y2="305" stroke="#0f172a"/><text x="624" y="322">1000</text>
+              </g>
+              <text x="360" y="348" font-size="13.5" fill="#0f172a" text-anchor="middle">Replacement of the original 90 (minutes)</text>
+
+              <!-- Mean Line -->
+              <polyline points="96,269.1 154,245.1 618,53.1" fill="none" stroke="#1f77b4" stroke-width="2.5"/>
+              <circle cx="96" cy="269.1" r="5.5" fill="#1f77b4"/>
+              <circle cx="154" cy="245.1" r="5.5" fill="#1f77b4"/>
+              <circle cx="618" cy="53.1" r="5.5" fill="#1f77b4"/>
+
+              <!-- Median Line -->
+              <polyline points="96,285.2 154,285.2 618,285.2" fill="none" stroke="#ff7f0e" stroke-width="2.5"/>
+              <rect x="90.5" y="279.7" width="11" height="11" fill="#ff7f0e"/>
+              <rect x="148.5" y="279.7" width="11" height="11" fill="#ff7f0e"/>
+              <rect x="612.5" y="279.7" width="11" height="11" fill="#ff7f0e"/>
+
+              <!-- Legend -->
+              <rect x="82" y="50" width="115" height="54" rx="4" fill="#fff" stroke="#cbd5e1"/>
+              <line x1="92" y1="66" x2="122" y2="66" stroke="#1f77b4" stroke-width="2.5"/>
+              <circle cx="107" cy="66" r="5" fill="#1f77b4"/>
+              <text x="132" y="70" font-size="13" fill="#0f172a">Mean</text>
+              <line x1="92" y1="90" x2="122" y2="90" stroke="#ff7f0e" stroke-width="2.5"/>
+              <rect x="102" y="85" width="10" height="10" fill="#ff7f0e"/>
+              <text x="132" y="94" font-size="13" fill="#0f172a">Median</text>
+            </svg>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 12px;">
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-scale-unbalanced"></i> 3.3 저항성이 높으면 언제나 더 좋은가?</div>
+              <p style="font-size: 0.89rem;">
+                <strong>아닙니다!</strong> 전체 20명의 총 통학 시간을 구할 때는 \(\text{평균}\times 20 = 687\text{분}\)이 맞으며, \(\text{중앙값}\times 20 = 620\text{분}\)은 합계가 아닙니다.<br><br>
+                또한 <strong>저항성은 표본 선택 편향(Selection Bias)이나 결측 문제를 해결해주지 않습니다.</strong> 짧은 통학 시간 학생만 응답했다면 중앙값도 전체 학생을 대표하지 못합니다.
+              </p>
+            </div>
+
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-shapes"></i> 3.4 분포 모양과 대표값의 기계적 암기 주의</div>
+              <p style="font-size: 0.89rem;">
+                오른쪽 꼬리가 긴 분포에서 흔히 \(\text{평균} > \text{중앙값}\)이지만, 이를 <strong>절대 법칙으로 외우지 마세요.</strong><br>
+                • \(\text{평균} = \text{중앙값}\)이라고 무조건 대칭/정규분포가 아닙니다.<br>
+                • 대칭인 <strong>이봉분포(Bimodal)</strong>에서는 평균과 중앙값이 정중앙의 가장 드문 골짜기에 놓일 수도 있습니다. 반드시 4차수의 그래프와 함께 확인합니다!
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 11: 4.1~4.2 분위수와 선형 보간 규칙 ==================== -->
+    <section class="slide" data-title="4.1~4.2 분위수와 표본 선형 보간 규칙">
+      <div class="slide-header">
+        <div>
+          <span class="section-tag">4. 분위수와 사분위범위</span>
+          <h2 class="slide-title">4.1 왜 산포가 필요한가? & 4.2 표본 분위수의 선형 보간 규칙</h2>
+        </div>
+        <span class="slide-step-badge">Section 4.1 – 4.2</span>
+      </div>
+      <div class="slide-body">
+        <div class="callout">
+          <strong>4.1 중심 하나로 분포를 설명할 수 없다:</strong> 자료 \(A=[28, 30, 32]\)와 \(B=[10, 30, 50]\)은 평균과 중앙값이 모두 \(30\)으로 같지만 퍼짐(산포)이 전혀 다릅니다. 4차수의 누적비율이 <em>“어떤 값까지 얼마나 쌓였는가”</em>를 물었다면, <strong>분위수(Quantile)는 “주어진 비율 \(p\)에 대응하는 경계값은 어디인가”</strong>를 묻습니다.
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title"><i class="fa-solid fa-ruler-horizontal"></i> 우리 수업의 표준 규칙: 선형 보간 (NumPy <code>method="linear"</code>)</div>
+            <p style="font-size: 0.9rem; margin-bottom: 8px;">
+              유한 표본에서는 \(25\%\) 위치에 딱 떨어지는 관측점이 없을 수 있어 계산 규칙을 명시해야 합니다. 정렬된 순서를 \(1\)부터 \(n\)까지 셀 때 비율 \(p\)의 가상 위치 \(h\)는:
+            </p>
+            <div class="math-box" style="font-size: 0.95rem;">
+              \[ h = 1 + (n - 1)p, \quad j = \lfloor h \rfloor \text{ (정수부)}, \quad g = h - j \text{ (소수부)} \]
+              \[ Q(p) = (1 - g)\,x_{(j)} + g\,x_{(j+1)} = x_{(j)} + g\,\bigl(x_{(j+1)} - x_{(j)}\bigr) \]
+            </div>
+            <p style="font-size: 0.84rem; color: var(--text-muted); margin-top: 6px;">
+              ※ \(p=0\)이면 최솟값 \(x_{(1)}\), \(p=1\)이면 최댓값 \(x_{(n)}\)입니다.
+            </p>
+          </div>
+
+          <div class="card" style="background: #fff;">
+            <div class="card-title"><i class="fa-solid fa-list-ol"></i> 통학 자료 (\(n=20\)) 사분위수 단계별 계산</div>
+            <table class="lecture-table" style="font-size: 0.88rem;">
+              <thead>
+                <tr>
+                  <th>구분</th>
+                  <th>위치 \(h = 1 + 19p\)</th>
+                  <th>이웃한 두 관측값</th>
+                  <th class="num">선형 보간 결과</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>\(Q_1\) (\(p=0.25\))</strong></td>
+                  <td>\(1 + 19(0.25) = \mathbf{5.75}\)</td>
+                  <td>\(x_{(5)}=20,\; x_{(6)}=20\)</td>
+                  <td class="num">\(20 + 0.75(0) = \mathbf{20\text{분}}\)</td>
+                </tr>
+                <tr>
+                  <td><strong>\(Q_2\) (\(p=0.50\))</strong></td>
+                  <td>\(1 + 19(0.50) = \mathbf{10.50}\)</td>
+                  <td>\(x_{(10)}=30,\; x_{(11)}=32\)</td>
+                  <td class="num">\(30 + 0.50(2) = \mathbf{31\text{분}}\)</td>
+                </tr>
+                <tr>
+                  <td><strong>\(Q_3\) (\(p=0.75\))</strong></td>
+                  <td>\(1 + 19(0.75) = \mathbf{15.25}\)</td>
+                  <td>\(x_{(15)}=42,\; x_{(16)}=45\)</td>
+                  <td class="num">\(42 + 0.25(3) = \mathbf{42.75\text{분}}\)</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="callout warn" style="margin-top: 10px; font-size: 0.85rem;">
+              <strong>왜 어떤 교재는 \(Q_3 = 43.5\)분인가요?</strong><br>
+              ‘위쪽 절반 10개(\(x_{(11)}\sim x_{(20)}\))의 중앙값’ 방식을 쓰면 \((x_{(15)}+x_{(16)})/2 = (42+45)/2 = 43.5\)분이 됩니다. <strong>42.75와 43.5가 다르다고 한쪽을 오류라고 단정하지 말고, 어떤 정의(규칙)를 썼는지부터 확인</strong>해야 합니다.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 12: 4.3~4.4 IQR과 그림 5-3 이중 축 도식 ==================== -->
+    <section class="slide" data-title="4.3~4.4 사분위범위(IQR)와 순서 축 vs 시간 축 비교">
+      <div class="slide-header">
+        <div>
+          <span class="section-tag">4. 분위수와 사분위범위</span>
+          <h2 class="slide-title">4.3 사분위범위(\(IQR\))의 의미와 그림 5-3 · 두 축의 비교</h2>
+        </div>
+        <span class="slide-step-badge">Figure 5-3 & Section 4.3–4.4</span>
+      </div>
+      <div class="slide-body">
+        <div class="grid-3">
+          <div class="card">
+            <div class="card-title"><i class="fa-solid fa-arrows-left-right-to-line"></i> \(IQR\) 정의와 저항성</div>
+            <div class="math-box" style="font-size: 0.95rem;">
+              \[ IQR = Q_3 - Q_1 = 42.75 - 20 = \mathbf{22.75\text{분}} \]
+            </div>
+            <p style="font-size: 0.87rem; margin-top: 6px;">
+              중간 50% 구간의 폭(단위: 분). <code>90→990분</code> 교체 시 범위(Range)는 \(80\to 980\)분으로 폭증하지만, <strong>\(IQR\)은 \(22.75\)분으로 유지</strong>됩니다.
+            </p>
+          </div>
+
+          <div class="card">
+            <div class="card-title"><i class="fa-solid fa-triangle-exclamation"></i> 흔한 오해 2가지 주의</div>
+            <p style="font-size: 0.87rem;">
+              ① \(Q_1, Q_3\)는 최솟값~최댓값 <strong>길이를 4등분한 점이 아닙니다</strong>(정렬된 <u>순서 비율</u> 위치).<br>
+              ② 유한 표본·동점·보간 때문에 닫힌 구간 \([Q_1, Q_3]\) 안의 점 개수가 항상 정확히 50%인 것은 아닙니다.
+            </p>
+          </div>
+
+          <div class="card">
+            <div class="card-title"><i class="fa-solid fa-wave-square"></i> 4.4 분산 · 표준편차와 비교</div>
+            <p style="font-size: 0.87rem;">
+              표본분산 \(s^2 = \frac{\sum(x_i-\bar{x})^2}{n-1}\) (단위: 분²), 표준편차 \(s=\sqrt{s^2}\) (단위: 분).<br>
+              평균으로부터의 제곱거리를 쓰므로 극단값에 민감합니다. 반면 \(IQR\)은 <strong>가운데 구간의 퍼짐</strong>에 집중합니다.
+            </p>
+          </div>
+        </div>
+
+        <!-- SVG Figure 5-3: Order Axis vs Value Axis -->
+        <div class="card" style="background: #fff; padding: 14px 20px;">
+          <div style="font-size: 0.88rem; font-weight: 700; color: var(--kgu-blue); margin-bottom: 8px;">
+            그림 5-3 · ‘정렬된 순서의 25% 위치’와 ‘실제 시간 값의 25% 길이’는 전혀 다르다!
+          </div>
+          <svg viewBox="0 0 900 185" style="width: 100%; max-height: 180px;">
+            <text x="15" y="38" font-size="13" font-weight="700" fill="#1e293b">① 순서 축 (등간격 순번)</text>
+            <line x1="180" y1="34" x2="860" y2="34" stroke="#64748b" stroke-width="2"/>
+            <g fill="#94a3b8" font-size="10" text-anchor="middle">
+              <circle cx="180" cy="34" r="4"/><text x="180" y="20">1</text>
+              <circle cx="215.8" cy="34" r="4"/>
+              <circle cx="251.6" cy="34" r="4"/>
+              <circle cx="287.4" cy="34" r="4"/>
+              <circle cx="323.2" cy="34" r="5" fill="#1e293b"/><text x="323.2" y="20" fill="#1e293b" font-weight="700">5</text>
+              <circle cx="358.9" cy="34" r="5" fill="#1e293b"/><text x="358.9" y="20" fill="#1e293b" font-weight="700">6</text>
+              <circle cx="394.7" cy="34" r="4"/>
+              <circle cx="430.5" cy="34" r="4"/>
+              <circle cx="466.3" cy="34" r="4"/>
+              <circle cx="502.1" cy="34" r="5" fill="#1e293b"/><text x="502.1" y="20" fill="#1e293b" font-weight="700">10</text>
+              <circle cx="537.9" cy="34" r="5" fill="#1e293b"/><text x="537.9" y="20" fill="#1e293b" font-weight="700">11</text>
+              <circle cx="573.7" cy="34" r="4"/>
+              <circle cx="609.5" cy="34" r="4"/>
+              <circle cx="645.3" cy="34" r="4"/>
+              <circle cx="681.1" cy="34" r="5" fill="#1e293b"/><text x="681.1" y="20" fill="#1e293b" font-weight="700">15</text>
+              <circle cx="716.8" cy="34" r="5" fill="#1e293b"/><text x="716.8" y="20" fill="#1e293b" font-weight="700">16</text>
+              <circle cx="752.6" cy="34" r="4"/>
+              <circle cx="788.4" cy="34" r="4"/>
+              <circle cx="824.2" cy="34" r="4"/>
+              <circle cx="860" cy="34" r="4"/><text x="860" y="20">20</text>
+            </g>
+            <circle cx="350" cy="34" r="6" fill="#0284c7"/>
+            <text x="350" y="55" font-size="11.5" font-weight="700" fill="#0284c7" text-anchor="middle">h=5.75</text>
+            <circle cx="520" cy="34" r="6" fill="#ea580c"/>
+            <text x="520" y="55" font-size="11.5" font-weight="700" fill="#ea580c" text-anchor="middle">h=10.50</text>
+            <circle cx="690" cy="34" r="6" fill="#7c3aed"/>
+            <text x="690" y="55" font-size="11.5" font-weight="700" fill="#7c3aed" text-anchor="middle">h=15.25</text>
+
+            <line x1="350" y1="60" x2="265" y2="125" stroke="#0284c7" stroke-width="2" stroke-dasharray="5,4"/>
+            <line x1="520" y1="60" x2="358.5" y2="125" stroke="#ea580c" stroke-width="2" stroke-dasharray="5,4"/>
+            <line x1="690" y1="60" x2="458.4" y2="125" stroke="#7c3aed" stroke-width="2" stroke-dasharray="5,4"/>
+
+            <text x="15" y="138" font-size="13" font-weight="700" fill="#1e293b">② 시간 축 (실제 분)</text>
+            <line x1="180" y1="134" x2="860" y2="134" stroke="#1e293b" stroke-width="2.5"/>
+            <rect x="265" y="122" width="193.4" height="24" fill="#dbeafe" opacity="0.7" stroke="#2563eb" stroke-width="1.5"/>
+            <text x="361.7" y="116" font-size="11.5" font-weight="700" fill="#1d4ed8" text-anchor="middle">IQR = 22.75분 (중간 50% 폭)</text>
+
+            <circle cx="180" cy="134" r="4" fill="#1e293b"/><text x="180" y="160" font-size="11" text-anchor="middle">최소 10분</text>
+            <circle cx="265" cy="134" r="6" fill="#0284c7"/><text x="265" y="162" font-size="12" font-weight="700" fill="#0284c7" text-anchor="middle">Q1 = 20분</text>
+            <circle cx="358.5" cy="134" r="6" fill="#ea580c"/><text x="358.5" y="162" font-size="12" font-weight="700" fill="#ea580c" text-anchor="middle">Q2 = 31분</text>
+            <circle cx="458.4" cy="134" r="6" fill="#7c3aed"/><text x="458.4" y="162" font-size="12" font-weight="700" fill="#7c3aed" text-anchor="middle">Q3 = 42.75분</text>
+            <circle cx="860" cy="134" r="6" fill="#dc2626"/><text x="860" y="160" font-size="11" font-weight="700" fill="#dc2626" text-anchor="middle">최대 90분 (긴 꼬리)</text>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 13: 5. 손계산 활동 (팝업 정답 연동) ==================== -->
+    <section class="slide" data-title="5. 손계산 활동: 소자료 직접 풀기 (정답 팝업 포함)">
+      <div class="slide-header">
+        <div>
+          <span class="section-tag">5. 손계산 활동 · 개인 풀이 및 짝 비교</span>
+          <h2 class="slide-title">손계산 실습 (\(n=8\)): AI와 코드를 쓰기 전에 손으로 먼저 검증하자!</h2>
+        </div>
+        <button class="action-btn green" onclick="openModal('handCalcModal')">
+          <i class="fa-solid fa-up-right-from-square"></i> 손계산 정답 표 & 해설 팝업 열기
+        </button>
+      </div>
+      <div class="slide-body">
+        <div class="callout warn">
+          <strong>활동 방법:</strong> 먼저 계산기와 필기도구로 아래 4문제를 혼자 풉니다. 그다음 옆 학우와 <strong>① 분모(\(n=8\)), ② 정렬 순서, ③ 선형 보간 위치(\(h\))</strong> 과정을 서로 비교한 뒤, 우측 상단 <strong>[손계산 정답 표 & 해설 팝업 열기]</strong> 버튼을 눌러 확인합니다.
+        </div>
+
+        <div class="card" style="background: #1e293b; color: #fff; text-align: center; padding: 18px;">
+          <div style="font-size: 0.9rem; color: #93c5fd; margin-bottom: 6px;">[손계산용 가상 통학 시간 자료 · 단위: 분 · 결측 없음 (\(n=8\))]</div>
+          <div style="font-size: 1.6rem; font-weight: 800; letter-spacing: 2px;">
+            10, &nbsp; 20, &nbsp; 20, &nbsp; 30, &nbsp; 40, &nbsp; 50, &nbsp; 60, &nbsp; 90
+          </div>
+          <div style="font-size: 0.85rem; color: #cbd5e1; margin-top: 6px;">
+            순서 번호: \(x_{(1)}=10,\; x_{(2)}=20,\; x_{(3)}=20,\; x_{(4)}=30,\; x_{(5)}=40,\; x_{(6)}=50,\; x_{(7)}=60,\; x_{(8)}=90\)
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title"><span class="step-badge">문제 1</span> 중심위치 4종 계산</div>
+            <p style="font-size: 0.93rem;">
+              위 8개 자료의 <strong>합계, 산술평균, 중앙값, 최빈값</strong>을 각각 구하시오.
+            </p>
+            <hr style="margin: 12px 0; border: none; border-top: 1px solid var(--border-color);">
+            <div class="card-title"><span class="step-badge">문제 2</span> 선형 보간 사분위수와 \(IQR\)</div>
+            <p style="font-size: 0.93rem;">
+              선형 보간 규칙 \(h = 1 + (n-1)p = 1 + 7p\)를 사용하여 <strong>\(Q_1\) (\(p=0.25\)), \(Q_3\) (\(p=0.75\)), 그리고 \(IQR\)</strong>을 구하시오.
+            </p>
+          </div>
+
+          <div class="card">
+            <div class="card-title"><span class="step-badge">문제 3</span> 한 값 교체 시 변화량 예측</div>
+            <p style="font-size: 0.93rem;">
+              마지막 값 <code>90</code>을 <code>190</code>으로 <strong>교체</strong>(\(\Delta = +100\), \(n=8\) 유지)하면 <strong>평균과 중앙값</strong>은 각각 얼마가 되는가?
+            </p>
+            <hr style="margin: 12px 0; border: none; border-top: 1px solid var(--border-color);">
+            <div class="card-title"><span class="step-badge">문제 4</span> 통계적 문해력 비판</div>
+            <p style="font-size: 0.93rem;">
+              <em>“최빈값이 20분이므로 이 집단 학생 대부분은 통학에 20분이 걸린다”</em>라는 주장의 문제점을 수치를 들어 설명하시오.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 14: 6. 실습 전 작성할 분석 명세 ==================== -->
+    <section class="slide" data-title="6. 실습 전 작성할 전체 분석 명세">
+      <div class="slide-header">
+        <div>
+          <span class="section-tag">6. 분석 명세 작성 · 3차수 원리 적용</span>
+          <h2 class="slide-title">잘못된 초안 보고서 진단 & AI 종합 분석 명세서 작성</h2>
+        </div>
+        <span class="slide-step-badge">Section 6 · 명세 설계</span>
+      </div>
+      <div class="slide-body">
+        <div class="callout danger">
+          <strong><i class="fa-solid fa-stethoscope"></i> 먼저 진단할 잘못된 초안 보고서:</strong><br>
+          <em>“학생들의 통학 시간은 평균 34.35분입니다. 평균이 대표값이므로 다른 요약은 필요 없습니다. 90분은 너무 크므로 지우면 더 정확해집니다.”</em><br>
+          <span style="font-size: 0.88rem; color: #7f1d1d;">
+            <strong>진단:</strong> 숫자 <code>34.35</code>가 맞더라도 주장은 타당하지 않습니다! ① 대표값의 목적 부재, ② 분포 모양과 중앙값 누락, ③ 결측 인원(2명) 미보고, ④ 정당한 근거 없는 90분 임의 삭제 주장이 포함되어 있습니다.
+          </span>
+        </div>
+
+        <div class="code-wrapper">
+          <div class="code-header">
+            <span style="color: #facc15; font-weight: 700;"><i class="fa-solid fa-wand-magic-sparkles"></i> 학생이 자신의 문장과 비교할 종합 AI 분석 명세서 (원클릭 복사)</span>
+            <button class="copy-btn" onclick="copyText('promptSpec')"><i class="fa-regular fa-copy"></i> 종합 명세 복사</button>
+          </div>
+          <div id="promptSpec" class="prompt-box">4차수와 같은 교육용 가상 통학 자료를 분석해줘.
+값은 [10,12,15,18,20,20,22,25,28,30,32,35,38,40,42,45,50,55,60,90,None,None], 단위는 분이야.
+전체·유효·결측 수를 구분하고, 시간 결측만 시간 요약에서 제외해줘.
+원자료를 보존하고 결측을 0으로 채우거나 90분을 임의 삭제하지 마.
+합계·평균·중앙값·모든 최빈값·Q1·Q3·IQR을 보여줘.
+분위수는 NumPy method="linear"로 계산하고 규칙을 설명해줘.
+복사본에서만 90분을 190분, 990분으로 각각 교체해 대표값 변화를 비교해줘.
+원자료 유효 수는 20명이고 평균은 34.35분, 중앙값은 31분인지 확인해줘.
+평균의 변화가 (변경값-90)/20과 같은지 독립적으로 확인해줘.
+가운데 통학 시간과 전체 시간 합계라는 두 목적에 맞는 해석을 각각 써줘.
+실행하지 않은 결과는 예상값으로 구분하고, 코드의 입력·처리·출력을 설명해줘.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 15: 7. Colab 실습 셀 1 (프롬프트 우선 + 코드 탭/팝업) ==================== -->
+    <section class="slide" data-title="7. Colab 실습 셀 1: 원자료 보존과 요약값 검증">
+      <div class="slide-header">
+        <div>
+          <span class="section-tag">7. Colab 실습 · 셀 1</span>
+          <h2 class="slide-title">셀 1 · 원자료 보존, 결측 분리 및 기초 요약값 검증</h2>
+        </div>
+        <button class="action-btn" onclick="openModal('cell1Modal')">
+          <i class="fa-solid fa-code"></i> 셀 1 정답 코드 팝업으로 크게 보기
+        </button>
+      </div>
+      <div class="slide-body">
+        <div class="grid-60-40">
+          <!-- Left: Tabbed Prompt first, Code second -->
+          <div class="tab-container" id="cell1Tabs">
+            <div class="tab-header">
+              <button class="tab-btn prompt-tab active" onclick="switchTab('cell1Tabs', 0)">
+                <i class="fa-solid fa-comment-dots"></i> ① [Step 1] 코드 작성용 AI 프롬프트
+              </button>
+              <button class="tab-btn" onclick="switchTab('cell1Tabs', 1)">
+                <i class="fa-brands fa-python"></i> ② [Step 2] 비교용 정답 Python 코드
+              </button>
+            </div>
+
+            <!-- Tab 0: Prompt (Default Active) -->
+            <div class="tab-pane active">
+              <div class="code-wrapper">
+                <div class="code-header">
+                  <span>아래 프롬프트를 복사하여 AI에게 코드를 생성하게 하세요</span>
+                  <button class="copy-btn" onclick="copyText('cell1Prompt')"><i class="fa-regular fa-copy"></i> 프롬프트 복사</button>
+                </div>
+                <div id="cell1Prompt" class="prompt-box">[Colab 셀 1 코드 작성 요청]
+다음 통학 시간(분) 데이터를 분석하는 Python 코드를 작성해줘:
+데이터: [10,12,15,18,20,20,22,25,28,30,32,35,38,40,42,45,50,55,60,90,None,None]
+
+1. pandas Series(name="minutes", dtype="float64")로 원본 `raw`를 만들고 보존해줘.
+2. 결측치(None)만 제거한 numpy 배열 `x`를 만들고, 유효 개수가 1개 이상이고 모두 유한하며 0 이상인지 `assert`로 검증해줘.
+3. `np.quantile(x, [0.25, 0.5, 0.75], method="linear")`로 Q1, 중앙값, Q3를 구해줘.
+4. total_n, valid_n, missing_n, sum, mean, median, Q1, Q3, IQR을 담은 Series를 출력하고, `raw.mode().tolist()`로 최빈값도 출력해줘.
+5. 손계산 결과인 (22, 20, 2)와 [687, 34.35, 31, 20, 42.75, 22.75], 최빈값 [20.0]과 일치하는지 `assert` 문으로 검증해줘.</div>
+              </div>
+            </div>
+
+            <!-- Tab 1: Python Code -->
+            <div class="tab-pane">
+              <div class="code-wrapper">
+                <div class="code-header">
+                  <span>비교·검증용 표준 Python 코드 (셀 1)</span>
+                  <button class="copy-btn" onclick="copyText('cell1Code')"><i class="fa-regular fa-copy"></i> 코드 복사</button>
+                </div>
+                <pre><code class="language-python" id="cell1Code">import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+raw = pd.Series([10,12,15,18,20,20,22,25,28,30,
+                 32,35,38,40,42,45,50,55,60,90,None,None],
+                name="minutes", dtype="float64")
+x = raw.dropna().to_numpy()
+assert len(x) > 0 and np.isfinite(x).all() and (x >= 0).all()
+q1, med, q3 = np.quantile(x, [0.25, 0.5, 0.75], method="linear")
+summary = pd.Series({
+    "total_n": len(raw), "valid_n": len(x), "missing_n": raw.isna().sum(),
+    "sum": x.sum(), "mean": x.mean(), "median": med,
+    "Q1": q1, "Q3": q3, "IQR": q3-q1
+})
+print(summary)
+print("mode:", raw.mode().tolist())
+assert (len(raw), len(x), int(raw.isna().sum())) == (22, 20, 2)
+assert np.allclose([x.sum(), x.mean(), med, q1, q3, q3-q1],
+                   [687, 34.35, 31, 20, 42.75, 22.75])
+assert raw.mode().tolist() == [20.0]</code></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Output & Step-by-step Guide -->
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+            <div>
+              <div style="font-size: 0.82rem; font-weight: 700; color: var(--text-muted); margin-bottom: 4px;">
+                실제 출력 결과 (<code>session-5-output.txt</code> 대조)
+              </div>
+              <div class="console-out">total_n       22.00
+valid_n       20.00
+missing_n      2.00
+sum          687.00
+mean          34.35
+median        31.00
+Q1            20.00
+Q3            42.75
+IQR           22.75
+dtype: float64
+mode: [20.0]</div>
+            </div>
+
+            <div class="card" style="padding: 12px 16px; font-size: 0.86rem;">
+              <strong><i class="fa-solid fa-magnifying-glass-chart"></i> 실습 따라가기 & 독립 검증 포인트:</strong>
+              <ul class="lecture-list" style="margin-top: 4px; gap: 4px;">
+                <li><strong>Step 1:</strong> 좌측 ①번 탭의 프롬프트를 AI에 입력해 코드를 얻고 Colab 첫 셀에서 실행합니다.</li>
+                <li><strong>Step 2:</strong> 출력된 숫자가 우측 콘솔 결과와 일치하는지 확인합니다.</li>
+                <li><strong>독립 확인:</strong> 합계 \(687\div 20=34.35\), 10·11번째 평균 \((30+32)\div 2=31\), 15·16번째 보간 \(42+0.25\times 3=42.75\)를 손계산과 대조합니다.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 16: 7. Colab 실습 셀 2 (프롬프트 우선 + 코드 탭/팝업) ==================== -->
+    <section class="slide" data-title="7. Colab 실습 셀 2: 한 값의 크기를 바꿔 보기">
+      <div class="slide-header">
+        <div>
+          <span class="section-tag">7. Colab 실습 · 셀 2</span>
+          <h2 class="slide-title">셀 2 · 복사본에서 한 값(90분)을 190·990분으로 교체하는 실험</h2>
+        </div>
+        <button class="action-btn" onclick="openModal('cell2Modal')">
+          <i class="fa-solid fa-code"></i> 셀 2 정답 코드 팝업으로 크게 보기
+        </button>
+      </div>
+      <div class="slide-body">
+        <div class="grid-60-40">
+          <!-- Left: Tabbed Prompt first, Code second -->
+          <div class="tab-container" id="cell2Tabs">
+            <div class="tab-header">
+              <button class="tab-btn prompt-tab active" onclick="switchTab('cell2Tabs', 0)">
+                <i class="fa-solid fa-comment-dots"></i> ① [Step 1] 코드 작성용 AI 프롬프트
+              </button>
+              <button class="tab-btn" onclick="switchTab('cell2Tabs', 1)">
+                <i class="fa-brands fa-python"></i> ② [Step 2] 비교용 정답 Python 코드
+              </button>
+            </div>
+
+            <!-- Tab 0: Prompt (Default Active) -->
+            <div class="tab-pane active">
+              <div class="code-wrapper">
+                <div class="code-header">
+                  <span>셀 1에 이어서 실행할 셀 2 코드 생성 프롬프트</span>
+                  <button class="copy-btn" onclick="copyText('cell2Prompt')"><i class="fa-regular fa-copy"></i> 프롬프트 복사</button>
+                </div>
+                <div id="cell2Prompt" class="prompt-box">[Colab 셀 2 코드 작성 요청]
+앞선 셀 1의 유효 데이터 배열 `x`를 이어받아 값 교체 실험 코드를 작성해줘:
+
+1. 원본 `x`가 훼손되지 않도록 반복문에서 `changed = x.copy()`로 복사본을 만들어줘.
+2. 마지막 값(원래 90분)을 `[90, 190, 990]`으로 각각 교체(`changed[-1] = replacement`)해줘.
+3. 각 교체값마다 평균(mean), 중앙값(median), IQR(method="linear" 기준)을 계산해 DataFrame `result`로 출력해줘.
+4. 새로운 평균이 수식 `34.35 + (replacement - 90) / 20`과 일치하는지, 그리고 원본 `x[-1]`이 여전히 90이고 중앙값(31)과 IQR(22.75)이 유지되는지 `assert`로 검증해줘.
+5. 가로축을 교체값(replacement), 세로축을 대표값(Location)으로 하여 Mean("o-")과 Median("s-")의 변화를 비교하는 꺾은선 그래프를 그려줘.</div>
+              </div>
+            </div>
+
+            <!-- Tab 1: Python Code -->
+            <div class="tab-pane">
+              <div class="code-wrapper">
+                <div class="code-header">
+                  <span>비교·검증용 표준 Python 코드 (셀 2)</span>
+                  <button class="copy-btn" onclick="copyText('cell2Code')"><i class="fa-regular fa-copy"></i> 코드 복사</button>
+                </div>
+                <pre><code class="language-python" id="cell2Code">rows = []
+for replacement in [90, 190, 990]:
+    changed = x.copy()
+    changed[-1] = replacement  # 이 자료의 마지막 유효값은 90
+    qs = np.quantile(changed, [0.25, 0.5, 0.75], method="linear")
+    rows.append({"replacement": replacement, "mean": changed.mean(),
+                 "median": qs[1], "IQR": qs[2]-qs[0]})
+    expected_mean = 34.35 + (replacement-90)/20
+    assert np.isclose(changed.mean(), expected_mean)
+result = pd.DataFrame(rows)
+print(result.to_string(index=False))
+assert x[-1] == 90 and raw.iloc[19] == 90
+assert np.allclose(result["median"], 31)
+assert np.allclose(result["IQR"], 22.75)
+
+fig, ax = plt.subplots(figsize=(7, 4))
+ax.plot(result["replacement"], result["mean"], "o-", label="Mean")
+ax.plot(result["replacement"], result["median"], "s-", label="Median")
+ax.set(xlabel="Replacement of the original 90 (minutes)",
+       ylabel="Location (minutes)", title="One value replaced; valid n=20")
+ax.legend()
+fig.tight_layout()
+plt.show()</code></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Output & Interpretation -->
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+            <div>
+              <div style="font-size: 0.82rem; font-weight: 700; color: var(--text-muted); margin-bottom: 4px;">
+                실제 출력 결과 (<code>session-5-output.txt</code> 대조)
+              </div>
+              <div class="console-out"> replacement  mean  median   IQR
+          90 34.35    31.0 22.75
+         190 39.35    31.0 22.75
+         990 79.35    31.0 22.75</div>
+            </div>
+
+            <div class="card" style="padding: 12px 16px; font-size: 0.86rem;">
+              <strong><i class="fa-solid fa-code-branch"></i> 왜 <code>x.copy()</code>를 반드시 써야 할까?</strong>
+              <p style="margin-top: 4px;">
+                파이썬에서 그냥 <code>changed = x</code>라고 쓰면 같은 메모리를 가리켜 원본 <code>x</code>까지 바뀝니다. <code>x.copy()</code>로 독립된 복사본을 만들어야 원자료가 안전하게 보존됩니다.
+              </p>
+            </div>
+
+            <div class="callout warn" style="font-size: 0.86rem; padding: 10px 14px;">
+              <strong>핵심 해석 질문:</strong> “990분일 때 평균이 79.35분이면 나머지 19명의 통학 시간도 길어졌는가?”<br>
+              → <strong>아닙니다!</strong> 변경한 단 한 개의 값이 평균을 끌어올렸을 뿐입니다.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 17: 7. Colab 실습 셀 3 & 8. 해석문 작성 ==================== -->
+    <section class="slide" data-title="7. 셀 3 (중앙값 변화 반례) 및 8. 표준 해석문 작성">
+      <div class="slide-header">
+        <div>
+          <span class="section-tag">7. Colab 실습 셀 3 & 8. 해석문</span>
+          <h2 class="slide-title">셀 3 · 중앙값도 변하는 반례 확인 및 학생 기록 템플릿</h2>
+        </div>
+        <button class="action-btn" onclick="openModal('cell3Modal')">
+          <i class="fa-solid fa-code"></i> 셀 3 정답 코드 팝업 보기
+        </button>
+      </div>
+      <div class="slide-body">
+        <div class="grid-2">
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+            <div class="tab-container" id="cell3Tabs">
+              <div class="tab-header">
+                <button class="tab-btn prompt-tab active" onclick="switchTab('cell3Tabs', 0)">
+                  <i class="fa-solid fa-comment-dots"></i> ① [Step 1] 셀 3 AI 프롬프트
+                </button>
+                <button class="tab-btn" onclick="switchTab('cell3Tabs', 1)">
+                  <i class="fa-brands fa-python"></i> ② [Step 2] 비교용 정답 코드
+                </button>
+              </div>
+
+              <div class="tab-pane active">
+                <div class="code-wrapper">
+                  <div class="code-header">
+                    <span>중앙값이 변하는 반례 확인용 프롬프트</span>
+                    <button class="copy-btn" onclick="copyText('cell3Prompt')"><i class="fa-regular fa-copy"></i> 프롬프트 복사</button>
+                  </div>
+                  <div id="cell3Prompt" class="prompt-box">[Colab 셀 3 코드 작성 요청]
+중앙값이 '저항적'이지 '절대 불변'은 아니라는 것을 보여주는 반례 코드를 작성해줘.
+1. `before = np.array([1, 2, 3, 4, 5])`에서 가운데 값 3을 100으로 바꾼 `after = np.array([1, 2, 100, 4, 5])`를 만들어줘.
+2. 정렬 전후 배열(`np.sort`)과 중앙값 전후(`np.median`)를 출력하고, 중앙값이 3.0에서 4.0으로 바뀌었음을 `assert`로 확인해줘.</div>
+                </div>
+              </div>
+
+              <div class="tab-pane">
+                <div class="code-wrapper">
+                  <div class="code-header">
+                    <span>비교·검증용 표준 Python 코드 (셀 3)</span>
+                    <button class="copy-btn" onclick="copyText('cell3Code')"><i class="fa-regular fa-copy"></i> 코드 복사</button>
+                  </div>
+                  <pre><code class="language-python" id="cell3Code">before = np.array([1, 2, 3, 4, 5])
+after = np.array([1, 2, 100, 4, 5])
+print("정렬 전후:", np.sort(before), np.sort(after))
+print("중앙값 전후:", np.median(before), np.median(after))
+assert np.median(before) == 3 and np.median(after) == 4</code></pre>
+                </div>
+              </div>
+            </div>
+
+            <div class="console-out">정렬 전후: [1 2 3 4 5] [  1   2   4   5 100]
+중앙값 전후: 3.0 4.0</div>
+          </div>
+
+          <div class="card" style="background: #fff; border-width: 2px;">
+            <div class="card-title"><i class="fa-solid fa-pen-to-square"></i> 8. 학생이 노트에 남길 7줄 기록 양식</div>
+            <div style="font-size: 0.84rem; background: #f8fafc; padding: 10px 14px; border-radius: 8px; border: 1px solid #cbd5e1; margin-bottom: 10px;">
+              1. <strong>분석 질문:</strong><br>
+              2. <strong>내가 실제 사용한 AI 요청:</strong><br>
+              3. <strong>유효·결측 수와 계산 규칙:</strong><br>
+              4. <strong>손계산과 일치한 값:</strong><br>
+              5. <strong>한 값 교체 실험에서 유지된 것과 변한 것:</strong><br>
+              6. <strong>목적에 맞게 선택한 대표값과 이유:</strong><br>
+              7. <strong>이 자료만으로 말할 수 없는 것(일반화 한계):</strong>
+            </div>
+
+            <div class="callout success" style="font-size: 0.85rem;">
+              <strong>모범 해석문 예시:</strong><br>
+              “교육용 가상 응답 22건 중 통학 시간 유효값은 20건이며 2건은 결측이다. 유효 응답의 평균은 34.35분, 중앙값은 31분이다. 가운데 통학 시간을 설명할 때는 중앙값을, 유효 응답의 시간 합계 687분과 연결할 때는 평균을 사용한다. 선형 보간 기준 \(Q_1=20\)분, \(Q_3=42.75\)분, \(IQR=22.75\)분이다. 90분을 더 크게 바꾸는 실험에서 평균은 증가하고 중앙값은 유지되었다. 이 가상 자료의 결과를 실제 전체 학생에게 일반화하지 않는다.”
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 18: 8. 종료 질문 5선 & 6차수 예고 ==================== -->
+    <section class="slide" data-title="8. 종료 질문 5선 및 6차수 예고">
+      <div class="slide-header">
+        <div>
+          <span class="section-tag">8. 수업 마무리 점검</span>
+          <h2 class="slide-title">오늘의 종료 질문 5선 & 다음 6차수 예고</h2>
+        </div>
+        <span class="slide-step-badge">Section 8 · Review</span>
+      </div>
+      <div class="slide-body">
+        <p style="font-size: 0.92rem; color: var(--text-muted);">
+          각 질문을 먼저 생각해보고 버튼을 눌러 정답과 핵심 조건을 확인하세요.
+        </p>
+
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div class="card" style="padding: 10px 16px; display: flex; justify-content: space-between; align-items: center;">
+            <div><strong>Q1.</strong> 유효 응답 20명 중 한 값이 200분 증가하면 평균은 얼마나 변하는가?</div>
+            <button class="action-btn" style="padding: 5px 12px; font-size: 0.8rem;" onclick="this.nextElementSibling.style.display='inline'">정답 확인</button>
+            <span style="display:none; color: var(--kgu-blue-light); font-weight: 700; font-size: 0.9rem;">→ \(\Delta/n = 200/20 = \mathbf{+10\text{분 증가}}\) (단, 인원 \(n=20\) 고정이 조건!)</span>
+          </div>
+
+          <div class="card" style="padding: 10px 16px; display: flex; justify-content: space-between; align-items: center;">
+            <div><strong>Q2.</strong> 중앙값이 31분이면 반드시 통학 시간이 31분인 응답자가 존재하는가?</div>
+            <button class="action-btn" style="padding: 5px 12px; font-size: 0.8rem;" onclick="this.nextElementSibling.style.display='inline'">정답 확인</button>
+            <span style="display:none; color: var(--orange-accent); font-weight: 700; font-size: 0.9rem;">→ <strong>아니다!</strong> 짝수 표본에서 가운데 두 값(30분, 32분)의 평균일 수 있다.</span>
+          </div>
+
+          <div class="card" style="padding: 10px 16px; display: flex; justify-content: space-between; align-items: center;">
+            <div><strong>Q3.</strong> \(Q_3\)가 교재(43.5분)와 코드(42.75분)에서 다르면 무엇부터 확인하는가?</div>
+            <button class="action-btn" style="padding: 5px 12px; font-size: 0.8rem;" onclick="this.nextElementSibling.style.display='inline'">정답 확인</button>
+            <span style="display:none; color: var(--purple-accent); font-weight: 700; font-size: 0.9rem;">→ <strong>같은 자료 · 결측 처리 · 분위수 보간 정의(규칙)</strong>를 사용했는지부터 확인한다.</span>
+          </div>
+
+          <div class="card" style="padding: 10px 16px; display: flex; justify-content: space-between; align-items: center;">
+            <div><strong>Q4.</strong> 사분위범위 \(IQR = 0\)이면 자료의 모든 관측값이 서로 같은가?</div>
+            <button class="action-btn" style="padding: 5px 12px; font-size: 0.8rem;" onclick="this.nextElementSibling.style.display='inline'">정답 확인</button>
+            <span style="display:none; color: var(--red-accent); font-weight: 700; font-size: 0.9rem;">→ <strong>아니다!</strong> 반례: <code>[0, 0, 0, 0, 100]</code>은 \(Q_1=Q_3=0\)이라 \(IQR=0\)이지만 <code>100</code>이 존재한다.</span>
+          </div>
+
+          <div class="card" style="padding: 10px 16px; display: flex; justify-content: space-between; align-items: center;">
+            <div><strong>Q5.</strong> 평균과 중앙값 중 어떤 상황에서도 항상 더 우월한 대표값이 있는가?</div>
+            <button class="action-btn" style="padding: 5px 12px; font-size: 0.8rem;" onclick="this.nextElementSibling.style.display='inline'">정답 확인</button>
+            <span style="display:none; color: var(--green-accent); font-weight: 700; font-size: 0.9rem;">→ <strong>없다!</strong> 요약하려는 목적(총합 연계 vs 가운데 순서)과 분포 특성을 함께 봐야 한다.</span>
+          </div>
+        </div>
+
+        <div class="callout" style="margin-top: 4px;">
+          <strong><i class="fa-solid fa-forward-step"></i> 다음 6차수 예고:</strong> 오늘 계산한 \(Q_1 \cdot \text{중앙값} \cdot Q_3\)에 최솟값·최댓값을 더해 <strong>5수요약(Five-number summary)</strong>을 만들고 <strong>상자그림(Boxplot)</strong>으로 시각화합니다. \(IQR\)을 이용한 이상점(Outlier) 경계는 ‘자동 삭제 규칙’이 아니라 <strong>‘우선 조사할 관측값을 찾는 탐색 규칙’</strong>으로 배웁니다.
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 19: 5차수 심화 토론 (가중평균과 절사평균) ==================== -->
+    <section class="slide" data-title="5차수 심화: 가중평균과 절사평균">
+      <div class="slide-header">
+        <div>
+          <span class="section-tag">5차수 심화 학습 · 다양한 평균의 확장</span>
+          <h2 class="slide-title">집단 평균의 함정(가중평균)과 절사평균(Trimmed Mean)</h2>
+        </div>
+        <span class="slide-step-badge">Advanced Topic 5-A & 5-B</span>
+      </div>
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title"><i class="fa-solid fa-users-rectangle"></i> 심화 5-A · 집단 평균을 다시 단순 평균내면 생기는 문제</div>
+            <p style="font-size: 0.92rem;">
+              • <strong>A집단 (2명):</strong> 평균 통학 시간 \(10\)분 (합계 \(20\)분)<br>
+              • <strong>B집단 (8명):</strong> 평균 통학 시간 \(40\)분 (합계 \(320\)분)
+            </p>
+            <div class="callout danger" style="margin: 10px 0; font-size: 0.9rem;">
+              <strong>단순 평균의 오류:</strong> \(\dfrac{10 + 40}{2} = 25\text{분}\) (X)<br>
+              → 2명인 소집단과 8명인 대집단에 똑같은 50:50 비중을 부여하는 오류!
+            </div>
+            <div class="math-box" style="font-size: 0.95rem;">
+              \[ \text{전체 평균 (가중평균)} = \frac{2\times 10 + 8\times 40}{2 + 8} = \frac{340}{10} = \mathbf{34\text{분}} \]
+            </div>
+            <p style="font-size: 0.86rem; color: var(--text-muted);">
+              전체 학생이 관측 단위라면 반드시 각 집단의 <strong>유효 응답 수(\(n_k\))를 가중치</strong>로 곱해 합산해야 합니다.
+            </p>
+          </div>
+
+          <div class="card">
+            <div class="card-title"><i class="fa-solid fa-scissors"></i> 심화 5-B · 절사평균(Trimmed Mean)은 중앙값과 어떻게 다른가?</div>
+            <p style="font-size: 0.92rem;">
+              앞서 다룬 8개 손계산 자료 <code>[10, 20, 20, 30, 40, 50, 60, 90]</code>에서 양끝 최솟값(10)과 최댓값(90)을 <strong>한 개씩(각 꼬리 \(1/8 = 12.5\%\)) 제외</strong>하고 평균을 내면:
+            </p>
+            <div class="math-box" style="font-size: 0.95rem;">
+              \[ \text{남은 자료: } [20, 20, 30, 40, 50, 60] \]
+              \[ \bar{x}_{\text{trim}(12.5\%)} = \frac{220}{6} \approx \mathbf{36.67\text{분}} \]
+            </div>
+            <ul class="lecture-list" style="font-size: 0.87rem; margin-top: 8px;">
+              <li>양끝 극단값의 영향을 줄이면서 내부 값들의 크기도 반영하는 <strong>평균(40분)과 중앙값(35분)의 절충적 요약</strong>입니다(예: 체조·다이빙 판정).</li>
+              <li><strong>주의:</strong> 원자료에서 10과 90을 영구 삭제하라는 뜻이 아닙니다! (절사 비율, 제외 개수, 원래 평균을 함께 보고)</li>
+              <li><strong>토론 질문:</strong> <em>“8명의 총 통학 시간을 구할 때 \(\text{절사평균}(36.67)\times 8\)을 써도 되는가?”</em> → <strong>아니다!</strong> 총합은 원래 평균 \(\times 8 = 320\)분만 성립합니다.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 20: 가정용 자가 실습 과제 (문제 + 샘플 데이터 다운로드) ==================== -->
+    <section class="slide" data-title="가정용 자가 실습 과제 (문제 및 샘플 데이터)">
+      <div class="slide-header">
+        <div>
+          <span class="section-tag">Self-Practice · 집에서 해보는 복습 과제</span>
+          <h2 class="slide-title">가정용 자가 실습: 도서관 주간 열람실 이용 시간 분석</h2>
+        </div>
+        <button class="action-btn orange" onclick="downloadSampleCSV()">
+          <i class="fa-solid fa-file-csv"></i> 샘플 데이터 (<code>library_study_hours.csv</code>) 다운로드
+        </button>
+      </div>
+      <div class="slide-body">
+        <div class="callout">
+          <strong>과제 시나리오:</strong> 대학생 18명을 대상으로 조사한 <strong>‘지난주 도서관 열람실 총 이용 시간(단위: 시간)’</strong> 가상 조사 자료입니다. 우측 상단 버튼으로 <code>library_study_hours.csv</code> 파일을 다운로드하거나 아래 배열을 사용하여 손계산 예측 및 Colab 실습을 수행해보세요.
+        </div>
+
+        <div class="data-strip" style="background: #fff7ed; border-color: #fdba74;">
+          <div class="data-chip"><small>x(1)</small>2</div>
+          <div class="data-chip"><small>x(2)</small>3</div>
+          <div class="data-chip highlight-mode"><small>x(3)·최빈</small>4</div>
+          <div class="data-chip highlight-mode"><small>x(4)·최빈</small>4</div>
+          <div class="data-chip highlight-mode"><small>x(5)·최빈</small>4</div>
+          <div class="data-chip"><small>x(6)</small>5</div>
+          <div class="data-chip"><small>x(7)</small>6</div>
+          <div class="data-chip highlight-med"><small>x(8)</small>7</div>
+          <div class="data-chip highlight-med"><small>x(9)</small>8</div>
+          <div class="data-chip"><small>x(10)</small>9</div>
+          <div class="data-chip"><small>x(11)</small>10</div>
+          <div class="data-chip"><small>x(12)</small>12</div>
+          <div class="data-chip"><small>x(13)</small>14</div>
+          <div class="data-chip"><small>x(14)</small>15</div>
+          <div class="data-chip"><small>x(15)</small>18</div>
+          <div class="data-chip highlight-ext"><small>x(16)·장기이용</small>45</div>
+          <div class="data-chip missing"><small>결측 1</small>미응답</div>
+          <div class="data-chip missing"><small>결측 2</small>미응답</div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title"><i class="fa-solid fa-clipboard-question"></i> 스스로 해결해 볼 4가지 과제</div>
+            <ol class="lecture-list" style="font-size: 0.91rem;">
+              <li><strong>기초 요약:</strong> 전체 인원(\(N=18\)), 유효 응답(\(n=16\)), 결측(\(2\))을 분리하고, 유효 응답의 <strong>합계, 평균, 중앙값, 최빈값</strong>을 손계산하시오.</li>
+              <li><strong>분위수와 산포:</strong> 선형 보간 규칙(\(h = 1 + 15p\))으로 <strong>\(Q_1, Q_3, IQR\)</strong>을 구하시오.</li>
+              <li><strong>저항성 실험:</strong> 16번째 값 <code>45시간</code>이 오기입으로 인해 <code>125시간</code>(\(\Delta = +80\))으로 바뀌었다면, <strong>평균, 중앙값, \(IQR\)</strong>은 각각 어떻게 변하는지 예측하시오.</li>
+              <li><strong>목적별 해석:</strong> ① 도서관 전체 좌석 점유 총시간을 추정할 때와 ② 일반 학생의 가운데 이용 시간을 안내할 때 각각 어떤 대표값이 적절한지 설명하시오.</li>
+            </ol>
+          </div>
+
+          <div class="card" style="background: #fff;">
+            <div class="card-title"><i class="fa-solid fa-file-lines"></i> 다운로드되는 <code>library_study_hours.csv</code> 미리보기</div>
+            <div class="console-out" style="font-size: 0.78rem; max-height: 195px; overflow-y: auto;">student_id,study_hours
+S01,2
+S02,3
+S03,4
+S04,4
+S05,4
+S06,5
+S07,6
+S08,7
+S09,8
+S10,9
+S11,10
+S12,12
+S13,14
+S14,15
+S15,18
+S16,45
+S17,
+S18,</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 21: 가정용 자가 실습 프롬프트, 코드 및 레퍼런스 ==================== -->
+    <section class="slide" data-title="가정용 자가 실습 AI 프롬프트 · 정답 코드 및 레퍼런스">
+      <div class="slide-header">
+        <div>
+          <span class="section-tag">Self-Practice Solution & References</span>
+          <h2 class="slide-title">자가 실습용 AI 프롬프트 · 검증 코드 및 공식 레퍼런스</h2>
+        </div>
+        <button class="action-btn purple" onclick="openModal('hwModal')">
+          <i class="fa-solid fa-check-double"></i> 자가 실습 정답 해설 & 코드 팝업 열기
+        </button>
+      </div>
+      <div class="slide-body">
+        <div class="grid-60-40">
+          <div class="tab-container" id="hwTabs">
+            <div class="tab-header">
+              <button class="tab-btn prompt-tab active" onclick="switchTab('hwTabs', 0)">
+                <i class="fa-solid fa-comment-dots"></i> ① [Step 1] 자가 실습 AI 프롬프트
+              </button>
+              <button class="tab-btn" onclick="switchTab('hwTabs', 1)">
+                <i class="fa-brands fa-python"></i> ② [Step 2] 자가 실습 정답 Python 코드
+              </button>
+            </div>
+
+            <div class="tab-pane active">
+              <div class="code-wrapper">
+                <div class="code-header">
+                  <span>집에서 AI에게 입력할 자가 실습 프롬프트</span>
+                  <button class="copy-btn" onclick="copyText('hwPrompt')"><i class="fa-regular fa-copy"></i> 프롬프트 복사</button>
+                </div>
+                <div id="hwPrompt" class="prompt-box">[도서관 열람실 이용 시간 자가 실습 분석 요청]
+`library_study_hours.csv` 파일을 읽거나 아래 배열로 분석하는 Python 코드를 작성해줘:
+값: [2, 3, 4, 4, 4, 5, 6, 7, 8, 9, 10, 12, 14, 15, 18, 45, None, None] (단위: 시간)
+
+1. 원자료를 보존하고 결측을 제외한 유효 응답(n=16)만 추출해줘.
+2. 전체 수(18), 유효 수(16), 결측 수(2), 합계(166), 평균(10.375), 중앙값(7.5), 최빈값([4.0]), 그리고 선형 보간(method="linear") 기준 Q1(4.0), Q3(12.5), IQR(8.5)을 출력하고 `assert`로 검증해줘.
+3. 복사본에서 최댓값 45를 125(+80 증가)로 교체했을 때 평균이 `10.375 + 80/16 = 15.375`로 변하고 중앙값(7.5)과 IQR(8.5)은 그대로 유지되는지 비교 표로 출력해줘.</div>
+              </div>
+            </div>
+
+            <div class="tab-pane">
+              <div class="code-wrapper">
+                <div class="code-header">
+                  <span>자가 실습 정답 Python 코드 (CSV 파일 또는 배열 모두 호환)</span>
+                  <button class="copy-btn" onclick="copyText('hwCode')"><i class="fa-regular fa-copy"></i> 코드 복사</button>
+                </div>
+                <pre><code class="language-python" id="hwCode">import numpy as np
+import pandas as pd
+
+# CSV 파일을 업로드한 경우 pd.read_csv("library_study_hours.csv")["study_hours"] 사용 가능
+raw_hw = pd.Series([2,3,4,4,4,5,6,7,8,9,10,12,14,15,18,45,None,None],
+                   name="study_hours", dtype="float64")
+y = raw_hw.dropna().to_numpy()
+q1, med, q3 = np.quantile(y, [0.25, 0.5, 0.75], method="linear")
+
+print(f"전체={len(raw_hw)}, 유효={len(y)}, 결측={raw_hw.isna().sum()}")
+print(f"합계={y.sum()}, 평균={y.mean():.3f}, 중앙값={med}, 최빈값={raw_hw.mode().tolist()}")
+print(f"Q1={q1}, Q3={q3}, IQR={q3-q1}")
+
+assert (len(raw_hw), len(y), int(raw_hw.isna().sum())) == (18, 16, 2)
+assert np.allclose([y.sum(), y.mean(), med, q1, q3, q3-q1],
+                   [166, 10.375, 7.5, 4.0, 12.5, 8.5])
+
+# 45시간 -> 125시간 교체 실험
+y_mod = y.copy()
+y_mod[-1] = 125
+q1_m, med_m, q3_m = np.quantile(y_mod, [0.25, 0.5, 0.75], method="linear")
+print(f"[교체 후] 평균={y_mod.mean():.3f}, 중앙값={med_m}, IQR={q3_m-q1_m}")
+assert np.isclose(y_mod.mean(), 10.375 + 80/16) and med_m == 7.5</code></pre>
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-check-circle"></i> 자가 실습 정답 요약</div>
+              <ul class="lecture-list" style="font-size: 0.86rem;">
+                <li><strong>합계 · 평균:</strong> \(166\text{시간},\; 166/16 = \mathbf{10.375\text{시간}}\)</li>
+                <li><strong>중앙값 · 최빈값:</strong> \((7+8)/2 = \mathbf{7.5\text{시간}},\; \mathbf{4\text{시간}}\text{ (3회)}\)</li>
+                <li><strong>\(Q_1 \cdot Q_3 \cdot IQR\):</strong>
+                  <br>\(h_{0.25}=4.75 \implies \mathbf{4.0\text{시간}}\)
+                  <br>\(h_{0.75}=12.25 \implies 12 + 0.25(14-12) = \mathbf{12.5\text{시간}}\)
+                  <br>\(IQR = 12.5 - 4.0 = \mathbf{8.5\text{시간}}\)</li>
+                <li><strong>45 → 125 교체:</strong> 평균 \(\mathbf{15.375\text{시간}}\) (+5시간), 중앙값 \(\mathbf{7.5}\) 유지</li>
+              </ul>
+            </div>
+
+            <div class="card" style="padding: 12px 16px;">
+              <div class="card-title" style="font-size: 0.95rem;"><i class="fa-solid fa-book-bookmark"></i> 공식 레퍼런스 및 강의 사이트</div>
+              <ul class="lecture-list" style="font-size: 0.82rem; gap: 4px;">
+                <li><a href="https://www.itl.nist.gov/div898/handbook/eda/section3/eda351.htm" target="_blank" style="color: var(--kgu-blue-light); font-weight: 600;">NIST: Measures of Location (중심위치 측도 정의)</a></li>
+                <li><a href="https://numpy.org/doc/stable/reference/generated/numpy.quantile.html" target="_blank" style="color: var(--kgu-blue-light); font-weight: 600;">NumPy: numpy.quantile (선형 보간 공식 문서)</a></li>
+                <li><a href="https://datathinkinglab.github.io/kyonggi-courses-2026/eda/" target="_blank" style="color: var(--kgu-blue-light); font-weight: 600;">경기대 2026-2 자료탐색분석(EDA) 강의 허브</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Bottom Navigation Bar -->
+  <footer class="bottom-bar">
+    <div style="font-size: 0.85rem; color: #94a3b8;">
+      <i class="fa-regular fa-keyboard"></i> 단축키: <strong>← / →</strong> 슬라이드 이동 &nbsp;|&nbsp; <strong>M</strong> 전체 목차 &nbsp;|&nbsp; <strong>ESC</strong> 팝업 닫기
+    </div>
+    <div class="slide-counter" id="slideCounter">1 / 21</div>
+    <div class="control-group">
+      <button class="ctrl-btn" id="prevBtn" onclick="changeSlide(-1)"><i class="fa-solid fa-chevron-left"></i> 이전</button>
+      <button class="ctrl-btn" id="nextBtn" onclick="changeSlide(1)">다음 <i class="fa-solid fa-chevron-right"></i></button>
+    </div>
+  </footer>
+
+  <!-- ==================== MODAL 1: 전체 슬라이드 목차 ==================== -->
+  <div class="modal-overlay" id="tocModal" onclick="if(event.target===this) closeModal('tocModal')">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 style="font-size: 1.25rem; color: var(--kgu-blue);"><i class="fa-solid fa-list-ul"></i> 5차수 전체 슬라이드 목차 (21장)</h3>
+        <button class="nav-btn" style="background: #f1f5f9; color: #0f172a; border-color: #cbd5e1;" onclick="closeModal('tocModal')">닫기 (ESC)</button>
+      </div>
+      <div class="toc-grid" id="tocGrid"></div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL 2: 13페이지 손계산 정답 표 & 해설 팝업 ==================== -->
+  <div class="modal-overlay" id="handCalcModal" onclick="if(event.target===this) closeModal('handCalcModal')">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 style="font-size: 1.3rem; color: var(--green-accent);">
+          <i class="fa-solid fa-check-double"></i> 5. 손계산 활동 (\(n=8\)) 정답 표 및 단계별 해설
+        </h3>
+        <button class="nav-btn" style="background: #f1f5f9; color: #0f172a; border-color: #cbd5e1;" onclick="closeModal('handCalcModal')">닫기 (ESC)</button>
+      </div>
+      <div class="modal-body">
+        <div style="font-size: 0.92rem; background: #f1f5f9; padding: 10px 14px; border-radius: 8px; font-weight: 600;">
+          원자료 (\(n=8\)): <code>10, 20, 20, 30, 40, 50, 60, 90</code> (단위: 분, 결측 없음)
+        </div>
+        <table class="lecture-table">
+          <thead>
+            <tr>
+              <th style="width: 22%;">문제 항목</th>
+              <th style="width: 53%;">단계별 손계산 과정 (검증 기준)</th>
+              <th class="num" style="width: 25%;">정답</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>1. 합계 및 산술평균</strong></td>
+              <td>합계 \(= 10+20+20+30+40+50+60+90 = 320\), &nbsp; 평균 \(= 320 / 8\)</td>
+              <td class="num">합계 <strong>320분</strong> / 평균 <strong>40분</strong></td>
+            </tr>
+            <tr>
+              <td><strong>1. 중앙값 및 최빈값</strong></td>
+              <td>짝수(\(n=8\))이므로 \((x_{(4)}+x_{(5)})/2 = (30+40)/2\), &nbsp; 20분이 유일하게 2회 출현</td>
+              <td class="num">중앙값 <strong>35분</strong> / 최빈값 <strong>20분</strong></td>
+            </tr>
+            <tr>
+              <td><strong>2. 제1사분위수 (\(Q_1\))</strong></td>
+              <td>\(h = 1 + 7(0.25) = \mathbf{2.75} \implies x_{(2)} + 0.75(x_{(3)} - x_{(2)}) = 20 + 0.75(20 - 20)\)</td>
+              <td class="num"><strong>20분</strong></td>
+            </tr>
+            <tr>
+              <td><strong>2. 제3사분위수 (\(Q_3\))</strong></td>
+              <td>\(h = 1 + 7(0.75) = \mathbf{6.25} \implies x_{(6)} + 0.25(x_{(7)} - x_{(6)}) = 50 + 0.25(60 - 50)\)</td>
+              <td class="num"><strong>52.5분</strong></td>
+            </tr>
+            <tr>
+              <td><strong>2. 사분위범위 (\(IQR\))</strong></td>
+              <td>\(IQR = Q_3 - Q_1 = 52.5 - 20\)</td>
+              <td class="num"><strong>32.5분</strong></td>
+            </tr>
+            <tr>
+              <td><strong>3. 90→190 교체 후 평균</strong></td>
+              <td>관측 추가가 아닌 ‘교체’이므로 분모 \(n=8\) 유지: \(\bar{x}_{\text{new}} = 40 + \frac{100}{8} = 40 + 12.5\)</td>
+              <td class="num"><strong>52.5분</strong> (+12.5분 증가)</td>
+            </tr>
+            <tr>
+              <td><strong>3. 90→190 교체 후 중앙값</strong></td>
+              <td>가운데 두 값 \(x_{(4)}=30, x_{(5)}=40\)의 순서가 그대로 유지됨</td>
+              <td class="num"><strong>35분</strong> (변화 없음)</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="callout danger">
+          <strong>문제 4 해설 (‘최빈값 20분이므로 대부분이 20분 걸린다’의 문제점):</strong><br>
+          20분 응답자는 8명 중 2명으로 전체의 <strong>\(2/8 = 25\%\)</strong>에 불과합니다. 나머지 75%(6명)는 20분이 아니므로 “학생 대부분(과반수)이 20분 걸린다”는 주장은 최빈값과 과반수를 혼동한 잘못된 해석입니다.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL 3: 셀 1 코드 팝업 ==================== -->
+  <div class="modal-overlay" id="cell1Modal" onclick="if(event.target===this) closeModal('cell1Modal')">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 style="font-size: 1.25rem; color: var(--kgu-blue);"><i class="fa-brands fa-python"></i> Colab 셀 1 비교용 정답 코드 및 상세 해설</h3>
+        <button class="nav-btn" style="background: #f1f5f9; color: #0f172a; border-color: #cbd5e1;" onclick="closeModal('cell1Modal')">닫기 (ESC)</button>
+      </div>
+      <div class="modal-body">
+        <div class="code-wrapper">
+          <div class="code-header">
+            <span>셀 1 전체 Python 코드</span>
+            <button class="copy-btn" onclick="copyText('cell1Code')"><i class="fa-regular fa-copy"></i> 코드 복사</button>
+          </div>
+          <pre><code class="language-python">import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# 1. 입력: 결측(None) 2건을 포함한 22명의 원자료 Series 생성
+raw = pd.Series([10,12,15,18,20,20,22,25,28,30,
+                 32,35,38,40,42,45,50,55,60,90,None,None],
+                name="minutes", dtype="float64")
+
+# 2. 처리: 원자료 raw는 보존하고 결측만 제거한 numpy 배열 x 추출
+x = raw.dropna().to_numpy()
+assert len(x) > 0 and np.isfinite(x).all() and (x >= 0).all()
+
+# 3. 처리: 선형 보간(method="linear")으로 사분위수 계산
+q1, med, q3 = np.quantile(x, [0.25, 0.5, 0.75], method="linear")
+
+# 4. 출력 및 손계산 값과의 자동 교차 검증(assert)
+summary = pd.Series({
+    "total_n": len(raw), "valid_n": len(x), "missing_n": raw.isna().sum(),
+    "sum": x.sum(), "mean": x.mean(), "median": med,
+    "Q1": q1, "Q3": q3, "IQR": q3-q1
+})
+print(summary)
+print("mode:", raw.mode().tolist())
+assert (len(raw), len(x), int(raw.isna().sum())) == (22, 20, 2)
+assert np.allclose([x.sum(), x.mean(), med, q1, q3, q3-q1],
+                   [687, 34.35, 31, 20, 42.75, 22.75])
+assert raw.mode().tolist() == [20.0]</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL 4: 셀 2 코드 팝업 ==================== -->
+  <div class="modal-overlay" id="cell2Modal" onclick="if(event.target===this) closeModal('cell2Modal')">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 style="font-size: 1.25rem; color: var(--kgu-blue);"><i class="fa-brands fa-python"></i> Colab 셀 2 비교용 정답 코드 (값 교체 실험 및 그래프)</h3>
+        <button class="nav-btn" style="background: #f1f5f9; color: #0f172a; border-color: #cbd5e1;" onclick="closeModal('cell2Modal')">닫기 (ESC)</button>
+      </div>
+      <div class="modal-body">
+        <div class="code-wrapper">
+          <div class="code-header">
+            <span>셀 2 전체 Python 코드</span>
+            <button class="copy-btn" onclick="copyText('cell2Code')"><i class="fa-regular fa-copy"></i> 코드 복사</button>
+          </div>
+          <pre><code class="language-python">rows = []
+for replacement in [90, 190, 990]:
+    changed = x.copy()          # 원자료 훼손 방지를 위해 반드시 복사본 생성
+    changed[-1] = replacement   # 마지막 유효값(90분)을 교체
+    qs = np.quantile(changed, [0.25, 0.5, 0.75], method="linear")
+    rows.append({"replacement": replacement, "mean": changed.mean(),
+                 "median": qs[1], "IQR": qs[2]-qs[0]})
+    expected_mean = 34.35 + (replacement-90)/20
+    assert np.isclose(changed.mean(), expected_mean)
+
+result = pd.DataFrame(rows)
+print(result.to_string(index=False))
+
+# 원자료 보존 여부 및 중앙값/IQR 저항성 검증
+assert x[-1] == 90 and raw.iloc[19] == 90
+assert np.allclose(result["median"], 31)
+assert np.allclose(result["IQR"], 22.75)
+
+# 시각화
+fig, ax = plt.subplots(figsize=(7, 4))
+ax.plot(result["replacement"], result["mean"], "o-", label="Mean")
+ax.plot(result["replacement"], result["median"], "s-", label="Median")
+ax.set(xlabel="Replacement of the original 90 (minutes)",
+       ylabel="Location (minutes)", title="One value replaced; valid n=20")
+ax.legend()
+fig.tight_layout()
+plt.show()</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL 5: 셀 3 코드 팝업 ==================== -->
+  <div class="modal-overlay" id="cell3Modal" onclick="if(event.target===this) closeModal('cell3Modal')">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 style="font-size: 1.25rem; color: var(--kgu-blue);"><i class="fa-brands fa-python"></i> Colab 셀 3 비교용 정답 코드 (중앙값 변화 반례)</h3>
+        <button class="nav-btn" style="background: #f1f5f9; color: #0f172a; border-color: #cbd5e1;" onclick="closeModal('cell3Modal')">닫기 (ESC)</button>
+      </div>
+      <div class="modal-body">
+        <div class="code-wrapper">
+          <div class="code-header">
+            <span>셀 3 전체 Python 코드</span>
+            <button class="copy-btn" onclick="copyText('cell3Code')"><i class="fa-regular fa-copy"></i> 코드 복사</button>
+          </div>
+          <pre><code class="language-python">before = np.array([1, 2, 3, 4, 5])
+after = np.array([1, 2, 100, 4, 5])
+print("정렬 전후:", np.sort(before), np.sort(after))
+print("중앙값 전후:", np.median(before), np.median(after))
+assert np.median(before) == 3 and np.median(after) == 4</code></pre>
+        </div>
+        <div class="callout warn">
+          <strong>핵심 포인트:</strong> 가운데 값 <code>3</code>이 <code>100</code>으로 바뀌면 정렬 순서가 <code>[1, 2, 4, 5, 100]</code>으로 재편되어 중앙값이 <code>3</code>에서 <code>4</code>로 이동합니다. 즉, 중앙값은 극단값 변화에 <strong>저항적(resistant)</strong>이지만 어떤 변화에도 안 변하는 <strong>불변(invariant)</strong>은 아닙니다.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL 6: 가정용 자가 실습 정답 해설 팝업 ==================== -->
+  <div class="modal-overlay" id="hwModal" onclick="if(event.target===this) closeModal('hwModal')">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 style="font-size: 1.25rem; color: var(--purple-accent);">
+          <i class="fa-solid fa-house-laptop"></i> 가정용 자가 실습 (도서관 이용 시간) 상세 정답 및 해설
+        </h3>
+        <button class="nav-btn" style="background: #f1f5f9; color: #0f172a; border-color: #cbd5e1;" onclick="closeModal('hwModal')">닫기 (ESC)</button>
+      </div>
+      <div class="modal-body">
+        <table class="lecture-table">
+          <thead>
+            <tr>
+              <th>과제 문항</th>
+              <th>단계별 풀이 및 수식</th>
+              <th class="num">정답</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>1. 인원 및 합계/평균</strong></td>
+              <td>전체 \(N=18\), 유효 \(n=16\), 결측 \(2\). 합계 \(= 166\text{시간}\), 평균 \(= 166 / 16\)</td>
+              <td class="num">합계 <strong>166시간</strong> / 평균 <strong>10.375시간</strong></td>
+            </tr>
+            <tr>
+              <td><strong>1. 중앙값 및 최빈값</strong></td>
+              <td>\(n=16\)(짝수)이므로 \((x_{(8)}+x_{(9)})/2 = (7+8)/2\), 4시간이 3회 출현(비율 \(3/16=18.75\%\))</td>
+              <td class="num">중앙값 <strong>7.5시간</strong> / 최빈값 <strong>4시간</strong></td>
+            </tr>
+            <tr>
+              <td><strong>2. \(Q_1, Q_3, IQR\)</strong></td>
+              <td>\(h_{0.25} = 1 + 15(0.25) = 4.75 \implies x_{(4)}=4, x_{(5)}=4 \implies Q_1 = 4.0\)<br>
+                  \(h_{0.75} = 1 + 15(0.75) = 12.25 \implies x_{(12)}=12, x_{(13)}=14 \implies 12 + 0.25(2) = 12.5\)</td>
+              <td class="num">\(Q_1=\mathbf{4.0}\), \(Q_3=\mathbf{12.5}\), \(IQR=\mathbf{8.5\text{시간}}\)</td>
+            </tr>
+            <tr>
+              <td><strong>3. 45→125시간 교체</strong></td>
+              <td>\(\Delta = +80\), \(n=16\) 유지 \(\implies \bar{x}_{\text{new}} = 10.375 + 80/16 = 10.375 + 5.0\)<br>
+                  가운데 순서(\(x_{(8)}, x_{(9)}\))와 사분위 순서(\(x_{(4)}\sim x_{(13)}\))는 불변</td>
+              <td class="num">평균 <strong>15.375시간</strong><br>중앙값 <strong>7.5</strong> · \(IQR\) <strong>8.5</strong> 유지</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="callout success">
+          <strong>4번 문항 (목적별 해석 모범 답안):</strong><br>
+          • <strong>도서관 총 좌석 점유 시간 추정:</strong> 전체 합계(166시간)와 직결되는 <strong>산술평균(10.375시간)</strong>을 사용해야 합니다.<br>
+          • <strong>일반 학생의 전형적인 가운데 이용 시간 안내:</strong> 장기 이용자(45시간) 1명에 의해 평균이 위로 끌려 올라갔으므로(평균 10.375 > 중앙값 7.5), 순서상 정중앙을 나타내는 <strong>중앙값(7.5시간)과 \(IQR\)(8.5시간)</strong>을 함께 제시하는 것이 적절합니다.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Initialize Syntax Highlighting
+    if (window.hljs) hljs.highlightAll();
+
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    let currentIndex = 0;
+
+    const counterEl = document.getElementById('slideCounter');
+    const progressEl = document.getElementById('progressFill');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const tocGrid = document.getElementById('tocGrid');
+
+    // Build TOC
+    slides.forEach((slide, idx) => {
+      const title = slide.getAttribute('data-title') || `슬라이드 ${idx + 1}`;
+      const item = document.createElement('div');
+      item.className = 'toc-item';
+      item.innerHTML = `<span class="toc-num">${idx + 1}</span><span>${title}</span>`;
+      item.onclick = () => {
+        goToSlide(idx);
+        closeModal('tocModal');
+      };
+      tocGrid.appendChild(item);
+    });
+
+    function updateSlideUI() {
+      slides.forEach((s, i) => {
+        s.classList.toggle('active', i === currentIndex);
+      });
+      counterEl.textContent = `${currentIndex + 1} / ${totalSlides}`;
+      progressEl.style.width = `${((currentIndex + 1) / totalSlides) * 100}%`;
+      prevBtn.disabled = currentIndex === 0;
+      nextBtn.disabled = currentIndex === totalSlides - 1;
+    }
+
+    function changeSlide(delta) {
+      const nextIdx = currentIndex + delta;
+      if (nextIdx >= 0 && nextIdx < totalSlides) {
+        currentIndex = nextIdx;
+        updateSlideUI();
+      }
+    }
+
+    function goToSlide(idx) {
+      currentIndex = idx;
+      updateSlideUI();
+    }
+
+    // Modal controls
+    function openModal(id) {
+      const el = document.getElementById(id);
+      if (el) el.classList.add('open');
+    }
+
+    function closeModal(id) {
+      const el = document.getElementById(id);
+      if (el) el.classList.remove('open');
+    }
+
+    function closeAllModals() {
+      document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
+    }
+
+    // Tab switching for Prompt vs Code
+    function switchTab(containerId, tabIndex) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+      const buttons = container.querySelectorAll('.tab-btn');
+      const panes = container.querySelectorAll('.tab-pane');
+      buttons.forEach((btn, idx) => btn.classList.toggle('active', idx === tabIndex));
+      panes.forEach((pane, idx) => pane.classList.toggle('active', idx === tabIndex));
+    }
+
+    // Clipboard copy
+    function copyText(elementId) {
+      const text = document.getElementById(elementId).innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        alert('클립보드에 복사되었습니다. AI 채팅창 또는 Colab 셀에 붙여넣으세요!');
+      });
+    }
+
+    // Download sample CSV file for self-practice
+    function downloadSampleCSV() {
+      const csvContent = [
+        "student_id,study_hours",
+        "S01,2",
+        "S02,3",
+        "S03,4",
+        "S04,4",
+        "S05,4",
+        "S06,5",
+        "S07,6",
+        "S08,7",
+        "S09,8",
+        "S10,9",
+        "S11,10",
+        "S12,12",
+        "S13,14",
+        "S14,15",
+        "S15,18",
+        "S16,45",
+        "S17,",
+        "S18,"
+      ].join("\n");
+
+      const blob = new Blob(["\uFEFF" + csvContent], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "library_study_hours.csv";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      const anyModalOpen = document.querySelector('.modal-overlay.open');
+      if (e.key === 'Escape' && anyModalOpen) {
+        closeAllModals();
+        return;
+      }
+      if (anyModalOpen) return;
+
+      if (e.key === 'ArrowRight' || e.key === 'PageDown') {
+        changeSlide(1);
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        changeSlide(-1);
+      } else if (e.key === 'm' || e.key === 'M') {
+        openModal('tocModal');
+      }
+    });
+
+    updateSlideUI();
+    if (new URLSearchParams(location.search).get('print') === '1') {
+      window.addEventListener('load', async () => {
+        if (window.MathJax && MathJax.startup) await MathJax.startup.promise;
+        if (document.fonts) await document.fonts.ready;
+        window.print();
+      }, { once: true });
+    }
+  </script>
+</body>
+</html>

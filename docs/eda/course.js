@@ -31,7 +31,7 @@
     },
     { week: 3, title: "AI 분석 결과를 확인하고 고치는 법", activity: "AI가 요청한 조건을 지켰는지 확인하고, 자신의 말로 수정 요청을 한 뒤 실제 근거로 검증합니다.", slide: "slides/week-03.html", slideCount: 24, printFrom: 1, printTo: 24, notion: "https://app.notion.com/p/3fd96f1add76814889f5db0f5adbc6ea", sessionTitle: "AI 분석 결과를<br>확인하고 고치는 법", copy: "결과를 먼저 판단하고, 문제 발견 → 수정 요청 → 검증의 과정을 직접 수행합니다. 추가 활동은 별도 자율 실습으로 이어갑니다.", agenda: ["AI 보고서를 먼저 판단하기","원자료와 대조해 문제 발견","내 말로 수정 요청하기","실제 근거로 검증하고 기록"] },
     { week: 4, title: "분포·줄기와 잎·히스토그램의 통계 이론", activity: "분포·빈도·상대빈도·밀도와 면적·구간 선택을 설명하고 같은 자료의 그림으로 확인합니다.", slide: "slides/week-04.html", slideCount: 40, printFrom: 1, printTo: 40, notion: "https://app.notion.com/p/3fd96f1add76814ab4e0c6a9ceb60c29", sessionTitle: "분포를 이해하고<br>그림으로 설명하기", copy: "통계 이론과 직접 만든 설명 그림을 먼저 학습하고 Colab에서 확인합니다. 상세 실습은 별도 참고 슬라이드에서 이어갑니다.", agenda: ["분포·경험분포·자료의 종류","줄기와 잎·빈도·누적비율","밀도와 면적·구간 선택","이론을 AI와 Colab으로 확인"] },
-    { week: 5, title: "중심위치와 저항성", activity: "평균·중앙값·분위수·IQR과 저항성을 학습합니다." },
+    { week: 5, title: "중심위치와 저항성", activity: "평균·중앙값·최빈값·분위수·IQR의 원리를 이해하고 값 교체 실험으로 저항성을 확인합니다.", slide: "slides/week-05.html", slideCount: 21, printFrom: 1, printTo: 21, sessionTitle: "중심위치를 이해하고<br>저항성을 검증하기", copy: "대표값을 목적에 맞게 선택하고 손계산과 AI·Colab 실습으로 요약값의 변화와 근거를 확인합니다.", agenda: ["목적에 따른 대표값 선택", "저항성과 값 교체 실험", "분위수·IQR과 손계산", "프롬프트·Colab·자가 실습"] },
     { week: 6, title: "5수요약과 상자그림", activity: "울타리와 이상점, 그룹별 분포 비교를 다룹니다." },
     { week: 7, title: "재표현: 변환의 사다리", activity: "여러 변환을 적용하고 왜도의 변화를 비교합니다." },
     { week: 8, title: "표준화와 Box–Cox", activity: "표준화·로버스트 표준화·Box–Cox 변환을 다룹니다." },
@@ -152,7 +152,7 @@
     notionLink.href = item.notion || notionCourse;
     notionLink.textContent = item.notion ? `${item.week}차수 원문 ↗` : "전체 Notion 강의노트 ↗";
     byId("current-card-help").innerHTML = item.slide
-      ? ([3, 4].includes(item.week) ? "방향키 이동 · O 전체 목차<br>전체 읽기 · 코드 복사 · Colab 실습" : "방향키로 이동 · O 전체 목록<br>N 강사 노트 · 전체 화면 지원")
+      ? (item.week === 5 ? "방향키 이동 · M 전체 목차<br>프롬프트·코드 복사 · 해설 팝업" : [3, 4].includes(item.week) ? "방향키 이동 · O 전체 목차<br>전체 읽기 · 코드 복사 · Colab 실습" : "방향키로 이동 · O 전체 목록<br>N 강사 노트 · 전체 화면 지원")
       : "해당 차수 슬라이드가 추가되면<br>이 버튼이 자동으로 활성화됩니다.";
 
     const headerLink = byId("header-slide-link");
