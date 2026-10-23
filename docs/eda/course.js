@@ -152,7 +152,7 @@
     notionLink.href = item.notion || notionCourse;
     notionLink.textContent = item.notion ? `${item.week}차수 원문 ↗` : "전체 Notion 강의노트 ↗";
     byId("current-card-help").innerHTML = item.slide
-      ? (item.week === 5 ? "방향키 이동 · M 전체 목차 · 전체보기<br>프롬프트·코드 복사 · 해설 팝업" : [3, 4].includes(item.week) ? "방향키 이동 · O 전체 목차<br>전체 읽기 · 코드 복사 · Colab 실습" : "방향키로 이동 · O 전체 목록<br>N 강사 노트 · 전체 화면 지원")
+      ? (item.week === 5 ? "방향키 이동 · M 전체 목차 · 전체 읽기 · 화면 전체보기<br>프롬프트·코드 복사 · 해설 팝업" : [3, 4].includes(item.week) ? "방향키 이동 · O 전체 목차<br>전체 읽기 · 코드 복사 · Colab 실습" : "방향키로 이동 · O 전체 목록<br>N 강사 노트 · 전체 화면 지원")
       : "해당 차수 슬라이드가 추가되면<br>이 버튼이 자동으로 활성화됩니다.";
 
     const headerLink = byId("header-slide-link");
