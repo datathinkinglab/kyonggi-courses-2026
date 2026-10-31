@@ -1,0 +1,2593 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>6차수: AI 리서치를 활용한 기업 및 산업 자료조사 | 통계컨설팅의 이해 (경기대학교)</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Pretendard / Noto Sans KR fallback -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Pretendard', '"Noto Sans KR"', 'system-ui', '-apple-system', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            kgu: {
+              navy: '#0B2147',
+              blue: '#1E3A8A',
+              accent: '#2563EB',
+              light: '#EFF6FF',
+              border: '#BFDBFE'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <style>
+    /* 기본 스타일 및 접근성 포커스 */
+    body {
+      font-family: Pretendard, 'Noto Sans KR', system-ui, -apple-system, sans-serif;
+      background-color: #F8FAFC;
+      color: #0F172A;
+      overflow-x: hidden;
+    }
+    *:focus-visible {
+      outline: 3px solid #2563EB;
+      outline-offset: 2px;
+    }
+    /* 커스텀 스크롤바 */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #F1F5F9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #94A3B8;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #64748B;
+    }
+
+    /* 배지 및 의미론적 라벨 (색상 외 텍스트 병기용) */
+    .badge-fact {
+      background-color: #DBEAFE;
+      color: #1E40AF;
+      border: 1px solid #93C5FD;
+    }
+    .badge-interp {
+      background-color: #E0E7FF;
+      color: #3730A3;
+      border: 1px solid #A5B4FC;
+    }
+    .badge-hypo {
+      background-color: #FEF3C7;
+      color: #92400E;
+      border: 1px solid #FCD34D;
+    }
+    .badge-warn {
+      background-color: #FEE2E2;
+      color: #991B1B;
+      border: 1px solid #FCA5A5;
+    }
+    .badge-ok {
+      background-color: #DCFCE7;
+      color: #166534;
+      border: 1px solid #86EFAC;
+    }
+
+    /* 인쇄 모드 및 전체 펼침 보기 스타일 */
+    @media print {
+      body {
+        background: #FFFFFF !important;
+        color: #000000 !important;
+        overflow: visible !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+      #slide-viewport {
+        height: auto !important;
+        overflow: visible !important;
+        padding: 0 !important;
+      }
+      .slide-card {
+        display: block !important;
+        page-break-after: always;
+        break-after: page;
+        border: 2px solid #334155 !important;
+        box-shadow: none !important;
+        margin-bottom: 24px !important;
+        padding: 24px !important;
+      }
+      .print-note {
+        display: block !important;
+        margin-top: 16px;
+        padding-top: 12px;
+        border-top: 1px dashed #64748B;
+        font-size: 0.875rem;
+      }
+      details {
+        open: true !important;
+      }
+    }
+
+    body.all-slides-mode #slide-viewport {
+      height: auto !important;
+      overflow-y: visible !important;
+    }
+    body.all-slides-mode .slide-card {
+      display: block !important;
+      margin-bottom: 2rem;
+    }
+    @media (max-width: 640px) {
+      header > div:first-child { height: auto !important; min-height: 4rem; flex-wrap: wrap; padding-top: .5rem; padding-bottom: .5rem; }
+      header > div:first-child > div { max-width: 100%; }
+      footer > div { height: auto !important; min-height: 4rem; flex-wrap: wrap; padding-top: .5rem; padding-bottom: .5rem; }
+      #slide-select { max-width: 38vw; }
+      .slide-card { overflow-wrap: anywhere; }
+      .slide-card pre, .slide-card table { max-width: 100%; overflow-x: auto; }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-blue-600 selection:text-white">
+
+  <!-- 상단 고정 헤더 (네비게이션 & 메타 정보) -->
+  <header class="bg-kgu-navy text-white border-b border-slate-700 sticky top-0 z-30 no-print">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-3">
+      <!-- 좌측: 강의 타이틀 및 허브 이동 -->
+      <div class="flex items-center gap-3 min-w-0">
+        <a href="../index.html" class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-blue-200 border border-slate-600 transition shrink-0" title="강의 허브로 돌아가기">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+          <span>강의 허브</span>
+        </a>
+        <div class="truncate">
+          <div class="flex items-center gap-2">
+            <span class="px-2 py-0.5 text-xs font-bold rounded bg-blue-600 text-white">6차수</span>
+            <span class="text-xs text-slate-300 hidden sm:inline">경기대학교 「통계컨설팅의 이해」</span>
+          </div>
+          <h1 class="text-sm sm:text-base font-bold truncate text-white">AI 리서치를 활용한 기업 및 산업 자료조사</h1>
+        </div>
+      </div>
+
+      <!-- 우측: 유틸리티 버튼 그룹 -->
+      <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+        <button id="btn-toc" type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs sm:text-sm font-medium border border-slate-600 transition" aria-expanded="false" aria-controls="toc-modal" title="목차 열기 (단축키: M)">
+          <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"/></svg>
+          <span>목차</span>
+          <kbd class="hidden md:inline-block text-[10px] bg-slate-900 px-1.5 py-0.5 rounded text-slate-300">M</kbd>
+        </button>
+
+        <button id="btn-notes" type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs sm:text-sm font-medium border border-slate-600 transition" aria-pressed="false" title="강사 노트 토글 (단축키: N)">
+          <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          <span>강사 노트</span>
+          <kbd class="hidden md:inline-block text-[10px] bg-slate-900 px-1.5 py-0.5 rounded text-slate-300">N</kbd>
+        </button>
+
+        <button id="btn-all-view" type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs sm:text-sm font-medium border border-slate-600 transition" aria-pressed="false" title="전체 슬라이드 펼침 보기 / 인쇄 모드 (단축키: P)">
+          <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+          <span class="hidden sm:inline">전체 읽기</span>
+          <kbd class="hidden md:inline-block text-[10px] bg-slate-900 px-1.5 py-0.5 rounded text-slate-300">P</kbd>
+        </button>
+
+        <button id="btn-fullscreen" type="button" class="px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-600 text-xs sm:text-sm font-medium" aria-pressed="false">전체화면</button>
+        <button id="btn-links" type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-700 hover:bg-blue-600 text-xs sm:text-sm font-medium border border-blue-500 transition" aria-expanded="false" aria-controls="links-modal" title="강의노트 및 공식 원문 자료 링크">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+          <span class="hidden md:inline">자료·링크</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 진행 표시줄 (Progress Bar) -->
+    <div class="w-full bg-slate-800 h-1.5" role="progressbar" aria-label="슬라이드 진행률" id="progress-container" aria-valuemin="1" aria-valuemax="30" aria-valuenow="1">
+      <div id="progress-bar" class="bg-blue-500 h-1.5 transition-all duration-300" style="width: 3.33%;"></div>
+    </div>
+  </header>
+
+  <!-- 메인 슬라이드 뷰포트 -->
+  <main id="slide-viewport" class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-6 flex flex-col justify-between">
+    <!-- 슬라이드 컨테이너 (JS로 렌더링) -->
+    <div id="slides-container" class="w-full my-auto"></div>
+
+    <!-- 강사 노트 패널 (토글 시 표시) -->
+    <aside id="instructor-note-panel" class="hidden mt-6 bg-amber-50 border-2 border-amber-300 rounded-xl p-4 sm:p-5 shadow-sm no-print" aria-live="polite">
+      <div class="flex items-center justify-between mb-2">
+        <div class="flex items-center gap-2">
+          <span class="px-2.5 py-0.5 text-xs font-extrabold rounded bg-amber-200 text-amber-900 border border-amber-400">[강사 노트 · 확인 기준]</span>
+          <span id="note-slide-indicator" class="text-xs font-semibold text-amber-800">Slide 01</span>
+        </div>
+        <button type="button" id="btn-close-note" class="text-xs font-semibold text-amber-800 hover:underline px-2 py-1 rounded">닫기 (N)</button>
+      </div>
+      <p id="instructor-note-content" class="text-sm sm:text-base text-amber-950 leading-relaxed font-medium"></p>
+    </aside>
+  </main>
+
+  <!-- 하단 컨트롤 바 -->
+  <footer class="bg-white border-t border-slate-200 sticky bottom-0 z-20 no-print">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-2">
+      <!-- 처음/이전 버튼 -->
+      <div class="flex items-center gap-1.5 sm:gap-2">
+        <button id="btn-first" type="button" class="px-2.5 py-2 rounded-lg border border-slate-300 bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs sm:text-sm font-semibold disabled:opacity-40 disabled:pointer-events-none transition" title="첫 장으로 이동 (Home)">
+          <span aria-hidden="true">⏮</span> <span class="hidden sm:inline">처음</span>
+        </button>
+        <button id="btn-prev" type="button" class="px-3.5 py-2 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-slate-800 text-xs sm:text-sm font-bold shadow-sm disabled:opacity-40 disabled:pointer-events-none transition flex items-center gap-1" title="이전 슬라이드 (←)">
+          <span aria-hidden="true">←</span> <span>이전</span>
+        </button>
+      </div>
+
+      <!-- 중앙: 현재 장 / 전체 장 수 & 바로가기 드롭다운 -->
+      <div class="flex items-center gap-2">
+        <label for="slide-select" class="sr-only">슬라이드 바로 이동</label>
+        <select id="slide-select" class="bg-slate-100 border border-slate-300 text-slate-800 text-xs sm:text-sm font-bold rounded-lg px-3 py-1.5 focus:ring-blue-500 focus:border-blue-500">
+          <!-- JS로 옵션 생성 -->
+        </select>
+        <span id="slide-counter" class="text-xs sm:text-sm font-mono font-bold text-slate-600 hidden md:inline">01 / 30</span>
+      </div>
+
+      <!-- 다음/마지막 버튼 & 차수 이동 -->
+      <div class="flex items-center gap-1.5 sm:gap-2">
+        <button id="btn-next" type="button" class="px-4 py-2 rounded-lg bg-kgu-accent hover:bg-blue-700 text-white text-xs sm:text-sm font-bold shadow-sm disabled:opacity-40 disabled:pointer-events-none transition flex items-center gap-1" title="다음 슬라이드 (→ 또는 Space)">
+          <span>다음</span> <span aria-hidden="true">→</span>
+        </button>
+        <button id="btn-last" type="button" class="px-2.5 py-2 rounded-lg border border-slate-300 bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs sm:text-sm font-semibold disabled:opacity-40 disabled:pointer-events-none transition" title="마지막 장으로 이동 (End)">
+          <span class="hidden sm:inline">마지막</span> <span aria-hidden="true">⏭</span>
+        </button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 모달 1: 목차 (Table of Contents) -->
+  <div id="toc-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden items-center justify-center p-4 no-print" role="dialog" aria-modal="true" aria-labelledby="toc-modal-title">
+    <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[85vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden">
+      <div class="px-6 py-4 bg-kgu-navy text-white flex items-center justify-between">
+        <div>
+          <span class="text-xs font-semibold text-blue-300">전체 30장 구성</span>
+          <h2 id="toc-modal-title" class="text-lg font-bold">6차수 슬라이드 목차</h2>
+        </div>
+        <button type="button" id="btn-close-toc" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-semibold">닫기 (ESC)</button>
+      </div>
+      <div id="toc-list" class="p-4 sm:p-6 overflow-y-auto grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+        <!-- JS로 목차 버튼 생성 -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 모달 2: 강의노트 및 참고 링크 모달 -->
+  <div id="links-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden items-center justify-center p-4 no-print" role="dialog" aria-modal="true" aria-labelledby="links-modal-title">
+    <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[85vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden">
+      <div class="px-6 py-4 bg-kgu-navy text-white flex items-center justify-between">
+        <div>
+          <span class="text-xs font-semibold text-blue-300">연결 문서 및 공식 원문 출처</span>
+          <h2 id="links-modal-title" class="text-lg font-bold">강의 자료실 및 외부 공식 사이트</h2>
+        </div>
+        <button type="button" id="btn-close-links" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-semibold">닫기 (ESC)</button>
+      </div>
+      <div class="p-6 overflow-y-auto space-y-6 text-sm">
+        <div>
+          <h3 class="font-bold text-slate-900 text-base mb-2 flex items-center gap-2">
+            <span class="px-2 py-0.5 text-xs rounded bg-blue-100 text-blue-900 font-bold">[내부 문서]</span>
+            차수 이동 및 강의노트 (상대 경로)
+          </h3>
+          <p class="text-xs text-slate-600 mb-3">※ 실제 프로젝트 저장소의 배치 경로를 기준으로 연결됩니다. 수업 시간과 제출·평가 세부사항은 별도 공지합니다.</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <a href="../index.html" class="p-3 rounded-xl border border-slate-200 hover:border-blue-500 hover:bg-blue-50/50 transition flex items-center justify-between font-semibold text-slate-800">
+              <span>🏠 강의 허브 (메인)</span>
+              <span class="text-xs text-blue-600">이동 →</span>
+            </a>
+            <a href="week-05.html" class="p-3 rounded-xl border border-slate-200 hover:border-blue-500 hover:bg-blue-50/50 transition flex items-center justify-between font-semibold text-slate-800">
+              <span>◀ 5차수 HTML 슬라이드</span>
+              <span class="text-xs text-blue-600">이동 →</span>
+            </a>
+            <a href="week-07.html" class="p-3 rounded-xl border border-slate-200 hover:border-blue-500 hover:bg-blue-50/50 transition flex items-center justify-between font-semibold text-slate-800">
+              <span>▶ 7차수 HTML 슬라이드</span>
+              <span class="text-xs text-blue-600">이동 →</span>
+            </a>
+            <a href="../downloads/week-06-notes.md" class="p-3 rounded-xl border border-slate-200 hover:border-blue-500 hover:bg-blue-50/50 transition flex items-center justify-between font-semibold text-slate-800">
+              <span>📘 6차수 수강생용 강의노트</span>
+              <span class="text-xs text-slate-500">.md</span>
+            </a>
+            <a href="../downloads/week-07-notes.md" class="p-3 rounded-xl border border-slate-200 hover:border-blue-500 hover:bg-blue-50/50 transition flex items-center justify-between font-semibold text-slate-800">
+              <span>📗 7차수 수강생용 강의노트</span>
+              <span class="text-xs text-slate-500">.md</span>
+            </a>
+            <a href="../midterm.html" class="p-3 rounded-xl border border-slate-200 hover:border-blue-500 hover:bg-blue-50/50 transition flex items-center justify-between font-semibold text-slate-800">
+              <span>📝 중간고사 과제안</span>
+              <span class="text-xs text-slate-500">.md</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="border-t border-slate-200 pt-4">
+          <h3 class="font-bold text-slate-900 text-base mb-2 flex items-center gap-2">
+            <span class="px-2 py-0.5 text-xs rounded bg-amber-100 text-amber-900 font-bold">[외부 공식 출처]</span>
+            원문 검증용 공식 사이트 (인터넷 접속 필요)
+          </h3>
+          <ul class="space-y-2.5">
+            <li class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <div class="font-bold text-slate-900">금융감독원 전자공시시스템 (DART) 공시서류 검색 안내</div>
+                <div class="text-xs text-slate-600 font-mono break-all">https://dart.fss.or.kr/guide/main.jsp?menu=121</div>
+              </div>
+              <a href="https://dart.fss.or.kr/guide/main.jsp?menu=121" target="_blank" rel="noopener noreferrer" class="shrink-0 inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-blue-600 text-white text-xs font-bold hover:bg-blue-700">
+                공식 사이트 열기 ↗
+              </a>
+            </li>
+            <li class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <div class="font-bold text-slate-900">국가통계포털 (KOSIS) 통계표 조회 안내 (PDF)</div>
+                <div class="text-xs text-slate-600 font-mono break-all">https://kosis.kr/ext/kosisGuide/pdf/KOSIS_search.pdf</div>
+              </div>
+              <a href="https://kosis.kr/ext/kosisGuide/pdf/KOSIS_search.pdf" target="_blank" rel="noopener noreferrer" class="shrink-0 inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-blue-600 text-white text-xs font-bold hover:bg-blue-700">
+                원문 안내 열기 ↗
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 슬라이드 데이터 및 인터랙션 스크립트 -->
+  <script>
+    // 복사할 프롬프트 원문 (13장)
+    const PROMPT_TEXT_SLIDE_13 = `나는 대학 수업에서 [기업명]을 조사한다. 내 분석 질문은 [질문]이다.
+대상·기간·지표·비교 기준·목적의 빈칸을 찾아줘.
+필요한 자료 유형, 검색어와 원문에서 확인할 항목을 표로 제안해줘.
+제공하지 않은 수치나 출처는 만들지 말고 미확인 사항을 표시해줘.
+기업 내부 의도나 원인을 사실로 단정하지 말아줘.`;
+
+    // 전체 30장 슬라이드 데이터 정의
+    const SLIDES = [
+      // Slide 01
+      {
+        num: 1,
+        section: "도입 및 목표",
+        title: "AI가 찾아준 정보, 어디까지 믿을까?",
+        subtitle: "기업·산업 자료를 원문으로 확인한다.",
+        note: "출처 확인은 7차수의 수치 수집을 위한 준비임을 안내한다. 수업 시간과 제출·평가 세부사항은 별도 공지한다.",
+        html: `
+          <div class="bg-gradient-to-br from-kgu-navy via-slate-900 to-blue-950 text-white rounded-2xl p-6 sm:p-10 shadow-xl border border-slate-700">
+            <div class="flex flex-wrap items-center gap-2 mb-4">
+              <span class="px-3 py-1 rounded-full bg-blue-500/20 border border-blue-400/40 text-blue-200 text-xs font-bold">경기대학교 「통계컨설팅의 이해」 6차수</span>
+              <span class="px-3 py-1 rounded-full bg-slate-800 text-slate-300 text-xs font-medium">AI 리서치를 활용한 기업 및 산업 자료조사</span>
+            </div>
+            <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight mb-3">
+              AI가 찾아준 정보, 어디까지 믿을까?
+            </h2>
+            <p class="text-base sm:text-xl text-blue-200 font-medium mb-8">
+              기업·산업 자료를 <strong class="text-white underline decoration-blue-400 underline-offset-4">원문으로 확인</strong>하고 질문에 맞는 근거를 남긴다.
+            </p>
+
+            <!-- 5 -> 6 -> 7 차수 연결 흐름도 -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8" role="region" aria-label="차수별 학습 연결 흐름">
+              <div class="bg-slate-800/80 border border-slate-600 rounded-xl p-4">
+                <div class="text-xs font-bold text-slate-300 mb-1">5차수 (이전 시간)</div>
+                <div class="text-base font-bold text-white mb-1">1. 분석 질문 정의</div>
+                <p class="text-xs text-slate-300 leading-relaxed">비즈니스 문제를 대상·기간·지표·비교 기준이 담긴 질문으로 구체화</p>
+              </div>
+              <div class="bg-blue-600/30 border-2 border-blue-400 rounded-xl p-4 ring-4 ring-blue-500/20">
+                <div class="flex items-center justify-between mb-1">
+                  <span class="text-xs font-extrabold text-blue-200">6차수 (오늘 핵심)</span>
+                  <span class="px-2 py-0.5 text-[11px] font-bold bg-blue-500 text-white rounded">현재 단계</span>
+                </div>
+                <div class="text-base font-extrabold text-white mb-1">2. 근거 및 원문 확인</div>
+                <p class="text-xs text-blue-100 leading-relaxed">AI 답변을 주장 단위로 쪼개고 공시·통계 원문에서 정의와 수치를 대조</p>
+              </div>
+              <div class="bg-slate-800/80 border border-slate-600 rounded-xl p-4">
+                <div class="text-xs font-bold text-slate-300 mb-1">7차수 (다음 시간)</div>
+                <div class="text-base font-bold text-white mb-1">3. 실제 자료 확보·수집</div>
+                <p class="text-xs text-slate-300 leading-relaxed">확인된 원문 위치에서 DART·KOSIS 등의 시계열·비교 수치를 체계적 수집</p>
+              </div>
+            </div>
+
+            <div class="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-slate-700/80 text-xs text-slate-300">
+              <div>💡 <strong>핵심 원칙:</strong> AI가 만든 분석을 그대로 복사하지 않고, 원문 추적 가능성을 확보합니다.</div>
+              <div class="flex items-center gap-2">
+                <span>단축키: <kbd class="px-1.5 py-0.5 bg-slate-800 rounded border border-slate-600">←</kbd> <kbd class="px-1.5 py-0.5 bg-slate-800 rounded border border-slate-600">→</kbd> 이동, <kbd class="px-1.5 py-0.5 bg-slate-800 rounded border border-slate-600">M</kbd> 목차, <kbd class="px-1.5 py-0.5 bg-slate-800 rounded border border-slate-600">N</kbd> 강사노트</span>
+              </div>
+            </div>
+          </div>
+        `
+      },
+
+      // Slide 02
+      {
+        num: 2,
+        section: "도입 및 목표",
+        title: "오늘의 목표와 결과물",
+        subtitle: "질문 → 자료 → 검증 → 브리핑",
+        note: "각자는 자신의 질문과 근거를 설명해야 한다. 조별 공유와 개인 수행의 범위를 명확히 안내한다.",
+        html: `
+          <div class="space-y-6">
+            <!-- 4단계 학습 목표 -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div class="bg-white p-5 rounded-xl border-2 border-slate-200 shadow-xs">
+                <div class="inline-block px-2.5 py-1 rounded bg-blue-100 text-blue-900 text-xs font-extrabold mb-2">목표 1 · 질문</div>
+                <h3 class="font-bold text-slate-900 text-base mb-1.5">조사 계획으로 변환</h3>
+                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">5차수의 질문을 대상·기간·지표·비교·목적으로 나누어 필요한 변수를 정의한다.</p>
+              </div>
+              <div class="bg-white p-5 rounded-xl border-2 border-slate-200 shadow-xs">
+                <div class="inline-block px-2.5 py-1 rounded bg-blue-100 text-blue-900 text-xs font-extrabold mb-2">목표 2 · 자료</div>
+                <h3 class="font-bold text-slate-900 text-base mb-1.5">1·2차 자료와 적합성</h3>
+                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">공시·공공통계·기사의 역할을 구분하고, 신뢰성과 내 질문의 적합성을 따로 점검한다.</p>
+              </div>
+              <div class="bg-white p-5 rounded-xl border-2 border-slate-200 shadow-xs">
+                <div class="inline-block px-2.5 py-1 rounded bg-blue-100 text-blue-900 text-xs font-extrabold mb-2">목표 3 · 검증</div>
+                <h3 class="font-bold text-slate-900 text-base mb-1.5">주장 분해와 원문 대조</h3>
+                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">AI 답변에서 수치·단위·분모·기간을 원문 표와 대조하고 사실과 원인 가설을 분리한다.</p>
+              </div>
+              <div class="bg-white p-5 rounded-xl border-2 border-slate-200 shadow-xs">
+                <div class="inline-block px-2.5 py-1 rounded bg-blue-100 text-blue-900 text-xs font-extrabold mb-2">목표 4 · 브리핑</div>
+                <h3 class="font-bold text-slate-900 text-base mb-1.5">추적 가능한 기록 작성</h3>
+                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">동료가 그대로 따라가 확인할 수 있는 근거 기록표와 다섯 문장 브리핑을 완성한다.</p>
+              </div>
+            </div>
+
+            <!-- 오늘의 산출물 카드 2개 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div class="bg-blue-50/70 border-2 border-blue-200 rounded-xl p-5">
+                <div class="flex items-center justify-between mb-2">
+                  <span class="px-2.5 py-0.5 rounded bg-blue-800 text-white text-xs font-bold">[산출물 1 · 조별 공유]</span>
+                  <span class="text-xs font-semibold text-blue-900">실습 B 연결</span>
+                </div>
+                <h3 class="text-lg font-extrabold text-slate-900 mb-2">조별 기업·산업 자료 지도</h3>
+                <ul class="text-xs sm:text-sm text-slate-700 space-y-1.5 list-disc list-inside">
+                  <li>조원들의 질문에 필요한 <strong>후보 문서·원문 위치·기간·범위</strong> 정리</li>
+                  <li>각 자료의 <strong>확보 상태</strong>(원문·항목 확인 / 미확인 / 확보 곤란) 구분</li>
+                  <li>7차수 수치 수집을 위한 담당자 및 대체 질문 기록</li>
+                </ul>
+              </div>
+
+              <div class="bg-indigo-50/70 border-2 border-indigo-200 rounded-xl p-5">
+                <div class="flex items-center justify-between mb-2">
+                  <span class="px-2.5 py-0.5 rounded bg-indigo-900 text-white text-xs font-bold">[산출물 2 · 개인 수행]</span>
+                  <span class="text-xs font-semibold text-indigo-900">실습 C 연결</span>
+                </div>
+                <h3 class="text-lg font-extrabold text-slate-900 mb-2">개인 근거 기록표(2건+) & 5문장 브리핑</h3>
+                <ul class="text-xs sm:text-sm text-slate-700 space-y-1.5 list-disc list-inside">
+                  <li>자신의 질문과 관련된 주장 <strong>최소 2건</strong>을 원문과 직접 대조</li>
+                  <li><strong>사실 / 해석 / 가설 / 한계 / 다음 행동</strong>의 5문장 브리핑 작성</li>
+                  <li>모든 구성원은 <strong>자신의 질문과 근거를 직접 설명</strong>해야 함</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        `
+      },
+
+      // Slide 03
+      {
+        num: 3,
+        section: "문제 제기",
+        title: "AI가 말한 점유율 25%",
+        subtitle: "숫자와 원인 설명을 바로 인용할 수 있을까?",
+        note: "시장 정의·분모·기간과 원문 수치 확인, 원인 주장 구분을 유도한다.",
+        html: `
+          <div class="space-y-6">
+            <!-- 가상 AI 답변 카드 -->
+            <div class="bg-slate-900 text-white rounded-2xl p-5 sm:p-6 border border-slate-700 shadow-md">
+              <div class="flex items-center justify-between gap-2 mb-3 pb-3 border-b border-slate-700">
+                <div class="flex items-center gap-2">
+                  <span class="px-2.5 py-1 rounded bg-amber-400 text-slate-950 text-xs font-extrabold">[가상 사례 · 교육용 합성 AI 답변]</span>
+                  <span class="text-xs text-slate-300">프롬프트: "가상기업 K-푸드의 최근 시장점유율과 실적 변화 원인을 알려줘"</span>
+                </div>
+              </div>
+              <blockquote class="text-sm sm:text-lg leading-relaxed text-slate-100 bg-slate-800/90 p-4 rounded-xl border-l-4 border-blue-400">
+                "가상기업 K-푸드의 <strong>시장점유율은 25%로 업계 1위</strong>입니다. 다만 최근 <strong>원재료 가격 급등 때문에 영업이익률이 크게 하락</strong>했습니다. (출처: 2025년 산업리포트 https://example-report.kr/2025 )"
+              </blockquote>
+            </div>
+
+            <!-- 생각할 질문 3개 -->
+            <div>
+              <h3 class="text-base sm:text-lg font-extrabold text-slate-900 mb-3 flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded bg-red-100 text-red-900 text-xs font-extrabold">[검토 질문]</span>
+                보고서에 그대로 옮기기 전에 반드시 물어봐야 할 3가지
+              </h3>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-white p-5 rounded-xl border-2 border-slate-200">
+                  <div class="text-xs font-extrabold text-blue-800 mb-1">질문 01 · 정의와 분모</div>
+                  <h4 class="font-bold text-slate-900 text-base mb-2">"무엇을 분모로 한 25%인가?"</h4>
+                  <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                    국내 전체 식품 시장인가, 특정 간편식 카테고리인가? 기준이 <strong>매출액</strong>인가 <strong>판매량(수량)</strong>인가? 어느 연도·분기의 값인가?
+                  </p>
+                </div>
+                <div class="bg-white p-5 rounded-xl border-2 border-slate-200">
+                  <div class="text-xs font-extrabold text-blue-800 mb-1">질문 02 · 원문 수치 실재 여부</div>
+                  <h4 class="font-bold text-slate-900 text-base mb-2">"원문 표에 실제로 그 숫자가 있는가?"</h4>
+                  <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                    제시된 링크가 실제로 열리는가? 열린 문서의 몇 쪽, 어느 표에 K-푸드의 매출과 시장 전체 규모가 적혀 있는가?
+                  </p>
+                </div>
+                <div class="bg-white p-5 rounded-xl border-2 border-slate-200">
+                  <div class="text-xs font-extrabold text-blue-800 mb-1">질문 03 · 사실 vs 원인 주장</div>
+                  <h4 class="font-bold text-slate-900 text-base mb-2">"원재료 때문이라는 것은 사실인가?"</h4>
+                  <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                    영업이익률 하락(관찰 사실)과 '원재료 가격 급등 때문'(원인 설명)은 다르다. 원문에 원가 내역이 있는가, 아니면 AI가 그럴듯하게 이어 붙인 추론인가?
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        `
+      },
+
+      // Slide 04
+      {
+        num: 4,
+        section: "문제 제기",
+        title: "링크가 있다는 것과 검증은 다르다",
+        subtitle: "주장 → 링크 → 문서의 실제 위치 → 정의·수치 확인",
+        note: "링크가 열려도 해당 문장이나 수치가 없을 수 있다. 미접근은 확인 불가다.",
+        html: `
+          <div class="space-y-6">
+            <p class="text-sm sm:text-base text-slate-700 bg-slate-100 p-4 rounded-xl border border-slate-300 font-medium">
+              AI 검색 도구가 파란색 출처 링크나 각주 번호를 달아주더라도, 그것이 곧 <strong>주장의 참(True)</strong>을 보증하지 않습니다.
+            </p>
+
+            <!-- 4단계 검증 흐름도 -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-3 items-stretch" role="region" aria-label="주장에서 정의·수치 확인까지의 4단계">
+              <div class="bg-white p-4 rounded-xl border-2 border-slate-300 flex flex-col justify-between">
+                <div>
+                  <span class="px-2 py-0.5 text-xs font-bold rounded bg-slate-200 text-slate-800">1단계: 주장</span>
+                  <h3 class="font-bold text-slate-900 text-base mt-2 mb-1">AI 답변의 문장</h3>
+                  <p class="text-xs text-slate-600">"2025년 A사 매출은 1,100억 원으로 10% 성장했다."</p>
+                </div>
+                <div class="mt-3 pt-2 border-t border-slate-200 text-xs font-semibold text-amber-800">⚠️ 아직은 '미확인 주장'</div>
+              </div>
+
+              <div class="bg-white p-4 rounded-xl border-2 border-slate-300 flex flex-col justify-between">
+                <div>
+                  <span class="px-2 py-0.5 text-xs font-bold rounded bg-slate-200 text-slate-800">2단계: 링크 접속</span>
+                  <h3 class="font-bold text-slate-900 text-base mt-2 mb-1">URL 클릭 및 열람</h3>
+                  <p class="text-xs text-slate-600">링크가 깨져 있거나 유료·권한 제한으로 열리지 않을 수 있음.</p>
+                </div>
+                <div class="mt-3 pt-2 border-t border-slate-200 text-xs font-semibold text-red-700">🚫 못 열면 무조건 '확인 불가'</div>
+              </div>
+
+              <div class="bg-white p-4 rounded-xl border-2 border-slate-300 flex flex-col justify-between">
+                <div>
+                  <span class="px-2 py-0.5 text-xs font-bold rounded bg-slate-200 text-slate-800">3단계: 실제 위치</span>
+                  <h3 class="font-bold text-slate-900 text-base mt-2 mb-1">문서 내 표·쪽 탐색</h3>
+                  <p class="text-xs text-slate-600">링크는 기업 홈페이지 메인이나 무관한 보도자료일 수도 있음.</p>
+                </div>
+                <div class="mt-3 pt-2 border-t border-slate-200 text-xs font-semibold text-blue-800">📍 보고서명·쪽수·표 번호 특정</div>
+              </div>
+
+              <div class="bg-blue-50 p-4 rounded-xl border-2 border-blue-500 flex flex-col justify-between">
+                <div>
+                  <span class="px-2 py-0.5 text-xs font-bold rounded bg-blue-700 text-white">4단계: 정의·수치 대조</span>
+                  <h3 class="font-bold text-slate-900 text-base mt-2 mb-1">원문 값·기준 확인</h3>
+                  <p class="text-xs text-slate-700">연결/별도 기준, 단위(억 원/백만 원), 기간(연간/누적) 일치 여부 확인.</p>
+                </div>
+                <div class="mt-3 pt-2 border-t border-blue-200 text-xs font-extrabold text-blue-900">✅ 비로소 '원문 확인 완료'</div>
+              </div>
+            </div>
+
+            <!-- 흔한 실패 유형 3가지 -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+              <div class="p-4 rounded-xl badge-warn">
+                <div class="font-extrabold text-xs mb-1">[주의 1] 유령 링크 · 깨진 URL</div>
+                <p class="text-xs leading-relaxed">형태만 그럴듯한 URL을 생성했거나 페이지가 삭제된 경우 → <strong>출처로 인정 불가</strong></p>
+              </div>
+              <div class="p-4 rounded-xl badge-hypo">
+                <div class="font-extrabold text-xs mb-1">[주의 2] 링크와 내용의 불일치</div>
+                <p class="text-xs leading-relaxed">링크된 문서는 실제로 열리지만, 그 문서 안에 AI가 말한 숫자가 없는 경우 → <strong>원문 위치 미확인</strong></p>
+              </div>
+              <div class="p-4 rounded-xl badge-fact">
+                <div class="font-extrabold text-xs mb-1">[원칙] 미접근 = 확인 불가</div>
+                <p class="text-xs leading-relaxed">로그인·구독 제한 등으로 내가 직접 눈으로 원문을 보지 못했다면 <strong>'미확인(확인 불가)'</strong>으로 기록</p>
+              </div>
+            </div>
+          </div>
+        `
+      },
+
+      // Slide 05
+      {
+        num: 5,
+        section: "질문과 자료 설계",
+        title: "5차수 질문을 조사 계획으로",
+        subtitle: "대상 · 기간 · 지표 · 비교 · 목적",
+        note: "AI에게 질문하기 전에 자료가 답할 수 있는 형태인지 확인한다.",
+        html: `
+          <div class="space-y-5">
+            <div class="bg-slate-100 p-4 rounded-xl border border-slate-300 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <span class="px-2 py-0.5 text-xs font-bold rounded bg-slate-800 text-white mr-2">5차수 개인 질문 예시</span>
+                <span class="font-bold text-slate-900 text-sm sm:text-base">"최근 K-푸드의 수익성이 경쟁사 대비 나빠졌는가? 그렇다면 어느 항목을 점검해야 하는가?"</span>
+              </div>
+            </div>
+
+            <!-- 다섯 칸 분해 카드 -->
+            <div class="grid grid-cols-1 sm:grid-cols-5 gap-3">
+              <div class="bg-white p-4 rounded-xl border-2 border-blue-200 flex flex-col justify-between">
+                <div>
+                  <span class="px-2 py-0.5 rounded bg-blue-100 text-blue-900 text-xs font-extrabold">1. 대상 (Who)</span>
+                  <h3 class="font-bold text-slate-900 text-sm mt-2 mb-1">분석할 기업·사업부</h3>
+                  <p class="text-xs text-slate-600">K-푸드 법인 전체인가, 국내 식품 사업부문인가? (연결 vs 별도)</p>
+                </div>
+                <div class="mt-3 p-2 bg-slate-50 rounded text-xs font-semibold text-slate-800">예: (주)K-푸드 연결 기준</div>
+              </div>
+
+              <div class="bg-white p-4 rounded-xl border-2 border-blue-200 flex flex-col justify-between">
+                <div>
+                  <span class="px-2 py-0.5 rounded bg-blue-100 text-blue-900 text-xs font-extrabold">2. 기간 (When)</span>
+                  <h3 class="font-bold text-slate-900 text-sm mt-2 mb-1">비교할 시간 범위</h3>
+                  <p class="text-xs text-slate-600">'최근'은 모호함. 회계연도 또는 분기 단위를 명시.</p>
+                </div>
+                <div class="mt-3 p-2 bg-slate-50 rounded text-xs font-semibold text-slate-800">예: 2023~2025년 (연간)</div>
+              </div>
+
+              <div class="bg-white p-4 rounded-xl border-2 border-blue-200 flex flex-col justify-between">
+                <div>
+                  <span class="px-2 py-0.5 rounded bg-blue-100 text-blue-900 text-xs font-extrabold">3. 지표 (What)</span>
+                  <h3 class="font-bold text-slate-900 text-sm mt-2 mb-1">확인할 수치와 계산식</h3>
+                  <p class="text-xs text-slate-600">'수익성'을 측정할 구체적인 재무 지표와 원변수.</p>
+                </div>
+                <div class="mt-3 p-2 bg-slate-50 rounded text-xs font-semibold text-slate-800">예: 매출액, 영업이익, 영업이익률(%)</div>
+              </div>
+
+              <div class="bg-white p-4 rounded-xl border-2 border-blue-200 flex flex-col justify-between">
+                <div>
+                  <span class="px-2 py-0.5 rounded bg-blue-100 text-blue-900 text-xs font-extrabold">4. 비교 기준 (Baseline)</span>
+                  <h3 class="font-bold text-slate-900 text-sm mt-2 mb-1">판단 잣대</h3>
+                  <p class="text-xs text-slate-600">자사 과거 추이(전기 대비) 또는 동일 업종 경쟁사·산업 평균.</p>
+                </div>
+                <div class="mt-3 p-2 bg-slate-50 rounded text-xs font-semibold text-slate-800">예: 전년 대비 & 동종 B사</div>
+              </div>
+
+              <div class="bg-white p-4 rounded-xl border-2 border-blue-200 flex flex-col justify-between">
+                <div>
+                  <span class="px-2 py-0.5 rounded bg-blue-100 text-blue-900 text-xs font-extrabold">5. 목적 (Why)</span>
+                  <h3 class="font-bold text-slate-900 text-sm mt-2 mb-1">의사결정 연결</h3>
+                  <p class="text-xs text-slate-600">이 수치 확인 후 어떤 후속 질문·행동으로 이어지는가?</p>
+                </div>
+                <div class="mt-3 p-2 bg-slate-50 rounded text-xs font-semibold text-slate-800">예: 원가율 vs 판관비 추가 점검</div>
+              </div>
+            </div>
+
+            <div class="p-4 rounded-xl badge-fact text-xs sm:text-sm font-medium">
+              <strong>[핵심 점검]</strong> 다섯 칸 중 하나라도 비어 있으면 AI는 임의의 기준(예: 다른 연도, 별도 재무제표, 다른 지표)으로 답을 가져옵니다.
+            </div>
+          </div>
+        `
+      },
+
+      // Slide 06
+      {
+        num: 6,
+        section: "질문과 자료 설계",
+        title: "한 행은 무엇을 뜻할까?",
+        subtitle: "관측 단위(Unit of Observation): 기업×연도와 고객은 다르다.",
+        note: "기업 연도 자료로 고객 재방문율을 직접 구할 수 없음을 짚는다.",
+        html: `
+          <div class="space-y-5">
+            <p class="text-sm sm:text-base text-slate-700 font-medium">
+              자료를 찾기 전에 <strong>"내가 필요한 표의 한 행(Row)이 무엇인가?"</strong>를 먼저 확인해야 합니다.
+            </p>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+              <!-- 표 1: 기업 x 연도 -->
+              <div class="bg-white p-5 rounded-xl border-2 border-blue-200 shadow-xs">
+                <div class="flex items-center justify-between mb-3">
+                  <span class="px-2.5 py-1 rounded bg-blue-100 text-blue-900 text-xs font-extrabold">[관측 단위 A] 기업 × 연도</span>
+                  <span class="text-xs text-slate-500">외부 공시·산업자료에서 흔함</span>
+                </div>
+                <div class="overflow-x-auto">
+                  <table class="w-full text-xs sm:text-sm border-collapse">
+                    <thead>
+                      <tr class="bg-slate-100 text-slate-800 border-b border-slate-300">
+                        <th class="p-2 text-left">기업명</th>
+                        <th class="p-2 text-center">연도</th>
+                        <th class="p-2 text-right">매출액(억 원)</th>
+                        <th class="p-2 text-right">영업이익(억 원)</th>
+                      </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200">
+                      <tr>
+                        <td class="p-2 font-semibold">K-푸드(가상)</td>
+                        <td class="p-2 text-center">2024</td>
+                        <td class="p-2 text-right font-mono">1,000</td>
+                        <td class="p-2 text-right font-mono">80</td>
+                      </tr>
+                      <tr>
+                        <td class="p-2 font-semibold">K-푸드(가상)</td>
+                        <td class="p-2 text-center">2025</td>
+                        <td class="p-2 text-right font-mono">1,100</td>
+                        <td class="p-2 text-right font-mono">66</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p class="mt-3 text-xs text-slate-600 bg-slate-50 p-2.5 rounded-lg">
+                  <strong>답할 수 있는 질문:</strong> 연도별 매출 성장률, 영업이익률 변화, 경쟁 기업과의 연간 실적 비교
+                </p>
+              </div>
+
+              <!-- 표 2: 고객 x 주문/방문 -->
+              <div class="bg-white p-5 rounded-xl border-2 border-amber-200 shadow-xs">
+                <div class="flex items-center justify-between mb-3">
+                  <span class="px-2.5 py-1 rounded bg-amber-100 text-amber-900 text-xs font-extrabold">[관측 단위 B] 고객 × 방문(주문)</span>
+                  <span class="text-xs text-slate-500">기업 내부 CRM 로그 자료</span>
+                </div>
+                <div class="overflow-x-auto">
+                  <table class="w-full text-xs sm:text-sm border-collapse">
+                    <thead>
+                      <tr class="bg-slate-100 text-slate-800 border-b border-slate-300">
+                        <th class="p-2 text-left">고객ID</th>
+                        <th class="p-2 text-center">방문일자</th>
+                        <th class="p-2 text-right">결제금액(원)</th>
+                        <th class="p-2 text-center">재방문여부</th>
+                      </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200">
+                      <tr>
+                        <td class="p-2 font-mono">C-0102</td>
+                        <td class="p-2 text-center">2025-05-10</td>
+                        <td class="p-2 text-right font-mono">32,000</td>
+                        <td class="p-2 text-center">Y</td>
+                      </tr>
+                      <tr>
+                        <td class="p-2 font-mono">C-0105</td>
+                        <td class="p-2 text-center">2025-05-11</td>
+                        <td class="p-2 text-right font-mono">18,500</td>
+                        <td class="p-2 text-center">N</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p class="mt-3 text-xs text-slate-600 bg-slate-50 p-2.5 rounded-lg">
+                  <strong>답할 수 있는 질문:</strong> 20대 고객의 재구매율, 1회 평균 객단가 분포 (※ 외부 공시로는 원칙적으로 확보 곤란)
+                </p>
+              </div>
+            </div>
+
+            <div class="p-4 rounded-xl badge-warn text-xs sm:text-sm">
+              <strong>[주의 · 생태학적 오류 및 자료 불일치]</strong> 기업×연도 합계 공시 자료만 가지고 <em>"고객 재방문율이 떨어져서 매출이 둔화되었다"</em>고 직접 계산할 수 없습니다. 외부 조사에서는 공개 가능한 관측 단위에 맞게 질문을 조정해야 합니다.
+            </div>
+          </div>
+        `
+      },
+
+      // Slide 07
+      {
+        num: 7,
+        section: "질문과 자료 설계",
+        title: "질문에서 원문까지",
+        subtitle: "필요한 변수 → 후보 자료 → 원문 위치 → 추출 → 검증",
+        note: "자료가 적합하지 않으면 질문이나 자료를 다시 선택한다.",
+        html: `
+          <div class="space-y-6">
+            <!-- 5단계 프로세스 도식 -->
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-3">
+              <div class="bg-white p-4 rounded-xl border-2 border-slate-200">
+                <div class="text-xs font-extrabold text-blue-700 mb-1">STEP 1</div>
+                <h3 class="font-bold text-slate-900 text-base mb-1.5">필요한 변수 정의</h3>
+                <p class="text-xs text-slate-600 leading-relaxed">질문에 답하려면 분자와 분모에 어떤 변수(매출, 이익, 시장 규모 등)가 필요한지 목록화</p>
+              </div>
+              <div class="bg-white p-4 rounded-xl border-2 border-slate-200">
+                <div class="text-xs font-extrabold text-blue-700 mb-1">STEP 2</div>
+                <h3 class="font-bold text-slate-900 text-base mb-1.5">후보 자료 탐색</h3>
+                <p class="text-xs text-slate-600 leading-relaxed">사업보고서(DART), 국가통계(KOSIS), 협회·산업 보고서 중 변수가 있을 만한 문서 후보 선정</p>
+              </div>
+              <div class="bg-white p-4 rounded-xl border-2 border-slate-200">
+                <div class="text-xs font-extrabold text-blue-700 mb-1">STEP 3</div>
+                <h3 class="font-bold text-slate-900 text-base mb-1.5">원문 위치 특정</h3>
+                <p class="text-xs text-slate-600 leading-relaxed">실제 문서를 열어 몇 장(목차), 몇 쪽, 몇 번 표에 해당 항목이 존재하는지 확인</p>
+              </div>
+              <div class="bg-white p-4 rounded-xl border-2 border-slate-200">
+                <div class="text-xs font-extrabold text-blue-700 mb-1">STEP 4</div>
+                <h3 class="font-bold text-slate-900 text-base mb-1.5">원값·기준 추출</h3>
+                <p class="text-xs text-slate-600 leading-relaxed">가공된 비율만 적지 않고 원문 표의 원래 숫자, 단위, 기간, 각주(연결/별도 등)를 함께 기록</p>
+              </div>
+              <div class="bg-blue-50 p-4 rounded-xl border-2 border-blue-500">
+                <div class="text-xs font-extrabold text-blue-900 mb-1">STEP 5</div>
+                <h3 class="font-bold text-slate-900 text-base mb-1.5">적합성·교차 검증</h3>
+                <p class="text-xs text-slate-700 leading-relaxed">내 질문의 범위와 일치하는지 대조하고 직접 비율·증감률을 재계산</p>
+              </div>
+            </div>
+
+            <!-- 피드백 루프 안내 -->
+            <div class="bg-slate-800 text-white p-5 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div>
+                <span class="px-2.5 py-0.5 rounded bg-amber-400 text-slate-950 text-xs font-extrabold mr-2">[회귀 원칙 · 피드백 루프]</span>
+                <span class="text-sm sm:text-base font-bold">원문에 해당 변수가 없거나 범위가 맞지 않으면 어떻게 할까?</span>
+                <p class="text-xs sm:text-sm text-slate-300 mt-1">
+                  억지로 숫자를 끼워 맞추지 말고, <strong>① 대체 자료를 다시 탐색</strong>하거나 <strong>② 공개 자료로 검증 가능한 수준으로 질문을 수정</strong>합니다.
+                </p>
+              </div>
+              <div class="shrink-0 text-xs font-mono bg-slate-900 px-3 py-2 rounded-lg border border-slate-600 text-blue-300">
+                STEP 3·5 불일치 ↺ STEP 1·2 재조정
+              </div>
+            </div>
+          </div>
+        `
+      },
+
+      // Slide 08
+      {
+        num: 8,
+        section: "자료의 성격과 기준",
+        title: "1차 자료와 2차 자료",
+        subtitle: "누가 최초로 기록·발표했는가 vs 누가 요약·재해석했는가",
+        note: "1차 자료도 작성 목적과 한계를 검토한다. 기사는 쟁점·원문 탐색에 유용하다.",
+        html: `
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- 1차 자료 카드 -->
+            <div class="bg-white p-6 rounded-2xl border-2 border-blue-300 shadow-xs flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between mb-3">
+                  <span class="px-3 py-1 rounded-full bg-blue-100 text-blue-900 text-xs font-extrabold">[1차 자료 · Primary/Original Source]</span>
+                  <span class="text-xs font-bold text-blue-800">최종 검증 기준</span>
+                </div>
+                <h3 class="text-xl font-extrabold text-slate-900 mb-3">기업 공시 · 원 통계표 · 공식 원문</h3>
+                <ul class="space-y-2 text-xs sm:text-sm text-slate-700 mb-4">
+                  <li>• <strong>예시:</strong> DART 사업보고서·감사보고서, KOSIS 국가승인통계 원표, 기업 공식 IR 실적발표 원문</li>
+                  <li>• <strong>장점:</strong> 조사 대상, 산출 기준, 회계 주석, 전체 항목 표가 생략 없이 담겨 있음</li>
+                  <li>• <strong>활용:</strong> 수치 인용과 비율 계산의 <strong>최종 근거</strong>로 사용</li>
+                </ul>
+              </div>
+              <div class="p-3.5 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-950">
+                <strong>⚠️ 1차 자료도 만능은 아니다:</strong> 기업의 IR 발표자료는 자사에 유리한 지표(예: 조정 EBITDA)를 부각할 수 있고, 회계 기준 변경이나 잠정치(가결산) 여부에 따라 후속 정정이 발생할 수 있으므로 주석을 함께 읽어야 합니다.
+              </div>
+            </div>
+
+            <!-- 2차 자료 카드 -->
+            <div class="bg-white p-6 rounded-2xl border-2 border-slate-300 shadow-xs flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between mb-3">
+                  <span class="px-3 py-1 rounded-full bg-slate-200 text-slate-800 text-xs font-extrabold">[2차 자료 · Secondary Source]</span>
+                  <span class="text-xs font-bold text-slate-600">탐색·맥락 파악용</span>
+                </div>
+                <h3 class="text-xl font-extrabold text-slate-900 mb-3">언론 기사 · 블로그 · AI 요약 · 재인용 리포트</h3>
+                <ul class="space-y-2 text-xs sm:text-sm text-slate-700 mb-4">
+                  <li>• <strong>예시:</strong> 경제신문 기사("A사 영업이익 반토막"), 증권사·연구소 요약 노트, 생성형 AI의 답변</li>
+                  <li>• <strong>장점:</strong> 산업의 최신 쟁점, 경쟁 구도, 원문 보고서의 이름을 빠르게 찾는 데 매우 유용함</li>
+                  <li>• <strong>한계:</strong> 기자나 작성자가 일부 기간만 발췌하거나, 단위 반올림·원인 단정을 덧붙였을 가능성</li>
+                </ul>
+              </div>
+              <div class="p-3.5 rounded-xl bg-blue-50 border border-blue-200 text-xs text-blue-950">
+                <strong>💡 올바른 활용법:</strong> 기사에 적힌 <em>"통계청에 따르면~", "사업보고서 기준~"</em>이라는 단서를 보고 <strong>원래의 1차 자료(원문)를 찾아가는 징검다리</strong>로 삼습니다.
+              </div>
+            </div>
+          </div>
+        `
+      },
+
+      // Slide 09
+      {
+        num: 9,
+        section: "자료의 성격과 기준",
+        title: "신뢰성과 적합성은 다른 질문",
+        subtitle: "누가 만들었는가(Credibility) vs 내 질문에 맞는가(Relevance/Fit)",
+        note: "공식 자료라도 범위가 다르면 그대로 비교할 수 없다.",
+        html: `
+          <div class="space-y-5">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <!-- 열 1: 신뢰성 -->
+              <div class="bg-white p-5 rounded-xl border-2 border-slate-200">
+                <span class="px-2.5 py-1 rounded bg-slate-800 text-white text-xs font-extrabold">질문 A · 신뢰성 (Credibility)</span>
+                <h3 class="text-lg font-extrabold text-slate-900 mt-2 mb-2">"누가, 어떤 방법으로 만들었는가?"</h3>
+                <ul class="space-y-2 text-xs sm:text-sm text-slate-700">
+                  <li>✅ <strong>발행 기관:</strong> 법정 공시(금감원), 국가승인통계(통계청), 공인 연구기관인가?</li>
+                  <li>✅ <strong>조사·집계 방법:</strong> 전수조사인가 표본조사인가? 외부 회계감사를 거쳤는가?</li>
+                  <li>✅ <strong>이해관계:</strong> 특정 제품 홍보를 위해 유리한 표본만 고른 설문은 아닌가?</li>
+                </ul>
+              </div>
+
+              <!-- 열 2: 적합성 -->
+              <div class="bg-white p-5 rounded-xl border-2 border-blue-400">
+                <span class="px-2.5 py-1 rounded bg-blue-700 text-white text-xs font-extrabold">질문 B · 적합성 (Fitness for Purpose)</span>
+                <h3 class="text-lg font-extrabold text-slate-900 mt-2 mb-2">"내 분석 질문의 범위·단위와 일치하는가?"</h3>
+                <ul class="space-y-2 text-xs sm:text-sm text-slate-700">
+                  <li>🎯 <strong>대상 범위:</strong> 내가 보는 것은 '국내 간편식'인데 통계표는 '음식료품 제조업 전체'인가?</li>
+                  <li>🎯 <strong>회계 기준:</strong> 자회사를 포함한 <strong>연결(Consolidated)</strong>인가, 모회사만 본 <strong>별도(Separate)</strong>인가?</li>
+                  <li>🎯 <strong>기간·단위:</strong> 연간(1~12월)인가 3분기 누적(1~9월)인가? 금액인가 물량인가?</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- 대표적 착각 사례 -->
+            <div class="bg-amber-50 border-2 border-amber-300 rounded-xl p-4 sm:p-5">
+              <div class="font-extrabold text-amber-950 text-sm mb-1">[핵심 주의] 신뢰성이 높다고 적합성이 자동으로 해결되지 않는다!</div>
+              <p class="text-xs sm:text-sm text-amber-900 leading-relaxed">
+                예: 통계청(KOSIS)과 금융감독원(DART)은 <strong>신뢰성이 매우 높은 공식 출처</strong>입니다. 하지만 DART에서 가져온 <em>'A기업의 해외 포함 연결 매출'</em>을 KOSIS의 <em>'국내 출하액 통계'</em>로 나누면 <strong>범위(적합성)가 달라 틀린 분석</strong>이 됩니다.
+              </p>
+            </div>
+          </div>
+        `
+      },
+
+      // Slide 10
+      {
+        num: 10,
+        section: "자료의 성격과 기준",
+        title: "발행일과 자료 기간",
+        subtitle: "2026년 발행 보고서에 담긴 숫자는 2025년 실적일 수 있다",
+        note: "연간 매출은 기간의 흐름, 연말 재고는 시점의 잔액임을 연결한다.",
+        html: `
+          <div class="space-y-6">
+            <!-- 타임라인 시각화 -->
+            <div class="bg-white p-6 rounded-2xl border-2 border-slate-200 shadow-xs">
+              <h3 class="text-base font-extrabold text-slate-900 mb-4">하나의 보고서에는 항상 '두 개의 시간'이 존재합니다</h3>
+              <div class="relative pt-4 pb-2">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div class="p-4 rounded-xl bg-blue-50 border-2 border-blue-400">
+                    <div class="flex items-center justify-between mb-1">
+                      <span class="px-2 py-0.5 rounded bg-blue-800 text-white text-xs font-bold">① 자료 기준 기간 (Reference Period)</span>
+                      <span class="font-mono text-xs font-bold text-blue-900">2025.01.01 ~ 2025.12.31</span>
+                    </div>
+                    <div class="font-extrabold text-slate-900 text-base mb-1">실제 경제 활동이 일어난 기간·시점</div>
+                    <p class="text-xs text-slate-700 leading-relaxed">
+                      표 안의 매출액과 영업이익이 집계된 회계연도. 분석 표의 연도 열에는 <strong>반드시 이 기준 기간(2025년)</strong>을 적어야 합니다.
+                    </p>
+                  </div>
+
+                  <div class="p-4 rounded-xl bg-slate-100 border-2 border-slate-300">
+                    <div class="flex items-center justify-between mb-1">
+                      <span class="px-2 py-0.5 rounded bg-slate-700 text-white text-xs font-bold">② 문서 발행일·공시일 (Publication Date)</span>
+                      <span class="font-mono text-xs font-bold text-slate-800">2026.03.30 공시</span>
+                    </div>
+                    <div class="font-extrabold text-slate-900 text-base mb-1">보고서가 세상에 공개된 날짜</div>
+                    <p class="text-xs text-slate-700 leading-relaxed">
+                      2025년 결산 사업보고서는 보통 <strong>2026년 3월 말</strong>에 발행됩니다. 발행 연도만 보고 "2026년 매출"이라고 부르면 1년 오차가 발생합니다!
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 기간 흐름(Flow) vs 시점 잔액(Stock) & 잠정치/정정 -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div class="bg-white p-4 rounded-xl border border-slate-200">
+                <span class="px-2 py-0.5 rounded bg-indigo-100 text-indigo-900 text-xs font-extrabold">[유량 · Flow] 기간의 합계</span>
+                <h4 class="font-bold text-slate-900 text-sm mt-2 mb-1">매출액 · 영업이익 · 신규가입자</h4>
+                <p class="text-xs text-slate-600">"2025년 연간" 또는 "2025년 3분기 누적"처럼 <strong>시작일~종료일</strong>이 있어야 의미가 성립합니다.</p>
+              </div>
+              <div class="bg-white p-4 rounded-xl border border-slate-200">
+                <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-900 text-xs font-extrabold">[저량 · Stock] 특정 시점 잔액</span>
+                <h4 class="font-bold text-slate-900 text-sm mt-2 mb-1">연말 재고자산 · 부채총계 · 점포수</h4>
+                <p class="text-xs text-slate-600">"2025년 12월 31일 현재"처럼 <strong>특정 시점(기준일)</strong>의 스냅샷 잔액입니다.</p>
+              </div>
+              <div class="bg-white p-4 rounded-xl border border-slate-200">
+                <span class="px-2 py-0.5 rounded bg-amber-100 text-amber-900 text-xs font-extrabold">[버전 확인] 잠정치 vs 확정·정정</span>
+                <h4 class="font-bold text-slate-900 text-sm mt-2 mb-1">잠정실적(P)과 기재정정 공시</h4>
+                <p class="text-xs text-slate-600">연초 잠정실적 공시와 3월 확정 사업보고서, 이후 <strong>[기재정정]</strong> 보고서의 숫자가 다를 수 있습니다.</p>
+              </div>
+            </div>
+          </div>
+        `
+      },
+
+      // Slide 11
+      {
+        num: 11,
+        section: "자료 탐색과 검색 설계",
+        title: "기업·산업 자료 지도",
+        subtitle: "네 가지 자료 원천의 역할과 한계 (상세 수치 수집은 7차수)",
+        note: "자료별로 확인할 질문과 장단점을 간단히 짚는다. DART·KOSIS 상세 수집은 7차수.",
+        html: `
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- 1. 기업 공식자료 -->
+            <div class="bg-white p-5 rounded-xl border-2 border-slate-200">
+              <div class="flex items-center justify-between mb-2">
+                <span class="px-2.5 py-0.5 rounded bg-blue-100 text-blue-900 text-xs font-extrabold">1. 기업 공식 자료 (홈페이지 · IR · 지속가능경영보고서)</span>
+              </div>
+              <p class="text-xs sm:text-sm text-slate-700 mb-2"><strong>확인할 질문:</strong> 주요 브랜드·제품 라인업, 경영진이 강조하는 핵심 전략, 사업부 구성</p>
+              <div class="grid grid-cols-2 gap-2 text-xs">
+                <div class="p-2 rounded bg-emerald-50 text-emerald-900"><strong>장점:</strong> 시각 자료와 최신 전략 방향 파악 용이</div>
+                <div class="p-2 rounded bg-red-50 text-red-900"><strong>한계:</strong> 자사에 유리한 성과 위주 서술 가능성</div>
+              </div>
+            </div>
+
+            <!-- 2. 법정 공시 (DART) -->
+            <div class="bg-white p-5 rounded-xl border-2 border-blue-400">
+              <div class="flex items-center justify-between mb-2">
+                <span class="px-2.5 py-0.5 rounded bg-blue-800 text-white text-xs font-extrabold">2. 전자공시시스템 (DART 사업보고서 · 감사보고서)</span>
+              </div>
+              <p class="text-xs sm:text-sm text-slate-700 mb-2"><strong>확인할 질문:</strong> 매출·영업이익·원가, 사업의 내용(부문별 매출·가동률·주요 원재료 가격 추이)</p>
+              <div class="grid grid-cols-2 gap-2 text-xs">
+                <div class="p-2 rounded bg-emerald-50 text-emerald-900"><strong>장점:</strong> 법적 책임이 따르는 가장 표준화된 1차 자료</div>
+                <div class="p-2 rounded bg-red-50 text-red-900"><strong>한계:</strong> 소규모 비상장사는 공시 의무가 제한적일 수 있음</div>
+              </div>
+            </div>
+
+            <!-- 3. 공공통계 (KOSIS 등) -->
+            <div class="bg-white p-5 rounded-xl border-2 border-blue-400">
+              <div class="flex items-center justify-between mb-2">
+                <span class="px-2.5 py-0.5 rounded bg-indigo-800 text-white text-xs font-extrabold">3. 공공·산업 통계 (KOSIS · 부처·협회 통계)</span>
+              </div>
+              <p class="text-xs sm:text-sm text-slate-700 mb-2"><strong>확인할 질문:</strong> 전체 산업 규모(분모), 업종 평균 성장률, 물가지수, 소비 동향</p>
+              <div class="grid grid-cols-2 gap-2 text-xs">
+                <div class="p-2 rounded bg-emerald-50 text-emerald-900"><strong>장점:</strong> 시장 전체 추이와 비교 기준(벤치마크) 제공</div>
+                <div class="p-2 rounded bg-red-50 text-red-900"><strong>한계:</strong> 표준산업분류와 개별 기업의 제품 범위가 다를 수 있음</div>
+              </div>
+            </div>
+
+            <!-- 4. 언론 기사 · 산업 리포트 -->
+            <div class="bg-white p-5 rounded-xl border-2 border-slate-200">
+              <div class="flex items-center justify-between mb-2">
+                <span class="px-2.5 py-0.5 rounded bg-slate-200 text-slate-800 text-xs font-extrabold">4. 언론 기사 · 증권사/연구소 리포트</span>
+              </div>
+              <p class="text-xs sm:text-sm text-slate-700 mb-2"><strong>확인할 질문:</strong> 최근 업계 이슈, 경쟁사 동향, 인용된 원문 보고서의 명칭 단서</p>
+              <div class="grid grid-cols-2 gap-2 text-xs">
+                <div class="p-2 rounded bg-emerald-50 text-emerald-900"><strong>장점:</strong> 시의성이 빠르고 쟁점·가설 탐색에 유리</div>
+                <div class="p-2 rounded bg-red-50 text-red-900"><strong>한계:</strong> 2차 요약본이므로 반드시 1차 원문 역추적 필요</div>
+              </div>
+            </div>
+          </div>
+          <div class="mt-4 p-3 rounded-xl bg-slate-100 border border-slate-300 text-xs text-slate-700">
+            📌 <strong>6차수 vs 7차수 역할 분담:</strong> 6차수 오늘은 <em>"어느 문서의 어느 표에 내가 찾는 변수가 있는가"</em>를 확인해 <strong>자료 지도</strong>를 그리고, 7차수에서 DART·KOSIS 데이터를 본격 수집합니다.
+          </div>
+        `
+      },
+
+      // Slide 12
+      {
+        num: 12,
+        section: "자료 탐색과 검색 설계",
+        title: "검색어를 설계한다",
+        subtitle: "기업명(정식 법인명) + 정보 항목 + 기간 + 자료 유형",
+        note: "동명 기업과 브랜드·법인 혼동을 확인한다. 불리하거나 반대되는 정보도 찾는다.",
+        html: `
+          <div class="space-y-5">
+            <!-- 검색어 공식 -->
+            <div class="bg-kgu-navy text-white p-5 rounded-xl">
+              <div class="text-xs font-bold text-blue-300 mb-2">효과적인 원문 탐색 검색어 공식</div>
+              <div class="flex flex-wrap items-center gap-2 text-sm sm:text-base font-bold">
+                <span class="px-3 py-1.5 rounded-lg bg-blue-600">[정식 법인명]</span>
+                <span>+</span>
+                <span class="px-3 py-1.5 rounded-lg bg-indigo-600">[구체적 지표/항목]</span>
+                <span>+</span>
+                <span class="px-3 py-1.5 rounded-lg bg-emerald-600">[기준 기간]</span>
+                <span>+</span>
+                <span class="px-3 py-1.5 rounded-lg bg-amber-500 text-slate-950">[자료 유형 (사업보고서/통계표)]</span>
+              </div>
+              <p class="text-xs text-slate-300 mt-3">
+                예시: <code class="bg-slate-800 px-2 py-0.5 rounded text-blue-200">"OO식품" "사업의 내용" "주요 원재료" 2025 사업보고서</code>
+              </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <!-- 주의 1: 법인명 vs 브랜드명 -->
+              <div class="bg-white p-5 rounded-xl border-2 border-slate-200">
+                <span class="px-2.5 py-0.5 rounded bg-amber-100 text-amber-900 text-xs font-extrabold">[주의 1] 브랜드명 · 약칭 · 동명 기업 혼동</span>
+                <h3 class="font-bold text-slate-900 text-base mt-2 mb-2">내가 아는 서비스 이름과 공시 법인명은 다를 수 있다</h3>
+                <ul class="text-xs sm:text-sm text-slate-700 space-y-1.5">
+                  <li>• 유명 브랜드(예: 특정 배달앱, 패션 플랫폼, 식품 브랜드)로 검색하면 <strong>법인 공시가 안 나오거나 동명의 다른 중소기업</strong>이 검색될 수 있음.</li>
+                  <li>• 지주회사와 사업자회사(예: OO홀딩스 vs OO제일제당)의 구분을 먼저 확인.</li>
+                </ul>
+              </div>
+
+              <!-- 주의 2: 반대 방향 검색 -->
+              <div class="bg-white p-5 rounded-xl border-2 border-blue-300">
+                <span class="px-2.5 py-0.5 rounded bg-blue-100 text-blue-900 text-xs font-extrabold">[필수 기법] 확증편향 방지 '반대 방향 검색'</span>
+                <h3 class="font-bold text-slate-900 text-base mt-2 mb-2">내 가설과 반대되는 키워드도 일부러 검색한다</h3>
+                <ul class="text-xs sm:text-sm text-slate-700 space-y-1.5">
+                  <li>• <em>"A기업 성장 요인"</em>만 검색하면 긍정적 홍보 기사만 모입니다.</li>
+                  <li>• <strong>반대 방향 검색어 예시:</strong> <code class="bg-slate-100 px-1.5 py-0.5 rounded">"A기업" 둔화 OR 점유율 하락 OR 판관비 증가</code></li>
+                  <li>• 다른 설명 가능성(대안 가설)을 함께 찾아야 균형 잡힌 컨설팅이 됩니다.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        `
+      },
+
+      // Slide 13
+      {
+        num: 13,
+        section: "AI 활용과 원문 검증",
+        title: "AI에 먼저 요청할 것: 조사 계획",
+        subtitle: "정답이나 숫자를 바로 달라고 하지 말고 '조사 설계표'를 요청한다",
+        note: "검색 가능 여부는 도구마다 다르며, 출처와 숫자를 만들지 말라고 요청해도 원문 검증은 필요하다.",
+        html: `
+          <div class="space-y-5">
+            <div class="bg-white p-5 sm:p-6 rounded-2xl border-2 border-blue-400 shadow-xs">
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                <div>
+                  <span class="px-2.5 py-1 rounded bg-blue-800 text-white text-xs font-extrabold">[6차수 표준 프롬프트] 조사 계획 요청문</span>
+                  <span class="text-xs text-slate-600 ml-2">[기업명]과 [질문]에 자신의 5차수 질문을 넣어 사용하세요.</span>
+                </div>
+                <button type="button" onclick="copyPromptSlide13(this)" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-kgu-accent hover:bg-blue-700 text-white text-xs sm:text-sm font-bold shadow-xs transition">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                  <span>프롬프트 전체 복사</span>
+                </button>
+              </div>
+
+              <pre id="prompt-box-13" class="bg-slate-900 text-slate-100 p-4 sm:p-5 rounded-xl text-xs sm:text-sm font-mono whitespace-pre-wrap leading-relaxed border border-slate-700 select-all">나는 대학 수업에서 [기업명]을 조사한다. 내 분석 질문은 [질문]이다.
+대상·기간·지표·비교 기준·목적의 빈칸을 찾아줘.
+필요한 자료 유형, 검색어와 원문에서 확인할 항목을 표로 제안해줘.
+제공하지 않은 수치나 출처는 만들지 말고 미확인 사항을 표시해줘.
+기업 내부 의도나 원인을 사실로 단정하지 말아줘.</pre>
+              <div id="copy-status-13" class="mt-2 text-xs font-bold text-emerald-700 hidden" role="status" aria-live="polite"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="p-4 rounded-xl badge-fact text-xs sm:text-sm">
+                <strong>[왜 이렇게 묻는가?]</strong> AI에게 <em>"점유율 몇 %야?"</em>라고 물으면 확인되지 않은 숫자를 지어낼 위험이 높지만, <strong>"빈칸과 원문에서 확인할 항목을 표로 제안해줘"</strong>라고 물으면 훌륭한 조사 조교 역할을 합니다.
+              </div>
+              <div class="p-4 rounded-xl badge-warn text-xs sm:text-sm">
+                <strong>[주의]</strong> 프롬프트에 <em>"출처와 숫자를 만들지 말라"</em>고 적어도 AI는 여전히 그럴듯한 수치를 섞어 답할 수 있습니다. <strong>프롬프트는 안전장치가 아니라 출발점</strong>입니다.
+              </div>
+            </div>
+          </div>
+        `
+      },
+
+      // Slide 14
+      {
+        num: 14,
+        section: "AI 활용과 원문 검증",
+        title: "AI의 답변을 주장 단위로 나눈다",
+        subtitle: "대상 / 값 / 단위 / 기간 / 원인 설명으로 문장 분해",
+        note: "한 문장 안에서도 일부는 확인되고 일부는 미확인일 수 있다.",
+        html: `
+          <div class="space-y-5">
+            <div class="bg-slate-100 p-4 rounded-xl border border-slate-300">
+              <div class="text-xs font-bold text-slate-600 mb-1">분해할 문장 예시 (가상 AI 답변)</div>
+              <p class="text-sm sm:text-base font-bold text-slate-900">
+                "2025년 가상기업 A사의 연결 매출액은 1,100억 원으로 전년 대비 10% 증가했으나, 원재료비 상승으로 인해 영업이익률은 6%로 하락했다."
+              </p>
+            </div>
+
+            <!-- 5요소 분해 표 -->
+            <div class="bg-white rounded-xl border-2 border-slate-200 overflow-x-auto">
+              <table class="w-full text-xs sm:text-sm border-collapse">
+                <thead>
+                  <tr class="bg-kgu-navy text-white">
+                    <th class="p-3 text-left">분해 요소</th>
+                    <th class="p-3 text-left">문장 속 추출 내용</th>
+                    <th class="p-3 text-left">원문에서 대조할 질문</th>
+                    <th class="p-3 text-center">성격 구분</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200">
+                  <tr>
+                    <td class="p-3 font-extrabold text-slate-900">1. 대상 (Entity/Scope)</td>
+                    <td class="p-3">가상기업 A사 (연결 기준)</td>
+                    <td class="p-3 text-slate-600">별도 재무제표가 아닌 연결 재무제표가 맞는가?</td>
+                    <td class="p-3 text-center"><span class="px-2 py-0.5 rounded badge-fact text-xs font-bold">기준 확인</span></td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-extrabold text-slate-900">2. 기간 (Period)</td>
+                    <td class="p-3">2025년 연간 (vs 2024년)</td>
+                    <td class="p-3 text-slate-600">발행일이 아니라 실적 기준 기간이 2025년 연간인가?</td>
+                    <td class="p-3 text-center"><span class="px-2 py-0.5 rounded badge-fact text-xs font-bold">기준 확인</span></td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-extrabold text-slate-900">3. 값과 단위 (Value/Unit)</td>
+                    <td class="p-3">매출 1,100억 원 (+10%), 영업이익률 6%</td>
+                    <td class="p-3 text-slate-600">원문 표의 숫자와 단위가 일치하며 재계산이 맞는가?</td>
+                    <td class="p-3 text-center"><span class="px-2 py-0.5 rounded badge-fact text-xs font-bold">사실·계산</span></td>
+                  </tr>
+                  <tr class="bg-amber-50/60">
+                    <td class="p-3 font-extrabold text-amber-950">4. 원인 주장 (Causal Claim)</td>
+                    <td class="p-3 font-bold text-amber-950">"원재료비 상승으로 인해"</td>
+                    <td class="p-3 text-amber-900">원문에 원재료비 내역이 있는가, 아니면 단순 추정인가?</td>
+                    <td class="p-3 text-center"><span class="px-2 py-0.5 rounded badge-hypo text-xs font-bold">가설 (검증 필요)</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-blue-50 border border-blue-200 text-xs sm:text-sm text-blue-950 font-medium">
+              💡 <strong>핵심 포인트:</strong> 한 문장 안에서도 <strong>앞부분(매출 1,100억 원)은 '원문 확인'</strong>이고 <strong>뒷부분(원재료비 때문)은 '미확인 가설'</strong>일 수 있습니다. 문장 통째로 O/X 판정을 내리지 마세요!
+            </div>
+          </div>
+        `
+      },
+
+      // Slide 15
+      {
+        num: 15,
+        section: "AI 활용과 원문 검증",
+        title: "원문 검증 6단계",
+        subtitle: "주장 분해 → 원문 열람 → 위치 특정 → 정의 대조 → 재계산·교차 확인 → 상태 기록",
+        note: "같은 원문을 인용한 여러 기사는 독립 검증이 아니다.",
+        html: `
+          <div class="space-y-5">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div class="bg-white p-4 rounded-xl border-2 border-slate-200">
+                <span class="px-2 py-0.5 rounded bg-blue-100 text-blue-900 text-xs font-extrabold">1단계 · 주장 분해</span>
+                <h3 class="font-bold text-slate-900 text-base mt-2 mb-1">검증할 문장 쪼개기</h3>
+                <p class="text-xs text-slate-600">대상, 기간, 지표, 수치, 원인 설명을 각각 독립된 확인 항목으로 분리합니다.</p>
+              </div>
+              <div class="bg-white p-4 rounded-xl border-2 border-slate-200">
+                <span class="px-2 py-0.5 rounded bg-blue-100 text-blue-900 text-xs font-extrabold">2단계 · 1차 원문 열람</span>
+                <h3 class="font-bold text-slate-900 text-base mt-2 mb-1">최초 출처 직접 열기</h3>
+                <p class="text-xs text-slate-600">요약 기사가 아닌 DART 보고서, KOSIS 원통계표 등 1차 문서를 직접 화면에 띄웁니다.</p>
+              </div>
+              <div class="bg-white p-4 rounded-xl border-2 border-slate-200">
+                <span class="px-2 py-0.5 rounded bg-blue-100 text-blue-900 text-xs font-extrabold">3단계 · 원문 위치 특정</span>
+                <h3 class="font-bold text-slate-900 text-base mt-2 mb-1">장 · 절 · 표 번호 기록</h3>
+                <p class="text-xs text-slate-600">다른 사람이 1분 안에 똑같은 숫자를 찾을 수 있도록 문서명, 쪽수, 표 제목을 적습니다.</p>
+              </div>
+              <div class="bg-white p-4 rounded-xl border-2 border-slate-200">
+                <span class="px-2 py-0.5 rounded bg-blue-100 text-blue-900 text-xs font-extrabold">4단계 · 정의 및 단위 대조</span>
+                <h3 class="font-bold text-slate-900 text-base mt-2 mb-1">각주와 기준 확인</h3>
+                <p class="text-xs text-slate-600">연결/별도, 백만 원/억 원, 잠정/확정 여부 등 표 위아래의 단위와 주석을 대조합니다.</p>
+              </div>
+              <div class="bg-white p-4 rounded-xl border-2 border-slate-200">
+                <span class="px-2 py-0.5 rounded bg-blue-100 text-blue-900 text-xs font-extrabold">5단계 · 직접 재계산·교차 확인</span>
+                <h3 class="font-bold text-slate-900 text-base mt-2 mb-1">원값으로 비율 다시 계산</h3>
+                <p class="text-xs text-slate-600">증감률(%), 이익률(%), 점유율(%p 변화)을 원문 숫자로 직접 계산기·시트로 검산합니다.</p>
+              </div>
+              <div class="bg-blue-50 p-4 rounded-xl border-2 border-blue-500">
+                <span class="px-2 py-0.5 rounded bg-blue-800 text-white text-xs font-extrabold">6단계 · 검증 상태 기록</span>
+                <h3 class="font-bold text-slate-900 text-base mt-2 mb-1">판정 결과와 확인일 명시</h3>
+                <p class="text-xs text-slate-700">'원문 확인', '수치 불일치(수정)', '원인 미확인', '확인 불가(미접근)'를 정직하게 기록합니다.</p>
+              </div>
+            </div>
+
+            <div class="p-4 rounded-xl badge-warn text-xs sm:text-sm">
+              <strong>[교차 확인 주의사항] 같은 원문을 베낀 기사 3개는 '교차 검증'이 아닙니다!</strong><br>
+              하나의 보도자료나 똑같은 보고서를 인용한 기사 5개를 찾았다고 해서 독립적인 검증이 된 것이 아닙니다. 반드시 <strong>최초의 원문 표</strong>로 내려가야 합니다.
+            </div>
+          </div>
+        `
+      },
+
+      // Slide 16
+      {
+        num: 16,
+        section: "AI 활용과 원문 검증",
+        title: "근거 기록표의 한 행",
+        subtitle: "ID · 주장 · 원문 제목 · 위치 · 기간 · 정의 · 원값 · 상태 · 확인일",
+        note: "원문을 열지 못하면 ‘확인 불가’. URL 외에 표·쪽과 문서 버전도 기록한다.",
+        html: `
+          <div class="space-y-5">
+            <p class="text-xs sm:text-sm text-slate-700">
+              URL 링크만 복사해 두면 나중에 링크가 바뀌거나 다른 사람이 어느 표를 봤는지 알 수 없습니다. 아래 9개 항목을 한 행으로 남깁니다.
+            </p>
+
+            <!-- 근거 기록표 예시 -->
+            <div class="bg-white rounded-xl border-2 border-slate-300 overflow-x-auto shadow-xs">
+              <table class="w-full text-xs border-collapse min-w-[800px]">
+                <thead>
+                  <tr class="bg-kgu-navy text-white">
+                    <th class="p-2.5 text-left">ID</th>
+                    <th class="p-2.5 text-left">검증할 주장</th>
+                    <th class="p-2.5 text-left">원문 문서 제목 (버전)</th>
+                    <th class="p-2.5 text-left">원문 내 위치 (쪽·표)</th>
+                    <th class="p-2.5 text-center">기준 기간</th>
+                    <th class="p-2.5 text-left">정의·단위 기준</th>
+                    <th class="p-2.5 text-right">원문 원값</th>
+                    <th class="p-2.5 text-center">검증 상태</th>
+                    <th class="p-2.5 text-center">확인일</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200">
+                  <tr>
+                    <td class="p-2.5 font-mono font-bold">EV-01</td>
+                    <td class="p-2.5 font-semibold">가상 A사 2025년 매출은 전년비 10% 증가</td>
+                    <td class="p-2.5">가상 A사 제15기 사업보고서 (확정본)</td>
+                    <td class="p-2.5">III. 재무에 관한 사항 - 1. 요약연결재무정보 (표 3-1)</td>
+                    <td class="p-2.5 text-center font-mono">2024~2025 연간</td>
+                    <td class="p-2.5">K-IFRS 연결 기준, 단위: 억 원</td>
+                    <td class="p-2.5 text-right font-mono">24년 1,000<br>25년 1,100</td>
+                    <td class="p-2.5 text-center"><span class="px-2 py-0.5 rounded badge-ok font-bold">원문·재계산 확인</span></td>
+                    <td class="p-2.5 text-center font-mono">2026-04-10</td>
+                  </tr>
+                  <tr class="bg-amber-50/50">
+                    <td class="p-2.5 font-mono font-bold">EV-02</td>
+                    <td class="p-2.5 font-semibold">원재료 가격 급등으로 이익률 하락</td>
+                    <td class="p-2.5">가상 A사 요약 실적 표 (실습 제공본)</td>
+                    <td class="p-2.5">요약 손익 표 (원가 세부항목 표 없음)</td>
+                    <td class="p-2.5 text-center font-mono">2024~2025 연간</td>
+                    <td class="p-2.5">매출원가·원재료비 항목 미제공</td>
+                    <td class="p-2.5 text-right font-mono text-slate-500">해당 값 없음</td>
+                    <td class="p-2.5 text-center"><span class="px-2 py-0.5 rounded badge-hypo font-bold">원인 미확인 (가설)</span></td>
+                    <td class="p-2.5 text-center font-mono">2026-04-10</td>
+                  </tr>
+                  <tr class="bg-red-50/40">
+                    <td class="p-2.5 font-mono font-bold">EV-03</td>
+                    <td class="p-2.5 font-semibold">국내 시장점유율 25%로 1위</td>
+                    <td class="p-2.5">유료 산업리포트 (AI 제시 링크)</td>
+                    <td class="p-2.5">유료 회원 전용으로 열람 불가</td>
+                    <td class="p-2.5 text-center font-mono">미상</td>
+                    <td class="p-2.5">분모·기준 확인 불가</td>
+                    <td class="p-2.5 text-right font-mono text-red-700">미열람</td>
+                    <td class="p-2.5 text-center"><span class="px-2 py-0.5 rounded badge-warn font-bold">확인 불가 (미접근)</span></td>
+                    <td class="p-2.5 text-center font-mono">2026-04-10</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+              <div class="p-3 rounded-lg bg-slate-100 border border-slate-300">
+                <strong>✅ 좋은 기록:</strong> "제15기 사업보고서 → III. 재무에 관한 사항 → 요약연결재무정보 표 → 2025년 매출 1,100억 원"
+              </div>
+              <div class="p-3 rounded-lg bg-red-50 border border-red-200 text-red-900">
+                <strong>❌ 나쁜 기록:</strong> "출처: DART (https://dart.fss.or.kr)" 또는 원문을 안 열어보고 AI가 적어준 수치 그대로 기입
+              </div>
+            </div>
+          </div>
+        `
+      },
+
+      // Slide 17
+      {
+        num: 17,
+        section: "지표 정의와 적용",
+        title: "시장점유율은 분모부터",
+        subtitle: "분자(대상 기업)와 분모(전체 시장)의 범위·단위·기간이 완전히 같아야 한다",
+        note: "제품·지역·기간·매출/판매량 기준이 같아야 한다. 숫자는 합성 예시.",
+        html: `
+          <div class="space-y-6">
+            <!-- 수식 및 기호 설명 -->
+            <div class="bg-kgu-navy text-white p-6 rounded-2xl border border-slate-700">
+              <div class="text-xs font-bold text-blue-300 mb-2">시장점유율(Market Share, 단위: %) 기본 산식</div>
+              <div class="bg-slate-900 p-4 rounded-xl border border-slate-700 text-center text-base sm:text-xl font-mono font-bold text-blue-200 mb-3">
+                시장점유율(%) = ( 대상 기업의 매출액 또는 판매량 ÷ 같은 범위 전체 시장의 매출액 또는 판매량 ) × 100
+              </div>
+              <p class="text-xs sm:text-sm text-slate-300">
+                • <strong>분자:</strong> 특정 기준(제품군·지역·기간·화폐/수량 단위)에서 측정한 분석 대상 기업의 값<br>
+                • <strong>분모:</strong> 분자와 <strong>동일한 제품군·동일한 지역·동일한 기간·동일한 측정 단위</strong>로 집계한 시장 전체 합계 (※ 분모가 0이거나 정의되지 않으면 산출 불가)
+              </p>
+            </div>
+
+            <!-- 합성 예시와 4대 일치 조건 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div class="bg-white p-5 rounded-xl border-2 border-blue-200">
+                <span class="px-2.5 py-0.5 rounded bg-blue-100 text-blue-900 text-xs font-extrabold">[교육용 합성 예시] 올바른 계산</span>
+                <h3 class="font-bold text-slate-900 text-base mt-2 mb-2">2025년 국내 냉동만두 소매 매출 기준</h3>
+                <ul class="text-xs sm:text-sm text-slate-700 space-y-1.5 font-mono bg-slate-50 p-3 rounded-lg border border-slate-200">
+                  <li>• 분자 (가상 A사 2025년 국내 냉동만두 소매 매출): <strong>20억 원</strong></li>
+                  <li>• 분모 (2025년 국내 냉동만두 소매 시장 전체 매출): <strong>100억 원</strong></li>
+                  <li class="pt-1 border-t border-slate-300 text-blue-900 font-bold">→ 시장점유율 = (20 ÷ 100) × 100 = 20.0%</li>
+                </ul>
+              </div>
+
+              <div class="bg-white p-5 rounded-xl border-2 border-slate-200">
+                <span class="px-2.5 py-0.5 rounded bg-slate-800 text-white text-xs font-extrabold">[4대 일치 체크리스트] 분자 vs 분모</span>
+                <div class="mt-3 grid grid-cols-2 gap-2.5 text-xs">
+                  <div class="p-2.5 rounded-lg bg-slate-50 border border-slate-200">
+                    <div class="font-bold text-slate-900">1. 제품군 일치</div>
+                    <div class="text-slate-600">냉동만두 vs 냉동식품 전체?</div>
+                  </div>
+                  <div class="p-2.5 rounded-lg bg-slate-50 border border-slate-200">
+                    <div class="font-bold text-slate-900">2. 지역·채널 일치</div>
+                    <div class="text-slate-600">국내 내수 vs 해외 수출 포함?</div>
+                  </div>
+                  <div class="p-2.5 rounded-lg bg-slate-50 border border-slate-200">
+                    <div class="font-bold text-slate-900">3. 기간 일치</div>
+                    <div class="text-slate-600">2025년 연간 vs 2024년 연간?</div>
+                  </div>
+                  <div class="p-2.5 rounded-lg bg-slate-50 border border-slate-200">
+                    <div class="font-bold text-slate-900">4. 측정 기준 일치</div>
+                    <div class="text-slate-600">매출액(원) vs 판매 수량(개/톤)?</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `
+      },
+
+      // Slide 18
+      {
+        num: 18,
+        section: "지표 정의와 적용",
+        title: "적용해 보기: 무엇이 잘못됐을까?",
+        subtitle: "다음 두 가지 점유율 계산 시도의 문제점을 찾아보세요 (해설은 다음 장)",
+        note: "학생이 분자·분모의 차이를 찾는다. 다음 장에서 답 공개. 기본 화면에서 정답이 먼저 보이지 않도록 분리함.",
+        html: `
+          <div class="space-y-6">
+            <div class="p-4 rounded-xl bg-blue-50 border border-blue-200 text-xs sm:text-sm text-blue-950 font-semibold">
+              💡 <strong>학생 활동 안내:</strong> 아래 두 사례(교육용 가상 사례)에서 분자와 분모가 어떤 기준에서 어긋났는지 먼저 생각해 보고, 다음 장(19장)에서 해설을 확인하세요.
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- 사례 1 -->
+              <div class="bg-white p-6 rounded-2xl border-2 border-slate-300 shadow-xs">
+                <span class="px-2.5 py-1 rounded bg-slate-800 text-white text-xs font-extrabold">[문제 사례 1] 가상 부품기업 M사</span>
+                <h3 class="text-lg font-extrabold text-slate-900 mt-3 mb-3">"국내 매출을 세계 시장 규모로 나누기?"</h3>
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 font-mono text-xs sm:text-sm space-y-2 mb-4">
+                  <div>• <strong>분자:</strong> M사의 2025년 <u>국내 내수 매출액</u> (500억 원)</div>
+                  <div>• <strong>분모:</strong> 글로벌 리서치 기관이 발표한 2025년 <u>전 세계 시장 전체 매출액</u> (50,000억 원)</div>
+                  <div class="pt-2 border-t border-slate-300 text-slate-800">계산 시도: 500 ÷ 50,000 × 100 = 1.0%?</div>
+                </div>
+                <label for="q18-input-1" class="block text-xs font-bold text-slate-700 mb-1">내 생각 메모 (선택 입력 · 외부 전송 안 됨):</label>
+                <input id="q18-input-1" type="text" placeholder="어느 기준이 불일치할까요?" class="w-full px-3 py-2 text-xs sm:text-sm border border-slate-300 rounded-lg bg-white">
+              </div>
+
+              <!-- 사례 2 -->
+              <div class="bg-white p-6 rounded-2xl border-2 border-slate-300 shadow-xs">
+                <span class="px-2.5 py-1 rounded bg-slate-800 text-white text-xs font-extrabold">[문제 사례 2] 가상 음료기업 N사</span>
+                <h3 class="text-lg font-extrabold text-slate-900 mt-3 mb-3">"판매 수량과 매출 금액을 섞어 쓰기?"</h3>
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 font-mono text-xs sm:text-sm space-y-2 mb-4">
+                  <div>• <strong>분자:</strong> N사의 2025년 국내 음료 <u>출고 수량(만 병)</u> 또는 <u>기업 전체 매출액</u></div>
+                  <div>• <strong>분모:</strong> 국내 소매점 POS 기준 음료 <u>매출 금액(억 원)</u></div>
+                  <div class="pt-2 border-t border-slate-300 text-slate-800">계산 시도: 서로 다른 단위의 두 자료를 결합해 점유율 산출?</div>
+                </div>
+                <label for="q18-input-2" class="block text-xs font-bold text-slate-700 mb-1">내 생각 메모 (선택 입력 · 외부 전송 안 됨):</label>
+                <input id="q18-input-2" type="text" placeholder="단위와 유통 단계에서 무엇이 문제일까요?" class="w-full px-3 py-2 text-xs sm:text-sm border border-slate-300 rounded-lg bg-white">
+              </div>
+            </div>
+
+            <div class="flex justify-end">
+              <button type="button" onclick="goToSlide(19)" class="px-4 py-2.5 rounded-xl bg-kgu-accent hover:bg-blue-700 text-white text-xs sm:text-sm font-bold shadow-xs transition">
+                다음 장(19장)에서 정답·해설 확인하기 →
+              </button>
+            </div>
+          </div>
+        `
+      },
+
+      // Slide 19
+      {
+        num: 19,
+        section: "지표 정의와 적용",
+        title: "해설: 범위와 단위를 맞춘다",
+        subtitle: "일치하는 분모가 없으면 억지로 점유율을 산출하지 않고 자료를 다시 찾는다",
+        note: "일치하는 분모가 없으면 점유율을 산출하지 않고 자료를 다시 찾는다.",
+        html: `
+          <div class="space-y-5">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <!-- 사례 1 해설 -->
+              <div class="bg-white p-5 rounded-2xl border-2 border-red-300">
+                <div class="flex items-center justify-between mb-2">
+                  <span class="px-2.5 py-0.5 rounded badge-warn text-xs font-extrabold">[사례 1 판정] 지역·시장 범위 불일치</span>
+                </div>
+                <h3 class="font-bold text-slate-900 text-base mb-2">국내 매출 ÷ 세계 시장 매출 (❌)</h3>
+                <ul class="text-xs sm:text-sm text-slate-700 space-y-2">
+                  <li>• <strong>오류 원인:</strong> 분자는 '국내 내수'에 한정되어 있는데 분모는 '전 세계'입니다. M사의 수출 실적이 빠졌거나 분모가 과대 설정되었습니다.</li>
+                  <li class="p-2.5 rounded-lg bg-emerald-50 text-emerald-950 font-medium">
+                    <strong>✅ 올바른 수정:</strong><br>
+                    ① <strong>국내 점유율</strong>을 구하려면: (M사 국내 매출 ÷ 국내 시장 전체 매출)<br>
+                    ② <strong>글로벌 점유율</strong>을 구하려면: (M사 글로벌 전체 매출 ÷ 세계 시장 전체 매출)
+                  </li>
+                </ul>
+              </div>
+
+              <!-- 사례 2 해설 -->
+              <div class="bg-white p-5 rounded-2xl border-2 border-red-300">
+                <div class="flex items-center justify-between mb-2">
+                  <span class="px-2.5 py-0.5 rounded badge-warn text-xs font-extrabold">[사례 2 판정] 측정 단위 및 가격 단계 불일치</span>
+                </div>
+                <h3 class="font-bold text-slate-900 text-base mb-2">판매량(수량) ÷ 매출액(금액) 또는 출고가 ÷ 소매가 (❌)</h3>
+                <ul class="text-xs sm:text-sm text-slate-700 space-y-2">
+                  <li>• <strong>오류 원인:</strong> 수량(개/톤)과 금액(원)은 나눌 수 없으며, 설령 둘 다 금액이라도 <strong>공장 출고가(제조사 매출)</strong>와 <strong>소비자 판매가(소매 POS 매출)</strong>는 유통 마진만큼 기준이 다릅니다.</li>
+                  <li class="p-2.5 rounded-lg bg-emerald-50 text-emerald-950 font-medium">
+                    <strong>✅ 올바른 수정:</strong><br>
+                    동일 조사 기관의 <strong>소매 매출액 기준 표</strong> 안에서 분자·분모를 모두 가져오거나, 둘 다 <strong>판매 수량 기준</strong>으로 통일합니다.
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="p-4 rounded-xl bg-slate-900 text-white text-xs sm:text-sm">
+              <strong>📌 컨설팅 실무 원칙:</strong> 공개 자료에서 분자와 분모의 기준을 맞출 수 없을 때는 <strong>억지로 나눗셈을 하지 않습니다.</strong> 대신 <em>"전체 시장 분모와 기업 매출의 집계 범위가 달라 직접 점유율은 산출하지 않고, 연도별 매출 성장률 추이를 비교한다"</em>고 명시하는 것이 정확한 태도입니다.
+            </div>
+          </div>
+        `
+      },
+
+      // Slide 20
+      {
+        num: 20,
+        section: "실습 A: 가상 AI 답변 검증",
+        title: "실습 A: 가상 AI 답변 검증 (상황과 원문 표)",
+        subtitle: "제공된 1차 원문 표를 기준으로 AI의 보고 문장을 검증할 준비를 한다",
+        note: "교육용 합성, 기업×연도, 동일 연결 기준 가정. 의사결정자는 가상의 경영기획 담당자.",
+        html: `
+          <div class="space-y-5">
+            <!-- 실습 상황 카드 -->
+            <div class="bg-blue-50 border-2 border-blue-200 rounded-xl p-4 sm:p-5">
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                <span class="px-2.5 py-0.5 rounded bg-blue-800 text-white text-xs font-extrabold">[실습 A 상황 설정]</span>
+                <span class="text-xs font-bold text-blue-900">보고 대상: 가상기업 K-테크 경영기획 담당자</span>
+              </div>
+              <p class="text-xs sm:text-sm text-slate-800 leading-relaxed">
+                경영기획 담당자가 2024~2025년 실적 요약을 요청했습니다. 인턴이 AI에게 시켜 가져온 초안 문장 3개가 아래 <strong>유일한 1차 원문 표</strong>와 일치하는지 검증해야 합니다.
+              </p>
+            </div>
+
+            <!-- 원문 표 -->
+            <div class="bg-white p-5 rounded-2xl border-2 border-slate-300 shadow-xs">
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                <h3 class="font-extrabold text-slate-900 text-base">[원문 표 A-1] 가상기업 K-테크 요약 손익 실적 (2024~2025)</h3>
+                <span class="px-2.5 py-0.5 rounded bg-amber-100 text-amber-900 text-xs font-bold">교육용 합성 데이터 · K-IFRS 연결 기준 가정 · 단위: 억 원</span>
+              </div>
+
+              <div class="overflow-x-auto">
+                <table class="w-full text-xs sm:text-sm border-collapse">
+                  <thead>
+                    <tr class="bg-slate-800 text-white">
+                      <th class="p-3 text-left">관측 단위 (기업 × 연도)</th>
+                      <th class="p-3 text-center">기준 기간</th>
+                      <th class="p-3 text-right">매출액 (억 원)</th>
+                      <th class="p-3 text-right">영업이익 (억 원)</th>
+                      <th class="p-3 text-left">비고 (원문 제공 범위)</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-200">
+                    <tr>
+                      <td class="p-3 font-bold">가상기업 K-테크 (연결)</td>
+                      <td class="p-3 text-center font-mono">2024년 연간</td>
+                      <td class="p-3 text-right font-mono font-bold text-base">1,000</td>
+                      <td class="p-3 text-right font-mono font-bold text-base">80</td>
+                      <td class="p-3 text-xs text-slate-600">전기 (비교 기준 연도)</td>
+                    </tr>
+                    <tr class="bg-blue-50/40">
+                      <td class="p-3 font-bold">가상기업 K-테크 (연결)</td>
+                      <td class="p-3 text-center font-mono">2025년 연간</td>
+                      <td class="p-3 text-right font-mono font-bold text-base text-blue-900">1,100</td>
+                      <td class="p-3 text-right font-mono font-bold text-base text-blue-900">66</td>
+                      <td class="p-3 text-xs text-slate-600">당기 (원가·판관비 세부 내역 표 없음)</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <p class="mt-3 text-xs text-slate-600">
+                ※ <strong>데이터 주석:</strong> 본 표는 수업 실습용으로 합성된 가상의 수치이며, 두 연도 모두 동일한 연결 회계 기준(단위: 억 원)을 적용했다고 가정합니다. 표에 없는 비용 세부 항목(원재료비, 인건비 등)은 아직 확보되지 않은 상태입니다.
+              </p>
+            </div>
+
+            <!-- 공식 복습 박스 -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+              <div class="p-3 rounded-xl bg-slate-100 border border-slate-300 font-mono">
+                <strong>• 매출 증감률(%)</strong> = (당기 매출 − 전기 매출) ÷ 전기 매출 × 100<br>
+                <span class="text-slate-500">※ 첫 연도(2024년)는 전년도 값이 없으므로 증감률 산출 불가(결측)</span>
+              </div>
+              <div class="p-3 rounded-xl bg-slate-100 border border-slate-300 font-mono">
+                <strong>• 영업이익률(%)</strong> = (당기 영업이익 ÷ 당기 매출액) × 100<br>
+                <span class="text-slate-500">※ 퍼센트 지표 간의 단순 차이는 <strong>%p(퍼센트포인트)</strong>로 표기</span>
+              </div>
+            </div>
+          </div>
+        `
+      },
+
+      // Slide 21
+      {
+        num: 21,
+        section: "실습 A: 가상 AI 답변 검증",
+        title: "실습 A: 주장 3개를 검증하라",
+        subtitle: "원문 표(2024년 매출 1,000·이익 80 / 2025년 매출 1,100·이익 66, 억 원)와 대조",
+        note: "계산기 또는 스프레드시트 사용. 원문에 비용 항목은 없다. 해설은 22장에서 확인한다.",
+        html: `
+          <div class="space-y-4">
+            <div class="flex flex-wrap items-center justify-between gap-2 bg-slate-100 p-3.5 rounded-xl border border-slate-300 text-xs sm:text-sm">
+              <div><strong>원문 수치 요약:</strong> 2024년 매출 <strong>1,000</strong>억 원, 영업이익 <strong>80</strong>억 원 → 2025년 매출 <strong>1,100</strong>억 원, 영업이익 <strong>66</strong>억 원</div>
+              <span class="px-2 py-0.5 rounded bg-blue-100 text-blue-900 font-bold text-xs">직접 판정 선택 후 다음 장 해설 확인</span>
+            </div>
+
+            <!-- 주장 3개 검증 워크시트 -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <!-- 주장 1 -->
+              <div class="bg-white p-4 rounded-xl border-2 border-slate-300 flex flex-col justify-between">
+                <div>
+                  <span class="px-2 py-0.5 rounded bg-slate-800 text-white text-xs font-extrabold">AI 주장 1 · 외형 성장</span>
+                  <p class="font-bold text-slate-900 text-sm sm:text-base mt-2 mb-3 bg-slate-50 p-3 rounded-lg border border-slate-200">
+                    "2025년 매출액은 전년 대비 <strong>10% 증가</strong>했다."
+                  </p>
+                  <label for="pracA-c1" class="block text-xs font-bold text-slate-700 mb-1">내 계산식 / 근거 메모:</label>
+                  <input id="pracA-c1" type="text" placeholder="예: (1100-1000)/1000*100" class="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg mb-2 font-mono">
+                  <label for="pracA-s1" class="block text-xs font-bold text-slate-700 mb-1">판정 상태 선택:</label>
+                  <select id="pracA-s1" class="w-full px-2.5 py-1.5 text-xs font-semibold border border-slate-300 rounded-lg bg-white">
+                    <option value="">-- 판정 선택 --</option>
+                    <option value="ok">원문·재계산 일치 (사실 확인)</option>
+                    <option value="unit">단위·표현 수정 필요 (% vs %p 혼동)</option>
+                    <option value="unverified">원문 미확인 (원인 가설)</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- 주장 2 -->
+              <div class="bg-white p-4 rounded-xl border-2 border-slate-300 flex flex-col justify-between">
+                <div>
+                  <span class="px-2 py-0.5 rounded bg-slate-800 text-white text-xs font-extrabold">AI 주장 2 · 수익성 변화</span>
+                  <p class="font-bold text-slate-900 text-sm sm:text-base mt-2 mb-3 bg-slate-50 p-3 rounded-lg border border-slate-200">
+                    "영업이익률은 전년 대비 <strong>2% 감소</strong>했다."
+                  </p>
+                  <label for="pracA-c2" class="block text-xs font-bold text-slate-700 mb-1">내 계산식 (24년 이익률 → 25년 이익률):</label>
+                  <input id="pracA-c2" type="text" placeholder="예: 8% -> 6%, 차이는?" class="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg mb-2 font-mono">
+                  <label for="pracA-s2" class="block text-xs font-bold text-slate-700 mb-1">판정 상태 선택:</label>
+                  <select id="pracA-s2" class="w-full px-2.5 py-1.5 text-xs font-semibold border border-slate-300 rounded-lg bg-white">
+                    <option value="">-- 판정 선택 --</option>
+                    <option value="ok">원문·재계산 일치 (사실 확인)</option>
+                    <option value="unit">단위·표현 수정 필요 (% vs %p 혼동)</option>
+                    <option value="unverified">원문 미확인 (원인 가설)</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- 주장 3 -->
+              <div class="bg-white p-4 rounded-xl border-2 border-slate-300 flex flex-col justify-between">
+                <div>
+                  <span class="px-2 py-0.5 rounded bg-slate-800 text-white text-xs font-extrabold">AI 주장 3 · 원인 설명</span>
+                  <p class="font-bold text-slate-900 text-sm sm:text-base mt-2 mb-3 bg-slate-50 p-3 rounded-lg border border-slate-200">
+                    "이익률 하락은 <strong>원재료 가격 급등이 원인</strong>이다."
+                  </p>
+                  <label for="pracA-c3" class="block text-xs font-bold text-slate-700 mb-1">원문 표에 해당 항목이 있는가?:</label>
+                  <input id="pracA-c3" type="text" placeholder="표 A-1에서 확인 가능한지 기록" class="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg mb-2">
+                  <label for="pracA-s3" class="block text-xs font-bold text-slate-700 mb-1">판정 상태 선택:</label>
+                  <select id="pracA-s3" class="w-full px-2.5 py-1.5 text-xs font-semibold border border-slate-300 rounded-lg bg-white">
+                    <option value="">-- 판정 선택 --</option>
+                    <option value="ok">원문·재계산 일치 (사실 확인)</option>
+                    <option value="unit">단위·표현 수정 필요 (% vs %p 혼동)</option>
+                    <option value="unverified">원문 미확인 (원인 가설)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex flex-wrap items-center justify-between gap-3 pt-2">
+              <button type="button" onclick="checkPracticeA()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs sm:text-sm font-bold transition">
+                내 선택 점검해보기
+              </button>
+              <div id="pracA-feedback" class="text-xs sm:text-sm font-bold text-blue-900" role="status" aria-live="polite"></div>
+              <button type="button" onclick="goToSlide(22)" class="px-4 py-2 rounded-xl bg-kgu-accent hover:bg-blue-700 text-white text-xs sm:text-sm font-bold transition">
+                다음 장(22장) 상세 해설 보기 →
+              </button>
+            </div>
+          </div>
+        `
+      },
+
+      // Slide 22
+      {
+        num: 22,
+        section: "실습 A: 가상 AI 답변 검증",
+        title: "해설: 10%, 8% → 6%, 2%p 하락",
+        subtitle: "상대 변화율은 −25%이며, 2%와 2%p는 다르다. 원인은 미확인 가설이다.",
+        note: "상대 변화는 −25%. 2%와 2%p는 다르다. 비용과 제품 구성 등 추가 자료가 필요하다.",
+        html: `
+          <div class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <!-- 해설 1 -->
+              <div class="bg-white p-4 rounded-xl border-2 border-emerald-400">
+                <span class="px-2.5 py-0.5 rounded badge-ok text-xs font-extrabold">[주장 1 판정] 사실 · 계산 확인</span>
+                <h3 class="font-bold text-slate-900 text-base mt-2 mb-2">매출 증감률 +10.0% 일치</h3>
+                <div class="bg-slate-50 p-3 rounded-lg font-mono text-xs space-y-1 mb-2 border border-slate-200">
+                  <div>전기(2024) 매출 = 1,000억 원</div>
+                  <div>당기(2025) 매출 = 1,100억 원</div>
+                  <div class="font-bold text-emerald-900">(1,100 − 1,000) ÷ 1,000 × 100 = +10.0%</div>
+                </div>
+                <p class="text-xs text-slate-600">원문 표의 숫자와 전기 대비 증감률 계산이 정확히 일치합니다.</p>
+              </div>
+
+              <!-- 해설 2 -->
+              <div class="bg-white p-4 rounded-xl border-2 border-amber-400">
+                <span class="px-2.5 py-0.5 rounded badge-hypo text-xs font-extrabold">[주장 2 판정] 단위·표현 수정 필요</span>
+                <h3 class="font-bold text-slate-900 text-base mt-2 mb-2">8.0% → 6.0%: '2%p 하락' (상대 −25%)</h3>
+                <div class="bg-slate-50 p-3 rounded-lg font-mono text-xs space-y-1 mb-2 border border-slate-200">
+                  <div>2024 이익률: 80 ÷ 1,000 × 100 = <strong>8.0%</strong></div>
+                  <div>2025 이익률: 66 ÷ 1,100 × 100 = <strong>6.0%</strong></div>
+                  <div class="font-bold text-blue-900">• 차이: 6.0% − 8.0% = <strong>−2.0%p</strong></div>
+                  <div class="font-bold text-amber-900">• 상대 변화율: (6−8)÷8×100 = <strong>−25.0%</strong></div>
+                </div>
+                <p class="text-xs text-slate-600">"2% 감소"라고 쓰면 상대 변화율(−25%)과 혼동됩니다. 반드시 <strong>"8%에서 6%로 2%p 하락"</strong>이라고 고쳐야 합니다.</p>
+              </div>
+
+              <!-- 해설 3 -->
+              <div class="bg-white p-4 rounded-xl border-2 border-red-400">
+                <span class="px-2.5 py-0.5 rounded badge-warn text-xs font-extrabold">[주장 3 판정] 원인 미확인 (가설)</span>
+                <h3 class="font-bold text-slate-900 text-base mt-2 mb-2">"원재료 가격 급등"은 표에 없음</h3>
+                <div class="bg-red-50 p-3 rounded-lg text-xs text-red-950 space-y-1 mb-2 border border-red-200">
+                  <div>• 제공된 원문 표에는 매출액과 영업이익만 있고, <strong>매출원가나 원재료비 항목이 전혀 없습니다.</strong></div>
+                </div>
+                <p class="text-xs text-slate-600">사실인 것처럼 단정 문장으로 쓰면 안 되며, <strong>확인해야 할 가설</strong>로 분리하고 추가 자료(주석 비용의 성격별 분류 등)를 요청해야 합니다.</p>
+              </div>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-slate-900 text-white text-xs sm:text-sm">
+              <strong>✅ 올바르게 수정한 보고 문장:</strong> "가상기업 K-테크(연결 기준, 합성 데이터)의 2025년 매출액은 1,100억 원으로 전년(1,000억 원) 대비 <strong>10.0% 증가</strong>했으나, 영업이익은 80억 원에서 66억 원으로 줄어 영업이익률이 <strong>8.0%에서 6.0%로 2.0%p 하락(상대 변화 −25.0%)</strong>했습니다. 이익률 하락의 구체적 원인은 원문 요약표만으로 확인할 수 없어, 사업보고서 주석의 원가·판관비 내역을 추가 확인할 예정입니다."
+            </div>
+          </div>
+        `
+      },
+
+      // Slide 23
+      {
+        num: 23,
+        section: "실습 A: 가상 AI 답변 검증",
+        title: "같은 사실에서 여러 설명이 가능하다",
+        subtitle: "관찰 사실 → 해석 → 복수 가설 → 추가 검증 자료",
+        note: "대안 가설은 확정 원인이 아니다. 반대 증거도 찾는다.",
+        html: `
+          <div class="space-y-5">
+            <p class="text-xs sm:text-sm text-slate-700 font-medium">
+              영업이익률이 8%에서 6%로 2%p 하락했다는 <strong>하나의 관찰 사실</strong> 뒤에는 서로 다른 여러 가지 원인이 존재할 수 있습니다.
+            </p>
+
+            <!-- 4단계 사고 구조 -->
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
+              <div class="bg-white p-4 rounded-xl border-2 border-blue-400">
+                <span class="px-2 py-0.5 rounded badge-fact text-xs font-extrabold">1. 관찰 사실 (Fact)</span>
+                <h3 class="font-bold text-slate-900 text-sm mt-2 mb-1">원문에서 확인된 수치</h3>
+                <p class="text-xs text-slate-700">2025년 매출 +10% 증가(1,000→1,100억 원), 영업이익 80→66억 원 감소.</p>
+              </div>
+
+              <div class="bg-white p-4 rounded-xl border-2 border-indigo-300">
+                <span class="px-2 py-0.5 rounded badge-interp text-xs font-extrabold">2. 통계적 해석 (Interpretation)</span>
+                <h3 class="font-bold text-slate-900 text-sm mt-2 mb-1">지표 간 관계 요약</h3>
+                <p class="text-xs text-slate-700">외형(매출)은 성장했으나 영업이익률이 8.0%→6.0%(−2.0%p)로 낮아져 매출 대비 총영업비용 비중이 92%→94%로 커짐.</p>
+              </div>
+
+              <div class="bg-white p-4 rounded-xl border-2 border-amber-400">
+                <span class="px-2 py-0.5 rounded badge-hypo text-xs font-extrabold">3. 복수의 대안 가설 (Hypotheses)</span>
+                <h3 class="font-bold text-slate-900 text-sm mt-2 mb-1">왜 비용 비중이 커졌을까?</h3>
+                <ul class="text-xs text-slate-700 space-y-1">
+                  <li>• <strong>가설 A:</strong> 원재료 매입 단가 상승(매출원가율 상승)</li>
+                  <li>• <strong>가설 B:</strong> 신제품 마케팅·물류비 등 판관비 급증</li>
+                  <li>• <strong>가설 C:</strong> 저마진 상품 비중 확대(제품 믹스 변화) 또는 단가 인하 프로모션</li>
+                </ul>
+              </div>
+
+              <div class="bg-white p-4 rounded-xl border-2 border-emerald-400">
+                <span class="px-2 py-0.5 rounded badge-ok text-xs font-extrabold">4. 추가 검증 자료 (Next Data)</span>
+                <h3 class="font-bold text-slate-900 text-sm mt-2 mb-1">7차수에 찾아볼 원문 항목</h3>
+                <ul class="text-xs text-slate-700 space-y-1">
+                  <li>• 손익계산서의 매출원가 vs 판매비와관리비</li>
+                  <li>• 사업보고서 '주요 원재료 가격 변동 추이' 표</li>
+                  <li>• 부문별·제품군별 매출 비중 표</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-amber-50 border border-amber-300 text-xs sm:text-sm text-amber-950">
+              <strong>⚠️ 주의:</strong> 대안 가설을 여러 개 세웠다고 해서 그 가설들이 사실로 확정된 것은 아닙니다. 각 가설을 기각하거나 지지할 <strong>반대 증거와 원문 표</strong>를 찾아야 합니다.
+            </div>
+          </div>
+        `
+      },
+
+      // Slide 24
+      {
+        num: 24,
+        section: "실습 B·C 및 브리핑",
+        title: "실습 B: 조별 기업·산업 자료 지도",
+        subtitle: "한 행은 '질문 × 자료 항목'이며, 6차수에는 원문과 항목의 존재를 확인한다",
+        note: "6차수에는 원문과 항목의 존재를 확인한다. 한 행은 질문×자료 항목.",
+        html: `
+          <div class="space-y-4">
+            <div class="bg-blue-50 border border-blue-200 p-3.5 rounded-xl text-xs sm:text-sm text-blue-950 flex flex-wrap items-center justify-between gap-2">
+              <div><strong>[실습 B 조별 활동]</strong> 조원 각자의 분석 질문에 답하기 위해 필요한 후보 문서와 원문 위치, 확보 상태를 아래 양식으로 정리합니다.</div>
+              <span class="px-2 py-0.5 rounded bg-blue-800 text-white text-xs font-bold">산출물 1: 조별 자료 지도</span>
+            </div>
+
+            <!-- 질문 x 자료 항목 표 -->
+            <div class="bg-white rounded-xl border-2 border-slate-300 overflow-x-auto">
+              <table class="w-full text-xs border-collapse min-w-[780px]">
+                <thead>
+                  <tr class="bg-kgu-navy text-white">
+                    <th class="p-2.5 text-left">개인 질문 요약 (필요 변수)</th>
+                    <th class="p-2.5 text-left">후보 자료 (문서명)</th>
+                    <th class="p-2.5 text-left">원문 내 위치 (장·절·표)</th>
+                    <th class="p-2.5 text-center">기준 기간</th>
+                    <th class="p-2.5 text-left">포괄 범위·단위</th>
+                    <th class="p-2.5 text-center">확보 상태</th>
+                    <th class="p-2.5 text-center">수집 담당</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200">
+                  <tr>
+                    <td class="p-2.5 font-semibold">Q1. K-테크 매출 성장률과 이익률 변화 (매출, 영업이익)</td>
+                    <td class="p-2.5">DART 제15기 사업보고서</td>
+                    <td class="p-2.5">III. 재무에 관한 사항 - 연결손익계산서</td>
+                    <td class="p-2.5 text-center font-mono">2023~2025</td>
+                    <td class="p-2.5">연결 기준, 백만 원</td>
+                    <td class="p-2.5 text-center"><span class="px-2 py-0.5 rounded badge-ok font-bold">원문·항목 확인</span></td>
+                    <td class="p-2.5 text-center font-semibold">김통계</td>
+                  </tr>
+                  <tr>
+                    <td class="p-2.5 font-semibold">Q1-보조. 원가율 vs 판관비율 변화 (매출원가, 판관비)</td>
+                    <td class="p-2.5">DART 제15기 사업보고서</td>
+                    <td class="p-2.5">연결재무제표 주석 '비용의 성격별 분류' 확인 예정</td>
+                    <td class="p-2.5 text-center font-mono">2024~2025</td>
+                    <td class="p-2.5">연결 기준, 백만 원</td>
+                    <td class="p-2.5 text-center"><span class="px-2 py-0.5 rounded badge-fact font-bold">원문만 확인</span></td>
+                    <td class="p-2.5 text-center font-semibold">김통계</td>
+                  </tr>
+                  <tr>
+                    <td class="p-2.5 font-semibold">Q2. 국내 업종 출하액 추이 (산업 전체 출하액)</td>
+                    <td class="p-2.5">KOSIS 광업·제조업조사</td>
+                    <td class="p-2.5">통계표 검색 완료, 세부 분류코드 대조 전</td>
+                    <td class="p-2.5 text-center font-mono">2022~2024</td>
+                    <td class="p-2.5">국내 사업체(10인 이상), 백만 원</td>
+                    <td class="p-2.5 text-center"><span class="px-2 py-0.5 rounded badge-hypo font-bold">미확인</span></td>
+                    <td class="p-2.5 text-center font-semibold">이데이터</td>
+                  </tr>
+                  <tr class="bg-red-50/40">
+                    <td class="p-2.5 font-semibold">Q3. 20대 고객의 앱 재구매율 (연령별 재구매율)</td>
+                    <td class="p-2.5">외부 공시 없음 (내부 CRM)</td>
+                    <td class="p-2.5">사업보고서에 연령별 고객 로그 비공개</td>
+                    <td class="p-2.5 text-center font-mono">-</td>
+                    <td class="p-2.5">외부 확보 불가 → 대체 질문 전환</td>
+                    <td class="p-2.5 text-center"><span class="px-2 py-0.5 rounded badge-warn font-bold">확보 곤란</span></td>
+                    <td class="p-2.5 text-center font-semibold">박분석</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="p-3 rounded-xl bg-slate-100 border border-slate-300 text-xs text-slate-700">
+              💡 <strong>작성 팁:</strong> 한 질문에 변수 2개(예: 기업 매출 + 산업 전체 매출)가 필요하면 각각 어느 문서에서 가져올지 <strong>행을 나누어(질문 × 자료 항목)</strong> 기록합니다.
+            </div>
+          </div>
+        `
+      },
+
+      // Slide 25
+      {
+        num: 25,
+        section: "실습 B·C 및 브리핑",
+        title: "확보 상태를 구분한다",
+        subtitle: "원문·항목 확인 / 원문만 확인 / 미확인 / 확보 곤란",
+        note: "AI의 답변이나 링크만으로 ‘확보 완료’ 표시 금지. 미확보 시 대체 질문을 쓴다.",
+        html: `
+          <div class="space-y-5">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <!-- 상태 1 -->
+              <div class="bg-white p-4 rounded-xl border-2 border-emerald-400 flex flex-col justify-between">
+                <div>
+                  <span class="px-2.5 py-1 rounded badge-ok text-xs font-extrabold">1. 원문·항목 확인</span>
+                  <h3 class="font-bold text-slate-900 text-base mt-2 mb-1.5">문서도 열고 표·변수도 찾음</h3>
+                  <p class="text-xs text-slate-600 leading-relaxed">원문 문서를 직접 열람했고, 필요한 변수·기간·단위가 담긴 구체적인 표 위치까지 확인한 상태.</p>
+                </div>
+                <div class="mt-3 pt-2 border-t border-slate-200 text-xs font-bold text-emerald-900">→ 7차수에 즉시 수치 수집 가능</div>
+              </div>
+
+              <!-- 상태 2 -->
+              <div class="bg-white p-4 rounded-xl border-2 border-blue-300 flex flex-col justify-between">
+                <div>
+                  <span class="px-2.5 py-1 rounded badge-fact text-xs font-extrabold">2. 원문만 확인</span>
+                  <h3 class="font-bold text-slate-900 text-base mt-2 mb-1.5">문서는 열었으나 세부 표 탐색 중</h3>
+                  <p class="text-xs text-slate-600 leading-relaxed">사업보고서나 통계 포털 접속은 성공했으나, 주석이나 세부 분류코드 안의 정확한 표는 아직 대조 전인 상태.</p>
+                </div>
+                <div class="mt-3 pt-2 border-t border-slate-200 text-xs font-bold text-blue-900">→ 7차수 전까지 표 번호 특정 필요</div>
+              </div>
+
+              <!-- 상태 3 -->
+              <div class="bg-white p-4 rounded-xl border-2 border-amber-300 flex flex-col justify-between">
+                <div>
+                  <span class="px-2.5 py-1 rounded badge-hypo text-xs font-extrabold">3. 미확인</span>
+                  <h3 class="font-bold text-slate-900 text-base mt-2 mb-1.5">AI 답변·기사로만 본 상태</h3>
+                  <p class="text-xs text-slate-600 leading-relaxed">AI가 제시한 수치나 뉴스 기사 요약만 보았고, 아직 1차 원문 문서를 직접 열어 대조하지 않은 상태.</p>
+                </div>
+                <div class="mt-3 pt-2 border-t border-slate-200 text-xs font-bold text-amber-900">→ 절대 '확보 완료'로 적지 말 것!</div>
+              </div>
+
+              <!-- 상태 4 -->
+              <div class="bg-white p-4 rounded-xl border-2 border-red-300 flex flex-col justify-between">
+                <div>
+                  <span class="px-2.5 py-1 rounded badge-warn text-xs font-extrabold">4. 확보 곤란</span>
+                  <h3 class="font-bold text-slate-900 text-base mt-2 mb-1.5">비공개·유료·해당 통계 없음</h3>
+                  <p class="text-xs text-slate-600 leading-relaxed">기업 내부 대외비(고객별 로그, 비공개 원가 등)이거나 수백만 원짜리 유료 리포트여서 열람이 불가능한 상태.</p>
+                </div>
+                <div class="mt-3 pt-2 border-t border-slate-200 text-xs font-bold text-red-900">→ 대체 지표 또는 대체 질문 작성!</div>
+              </div>
+            </div>
+
+            <div class="p-4 rounded-xl bg-slate-900 text-white text-xs sm:text-sm">
+              <strong>💡 평가 안내:</strong> 실제 기업을 조사하다 보면 원하는 세부 자료가 외부에 공개되지 않아 <strong>'확보 곤란'</strong>이 나오는 것은 매우 자연스러운 일입니다. 억지로 AI 숫자를 베껴 적는 것보다, <strong>'확보 곤란'으로 정직하게 분류하고 공개 자료로 검증 가능한 '대체 질문·대체 지표'를 제시하면 우수하게 평가</strong>받습니다.
+            </div>
+          </div>
+        `
+      },
+
+      // Slide 26
+      {
+        num: 26,
+        section: "실습 B·C 및 브리핑",
+        title: "실습 C: 개인 근거표 2건 작성",
+        subtitle: "자신의 질문과 관련된 주장 최소 2건을 원문과 직접 대조해 기록한다",
+        note: "각자 적어도 2개 주장 검토, 미확인도 상태와 다음 행동을 적는다. 개인 원문 확인을 평가.",
+        html: `
+          <div class="space-y-4">
+            <div class="bg-indigo-50 border border-indigo-200 p-3.5 rounded-xl text-xs sm:text-sm text-indigo-950 flex flex-wrap items-center justify-between gap-2">
+              <div><strong>[실습 C 개인 활동]</strong> 각자 자신의 분석 질문에 관련된 주장 <strong>최소 2건</strong>을 골라 원문 위치·기준·원값·상태를 아래에 입력해 보세요.</div>
+              <span class="px-2 py-0.5 rounded bg-indigo-900 text-white text-xs font-bold">산출물 2: 개인 근거표 (외부 전송 없음)</span>
+            </div>
+
+            <!-- 인터랙티브 입력 폼 (2건) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <!-- 근거 1 -->
+              <div class="bg-white p-4 rounded-xl border-2 border-slate-300 space-y-2.5">
+                <div class="font-extrabold text-slate-900 text-sm flex items-center justify-between">
+                  <span>개인 근거 기록 #1</span>
+                  <span class="text-xs font-mono text-slate-500">ID: MY-01</span>
+                </div>
+                <div>
+                  <label for="c26-claim1" class="block text-xs font-bold text-slate-700">1) 검증할 주장 문장:</label>
+                  <input id="c26-claim1" type="text" placeholder="예: A사의 2025년 연결 매출은 전년 대비 증가했다" class="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg mt-0.5">
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                  <div>
+                    <label for="c26-loc1" class="block text-xs font-bold text-slate-700">2) 원문 문서명 · 표/쪽 위치:</label>
+                    <input id="c26-loc1" type="text" placeholder="예: 제20기 사업보고서 III-1 표" class="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg mt-0.5">
+                  </div>
+                  <div>
+                    <label for="c26-std1" class="block text-xs font-bold text-slate-700">3) 기간 · 범위 · 단위 기준:</label>
+                    <input id="c26-std1" type="text" placeholder="예: 2024~2025 연간, 연결, 억 원" class="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg mt-0.5">
+                  </div>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                  <div>
+                    <label for="c26-val1" class="block text-xs font-bold text-slate-700">4) 원문 원값 (Raw Value):</label>
+                    <input id="c26-val1" type="text" placeholder="예: 24년 1,000 / 25년 1,100" class="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg mt-0.5 font-mono">
+                  </div>
+                  <div>
+                    <label for="c26-st1" class="block text-xs font-bold text-slate-700">5) 검증 상태 및 다음 행동:</label>
+                    <input id="c26-st1" type="text" placeholder="예: 원문 확인 완료 (2026-04-10)" class="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg mt-0.5">
+                  </div>
+                </div>
+              </div>
+
+              <!-- 근거 2 -->
+              <div class="bg-white p-4 rounded-xl border-2 border-slate-300 space-y-2.5">
+                <div class="font-extrabold text-slate-900 text-sm flex items-center justify-between">
+                  <span>개인 근거 기록 #2</span>
+                  <span class="text-xs font-mono text-slate-500">ID: MY-02</span>
+                </div>
+                <div>
+                  <label for="c26-claim2" class="block text-xs font-bold text-slate-700">1) 검증할 주장 문장 (또는 원인 가설):</label>
+                  <input id="c26-claim2" type="text" placeholder="예: 판관비 증가로 인해 영업이익률이 하락했다" class="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg mt-0.5">
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                  <div>
+                    <label for="c26-loc2" class="block text-xs font-bold text-slate-700">2) 원문 문서명 · 표/쪽 위치:</label>
+                    <input id="c26-loc2" type="text" placeholder="예: 사업보고서 주석 비용 표 (예정)" class="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg mt-0.5">
+                  </div>
+                  <div>
+                    <label for="c26-std2" class="block text-xs font-bold text-slate-700">3) 기간 · 범위 · 단위 기준:</label>
+                    <input id="c26-std2" type="text" placeholder="예: 2024~2025 연간, 연결, 백만 원" class="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg mt-0.5">
+                  </div>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                  <div>
+                    <label for="c26-val2" class="block text-xs font-bold text-slate-700">4) 원문 원값 (미확인이면 사유):</label>
+                    <input id="c26-val2" type="text" placeholder="예: 아직 주석 세부표 대조 전" class="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg mt-0.5 font-mono">
+                  </div>
+                  <div>
+                    <label for="c26-st2" class="block text-xs font-bold text-slate-700">5) 검증 상태 및 다음 행동:</label>
+                    <input id="c26-st2" type="text" placeholder="예: 미확인 → 7차수에 주석 표 수집" class="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg mt-0.5">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="p-3 rounded-xl bg-slate-100 border border-slate-300 text-xs text-slate-700">
+              📌 <strong>개인 평가 핵심 기준:</strong> ① 원문 위치를 다른 사람이 그대로 따라갈 수 있는가? ② 기간·단위·연결/별도 기준을 확인했는가? ③ 미확인 사항을 감추지 않고 다음 행동(7차수 수집 계획 또는 대체 계획)으로 연결했는가?
+            </div>
+          </div>
+        `
+      },
+
+      // Slide 27
+      {
+        num: 27,
+        section: "실습 B·C 및 브리핑",
+        title: "다섯 문장 브리핑",
+        subtitle: "사실 / 해석 / 가설 / 한계 / 다음 행동 (동료 상호 검증)",
+        note: "동료가 위치를 따라가 확인하고 표현을 고친다. 하나의 원인 가설만이 정답은 아니다.",
+        html: `
+          <div class="space-y-4">
+            <p class="text-xs sm:text-sm text-slate-700 font-medium">
+              검증한 결과를 보고할 때는 <strong>사실과 추론이 뒤섞이지 않도록</strong> 아래 다섯 문장 템플릿으로 구조화합니다.
+            </p>
+
+            <!-- 5문장 카드 -->
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-3">
+              <div class="bg-white p-4 rounded-xl border-2 border-blue-400">
+                <span class="px-2 py-0.5 rounded badge-fact text-xs font-extrabold">문장 1 · 사실 (Fact)</span>
+                <p class="text-xs text-slate-800 mt-2 leading-relaxed">
+                  "[원문 문서·표] 확인 결과, [기간] [대상(기준)]의 [지표]는 [전기 원값]에서 [당기 원값]으로 변했다."
+                </p>
+              </div>
+              <div class="bg-white p-4 rounded-xl border-2 border-indigo-300">
+                <span class="px-2 py-0.5 rounded badge-interp text-xs font-extrabold">문장 2 · 해석 (Interp.)</span>
+                <p class="text-xs text-slate-800 mt-2 leading-relaxed">
+                  "이는 매출이 [X]% 성장하는 동안 이익률이 [Y]%에서 [Z]%로 [차이]%p 변화했음을 뜻한다."
+                </p>
+              </div>
+              <div class="bg-white p-4 rounded-xl border-2 border-amber-400">
+                <span class="px-2 py-0.5 rounded badge-hypo text-xs font-extrabold">문장 3 · 가설 (Hypo.)</span>
+                <p class="text-xs text-slate-800 mt-2 leading-relaxed">
+                  "이러한 변화의 원인으로는 [가설 A(예: 원가 상승)] 또는 [가설 B(예: 판관비 증가)] 가능성을 생각해 볼 수 있다."
+                </p>
+              </div>
+              <div class="bg-white p-4 rounded-xl border-2 border-red-300">
+                <span class="px-2 py-0.5 rounded badge-warn text-xs font-extrabold">문장 4 · 한계 (Limit)</span>
+                <p class="text-xs text-slate-800 mt-2 leading-relaxed">
+                  "다만 현재 확인한 요약표만으로는 [미확인 항목/범위 차이]를 직접 분리해 확인할 수 없다."
+                </p>
+              </div>
+              <div class="bg-white p-4 rounded-xl border-2 border-emerald-400">
+                <span class="px-2 py-0.5 rounded badge-ok text-xs font-extrabold">문장 5 · 다음 행동 (Action)</span>
+                <p class="text-xs text-slate-800 mt-2 leading-relaxed">
+                  "따라서 7차수에는 [구체적 문서·주석 표]에서 [추가 변수]를 수집해 가설을 검증하겠다."
+                </p>
+              </div>
+            </div>
+
+            <!-- 동료 체크리스트 -->
+            <div class="bg-slate-800 text-white p-4 rounded-xl text-xs sm:text-sm">
+              <div class="font-extrabold text-blue-300 mb-1.5">🤝 동료 상호 확인(Peer Review) 3가지 질문</div>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                <div>1. 동료가 적어둔 <strong>원문 위치(표·쪽)</strong>만 보고 내가 같은 숫자를 찾을 수 있는가?</div>
+                <div>2. <strong>%와 %p, 기준 기간, 단위</strong> 표현에 오류가 없는가?</div>
+                <div>3. 확인되지 않은 원인을 <strong>1번(사실) 문장</strong>에 섞어 쓰지 않았는가?</div>
+              </div>
+            </div>
+          </div>
+        `
+      },
+
+      // Slide 28
+      {
+        num: 28,
+        section: "점검 및 마무리",
+        title: "오류 찾기: 흔한 3가지 함정",
+        subtitle: "‘AI가 말했다’ / ‘링크가 있다’ / ‘함께 변했다’",
+        note: "검증되지 않은 수치, 동반 변화의 원인 단정, 기준 시점 혼동을 피한다.",
+        html: `
+          <div class="space-y-5">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+              <!-- 오류 1 -->
+              <div class="bg-white p-5 rounded-2xl border-2 border-red-300 flex flex-col justify-between">
+                <div>
+                  <span class="px-2.5 py-0.5 rounded badge-warn text-xs font-extrabold">[함정 1] 권위에의 호소 (AI 인용)</span>
+                  <h3 class="text-lg font-extrabold text-slate-900 mt-2 mb-2">"AI 리서치 결과 점유율이 25%라고 나왔습니다."</h3>
+                  <p class="text-xs sm:text-sm text-slate-600 mb-4">
+                    AI 모델은 통계 조사 기관도 공시 주체도 아닙니다. AI의 답변 자체는 출처가 될 수 없습니다.
+                  </p>
+                </div>
+                <div class="p-3 rounded-xl bg-blue-50 border border-blue-200 text-xs text-blue-950">
+                  <strong>💡 학생 수정 질문:</strong><br>
+                  "그 25%가 적힌 <strong>1차 원문 보고서 이름과 표 번호, 분모 정의</strong>는 무엇인가요?"
+                </div>
+              </div>
+
+              <!-- 오류 2 -->
+              <div class="bg-white p-5 rounded-2xl border-2 border-red-300 flex flex-col justify-between">
+                <div>
+                  <span class="px-2.5 py-0.5 rounded badge-warn text-xs font-extrabold">[함정 2] 링크 만능주의 & 시점 혼동</span>
+                  <h3 class="text-lg font-extrabold text-slate-900 mt-2 mb-2">"2026년 3월 보고서 링크가 있으니 2026년 실적입니다."</h3>
+                  <p class="text-xs sm:text-sm text-slate-600 mb-4">
+                    링크 안에 해당 숫자가 없을 수 있고, 2026년 3월 공시된 사업보고서의 숫자는 2025년 실적입니다.
+                  </p>
+                </div>
+                <div class="p-3 rounded-xl bg-blue-50 border border-blue-200 text-xs text-blue-950">
+                  <strong>💡 학생 수정 질문:</strong><br>
+                  "링크를 직접 열어 표의 <strong>기준 기간(회계연도)과 원값</strong>을 눈으로 확인했나요?"
+                </div>
+              </div>
+
+              <!-- 오류 3 -->
+              <div class="bg-white p-5 rounded-2xl border-2 border-red-300 flex flex-col justify-between">
+                <div>
+                  <span class="px-2.5 py-0.5 rounded badge-warn text-xs font-extrabold">[함정 3] 동반 변화를 원인으로 단정</span>
+                  <h3 class="text-lg font-extrabold text-slate-900 mt-2 mb-2">"환율이 오를 때 이익이 줄었으니 환율이 원인입니다."</h3>
+                  <p class="text-xs sm:text-sm text-slate-600 mb-4">
+                    같은 기간에 두 변수가 함께 움직였다는 사실만으로 인과관계가 증명되지는 않습니다.
+                  </p>
+                </div>
+                <div class="p-3 rounded-xl bg-blue-50 border border-blue-200 text-xs text-blue-950">
+                  <strong>💡 학생 수정 질문:</strong><br>
+                  "환율 외에 <strong>다른 비용 요인(대안 가설)</strong>은 없었나요? 가설로 분리해 적었나요?"
+                </div>
+              </div>
+            </div>
+          </div>
+        `
+      },
+
+      // Slide 29
+      {
+        num: 29,
+        section: "점검 및 마무리",
+        title: "스스로 확인 (Self-Check)",
+        subtitle: "오늘 배운 핵심 원칙 3가지를 점검해 보세요 (클릭 또는 Enter로 해설 열기)",
+        note: "답: 기간 별도 확인 / 확인 불가 / 가격 차이 등에 따라 서로 다를 수 있다.",
+        html: `
+          <div class="space-y-4">
+            <p class="text-xs sm:text-sm text-slate-600">
+              각 질문을 먼저 스스로 답해본 뒤, <strong>[해설 보기]</strong> 버튼을 눌러 정답을 확인하세요. (키보드 Tab + Enter로도 조작 가능)
+            </p>
+
+            <!-- 문항 1 -->
+            <div class="bg-white p-5 rounded-xl border-2 border-slate-200">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                  <span class="px-2 py-0.5 rounded bg-blue-100 text-blue-900 text-xs font-extrabold">확인 문항 Q1</span>
+                  <h3 class="font-bold text-slate-900 text-sm sm:text-base mt-1">2026년 3월에 발행된 보고서에서 찾은 연간 매출액은 몇 년도 실적이라고 적어야 할까?</h3>
+                </div>
+                <button type="button" onclick="toggleAnswer('q29-a1', this)" aria-expanded="false" aria-controls="q29-a1" class="shrink-0 px-3.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold transition">
+                  해설 보기
+                </button>
+              </div>
+              <div id="q29-a1" class="hidden mt-3 pt-3 border-t border-slate-200 text-xs sm:text-sm text-blue-950 bg-blue-50 p-3.5 rounded-lg">
+                <strong>✅ 정답 및 해설:</strong> <strong>자료의 기준 기간(예: 2025년 연간)을 별도로 확인해 적어야 합니다.</strong> 문서 발행일(2026년)과 표 안의 실적 기준 기간(2025년)은 다르므로 반드시 표 상단·열 제목의 회계기간을 확인합니다.
+              </div>
+            </div>
+
+            <!-- 문항 2 -->
+            <div class="bg-white p-5 rounded-xl border-2 border-slate-200">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                  <span class="px-2 py-0.5 rounded bg-blue-100 text-blue-900 text-xs font-extrabold">확인 문항 Q2</span>
+                  <h3 class="font-bold text-slate-900 text-sm sm:text-base mt-1">AI가 출처 링크를 함께 제시했지만 유료 결제나 권한 제한으로 원문을 열지 못했다면 검증 상태는?</h3>
+                </div>
+                <button type="button" onclick="toggleAnswer('q29-a2', this)" aria-expanded="false" aria-controls="q29-a2" class="shrink-0 px-3.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold transition">
+                  해설 보기
+                </button>
+              </div>
+              <div id="q29-a2" class="hidden mt-3 pt-3 border-t border-slate-200 text-xs sm:text-sm text-blue-950 bg-blue-50 p-3.5 rounded-lg">
+                <strong>✅ 정답 및 해설:</strong> <strong>‘확인 불가(미확인)’</strong>로 기록합니다. 링크가 존재하더라도 내가 직접 원문 표와 정의를 눈으로 대조하지 못했다면 검증 완료로 표시할 수 없으며, 공개된 대체 자료를 찾아야 합니다.
+              </div>
+            </div>
+
+            <!-- 문항 3 -->
+            <div class="bg-white p-5 rounded-xl border-2 border-slate-200">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                  <span class="px-2 py-0.5 rounded bg-blue-100 text-blue-900 text-xs font-extrabold">확인 문항 Q3</span>
+                  <h3 class="font-bold text-slate-900 text-sm sm:text-base mt-1">같은 기업의 같은 연도라도 ‘매출액 기준 점유율’과 ‘판매량(수량) 기준 점유율’은 항상 같을까?</h3>
+                </div>
+                <button type="button" onclick="toggleAnswer('q29-a3', this)" aria-expanded="false" aria-controls="q29-a3" class="shrink-0 px-3.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold transition">
+                  해설 보기
+                </button>
+              </div>
+              <div id="q29-a3" class="hidden mt-3 pt-3 border-t border-slate-200 text-xs sm:text-sm text-blue-950 bg-blue-50 p-3.5 rounded-lg">
+                <strong>✅ 정답 및 해설:</strong> <strong>제품 단가(가격) 차이 등에 따라 서로 다를 수 있습니다.</strong> 예를 들어 고가 프리미엄 제품은 판매량 점유율은 낮아도 매출액 점유율은 높게 나타납니다. 따라서 점유율 인용 시 매출 기준인지 수량 기준인지 반드시 명시해야 합니다.
+              </div>
+            </div>
+          </div>
+        `
+      },
+
+      // Slide 30
+      {
+        num: 30,
+        section: "점검 및 마무리",
+        title: "7차수로 넘길 것",
+        subtitle: "개인 질문 + 조별 자료 지도 + 원문 위치 + 미확인 사항 및 대체 계획",
+        note: "수집 담당·변수·기간·단위·대체 계획을 남긴다. 제출·평가 세부사항은 별도 공지.",
+        html: `
+          <div class="space-y-5">
+            <!-- 6차수 완료 체크리스트 -->
+            <div class="bg-white p-5 sm:p-6 rounded-2xl border-2 border-blue-400 shadow-xs">
+              <h3 class="text-base sm:text-lg font-extrabold text-slate-900 mb-3">✅ 6차수 퇴실 전 완료 확인 체크리스트 (7차수 준비물)</h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs sm:text-sm">
+                <label class="flex items-start gap-2.5 p-3 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer">
+                  <input type="checkbox" class="mt-1 w-4 h-4 text-blue-600 rounded">
+                  <span><strong>1. 주장→문서→표·쪽 연결:</strong> 내 근거 기록표에서 URL뿐만 아니라 문서 제목, 표 번호/쪽수, 원값과 기준이 이어지는가?</span>
+                </label>
+                <label class="flex items-start gap-2.5 p-3 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer">
+                  <input type="checkbox" class="mt-1 w-4 h-4 text-blue-600 rounded">
+                  <span><strong>2. 미확인 사항의 정직한 분리:</strong> 원문을 직접 보지 못한 수치나 원인 추론을 '미확인' 또는 '가설'로 명확히 구분했는가?</span>
+                </label>
+                <label class="flex items-start gap-2.5 p-3 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer">
+                  <input type="checkbox" class="mt-1 w-4 h-4 text-blue-600 rounded">
+                  <span><strong>3. 7차수 수집 명세 확정:</strong> 다음 시간에 수집할 <strong>담당자 · 변수명 · 기준 기간 · 단위</strong>가 조별 자료 지도에 적혀 있는가?</span>
+                </label>
+                <label class="flex items-start gap-2.5 p-3 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer">
+                  <input type="checkbox" class="mt-1 w-4 h-4 text-blue-600 rounded">
+                  <span><strong>4. 확보 곤란 시 대체 계획:</strong> 비공개·미존재 자료에 대해 공개 자료로 검증 가능한 대체 질문·지표를 마련했는가?</span>
+                </label>
+              </div>
+              <p class="mt-3 text-xs text-slate-500">※ 수업 운영 시간 및 과제 제출·평가의 세부 배점·마감일정은 강의실 공지를 따릅니다.</p>
+            </div>
+
+            <!-- 7차수 연결 및 주요 링크 카드 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-kgu-navy text-white p-5 rounded-xl flex flex-col justify-between">
+                <div>
+                  <span class="px-2 py-0.5 rounded bg-blue-500 text-white text-xs font-bold">Next Step · 7차수 예고</span>
+                  <h4 class="text-base sm:text-lg font-extrabold mt-2 mb-1">7차수: 기업 공시(DART)와 산업 통계(KOSIS) 수집 및 구조화</h4>
+                  <p class="text-xs text-slate-300 leading-relaxed mb-4">오늘 작성한 자료 지도와 원문 위치를 바탕으로, 실제 수치 데이터를 표로 추출하고 단위를 맞춰 결합합니다.</p>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                  <a href="week-07.html" class="px-3.5 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition">7차수 슬라이드 이동 →</a>
+                  <a href="../downloads/week-07-notes.md" class="px-3.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-blue-200 text-xs font-semibold border border-slate-600 transition">7차수 강의노트</a>
+                  <a href="../midterm.html" class="px-3.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-blue-200 text-xs font-semibold border border-slate-600 transition">중간고사 과제안</a>
+                </div>
+              </div>
+
+              <div class="bg-white p-5 rounded-xl border-2 border-slate-200 flex flex-col justify-between">
+                <div>
+                  <span class="px-2 py-0.5 rounded bg-amber-100 text-amber-900 text-xs font-extrabold">공식 원문 사이트 바로가기 (접속 필요)</span>
+                  <h4 class="text-base font-extrabold text-slate-900 mt-2 mb-2">7차수 실습 전 검색 경로 미리 확인하기</h4>
+                  <ul class="text-xs text-slate-700 space-y-2">
+                    <li>• <a href="https://dart.fss.or.kr/guide/main.jsp?menu=121" target="_blank" rel="noopener noreferrer" class="text-blue-700 font-bold hover:underline">DART 공시서류 검색 안내 ↗</a> <span class="text-slate-500">(https://dart.fss.or.kr/guide/main.jsp?menu=121)</span></li>
+                    <li>• <a href="https://kosis.kr/ext/kosisGuide/pdf/KOSIS_search.pdf" target="_blank" rel="noopener noreferrer" class="text-blue-700 font-bold hover:underline">KOSIS 통계표 조회 안내 PDF ↗</a> <span class="text-slate-500">(https://kosis.kr/ext/kosisGuide/pdf/KOSIS_search.pdf)</span></li>
+                    <li>• <a href="../downloads/week-06-notes.md" class="text-slate-800 font-bold hover:underline">6차수 수강생용 강의노트 원문 보기</a></li>
+                  </ul>
+                </div>
+                <div class="mt-3 pt-2 border-t border-slate-200 text-xs text-slate-500 flex items-center justify-between">
+                  <span>경기대학교 「통계컨설팅의 이해」</span>
+                  <a href="../index.html" class="font-bold text-blue-700 hover:underline">🏠 강의 허브로 돌아가기</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        `
+      }
+    ];
+
+    // 상태 변수
+    let currentSlideIndex = 0; // 0-based (0 ~ 29)
+    let isNotesVisible = false;
+    let isAllViewMode = false;
+    let lastFocusedElement = null;
+
+    // DOM 요소 참조
+    const slidesContainer = document.getElementById('slides-container');
+    const slideSelect = document.getElementById('slide-select');
+    const slideCounter = document.getElementById('slide-counter');
+    const progressBar = document.getElementById('progress-bar');
+    const progressContainer = document.getElementById('progress-container');
+    const notePanel = document.getElementById('instructor-note-panel');
+    const noteContent = document.getElementById('instructor-note-content');
+    const noteIndicator = document.getElementById('note-slide-indicator');
+
+    const btnFirst = document.getElementById('btn-first');
+    const btnPrev = document.getElementById('btn-prev');
+    const btnNext = document.getElementById('btn-next');
+    const btnLast = document.getElementById('btn-last');
+    const btnToc = document.getElementById('btn-toc');
+    const btnNotes = document.getElementById('btn-notes');
+    const btnAllView = document.getElementById('btn-all-view');
+    const btnLinks = document.getElementById('btn-links');
+
+    const tocModal = document.getElementById('toc-modal');
+    const tocList = document.getElementById('toc-list');
+    const linksModal = document.getElementById('links-modal');
+
+    // 초기 렌더링: 30장 슬라이드 DOM 생성
+    function initSlides() {
+      slidesContainer.innerHTML = SLIDES.map((s, idx) => {
+        const numStr = String(s.num).padStart(2, '0');
+        return `
+          <section id="slide-${s.num}" data-index="${idx}" class="slide-card ${idx === 0 ? 'block' : 'hidden'} bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-8 transition-all" aria-label="${s.num}장: ${s.title}">
+            <!-- 슬라이드 상단 메타 헤더 -->
+            <div class="flex flex-wrap items-center justify-between gap-2 pb-4 mb-6 border-b border-slate-200">
+              <div class="flex items-center gap-2">
+                <span class="px-2.5 py-1 rounded-lg bg-kgu-navy text-white font-mono text-xs sm:text-sm font-extrabold">Slide ${numStr} / 30</span>
+                <span class="px-2.5 py-1 rounded-lg bg-blue-50 text-blue-900 border border-blue-200 text-xs font-bold">${s.section}</span>
+              </div>
+              <span class="text-xs text-slate-500 font-medium">6차수 · AI 리서치를 활용한 기업 및 산업 자료조사</span>
+            </div>
+
+            <!-- 슬라이드 장 제목 & 부제목 -->
+            <div class="mb-6">
+              <h2 class="text-xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mb-1.5">${s.title}</h2>
+              <p class="text-sm sm:text-base font-semibold text-blue-800">${s.subtitle}</p>
+            </div>
+
+            <!-- 슬라이드 본문 콘텐츠 -->
+            <div class="slide-body">
+              ${s.html}
+            </div>
+
+            <!-- 인쇄용 강사 노트 (평소에는 숨김, 인쇄 시에만 노출) -->
+            <div class="hidden print-note text-slate-700">
+              <strong>[강사 노트 · 확인 기준]</strong> ${s.note}
+            </div>
+          </section>
+        `;
+      }).join('');
+
+      // 하단 드롭다운 및 목차 모달 초기화
+      slideSelect.innerHTML = SLIDES.map((s, idx) => {
+        const numStr = String(s.num).padStart(2, '0');
+        return `<option value="${idx}">${numStr}장. ${s.title}</option>`;
+      }).join('');
+
+      tocList.innerHTML = SLIDES.map((s, idx) => {
+        const numStr = String(s.num).padStart(2, '0');
+        return `
+          <button type="button" onclick="selectFromToc(${idx})" class="text-left p-3 rounded-xl border border-slate-200 hover:border-blue-500 hover:bg-blue-50/60 transition flex items-start gap-3 group">
+            <span class="px-2 py-0.5 rounded bg-slate-100 group-hover:bg-blue-600 group-hover:text-white font-mono text-xs font-bold text-slate-700 shrink-0">${numStr}</span>
+            <div class="min-w-0">
+              <div class="text-[11px] font-semibold text-blue-700">${s.section}</div>
+              <div class="text-xs sm:text-sm font-bold text-slate-900 truncate">${s.title}</div>
+            </div>
+          </button>
+        `;
+      }).join('');
+
+      updateUI();
+    }
+
+    // 현재 슬라이드 상태 업데이트
+    function updateUI() {
+      const total = SLIDES.length;
+      const current = SLIDES[currentSlideIndex];
+      const numStr = String(current.num).padStart(2, '0');
+
+      // 슬라이드 카드 표시/숨김 (단, 전체 펼침 모드가 아닐 때)
+      const cards = document.querySelectorAll('.slide-card');
+      cards.forEach((card, idx) => {
+        if (isAllViewMode) {
+          card.classList.remove('hidden');
+          card.classList.add('block');
+        } else {
+          if (idx === currentSlideIndex) {
+            card.classList.remove('hidden');
+            card.classList.add('block');
+          } else {
+            card.classList.remove('block');
+            card.classList.add('hidden');
+          }
+        }
+      });
+
+      // 카운터, 셀렉트박스, 진행률 바 갱신
+      slideSelect.value = String(currentSlideIndex);
+      slideCounter.textContent = `${numStr} / ${total}`;
+      const pct = ((currentSlideIndex + 1) / total) * 100;
+      progressBar.style.width = `${pct.toFixed(2)}%`;
+      progressContainer.setAttribute('aria-valuenow', String(current.num));
+
+      // 이전/다음 버튼 활성 상태
+      btnFirst.disabled = currentSlideIndex === 0;
+      btnPrev.disabled = currentSlideIndex === 0;
+      btnNext.disabled = currentSlideIndex === total - 1;
+      btnLast.disabled = currentSlideIndex === total - 1;
+
+      // 강사 노트 내용 갱신
+      noteIndicator.textContent = `Slide ${numStr} / ${total} · ${current.title}`;
+      noteContent.textContent = current.note;
+
+      // URL 해시 업데이트 (히스토리 오염 최소화)
+      history.replaceState(null, '', `${location.pathname}${location.search}#slide-${current.num}`);
+    }
+
+    // 특정 슬라이드 번호(1~30)로 이동
+    function goToSlide(slideNum) {
+      const targetIdx = Math.max(0, Math.min(SLIDES.length - 1, slideNum - 1));
+      currentSlideIndex = targetIdx;
+      updateUI();
+      if (isAllViewMode) {
+        const el = document.getElementById(`slide-${slideNum}`);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    // 강사 노트 토글
+    function toggleNotes() {
+      isNotesVisible = !isNotesVisible;
+      btnNotes.setAttribute('aria-pressed', String(isNotesVisible));
+      if (isNotesVisible) {
+        notePanel.classList.remove('hidden');
+        btnNotes.classList.add('ring-2', 'ring-amber-400');
+      } else {
+        notePanel.classList.add('hidden');
+        btnNotes.classList.remove('ring-2', 'ring-amber-400');
+      }
+    }
+
+    // 전체 슬라이드 펼침 보기 모드 토글
+    function toggleAllView() {
+      isAllViewMode = !isAllViewMode;
+      btnAllView.setAttribute('aria-pressed', String(isAllViewMode));
+      if (isAllViewMode) {
+        document.body.classList.add('all-slides-mode');
+        btnAllView.classList.add('ring-2', 'ring-emerald-400');
+      } else {
+        document.body.classList.remove('all-slides-mode');
+        btnAllView.classList.remove('ring-2', 'ring-emerald-400');
+      }
+      updateUI();
+      if (isAllViewMode) document.getElementById(`slide-${currentSlideIndex + 1}`)?.scrollIntoView();
+    }
+
+    // 모달 열기/닫기 및 포커스 복귀
+    function openModal(modalEl, triggerBtn) {
+      lastFocusedElement = triggerBtn || document.activeElement;
+      modalEl.classList.remove('hidden');
+      modalEl.classList.add('flex');
+      if (triggerBtn) triggerBtn.setAttribute('aria-expanded', 'true');
+      const closeBtn = modalEl.querySelector('button');
+      if (closeBtn) closeBtn.focus();
+    }
+
+    function closeModal(modalEl, triggerBtn) {
+      modalEl.classList.add('hidden');
+      modalEl.classList.remove('flex');
+      if (triggerBtn) triggerBtn.setAttribute('aria-expanded', 'false');
+      if (lastFocusedElement) lastFocusedElement.focus();
+    }
+
+    function selectFromToc(idx) {
+      currentSlideIndex = idx;
+      closeModal(tocModal, btnToc);
+      updateUI();
+      if (isAllViewMode) {
+        const el = document.getElementById(`slide-${idx + 1}`);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    // 13장 프롬프트 복사 기능 (클립보드 API + execCommand 폴백)
+    function copyPromptSlide13(btnEl) {
+      const statusEl = document.getElementById('copy-status-13');
+      const showStatus = (msg, isError = false) => {
+        if (!statusEl) return;
+        statusEl.textContent = msg;
+        statusEl.className = `mt-2 text-xs font-bold ${isError ? 'text-red-600' : 'text-emerald-700'}`;
+        statusEl.classList.remove('hidden');
+      };
+
+      const fallbackCopy = (text) => {
+        try {
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          ta.style.position = 'fixed';
+          ta.style.left = '-9999px';
+          document.body.appendChild(ta);
+          ta.select();
+          const ok = document.execCommand('copy');
+          document.body.removeChild(ta);
+          if (ok) {
+            showStatus('✅ 프롬프트 원문 전체가 클립보드에 복사되었습니다!');
+          } else {
+            showStatus('⚠️ 자동 복사에 실패했습니다. 텍스트 상자를 직접 드래그해 복사해주세요.', true);
+          }
+        } catch (err) {
+          showStatus('⚠️ 자동 복사에 실패했습니다. 텍스트 상자를 직접 드래그해 복사해주세요.', true);
+        }
+      };
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(PROMPT_TEXT_SLIDE_13)
+          .then(() => showStatus('✅ 프롬프트 원문 전체가 클립보드에 복사되었습니다!'))
+          .catch(() => fallbackCopy(PROMPT_TEXT_SLIDE_13));
+      } else {
+        fallbackCopy(PROMPT_TEXT_SLIDE_13);
+      }
+    }
+
+    // 21장 실습 A 자체 점검 피드백
+    function checkPracticeA() {
+      const s1 = document.getElementById('pracA-s1')?.value;
+      const s2 = document.getElementById('pracA-s2')?.value;
+      const s3 = document.getElementById('pracA-s3')?.value;
+      const fb = document.getElementById('pracA-feedback');
+      if (!fb) return;
+
+      if (!s1 || !s2 || !s3) {
+        fb.textContent = '⚠️ 세 가지 주장의 판정 상태를 모두 선택해 주세요.';
+        fb.className = 'text-xs sm:text-sm font-bold text-amber-800';
+        return;
+      }
+
+      const correctCount = (s1 === 'ok' ? 1 : 0) + (s2 === 'unit' ? 1 : 0) + (s3 === 'unverified' ? 1 : 0);
+      if (correctCount === 3) {
+        fb.textContent = '🎉 정확합니다! 주장1(사실 일치), 주장2(% vs %p 수정 필요), 주장3(원인 미확인)을 모두 구별하셨습니다. 22장에서 상세 해설을 확인하세요.';
+        fb.className = 'text-xs sm:text-sm font-bold text-emerald-800';
+      } else {
+        fb.textContent = `💡 3개 중 ${correctCount}개 일치합니다. 2%와 2%p의 차이, 원문 표에 비용 항목이 있는지 다시 생각해보고 22장 해설을 확인하세요.`;
+        fb.className = 'text-xs sm:text-sm font-bold text-blue-900';
+      }
+    }
+
+    // 29장 스스로 확인 해설 토글
+    function toggleAnswer(answerId, btnEl) {
+      const target = document.getElementById(answerId);
+      if (!target) return;
+      const isHidden = target.classList.contains('hidden');
+      if (isHidden) {
+        target.classList.remove('hidden');
+        btnEl.setAttribute('aria-expanded', 'true');
+        btnEl.textContent = '해설 닫기';
+      } else {
+        target.classList.add('hidden');
+        btnEl.setAttribute('aria-expanded', 'false');
+        btnEl.textContent = '해설 보기';
+      }
+    }
+
+    // 이벤트 리스너 바인딩
+    btnFirst.addEventListener('click', () => goToSlide(1));
+    btnPrev.addEventListener('click', () => goToSlide(currentSlideIndex));
+    btnNext.addEventListener('click', () => goToSlide(currentSlideIndex + 2));
+    btnLast.addEventListener('click', () => goToSlide(SLIDES.length));
+
+    slideSelect.addEventListener('change', (e) => {
+      goToSlide(Number(e.target.value) + 1);
+    });
+
+    btnNotes.addEventListener('click', toggleNotes);
+    document.getElementById('btn-close-note').addEventListener('click', toggleNotes);
+    btnAllView.addEventListener('click', toggleAllView);
+
+    btnToc.addEventListener('click', () => openModal(tocModal, btnToc));
+    document.getElementById('btn-close-toc').addEventListener('click', () => closeModal(tocModal, btnToc));
+    tocModal.addEventListener('click', (e) => {
+      if (e.target === tocModal) closeModal(tocModal, btnToc);
+    });
+
+    btnLinks.addEventListener('click', () => openModal(linksModal, btnLinks));
+    document.getElementById('btn-close-links').addEventListener('click', () => closeModal(linksModal, btnLinks));
+    linksModal.addEventListener('click', (e) => {
+      if (e.target === linksModal) closeModal(linksModal, btnLinks);
+    });
+
+    // 키보드 단축키 지원
+    document.addEventListener('keydown', (e) => {
+      // 입력창 포커스 시 단축키 무시
+      const tag = document.activeElement?.tagName?.toLowerCase();
+      if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
+
+      // ESC로 열린 모달 닫기
+      if (e.key === 'Escape') {
+        if (!tocModal.classList.contains('hidden')) closeModal(tocModal, btnToc);
+        if (!linksModal.classList.contains('hidden')) closeModal(linksModal, btnLinks);
+        return;
+      }
+
+      // 모달이 열려 있을 때는 슬라이드 이동 막음
+      if (!tocModal.classList.contains('hidden') || !linksModal.classList.contains('hidden')) return;
+
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        e.preventDefault();
+        if (currentSlideIndex < SLIDES.length - 1) goToSlide(currentSlideIndex + 2);
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        if (currentSlideIndex > 0) goToSlide(currentSlideIndex);
+      } else if (e.key === 'Home') {
+        e.preventDefault();
+        goToSlide(1);
+      } else if (e.key === 'End') {
+        e.preventDefault();
+        goToSlide(SLIDES.length);
+      } else if (e.key === 'n' || e.key === 'N') {
+        e.preventDefault();
+        toggleNotes();
+      } else if (e.key === 'm' || e.key === 'M') {
+        e.preventDefault();
+        openModal(tocModal, btnToc);
+      } else if (e.key === 'p' || e.key === 'P') {
+        e.preventDefault();
+        toggleAllView();
+      }
+    });
+
+    // 초기화 및 해시 번호 확인
+    window.addEventListener('DOMContentLoaded', () => {
+      const initialHash = location.hash;
+      initSlides();
+      const query = new URLSearchParams(location.search);
+      if (query.has("read") || query.has("print")) toggleAllView();
+      if (query.has("print")) setTimeout(() => window.print(), 600);
+      const match = initialHash.match(/^#slide-(\d+)$/);
+      if (match) {
+        const num = parseInt(match[1], 10);
+        if (num >= 1 && num <= SLIDES.length) {
+          goToSlide(num);
+        }
+      }
+    });
+    const fullscreenButton = document.getElementById('btn-fullscreen');
+    fullscreenButton.addEventListener('click', async () => {
+      try { if (document.fullscreenElement) await document.exitFullscreen(); else await document.documentElement.requestFullscreen(); } catch (_) { fullscreenButton.textContent = '전체화면을 사용할 수 없습니다'; }
+    });
+    document.addEventListener('fullscreenchange', () => {
+      const active = !!document.fullscreenElement;
+      fullscreenButton.textContent = active ? '전체화면 해제' : '전체화면';
+      fullscreenButton.setAttribute('aria-pressed', String(active));
+    });
+  </script>
+</body>
+</html>
