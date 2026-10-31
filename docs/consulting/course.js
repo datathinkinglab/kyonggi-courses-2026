@@ -80,6 +80,15 @@
     byId('current-agenda').replaceChildren(...(item.agenda || ['강의계획에 따라 자료를 준비하고 있습니다.']).map(text => { const li = document.createElement('li'); li.textContent = text; return li; }));
     const slideLink = byId('current-slide-link');
     slideLink.href = item.slide || '#roadmap'; slideLink.textContent = item.slide ? `${item.week}차 슬라이드 열기 →` : `${item.week}차 슬라이드 준비 예정`; slideLink.classList.toggle('disabled', !item.slide); slideLink.setAttribute('aria-disabled', String(!item.slide));
+    let deployGuide = byId('week04-deploy-guide');
+    if (!deployGuide) {
+      deployGuide = document.createElement('a');
+      deployGuide.id = 'week04-deploy-guide'; deployGuide.className = 'button';
+      deployGuide.href = 'github-guide.html'; deployGuide.target = '_blank'; deployGuide.rel = 'noopener';
+      deployGuide.textContent = 'GitHub·앱 배포 참고 ↗';
+      byId('current-notion-link').after(deployGuide);
+    }
+    deployGuide.hidden = item.week !== 4; deployGuide.style.display = item.week === 4 ? '' : 'none';
     const notionLink = byId('current-notion-link'); notionLink.href = item.notion || notionCourse; notionLink.textContent = item.notion ? `${item.week}차 원문 ↗` : '전체 Notion 강의노트 ↗';
     byId('current-card-help').innerHTML = item.slide ? (item.help || '방향키로 이동 · O 전체 목록<br>N 강사 노트 · 전체 화면 지원') : '해당 차수 슬라이드가 추가되면<br>이 버튼이 자동으로 활성화됩니다.';
     const headerLink = byId('header-slide-link'); headerLink.href = item.slide || '#current-course'; headerLink.textContent = item.slide ? '슬라이드 열기 →' : '준비 예정'; headerLink.classList.toggle('disabled', !item.slide); headerLink.setAttribute('aria-disabled', String(!item.slide));
