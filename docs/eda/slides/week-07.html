@@ -1,0 +1,2093 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>자료탐색방법론 7차수 강의노트 · 자료의 재표현 ①: 변환의 사다리</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            kgu: {
+              blue: '#003876',
+              light: '#005bac',
+              dark: '#00224b',
+              accent: '#f39200',
+              soft: '#eaf2fa'
+            }
+          },
+          fontFamily: {
+            sans: ['Pretendard', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            mono: ['JetBrains Mono', 'Fira Code', 'Consolas', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- KaTeX for Math Expressions -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+
+  <!-- Google Fonts & Pretendard -->
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.05);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+    .dark ::-webkit-scrollbar-thumb {
+      background: #475569;
+    }
+
+    /* Print Optimization */
+    @media print {
+      body {
+        background: white !important;
+        color: black !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .slide-container {
+        display: block !important;
+        page-break-after: always;
+        break-after: page;
+        box-shadow: none !important;
+        border: 1px solid #e2e8f0 !important;
+        margin-bottom: 2rem !important;
+      }
+      .slide-mode-only {
+        display: none !important;
+      }
+      .document-mode-only {
+        display: block !important;
+      }
+    }
+
+    /* Slide transition & animations */
+    .fade-in {
+      animation: fadeIn 0.25s ease-out forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+<style>@media(max-width:640px){header h1,header .inline-flex{display:none!important} #fullscreen-toggle{font-size:0!important} #fullscreen-toggle::after{content:"⛶";font-size:16px} main,.slide-card{min-width:0;max-width:100%} .slide-card pre{max-width:100%;overflow-x:auto}} @media print { .slide-card.hidden {display:block!important} .slide-card{break-after:page;page-break-after:always} .no-print{display:none!important} }</style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col font-sans antialiased transition-colors duration-200">
+
+  <!-- Top Sticky Navigation Bar -->
+  <header class="no-print sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur border-b border-slate-200 dark:border-slate-800 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+      
+      <!-- Brand & Title -->
+      <div class="flex items-center gap-3">
+        <button id="sidebarToggleBtn" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 focus:outline-none" title="목차 열기/닫기">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <div class="flex items-center gap-2">
+          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-kgu-blue text-white shadow-sm">
+            KGU EDA 2026-2
+          </span>
+          <span class="text-xs font-medium text-slate-500 dark:text-slate-400 hidden sm:inline">7차수 강의노트</span>
+        </div>
+        <div class="h-4 w-px bg-slate-300 dark:bg-slate-700 hidden sm:block"></div>
+        <h1 class="text-sm md:text-base font-bold text-slate-900 dark:text-white truncate max-w-[200px] sm:max-w-md">
+          자료의 재표현 ①: 변환의 사다리
+        </h1>
+      </div>
+
+      <!-- Controls: Slide Navigator & Mode Switchers -->
+      <div class="flex items-center gap-2">
+        <!-- View Mode Switcher -->
+        <div class="bg-slate-100 dark:bg-slate-800 p-1 rounded-lg flex items-center text-xs font-medium">
+          <button id="modeSlideBtn" class="px-2.5 py-1 rounded-md bg-white dark:bg-slate-700 text-kgu-blue dark:text-sky-400 shadow-xs font-semibold flex items-center gap-1">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/></svg>
+            <span class="hidden md:inline">슬라이드 모드</span>
+          </button>
+          <button id="modeDocBtn" class="px-2.5 py-1 rounded-md text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white flex items-center gap-1">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.546a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            <span class="hidden md:inline">전체 읽기</span>
+          </button>
+        </div>
+
+        <!-- Slide Stepper (Visible in Slide Mode) -->
+        <div id="slideControls" class="flex items-center gap-1.5">
+          <button id="prevSlideBtn" class="p-1.5 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed" title="이전 (←)">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+          </button>
+          <span class="text-xs font-mono font-medium text-slate-600 dark:text-slate-300 min-w-[50px] text-center">
+            <span id="currentSlideNum">1</span> / <span id="totalSlideNum">23</span>
+          </span>
+          <button id="nextSlideBtn" class="p-1.5 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed" title="다음 (→)">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+
+        <button id="fullscreen-toggle" type="button" aria-label="화면 전체보기" title="화면 전체보기" class="p-2 rounded-lg border text-xs">화면 전체보기</button>
+        <!-- Utility: Dark mode & Print -->
+        <button id="darkModeBtn" class="p-2 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800" title="다크/라이트 모드">
+          <svg id="moonIcon" class="w-4 h-4 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+          <svg id="sunIcon" class="w-4 h-4 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+        </button>
+        <button onclick="window.print()" class="p-2 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hidden sm:block" title="인쇄 및 PDF 저장">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Progress Indicator Bar -->
+    <div class="w-full bg-slate-200 dark:bg-slate-800 h-1">
+      <div id="progressBar" class="bg-kgu-blue dark:bg-sky-500 h-1 transition-all duration-300" style="width: 4.35%;"></div>
+    </div>
+  </header>
+
+  <div class="flex-1 flex max-w-7xl w-full mx-auto relative">
+    
+    <!-- Sidebar / Table of Contents -->
+    <aside id="sidebar" class="no-print fixed inset-y-0 left-0 z-50 w-72 sm:w-80 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 transform -translate-x-full transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:z-10 flex flex-col pt-16 lg:pt-0">
+      <div class="p-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+        <div>
+          <h2 class="text-xs font-semibold uppercase tracking-wider text-slate-400">강의 슬라이드 목차</h2>
+          <p class="text-sm font-bold text-slate-800 dark:text-slate-200">총 23개 슬라이드</p>
+        </div>
+        <button id="sidebarCloseBtn" class="lg:hidden p-1.5 rounded-md text-slate-400 hover:text-slate-700 dark:hover:text-slate-200">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <!-- TOC List -->
+      <nav id="tocList" class="flex-1 overflow-y-auto p-2 space-y-1 text-xs sm:text-sm">
+        <!-- Dynamically generated or linked items -->
+      </nav>
+
+      <!-- Sidebar Footer Badge -->
+      <div class="p-3 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 text-xs text-slate-500">
+        <div class="flex items-center gap-2 mb-1">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          <span class="font-medium text-slate-700 dark:text-slate-300">실습 데이터: 월 소득 22건</span>
+        </div>
+        <p class="text-[11px] text-slate-400">유효 20건 · 결측 2건 (원자료 보존)</p>
+      </div>
+    </aside>
+
+    <!-- Overlay for mobile sidebar -->
+    <div id="sidebarOverlay" class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-40 hidden lg:hidden"></div>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 min-w-0 p-4 sm:p-6 lg:p-8 flex flex-col justify-between">
+      
+      <!-- Slide Wrapper -->
+      <div id="slideContentContainer" class="w-full max-w-5xl mx-auto">
+        <!-- All 23 Slides are defined below. In Slide Mode only active one is shown. In Doc Mode, all are shown in sequence. -->
+
+        <!-- SLIDE 01 -->
+        <article class="slide-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-sm mb-8" data-slide="1">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+            <span class="text-xs font-mono font-bold tracking-widest uppercase text-kgu-blue dark:text-sky-400">SLIDE 01 · 표지</span>
+            <span class="text-xs text-slate-400">자료탐색방법론 2026-2 · 7차수</span>
+          </div>
+
+          <div class="text-center py-6 sm:py-10">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 dark:bg-blue-950/60 text-kgu-light dark:text-sky-300 border border-blue-200 dark:border-blue-800 mb-4">
+              ✨ 핵심 질문
+            </div>
+            <h2 class="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-snug max-w-3xl mx-auto">
+              오른쪽 꼬리가 긴 자료에서 큰 값을 지우지 않고 분포를 더 잘 살펴볼 방법은 무엇인가?
+            </h2>
+            <p class="mt-4 text-base sm:text-lg text-slate-600 dark:text-slate-400 font-medium max-w-2xl mx-auto">
+              자료의 재표현 ①: 변환의 사다리 (원자료 · 제곱근 · 로그 · 제곱 변환의 원리와 검증)
+            </p>
+          </div>
+
+          <!-- Conceptual Visual: Dot Comparison -->
+          <div class="my-6 bg-slate-50 dark:bg-slate-800/60 rounded-xl p-5 border border-slate-200/80 dark:border-slate-700/60">
+            <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">개념 시각화: 동일한 관측의 두 가지 척도 표현</h4>
+            <div class="space-y-4">
+              <div>
+                <div class="flex justify-between text-xs text-slate-500 font-medium mb-1">
+                  <span>원자료 척도 (Right-skewed, 큰 값 간격 팽창)</span>
+                  <span>단위: 만 원</span>
+                </div>
+                <div class="h-8 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700 relative flex items-center px-4 overflow-hidden">
+                  <!-- Dots -->
+                  <div class="absolute left-[10%] w-3 h-3 rounded-full bg-blue-500" title="120"></div>
+                  <div class="absolute left-[13%] w-3 h-3 rounded-full bg-blue-500" title="150"></div>
+                  <div class="absolute left-[16%] w-3 h-3 rounded-full bg-blue-500" title="180"></div>
+                  <div class="absolute left-[20%] w-3 h-3 rounded-full bg-blue-500" title="220"></div>
+                  <div class="absolute left-[25%] w-3 h-3 rounded-full bg-blue-500" title="270"></div>
+                  <div class="absolute left-[35%] w-3 h-3 rounded-full bg-blue-500" title="400"></div>
+                  <div class="absolute left-[55%] w-3 h-3 rounded-full bg-blue-500" title="700"></div>
+                  <div class="absolute left-[92%] w-3.5 h-3.5 rounded-full bg-rose-500 ring-4 ring-rose-200 dark:ring-rose-900/50" title="1200 (극단치)"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between text-xs text-slate-500 font-medium mb-1">
+                  <span>로그 척도 (Log Scale, 큰 값 간격 압축으로 고른 분포 확인)</span>
+                  <span>단위: ln(만 원)</span>
+                </div>
+                <div class="h-8 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700 relative flex items-center px-4 overflow-hidden">
+                  <!-- Dots logarithmically spaced -->
+                  <div class="absolute left-[10%] w-3 h-3 rounded-full bg-emerald-500" title="ln(120)≈4.79"></div>
+                  <div class="absolute left-[20%] w-3 h-3 rounded-full bg-emerald-500" title="ln(150)≈5.01"></div>
+                  <div class="absolute left-[28%] w-3 h-3 rounded-full bg-emerald-500" title="ln(180)≈5.19"></div>
+                  <div class="absolute left-[36%] w-3 h-3 rounded-full bg-emerald-500" title="ln(220)≈5.39"></div>
+                  <div class="absolute left-[45%] w-3 h-3 rounded-full bg-emerald-500" title="ln(270)≈5.60"></div>
+                  <div class="absolute left-[60%] w-3 h-3 rounded-full bg-emerald-500" title="ln(400)≈5.99"></div>
+                  <div class="absolute left-[78%] w-3 h-3 rounded-full bg-emerald-500" title="ln(700)≈6.55"></div>
+                  <div class="absolute left-[92%] w-3 h-3 rounded-full bg-emerald-600" title="ln(1200)≈7.09"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-amber-50 dark:bg-amber-950/40 border-l-4 border-amber-500 p-4 rounded-r-xl text-sm text-amber-900 dark:text-amber-200 leading-relaxed">
+            <strong>💡 강사 핵심 메시지:</strong> 재표현(Re-expression)은 마음에 들지 않는 자료를 삭제하거나 버리는 편법이 아닙니다. 같은 관측값을 다른 수학적 눈금(척도)에서 바라보아 가려져 있던 구조와 패턴을 투명하게 드러내는 과학적 탐색 절차입니다.
+          </div>
+        </article>
+
+        <!-- SLIDE 02 -->
+        <article class="slide-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-sm mb-8" data-slide="2">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+            <span class="text-xs font-mono font-bold tracking-widest uppercase text-kgu-blue dark:text-sky-400">SLIDE 02 · 기존 차수 연결 & 학습 목표</span>
+            <span class="text-xs text-slate-400">7차수 로드맵</span>
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-4">
+            3~6차수의 축적에서 7차수로 나아가는 길
+          </h3>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-6">
+            <!-- Previous lectures recap -->
+            <div class="bg-slate-50 dark:bg-slate-800/40 rounded-xl p-5 border border-slate-200 dark:border-slate-700">
+              <h4 class="text-sm font-bold text-slate-700 dark:text-slate-200 flex items-center gap-2 mb-3">
+                <span class="w-2.5 h-2.5 rounded-full bg-slate-400"></span> 이전 차수에서 우리가 배운 도구
+              </h4>
+              <ul class="space-y-2.5 text-xs sm:text-sm text-slate-600 dark:text-slate-400">
+                <li class="flex items-start gap-2">
+                  <strong class="text-slate-800 dark:text-slate-200 min-w-[54px]">3차수:</strong>
+                  <span>명세(Specification)와 통계적 검증의 원칙</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <strong class="text-slate-800 dark:text-slate-200 min-w-[54px]">4차수:</strong>
+                  <span>히스토그램과 구간(Bin) 설정에 따른 분포의 왜곡 살피기</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <strong class="text-slate-800 dark:text-slate-200 min-w-[54px]">5차수:</strong>
+                  <span>평균과 중앙값, 이상치에 대한 저항성(Resistance) 개념</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <strong class="text-slate-800 dark:text-slate-200 min-w-[54px]">6차수:</strong>
+                  <span>5수요약과 상자그림(Boxplot), $1.5 \times \text{IQR}$ 울타리와 이상점 탐지</span>
+                </li>
+              </ul>
+            </div>
+
+            <!-- 7th Lecture Goals -->
+            <div class="bg-blue-50/70 dark:bg-blue-950/30 rounded-xl p-5 border border-blue-200 dark:border-blue-900/60">
+              <h4 class="text-sm font-bold text-kgu-blue dark:text-sky-300 flex items-center gap-2 mb-3">
+                <span class="w-2.5 h-2.5 rounded-full bg-kgu-blue dark:bg-sky-400"></span> 7차수 오늘의 핵심 학습 목표
+              </h4>
+              <ol class="space-y-2 text-xs sm:text-sm text-slate-700 dark:text-slate-300 list-decimal list-inside">
+                <li>자료 재표현의 3가지 목적(대칭화·분산안정화·선형화) 설명</li>
+                <li>변환 방향에 따른 관측치 간격의 압축/확대 원리 예측</li>
+                <li>제곱근, 자연로그, 제곱 변환의 정의역과 실수 조건 확인</li>
+                <li>원자료와 변환 척도의 그림 및 요약통계량 교차 비교</li>
+                <li>변환 선택 근거를 제시하고 원래 단위로 맥락 복원·해석</li>
+                <li>경계 사례(0, 음수, 결측)에 대한 방어적 코드 및 검증</li>
+              </ol>
+            </div>
+          </div>
+
+          <div class="p-4 bg-sky-50 dark:bg-sky-950/40 rounded-xl border border-sky-200 dark:border-sky-800 text-sm">
+            <span class="font-bold text-sky-900 dark:text-sky-300">💬 생각해볼 발문:</span>
+            <span class="text-sky-800 dark:text-sky-200 ml-1">“6차수에서 울타리 밖으로 튀어나왔던 통학 시간 90분을 무작정 결측이나 오타로 단정해 지우지 않고, 다른 척도로 보면 무엇이 달라질 수 있을까요?”</span>
+          </div>
+        </article>
+
+        <!-- SLIDE 03 -->
+        <article class="slide-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-sm mb-8" data-slide="3">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+            <span class="text-xs font-mono font-bold tracking-widest uppercase text-kgu-blue dark:text-sky-400">SLIDE 03 · 로드맵</span>
+            <span class="text-xs text-slate-400">학습 흐름도</span>
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">
+            7차수 전체 학습 로드맵 및 사람과 AI의 협업
+          </h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-6">
+            이번 차수의 핵심 실습 목표는 <strong class="text-kgu-blue dark:text-sky-400">오른쪽 꼬리의 대칭화</strong>입니다. 전 과정을 통해 무엇을 인간이 판단하고 무엇을 AI에게 맡길지 명확히 구분합니다.
+          </p>
+
+          <!-- Roadmap flowchart -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2.5 text-center my-6">
+            <div class="p-3 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+              <span class="text-[10px] font-bold text-slate-400 block">STEP 1</span>
+              <span class="text-xs font-bold text-slate-800 dark:text-slate-200 mt-1 block">문제 발견</span>
+              <span class="text-[11px] text-slate-500 mt-0.5 block">꼬리와 왜도 확인</span>
+            </div>
+            <div class="p-3 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+              <span class="text-[10px] font-bold text-slate-400 block">STEP 2</span>
+              <span class="text-xs font-bold text-slate-800 dark:text-slate-200 mt-1 block">재표현 목적</span>
+              <span class="text-[11px] text-slate-500 mt-0.5 block">대칭화 방향 결정</span>
+            </div>
+            <div class="p-3 rounded-lg bg-blue-50 dark:bg-blue-950/50 border border-blue-200 dark:border-blue-800">
+              <span class="text-[10px] font-bold text-blue-500 block">STEP 3</span>
+              <span class="text-xs font-bold text-blue-900 dark:text-blue-200 mt-1 block">변환의 사다리</span>
+              <span class="text-[11px] text-blue-700 dark:text-blue-300 mt-0.5 block">압축 vs 확대 선택</span>
+            </div>
+            <div class="p-3 rounded-lg bg-blue-50 dark:bg-blue-950/50 border border-blue-200 dark:border-blue-800">
+              <span class="text-[10px] font-bold text-blue-500 block">STEP 4</span>
+              <span class="text-xs font-bold text-blue-900 dark:text-blue-200 mt-1 block">손계산 예측</span>
+              <span class="text-[11px] text-blue-700 dark:text-blue-300 mt-0.5 block">간격과 순서 계산</span>
+            </div>
+            <div class="p-3 rounded-lg bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800">
+              <span class="text-[10px] font-bold text-emerald-500 block">STEP 5</span>
+              <span class="text-xs font-bold text-emerald-900 dark:text-emerald-200 mt-1 block">명세 & 실습</span>
+              <span class="text-[11px] text-emerald-700 dark:text-emerald-300 mt-0.5 block">AI 프롬프트/Colab</span>
+            </div>
+            <div class="p-3 rounded-lg bg-purple-50 dark:bg-purple-950/50 border border-purple-200 dark:border-purple-800">
+              <span class="text-[10px] font-bold text-purple-500 block">STEP 6</span>
+              <span class="text-xs font-bold text-purple-900 dark:text-purple-200 mt-1 block">3종 검증</span>
+              <span class="text-[11px] text-purple-700 dark:text-purple-300 mt-0.5 block">손계산·교차·경계</span>
+            </div>
+            <div class="p-3 rounded-lg bg-amber-50 dark:bg-amber-950/50 border border-amber-200 dark:border-amber-800">
+              <span class="text-[10px] font-bold text-amber-500 block">STEP 7</span>
+              <span class="text-xs font-bold text-amber-900 dark:text-amber-200 mt-1 block">맥락 해석</span>
+              <span class="text-[11px] text-amber-700 dark:text-amber-300 mt-0.5 block">원래 단위 복원</span>
+            </div>
+          </div>
+
+          <!-- Human vs AI Task Division -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+            <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+              <h4 class="text-xs font-bold text-blue-600 dark:text-sky-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                <span>👤 사람이 주도하고 결정할 영역</span>
+              </h4>
+              <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                분석 목적 설정, 정의역 적합성(음수/0 여부) 판단, 손계산 사전 예측, 변환 후보 선택의 근거 제시, 이상점 표시의 맥락적 의미 해석, 최종 결론 도출.
+              </p>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+              <h4 class="text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                <span>🤖 AI가 신속히 도울 영역</span>
+              </h4>
+              <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                엄밀한 명세에 맞춘 파이썬 코드 구현(NumPy/pandas), 서브플롯 히스토그램·상자그림 시각화 코드 생성, 결측 분리 및 요약통계량 수치 일괄 계산.
+              </p>
+            </div>
+          </div>
+        </article>
+
+        <!-- SLIDE 04 -->
+        <article class="slide-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-sm mb-8" data-slide="4">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+            <span class="text-xs font-mono font-bold tracking-widest uppercase text-kgu-blue dark:text-sky-400">SLIDE 04 · 6차수 복습</span>
+            <span class="text-xs text-slate-400">그림 7-1 · 통학 시간 90분의 의미</span>
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">
+            6차수 복습: 통학 시간 90분을 어떻게 다룰 것인가?
+          </h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-6">
+            6차수 가상 통학 시간(유효 20건, 결측 2건)의 상자그림에서 90분은 위쪽 안쪽 울타리(76.875분)를 넘어 별도 점으로 찍혔습니다.
+          </p>
+
+          <!-- SVG Graphic 7-1: Commute Time Boxplot -->
+          <div class="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-5 border border-slate-200 dark:border-slate-700 my-4">
+            <div class="flex justify-between items-center mb-2">
+              <span class="text-xs font-bold text-slate-600 dark:text-slate-300">그림 7-1: 6차수 통학 시간(분) 상자그림과 점 배치</span>
+              <span class="text-[11px] text-slate-400 font-mono">Q1=25.0, Median=35.0, Q3=45.75, IQR=20.75</span>
+            </div>
+            
+            <div class="w-full overflow-x-auto py-2">
+              <svg viewBox="0 0 700 140" class="w-full min-w-[500px] h-32 select-none">
+                <!-- Scale axis -->
+                <line x1="50" y1="100" x2="650" y2="100" stroke="#94a3b8" stroke-width="2"/>
+                <!-- Ticks: 0 to 100 step 10 -> factor: (x - 0)*6 + 50 -->
+                <g class="text-[10px] fill-slate-500 font-mono">
+                  <text x="50" y="118" text-anchor="middle">0</text>
+                  <text x="170" y="118" text-anchor="middle">20</text>
+                  <text x="290" y="118" text-anchor="middle">40</text>
+                  <text x="410" y="118" text-anchor="middle">60</text>
+                  <text x="530" y="118" text-anchor="middle">80</text>
+                  <text x="650" y="118" text-anchor="middle">100 (분)</text>
+                  <!-- Tick marks -->
+                  <line x1="50" y1="100" x2="50" y2="105" stroke="#94a3b8" stroke-width="1.5"/>
+                  <line x1="170" y1="100" x2="170" y2="105" stroke="#94a3b8" stroke-width="1.5"/>
+                  <line x1="290" y1="100" x2="290" y2="105" stroke="#94a3b8" stroke-width="1.5"/>
+                  <line x1="410" y1="100" x2="410" y2="105" stroke="#94a3b8" stroke-width="1.5"/>
+                  <line x1="530" y1="100" x2="530" y2="105" stroke="#94a3b8" stroke-width="1.5"/>
+                  <line x1="650" y1="100" x2="650" y2="105" stroke="#94a3b8" stroke-width="1.5"/>
+                </g>
+
+                <!-- Boxplot: Q1=25 (x=200), Q3=45.75 (x=324.5), Med=35 (x=260), Min=15 (x=140), WhiskerMax=60 (x=410) -->
+                <!-- Left whisker -->
+                <line x1="140" y1="50" x2="200" y2="50" stroke="#003876" stroke-width="2" class="dark:stroke-sky-400"/>
+                <line x1="140" y1="35" x2="140" y2="65" stroke="#003876" stroke-width="2" class="dark:stroke-sky-400"/>
+                <!-- Box -->
+                <rect x="200" y="25" width="124.5" height="50" fill="#e0f2fe" stroke="#0284c7" stroke-width="2" rx="4" class="dark:fill-sky-950/60 dark:stroke-sky-500"/>
+                <!-- Median line -->
+                <line x1="260" y1="25" x2="260" y2="75" stroke="#0369a1" stroke-width="3" class="dark:stroke-sky-300"/>
+                <!-- Right whisker -->
+                <line x1="324.5" y1="50" x2="410" y2="50" stroke="#003876" stroke-width="2" class="dark:stroke-sky-400"/>
+                <line x1="410" y1="35" x2="410" y2="65" stroke="#003876" stroke-width="2" class="dark:stroke-sky-400"/>
+
+                <!-- Upper Fence Mark: 76.875 -> x = 50 + 76.875*6 = 511.25 -->
+                <line x1="511.25" y1="15" x2="511.25" y2="85" stroke="#e11d48" stroke-width="1.5" stroke-dasharray="3,3"/>
+                <text x="511.25" y="12" text-anchor="middle" class="text-[9px] fill-rose-600 font-bold">위쪽 울타리 76.875분</text>
+
+                <!-- Outlier Point: 90 min -> x = 50 + 90*6 = 590 -->
+                <circle cx="590" cy="50" r="5" fill="#f43f5e" stroke="#881337" stroke-width="1.5"/>
+                <text x="590" y="32" text-anchor="middle" class="text-[10px] fill-rose-600 font-bold">90분 (울타리 밖)</text>
+              </svg>
+            </div>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400 text-center mt-1">
+              * 사분위수는 5·6차수와 동일하게 선형 보간(linear interpolation) 방식으로 산출되었습니다.
+            </p>
+          </div>
+
+          <!-- Conceptual explanation -->
+          <div class="space-y-3 text-sm text-slate-700 dark:text-slate-300">
+            <div class="p-3.5 rounded-lg bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700">
+              <strong class="text-slate-900 dark:text-slate-100">1. 울타리 밖이라는 것은 "조사 신호"일 뿐입니다:</strong>
+              <span class="text-slate-600 dark:text-slate-400 ml-1">상자그림에서 울타리를 벗어났다는 사실은 오류나 기표 실수의 증거가 아닙니다. 실제로 수원에서 먼 통학생의 정상적인 긴 통학 시간일 수 있습니다.</span>
+            </div>
+            <div class="p-3.5 rounded-lg bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700">
+              <strong class="text-slate-900 dark:text-slate-100">2. 변환은 결측 처리나 삭제의 대체제가 아닙니다:</strong>
+              <span class="text-slate-600 dark:text-slate-400 ml-1">변환은 자료를 있는 그대로 유지하면서 척도만 바꾸는 것입니다. 원자료 검증과 오류 점검은 변환 전 독립적으로 수행해야 합니다.</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- SLIDE 05 -->
+        <article class="slide-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-sm mb-8" data-slide="5">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+            <span class="text-xs font-mono font-bold tracking-widest uppercase text-kgu-blue dark:text-sky-400">SLIDE 05 · 재표현의 원리</span>
+            <span class="text-xs text-slate-400">간격과 순서의 법칙</span>
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">
+            재표현(Re-expression)은 무엇을 바꾸는가?
+          </h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-6">
+            각 관측값 $x$에 단조함수(Monotonic Function) $f(x)$를 적용할 때, 무엇이 보존되고 무엇이 달라지는지 명확히 이해해야 합니다.
+          </p>
+
+          <!-- 3 Principles Cards -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div class="p-4 rounded-xl bg-blue-50/60 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900">
+              <span class="text-xs font-bold text-kgu-blue dark:text-sky-400 mb-1 block">원칙 1</span>
+              <h4 class="text-sm font-bold text-slate-800 dark:text-slate-100 mb-1.5">원자료의 절대 보존</h4>
+              <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                변환 시 원자료 열을 덮어쓰지 않습니다. 항상 새 열(Column)을 생성하여 언제든 원본을 추적하고 대조할 수 있도록 만듭니다.
+              </p>
+            </div>
+            <div class="p-4 rounded-xl bg-indigo-50/60 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-900">
+              <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400 mb-1 block">원칙 2</span>
+              <h4 class="text-sm font-bold text-slate-800 dark:text-slate-100 mb-1.5">전체에 같은 규칙 적용</h4>
+              <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                큰 값에만 선택적으로 로그를 취하거나 일부 관측값만 제곱근을 취하는 행위는 엄격히 금지됩니다. 모든 유효값에 동일한 $f(x)$를 적용합니다.
+              </p>
+            </div>
+            <div class="p-4 rounded-xl bg-emerald-50/60 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900">
+              <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 mb-1 block">원칙 3</span>
+              <h4 class="text-sm font-bold text-slate-800 dark:text-slate-100 mb-1.5">순서는 유지, 간격은 변화</h4>
+              <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                증가함수의 경우 관측치의 대소 순위(Rank)는 그대로 유지되지만, 관측치 사이의 거리(간격)가 위치에 따라 비선형적으로 재배치됩니다.
+              </p>
+            </div>
+          </div>
+
+          <!-- Example Demonstration -->
+          <div class="bg-slate-50 dark:bg-slate-800/60 rounded-xl p-5 border border-slate-200 dark:border-slate-700">
+            <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">간단한 수열 예시: $1, 4, 9, 16 \xrightarrow{\sqrt{x}} 1, 2, 3, 4$</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs sm:text-sm">
+              <div class="p-3 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700">
+                <span class="font-bold text-slate-700 dark:text-slate-300">원자료 척도 ($x$):</span>
+                <p class="font-mono mt-1 text-slate-600 dark:text-slate-400">간격: $4-1=3$, $9-4=5$, $16-9=7$</p>
+                <p class="text-rose-500 text-[11px] mt-1 font-medium">→ 값이 커질수록 관측치 간격이 점점 벌어짐 (오른쪽 꼬리 팽창)</p>
+              </div>
+              <div class="p-3 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700">
+                <span class="font-bold text-slate-700 dark:text-slate-300">제곱근 척도 ($\sqrt{x}$):</span>
+                <p class="font-mono mt-1 text-slate-600 dark:text-slate-400">간격: $2-1=1$, $3-2=1$, $4-3=1$</p>
+                <p class="text-emerald-600 text-[11px] mt-1 font-medium">→ 간격이 균등해져 분포가 고르고 대칭적으로 정렬됨</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-4 text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+            <svg class="w-4 h-4 text-amber-500 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/></svg>
+            <span><strong>주의:</strong> 역변환이 가능하다고 해서, 변환 척도의 평균을 역변환한 값이 원자료의 평균과 일치하지 않습니다. (Jensen의 부등식: $\overline{\ln x} \neq \ln(\bar{x})$)</span>
+          </div>
+        </article>
+
+        <!-- SLIDE 06 -->
+        <article class="slide-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-sm mb-8" data-slide="6">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+            <span class="text-xs font-mono font-bold tracking-widest uppercase text-kgu-blue dark:text-sky-400">SLIDE 06 · 재표현의 세 가지 목적</span>
+            <span class="text-xs text-slate-400">Tukey의 탐색 기준</span>
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">
+            자료를 재표현하는 세 가지 뚜렷한 통계적 목적
+          </h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-6">
+            우리는 '그냥 유행해서' 변환하지 않습니다. 단일 변환이 세 목적을 동시에 모두 충족한다는 보장은 없으므로 현재 당면한 목표를 명확히 해야 합니다.
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-4">
+            <!-- 1. 대칭화 -->
+            <div class="bg-gradient-to-b from-sky-50 to-white dark:from-slate-800/80 dark:to-slate-900 rounded-xl p-5 border border-sky-200 dark:border-sky-900 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center gap-2 mb-2">
+                  <span class="w-6 h-6 rounded-full bg-sky-500 text-white flex items-center justify-center text-xs font-bold">1</span>
+                  <h4 class="font-bold text-slate-900 dark:text-white text-base">분포의 대칭화 (Symmetrizing)</h4>
+                </div>
+                <p class="text-xs text-slate-600 dark:text-slate-400 mt-2 leading-relaxed">
+                  한쪽으로 길게 늘어진 비대칭 꼬리를 중앙 쪽으로 당겨 좌우 대칭에 가깝게 만듭니다. 중심위치(평균, 중앙값)와 퍼짐의 해석을 직관적으로 만들어 줍니다.
+                </p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-sky-100 dark:border-slate-700 text-xs text-sky-800 dark:text-sky-300 font-medium">
+                🎯 <strong>7차수의 주 목적:</strong> 오른쪽 꼬리가 긴 소득 자료의 대칭화!
+              </div>
+            </div>
+
+            <!-- 2. 분산 안정화 -->
+            <div class="bg-gradient-to-b from-emerald-50 to-white dark:from-slate-800/80 dark:to-slate-900 rounded-xl p-5 border border-emerald-200 dark:border-emerald-900 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center gap-2 mb-2">
+                  <span class="w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs font-bold">2</span>
+                  <h4 class="font-bold text-slate-900 dark:text-white text-base">분산 안정화 (Equal Spread)</h4>
+                </div>
+                <p class="text-xs text-slate-600 dark:text-slate-400 mt-2 leading-relaxed">
+                  여러 집단을 비교할 때 평균 수준이 높을수록 퍼짐(분산)도 함께 커지는 현상(이분산성)을 완화하여, 수준에 관계없이 산포를 일정하게 정돈합니다.
+                </p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-emerald-100 dark:border-slate-700 text-xs text-emerald-800 dark:text-emerald-300 font-medium">
+                📊 예: 카운트 자료의 포아송 분산 $\text{Var}(X) \propto \mu \xrightarrow{\sqrt{X}}$ 분산 안정화
+              </div>
+            </div>
+
+            <!-- 3. 관계 선형화 -->
+            <div class="bg-gradient-to-b from-purple-50 to-white dark:from-slate-800/80 dark:to-slate-900 rounded-xl p-5 border border-purple-200 dark:border-purple-900 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center gap-2 mb-2">
+                  <span class="w-6 h-6 rounded-full bg-purple-500 text-white flex items-center justify-center text-xs font-bold">3</span>
+                  <h4 class="font-bold text-slate-900 dark:text-white text-base">관계 선형화 (Linearizing)</h4>
+                </div>
+                <p class="text-xs text-slate-600 dark:text-slate-400 mt-2 leading-relaxed">
+                  두 변수 사이의 지수적·곡선적 관계($y = a \cdot e^{bx}$)를 직선 형태로 펴서 회귀모형 및 상관관계의 직관적 해석과 예측을 가능하게 돕습니다.
+                </p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-purple-100 dark:border-slate-700 text-xs text-purple-800 dark:text-purple-300 font-medium">
+                📈 예: 로그-로그 산점도로 거듭제곱 법칙($y = ax^b$) 분석
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- SLIDE 07 -->
+        <article class="slide-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-sm mb-8" data-slide="7">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+            <span class="text-xs font-mono font-bold tracking-widest uppercase text-kgu-blue dark:text-sky-400">SLIDE 07 · 선형변환 vs 비선형변환</span>
+            <span class="text-xs text-slate-400">구조적 본질 비교</span>
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-3">
+            선형변환과 비선형변환: 왜 덧셈·곱셈으로는 꼬리를 줄일 수 없는가?
+          </h3>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-4">
+            <!-- Linear Transformation -->
+            <div class="p-5 rounded-xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700">
+              <h4 class="text-sm font-bold text-slate-800 dark:text-slate-200 mb-2 flex items-center justify-between">
+                <span>양의 선형변환: $y = a + bx \quad (b > 0)$</span>
+                <span class="text-xs font-mono bg-slate-200 dark:bg-slate-700 px-2 py-0.5 rounded text-slate-700 dark:text-slate-300">형태 보존</span>
+              </h4>
+              <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                모든 점의 간격을 동일한 배율($b$)로 늘이거나 줄이고, 위치($a$)만 평행이동합니다.
+              </p>
+              <div class="mt-3 p-3 bg-white dark:bg-slate-900 rounded-lg text-xs space-y-1.5 border border-slate-200 dark:border-slate-700">
+                <div class="text-slate-700 dark:text-slate-300"><strong>상대적 비율:</strong> $\frac{(x_3 - x_2)}{(x_2 - x_1)}$ 가 완전히 불변</div>
+                <div class="text-slate-700 dark:text-slate-300"><strong>표본 왜도:</strong> $\text{skew}(a + bx) = \text{skew}(x)$ (왜도 불변!)</div>
+                <div class="text-rose-600 dark:text-rose-400 font-medium">⚠️ 10을 더하거나 100으로 나눠도 꼬리의 비대칭성은 0.1%도 줄어들지 않음!</div>
+              </div>
+            </div>
+
+            <!-- Non-linear Transformation -->
+            <div class="p-5 rounded-xl bg-blue-50/60 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900">
+              <h4 class="text-sm font-bold text-kgu-blue dark:text-sky-300 mb-2 flex items-center justify-between">
+                <span>비선형변환: $y = \sqrt{x}, \; \ln(x), \; x^2$</span>
+                <span class="text-xs font-mono bg-blue-100 dark:bg-blue-900 px-2 py-0.5 rounded text-blue-700 dark:text-sky-300">형태 변경</span>
+              </h4>
+              <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                관측치가 위치한 영역(작은 값 vs 큰 값)에 따라 간격의 배율을 서로 다르게 조작합니다.
+              </p>
+              <div class="mt-3 p-3 bg-white dark:bg-slate-900 rounded-lg text-xs space-y-1.5 border border-slate-200 dark:border-slate-700">
+                <div class="text-slate-700 dark:text-slate-300"><strong>기울기(도함수):</strong> $f'(x)$가 상수가 아님</div>
+                <div class="text-slate-700 dark:text-slate-300"><strong>오목함수($\sqrt{x}, \ln x$):</strong> 큰 값 쪽의 미분값이 작아 간격을 수축 압축</div>
+                <div class="text-emerald-600 dark:text-emerald-400 font-medium">✨ 비대칭 분포를 좌우 대칭으로 모양 자체를 바꿀 수 있는 핵심 도구!</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Misconception check -->
+          <div class="p-4 bg-amber-50 dark:bg-amber-950/40 rounded-xl border border-amber-200 dark:border-amber-800 flex items-start gap-3">
+            <span class="text-xl">💡</span>
+            <div>
+              <h5 class="text-xs font-bold text-amber-900 dark:text-amber-200">확인 질문: "자료 전체에 100을 더해주면 오른쪽 꼬리가 짧아질까요?"</h5>
+              <p class="text-xs text-amber-800 dark:text-amber-300 mt-1">
+                아닙니다! 100을 더하는 것은 모든 관측치를 수평으로 평행 이동시킬 뿐이므로, 이상치와 중심 사이의 상대적 거리나 표본 왜도는 단 1도 바뀌지 않습니다. 오직 비선형변환만이 간격의 왜곡을 바로잡습니다.
+              </p>
+            </div>
+          </div>
+        </article>
+
+        <!-- SLIDE 08 -->
+        <article class="slide-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-sm mb-8" data-slide="8">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+            <span class="text-xs font-mono font-bold tracking-widest uppercase text-kgu-blue dark:text-sky-400">SLIDE 08 · 변환의 사다리</span>
+            <span class="text-xs text-slate-400">Tukey's Ladder of Powers</span>
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">
+            멱승변환의 사다리 (Ladder of Powers): 어느 방향으로 움직일 것인가?
+          </h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-6">
+            존 튜키(John Tukey)는 거듭제곱 지수 $p$를 체계적으로 배열한 '변환의 사다리'를 제안했습니다.
+          </p>
+
+          <!-- The Ladder Visual -->
+          <div class="bg-slate-50 dark:bg-slate-800/60 rounded-xl p-6 border border-slate-200 dark:border-slate-700 my-4">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+              
+              <!-- Power cards -->
+              <div class="w-full grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+                
+                <div class="p-3 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-xs">
+                  <div class="text-xs font-mono font-bold text-amber-600 dark:text-amber-400">$p = 2$</div>
+                  <div class="text-sm font-bold text-slate-800 dark:text-slate-200 my-1">$x^2$ (제곱)</div>
+                  <div class="text-[11px] text-slate-500">큰 값 간격 확대<br>(왼쪽 꼬리 완화)</div>
+                </div>
+
+                <div class="p-3 rounded-lg bg-slate-100 dark:bg-slate-800 border-2 border-slate-400 dark:border-slate-500 shadow-xs">
+                  <div class="text-xs font-mono font-bold text-slate-600 dark:text-slate-300">$p = 1$</div>
+                  <div class="text-sm font-bold text-slate-900 dark:text-white my-1">$x$ (원자료)</div>
+                  <div class="text-[11px] text-slate-500">기준 원자료<br>변환 없음</div>
+                </div>
+
+                <div class="p-3 rounded-lg bg-white dark:bg-slate-900 border border-sky-300 dark:border-sky-800 shadow-xs">
+                  <div class="text-xs font-mono font-bold text-sky-600 dark:text-sky-400">$p = 0.5$</div>
+                  <div class="text-sm font-bold text-slate-800 dark:text-slate-200 my-1">$\sqrt{x}$ (제곱근)</div>
+                  <div class="text-[11px] text-sky-600 dark:text-sky-400 font-medium">큰 값 간격 압축<br>(오른쪽 꼬리 완화)</div>
+                </div>
+
+                <div class="p-3 rounded-lg bg-white dark:bg-slate-900 border border-emerald-300 dark:border-emerald-800 shadow-xs">
+                  <div class="text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400">$p \to 0$</div>
+                  <div class="text-sm font-bold text-slate-800 dark:text-slate-200 my-1">$\ln(x)$ (로그)</div>
+                  <div class="text-[11px] text-emerald-600 dark:text-emerald-400 font-medium">더 강한 압축 효과<br>(오른쪽 긴 꼬리 완화)</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Direction arrow -->
+            <div class="mt-5 pt-4 border-t border-slate-200 dark:border-slate-700 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500">
+              <span class="flex items-center gap-1 font-semibold text-amber-700 dark:text-amber-400">
+                ← 사다리 위로 ($p > 1$): 큰 값 쪽 간격 확대 (왼쪽 꼬리 긴 자료에 적합)
+              </span>
+              <span class="flex items-center gap-1 font-semibold text-emerald-700 dark:text-emerald-400 mt-2 sm:mt-0">
+                사다리 아래로 ($p < 1$): 큰 값 쪽 간격 압축 (오른쪽 꼬리 긴 자료에 적합) →
+              </span>
+            </div>
+          </div>
+
+          <!-- Mathematical Insight: Limit p->0 -->
+          <div class="p-4 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 text-xs sm:text-sm text-slate-700 dark:text-slate-300 space-y-2">
+            <h4 class="font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
+              <span>📐 왜 $p=0$ 자리에는 $x^0 = 1$ 대신 $\ln(x)$가 들어갈까?</span>
+            </h4>
+            <p class="leading-relaxed">
+              모든 $x$에 대해 $x^0 = 1$이 되어 모든 정보가 사라집니다. 그러나 정규화된 멱변환(Box-Cox 원형) $\frac{x^p - 1}{p}$에서 $p \to 0$의 로피탈 정리를 적용한 극한을 구하면:
+            </p>
+            <div class="p-2 bg-white dark:bg-slate-900 rounded font-mono text-center text-kgu-blue dark:text-sky-300">
+              $$\lim_{p \to 0} \frac{x^p - 1}{p} = \ln(x)$$
+            </div>
+            <p class="text-[11px] text-slate-500">따라서 자연로그는 멱승변환의 사다리에서 $p=0$ 위치를 완벽하게 연속적으로 메워주는 수학적 파트너입니다.</p>
+          </div>
+        </article>
+
+        <!-- SLIDE 09 -->
+        <article class="slide-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-sm mb-8" data-slide="9">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+            <span class="text-xs font-mono font-bold tracking-widest uppercase text-kgu-blue dark:text-sky-400">SLIDE 09 · 그림 7-2</span>
+            <span class="text-xs text-slate-400">다섯 값의 세 척도 비교</span>
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">
+            그림 7-2: 같은 관측값, 드라마틱하게 달라지는 척도별 간격
+          </h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-6">
+            가상 관측치 <strong class="font-mono text-slate-800 dark:text-slate-200">[1, 4, 9, 16, 100]</strong>을 세 가지 척도에서 나란히 배치해 간격의 압축을 관찰합니다.
+          </p>
+
+          <!-- SVG Visual 7-2 -->
+          <div class="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-5 border border-slate-200 dark:border-slate-700">
+            <div class="space-y-6">
+              
+              <!-- Scale 1: Original x -->
+              <div>
+                <div class="flex justify-between items-center text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                  <span>① 원자료 척도 ($x$): 16과 100의 차이 = 84 (극단적 격차)</span>
+                  <span class="font-mono text-slate-500">Range: 1 ~ 100</span>
+                </div>
+                <div class="h-10 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700 relative flex items-center px-4">
+                  <!-- Axis line -->
+                  <div class="w-full h-0.5 bg-slate-200 dark:bg-slate-700"></div>
+                  <!-- Points: 1(1%), 4(4%), 9(9%), 16(16%), 100(100%) -->
+                  <div class="absolute left-[4%] -top-1 flex flex-col items-center">
+                    <span class="w-3 h-3 rounded-full bg-blue-600 ring-2 ring-white"></span>
+                    <span class="text-[10px] font-mono mt-1">1</span>
+                  </div>
+                  <div class="absolute left-[7%] -top-1 flex flex-col items-center">
+                    <span class="w-3 h-3 rounded-full bg-blue-600 ring-2 ring-white"></span>
+                    <span class="text-[10px] font-mono mt-1">4</span>
+                  </div>
+                  <div class="absolute left-[12%] -top-1 flex flex-col items-center">
+                    <span class="w-3 h-3 rounded-full bg-blue-600 ring-2 ring-white"></span>
+                    <span class="text-[10px] font-mono mt-1">9</span>
+                  </div>
+                  <div class="absolute left-[19%] -top-1 flex flex-col items-center">
+                    <span class="w-3 h-3 rounded-full bg-blue-600 ring-2 ring-white"></span>
+                    <span class="text-[10px] font-mono mt-1">16</span>
+                  </div>
+                  <div class="absolute left-[95%] -top-1 flex flex-col items-center">
+                    <span class="w-3.5 h-3.5 rounded-full bg-rose-500 ring-2 ring-rose-200"></span>
+                    <span class="text-[10px] font-mono font-bold text-rose-600 mt-1">100</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Scale 2: Sqrt(x) -->
+              <div>
+                <div class="flex justify-between items-center text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                  <span>② 제곱근 척도 ($\sqrt{x}$): 4와 10의 차이 = 6 (간격 압축)</span>
+                  <span class="font-mono text-slate-500">Range: 1 ~ 10</span>
+                </div>
+                <div class="h-10 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700 relative flex items-center px-4">
+                  <div class="w-full h-0.5 bg-slate-200 dark:bg-slate-700"></div>
+                  <!-- Points: 1(10%), 2(20%), 3(30%), 4(40%), 10(100%) -->
+                  <div class="absolute left-[10%] -top-1 flex flex-col items-center">
+                    <span class="w-3 h-3 rounded-full bg-sky-500 ring-2 ring-white"></span>
+                    <span class="text-[10px] font-mono mt-1">1</span>
+                  </div>
+                  <div class="absolute left-[20%] -top-1 flex flex-col items-center">
+                    <span class="w-3 h-3 rounded-full bg-sky-500 ring-2 ring-white"></span>
+                    <span class="text-[10px] font-mono mt-1">2</span>
+                  </div>
+                  <div class="absolute left-[30%] -top-1 flex flex-col items-center">
+                    <span class="w-3 h-3 rounded-full bg-sky-500 ring-2 ring-white"></span>
+                    <span class="text-[10px] font-mono mt-1">3</span>
+                  </div>
+                  <div class="absolute left-[40%] -top-1 flex flex-col items-center">
+                    <span class="w-3 h-3 rounded-full bg-sky-500 ring-2 ring-white"></span>
+                    <span class="text-[10px] font-mono mt-1">4</span>
+                  </div>
+                  <div class="absolute left-[95%] -top-1 flex flex-col items-center">
+                    <span class="w-3 h-3 rounded-full bg-sky-600 ring-2 ring-white"></span>
+                    <span class="text-[10px] font-mono font-bold mt-1">10</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Scale 3: Ln(x) -->
+              <div>
+                <div class="flex justify-between items-center text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                  <span>③ 자연로그 척도 ($\ln x$): $\ln(100)-\ln(16) = \ln(6.25) \approx 1.833$ (강력한 압축)</span>
+                  <span class="font-mono text-slate-500">Range: 0 ~ 4.605</span>
+                </div>
+                <div class="h-10 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700 relative flex items-center px-4">
+                  <div class="w-full h-0.5 bg-slate-200 dark:bg-slate-700"></div>
+                  <!-- Points: 0(0%), 1.386(30%), 2.197(47.7%), 2.773(60%), 4.605(100%) -->
+                  <div class="absolute left-[4%] -top-1 flex flex-col items-center">
+                    <span class="w-3 h-3 rounded-full bg-emerald-500 ring-2 ring-white"></span>
+                    <span class="text-[10px] font-mono mt-1">0.00</span>
+                  </div>
+                  <div class="absolute left-[32%] -top-1 flex flex-col items-center">
+                    <span class="w-3 h-3 rounded-full bg-emerald-500 ring-2 ring-white"></span>
+                    <span class="text-[10px] font-mono mt-1">1.39</span>
+                  </div>
+                  <div class="absolute left-[48%] -top-1 flex flex-col items-center">
+                    <span class="w-3 h-3 rounded-full bg-emerald-500 ring-2 ring-white"></span>
+                    <span class="text-[10px] font-mono mt-1">2.20</span>
+                  </div>
+                  <div class="absolute left-[60%] -top-1 flex flex-col items-center">
+                    <span class="w-3 h-3 rounded-full bg-emerald-500 ring-2 ring-white"></span>
+                    <span class="text-[10px] font-mono mt-1">2.77</span>
+                  </div>
+                  <div class="absolute left-[95%] -top-1 flex flex-col items-center">
+                    <span class="w-3 h-3 rounded-full bg-emerald-600 ring-2 ring-white"></span>
+                    <span class="text-[10px] font-mono font-bold mt-1">4.61</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Explanation box -->
+          <div class="mt-4 p-4 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+            <strong>⚠️ 강사 주의사항:</strong> 84, 6, 1.833이라는 숫자 크기만 보고 "로그가 제곱근보다 40배 더 좋다"고 기계적으로 비교해서는 안 됩니다. 척도마다 측정 단위 자체가 바뀌었기 때문입니다. 중요한 것은 <strong>척도 내부에서 작은 값들 간격과 큰 값 간격의 '상대적 균형'</strong>입니다.
+          </div>
+        </article>
+
+        <!-- SLIDE 10 -->
+        <article class="slide-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-sm mb-8" data-slide="10">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+            <span class="text-xs font-mono font-bold tracking-widest uppercase text-kgu-blue dark:text-sky-400">SLIDE 10 · 수학적 정의역과 해석</span>
+            <span class="text-xs text-slate-400">실수 조건의 엄밀성</span>
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">
+            주요 변환 함수의 실수 정의역과 통계적 해석 조건
+          </h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-6">
+            수학적 정의역을 무시하고 코드를 돌리면 경고(RuntimeWarning)가 뜨거나 `NaN`이 발생해 분석이 왜곡됩니다.
+          </p>
+
+          <!-- Domain Table -->
+          <div class="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700 mb-6">
+            <table class="w-full text-left text-xs sm:text-sm border-collapse">
+              <thead class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-b border-slate-200 dark:border-slate-700">
+                <tr>
+                  <th class="p-3 font-bold">변환 함수</th>
+                  <th class="p-3 font-bold">실수 정의역 ($x$)</th>
+                  <th class="p-3 font-bold">0 처리</th>
+                  <th class="p-3 font-bold">순서 보존 (단조성)</th>
+                  <th class="p-3 font-bold">변환 후 차이($\Delta y$)의 의미</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40">
+                  <td class="p-3 font-mono font-bold text-sky-600 dark:text-sky-400">$\sqrt{x}$ (제곱근)</td>
+                  <td class="p-3 font-mono">$x \ge 0$</td>
+                  <td class="p-3 font-mono">$\sqrt{0} = 0$ (정상)</td>
+                  <td class="p-3 text-emerald-600 font-semibold">양수 영역에서 항상 보존</td>
+                  <td class="p-3 text-slate-600 dark:text-slate-400">제곱근 단위 차이</td>
+                </tr>
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 bg-blue-50/20 dark:bg-blue-950/20">
+                  <td class="p-3 font-mono font-bold text-emerald-600 dark:text-emerald-400">$\ln(x)$ (자연로그)</td>
+                  <td class="p-3 font-mono text-rose-600 font-bold">$x > 0$ (양수 전용)</td>
+                  <td class="p-3 font-mono text-rose-600 font-bold">$-\infty$ (정의 불가!)</td>
+                  <td class="p-3 text-emerald-600 font-semibold">정의역 전체에서 엄밀히 보존</td>
+                  <td class="p-3 text-slate-600 dark:text-slate-400"><strong>상대적 비율(Ratio):</strong> $\ln(b)-\ln(a)=\ln(b/a)$</td>
+                </tr>
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40">
+                  <td class="p-3 font-mono font-bold text-amber-600 dark:text-amber-400">$x^2$ (제곱)</td>
+                  <td class="p-3 font-mono">모든 실수 $\mathbb{R}$</td>
+                  <td class="p-3 font-mono">$0^2 = 0$ (정상)</td>
+                  <td class="p-3 text-amber-600 font-medium">$x \ge 0$에서만 보존 ($(-3)^2=9$ 순서 역전)</td>
+                  <td class="p-3 text-slate-600 dark:text-slate-400">제곱 단위 간격 (큰 값 팽창)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Interpretation of Log Difference & Warning on log(x+1) -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+              <h4 class="text-xs font-bold text-slate-700 dark:text-slate-200 mb-1.5 flex items-center gap-1.5">
+                <span>🔢 로그 차이와 배율의 관계</span>
+              </h4>
+              <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-mono">
+                $\ln(1200) - \ln(120) = \ln\left(\frac{1200}{120}\right) = \ln(10) \approx 2.3026$
+              </p>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                로그 척도에서의 '차이'는 원자료 척도에서의 '배율(10배)'을 직접적으로 대변합니다.
+              </p>
+            </div>
+
+            <div class="p-4 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900">
+              <h4 class="text-xs font-bold text-rose-800 dark:text-rose-300 mb-1.5 flex items-center gap-1.5">
+                <span>⚠️ $\log(x+1)$에 대한 무분별한 사용 경고</span>
+              </h4>
+              <p class="text-xs text-rose-700 dark:text-rose-300 leading-relaxed">
+                $0$을 피하기 위해 임의로 $1$을 더하는 $\log(x+1)$은 자료의 측정 단위에 전적으로 종속됩니다. 단위가 원(KRW)이냐 만 원이냐에 따라 왜곡이 전혀 달라지므로, 반드시 사유와 단위를 명시해야 합니다.
+              </p>
+            </div>
+          </div>
+        </article>
+
+        <!-- SLIDE 11 -->
+        <article class="slide-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-sm mb-8" data-slide="11">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+            <span class="text-xs font-mono font-bold tracking-widest uppercase text-kgu-blue dark:text-sky-400">SLIDE 11 · 지수변환과 방향 선택</span>
+            <span class="text-xs text-slate-400">오버플로와 변환의 한계</span>
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">
+            지수변환($e^x$)과 방향 선택의 엄밀한 한계
+          </h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-6">
+            모든 변환이 자유롭게 적용 가능한 것은 아닙니다. 변환 방향의 목적과 수치 계산의 한계를 숙지해야 합니다.
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-4">
+            
+            <!-- Graphic / Concept curve -->
+            <div class="p-5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex flex-col justify-between">
+              <div>
+                <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">양수 구간 함수 증가율 비교: $x$ vs $x^2$ vs $e^x$</h4>
+                <div class="space-y-3 text-xs font-mono">
+                  <div class="p-2.5 bg-white dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-700">
+                    <span class="text-slate-500 block text-[10px]">입력값 $x = 10$</span>
+                    <span class="text-slate-800 dark:text-slate-200">원자료: 10 | $x^2$: 100 | $e^{10} \approx 22,026$</span>
+                  </div>
+                  <div class="p-2.5 bg-white dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-700">
+                    <span class="text-slate-500 block text-[10px]">입력값 $x = 100$</span>
+                    <span class="text-slate-800 dark:text-slate-200">원자료: 100 | $x^2$: 10,000 | $e^{100} \approx 2.68 \times 10^{43}$</span>
+                  </div>
+                  <div class="p-2.5 bg-rose-50 dark:bg-rose-950/60 rounded border border-rose-200 dark:border-rose-900">
+                    <span class="text-rose-500 block text-[10px]">입력값 $x = 1200$ (소득 최고값)</span>
+                    <span class="text-rose-700 dark:text-rose-300 font-bold">$e^{1200} \to$ Overflow Error (Inf 발생!)</span>
+                  </div>
+                </div>
+              </div>
+              <p class="text-[11px] text-slate-500 mt-3">컴퓨터 부동소수점(`float64`)은 약 $e^{709}$ 이상에서 무한대(`inf`)로 오버플로됩니다.</p>
+            </div>
+
+            <!-- Direction Choice Logic -->
+            <div class="p-5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 flex flex-col justify-between">
+              <div>
+                <h4 class="text-sm font-bold text-slate-800 dark:text-slate-200 mb-3 flex items-center gap-1.5">
+                  <span class="text-blue-500">❓</span> 왜 오른쪽 꼬리 자료에 지수변환을 쓰지 않는가?
+                </h4>
+                <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed space-y-2">
+                  <span>1. <strong>방향의 역행:</strong> 지수변환은 큰 값의 간격을 폭발적으로 확대하여 오른쪽 비대칭성을 극단적으로 악화시킵니다.</span><br><br>
+                  <span>2. <strong>사다리의 원리:</strong> 오른쪽 꼬리를 대칭화하려면 사다리 아래쪽($p < 1$: 제곱근, 로그)으로 내려가야지, 위쪽($p > 1$이나 지수)으로 올라가면 반대 결과가 초래됩니다.</span>
+                </p>
+              </div>
+              <div class="mt-4 p-3 rounded-lg bg-sky-50 dark:bg-sky-950/40 text-xs text-sky-800 dark:text-sky-300 font-medium">
+                ✅ <strong>원칙:</strong> 오른쪽으로 치우친(Right-skewed) 양수 자료의 대칭화에는 압축형 변환($\sqrt{x}, \ln x$)을 최우선 후보로 검토합니다.
+              </div>
+            </div>
+
+          </div>
+        </article>
+
+        <!-- SLIDE 12 -->
+        <article class="slide-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-sm mb-8" data-slide="12">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+            <span class="text-xs font-mono font-bold tracking-widest uppercase text-kgu-blue dark:text-sky-400">SLIDE 12 · 손계산 실습</span>
+            <span class="text-xs text-slate-400">AI 실행 전 예측 훈련</span>
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">
+            손계산 훈련: AI와 코드를 실행하기 전 인간이 먼저 계산하기
+          </h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-6">
+            간단한 다섯 값 $[1, 4, 9, 16, 100]$을 바탕으로 변환 후의 값과 통계량을 손으로 계산해 빈칸을 채워보세요.
+          </p>
+
+          <!-- Interactive Calculator Exercise -->
+          <div class="bg-slate-50 dark:bg-slate-800/60 rounded-xl p-5 border border-slate-200 dark:border-slate-700">
+            <div class="overflow-x-auto mb-4">
+              <table class="w-full text-center text-xs sm:text-sm border-collapse bg-white dark:bg-slate-900 rounded-lg shadow-xs overflow-hidden">
+                <thead class="bg-slate-100 dark:bg-slate-800 font-bold text-slate-700 dark:text-slate-300">
+                  <tr>
+                    <th class="p-3 text-left">구분</th>
+                    <th class="p-3">값 1</th>
+                    <th class="p-3">값 2</th>
+                    <th class="p-3">값 3</th>
+                    <th class="p-3">값 4</th>
+                    <th class="p-3">값 5</th>
+                    <th class="p-3 text-rose-600">마지막 두 값의 차이</th>
+                    <th class="p-3 text-blue-600">중앙값(Median)</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 dark:divide-slate-800 font-mono">
+                  <tr>
+                    <td class="p-3 text-left font-bold font-sans">원자료 ($x$)</td>
+                    <td class="p-3">1</td>
+                    <td class="p-3">4</td>
+                    <td class="p-3">9</td>
+                    <td class="p-3">16</td>
+                    <td class="p-3">100</td>
+                    <td class="p-3 font-bold text-rose-600">$100 - 16 = 84$</td>
+                    <td class="p-3 font-bold text-blue-600">9</td>
+                  </tr>
+                  <tr class="bg-sky-50/30 dark:bg-sky-950/20">
+                    <td class="p-3 text-left font-bold font-sans text-sky-700 dark:text-sky-300">제곱근 ($\sqrt{x}$)</td>
+                    <td class="p-3"><input type="text" id="ans_sq1" class="w-12 text-center p-1 rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800" placeholder="?"></td>
+                    <td class="p-3"><input type="text" id="ans_sq2" class="w-12 text-center p-1 rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800" placeholder="?"></td>
+                    <td class="p-3"><input type="text" id="ans_sq3" class="w-12 text-center p-1 rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800" placeholder="?"></td>
+                    <td class="p-3"><input type="text" id="ans_sq4" class="w-12 text-center p-1 rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800" placeholder="?"></td>
+                    <td class="p-3"><input type="text" id="ans_sq5" class="w-12 text-center p-1 rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800" placeholder="?"></td>
+                    <td class="p-3"><input type="text" id="ans_sq_diff" class="w-16 text-center p-1 rounded border border-rose-300 bg-white dark:bg-slate-800 text-rose-600 font-bold" placeholder="?"></td>
+                    <td class="p-3"><input type="text" id="ans_sq_med" class="w-16 text-center p-1 rounded border border-blue-300 bg-white dark:bg-slate-800 text-blue-600 font-bold" placeholder="?"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Action buttons -->
+            <div class="flex items-center gap-3">
+              <button onclick="checkManualCalc()" class="px-4 py-2 bg-kgu-blue hover:bg-kgu-light text-white text-xs font-bold rounded-lg shadow-xs transition">
+                정답 채점하기
+              </button>
+              <button onclick="toggleManualAnswer()" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-800 dark:text-slate-200 text-xs font-bold rounded-lg transition">
+                해설 및 정답 보기
+              </button>
+              <span id="manualResultMsg" class="text-xs font-bold"></span>
+            </div>
+
+            <!-- Hidden Solution Accordion -->
+            <div id="manualCalcSolution" class="mt-4 p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 hidden text-xs sm:text-sm text-slate-700 dark:text-slate-300 space-y-2">
+              <h5 class="font-bold text-slate-900 dark:text-white">📝 모범 계산 해설:</h5>
+              <p>• $\sqrt{x}$ 변환값: <strong>[1, 2, 3, 4, 10]</strong></p>
+              <p>• 마지막 두 값의 차이: $10 - 4 = \mathbf{6}$ (원래 84였던 격차가 6으로 14배 이상 극적 압축!)</p>
+              <p>• 변환 후 중앙값: 5개 값 중 3번째 값인 $\mathbf{3}$ ($\sqrt{9} = 3$으로 단조증가 함수에서는 중앙값의 변환이 정확히 변환값의 중앙값과 일치합니다.)</p>
+              <p>• 자연로그 척도 격차: $\ln(100) - \ln(16) = \ln(100/16) = \ln(6.25) \approx \mathbf{1.8326}$</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- SLIDE 13 -->
+        <article class="slide-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-sm mb-8" data-slide="13">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+            <span class="text-xs font-mono font-bold tracking-widest uppercase text-kgu-blue dark:text-sky-400">SLIDE 13 · 실습 과제 정의</span>
+            <span class="text-xs text-slate-400">공통 실습 데이터 명세</span>
+          </div>
+
+          <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 mb-3 border border-amber-300 dark:border-amber-800">
+            📊 교육용 가상 데이터셋
+          </div>
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">
+            실습 문제: 가상 월 소득 자료의 오른쪽 꼬리
+          </h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">
+            본 실습 데이터는 관측된 표본의 기술 통계 실습을 위한 가상 자료이며, 실제 모집단으로 일반화하지 않습니다.
+          </p>
+
+          <!-- Raw Data Box -->
+          <div class="bg-slate-900 text-slate-100 rounded-xl p-5 font-mono text-xs sm:text-sm my-4 shadow-inner relative">
+            <div class="flex justify-between items-center text-slate-400 text-xs mb-2">
+              <span>가상 월 소득 자료 (단위: 만 원) · 전체 22건</span>
+              <button onclick="copyRawData()" class="text-sky-400 hover:text-sky-300 flex items-center gap-1 text-[11px]">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                데이터 복사
+              </button>
+            </div>
+            <p id="rawDataText" class="leading-relaxed break-all">
+120, 140, 150, 160, 170, 180, 190, 200, 210, 220, 230, 240, 250, 270, 300, 350, 400, 500, 700, 1200, 결측, 결측
+            </p>
+          </div>
+
+          <!-- Student Task & Prediction Inputs -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-4">
+            <div class="p-3.5 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+              <span class="text-xs font-bold text-slate-500">전체 데이터 수</span>
+              <p class="text-lg font-bold text-slate-800 dark:text-slate-100 font-mono mt-1">22건</p>
+            </div>
+            <div class="p-3.5 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900">
+              <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400">유효 관측치 (양수)</span>
+              <p class="text-lg font-bold text-emerald-800 dark:text-emerald-200 font-mono mt-1">20건</p>
+            </div>
+            <div class="p-3.5 rounded-lg bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900">
+              <span class="text-xs font-bold text-rose-600 dark:text-rose-400">결측치 (원자료 보존)</span>
+              <p class="text-lg font-bold text-rose-800 dark:text-rose-200 font-mono mt-1">2건 (제외 후 요약)</p>
+            </div>
+          </div>
+
+          <div class="p-4 rounded-xl bg-blue-50/70 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+            <strong>🎯 학생 사전 예측 질문:</strong>
+            <p class="mt-1">
+              "원자료의 최댓값 1200만 원은 오른쪽 긴 꼬리를 만듭니다. 제곱근과 자연로그 변환 중 어떤 척도가 분포를 더 대칭적으로 만들까요? 변환 후 이상점 표시는 어떻게 바뀔 것으로 예상하나요? 코드를 돌리기 전에 본인의 가설을 세워보세요."
+            </p>
+          </div>
+        </article>
+
+        <!-- SLIDE 14 -->
+        <article class="slide-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-sm mb-8" data-slide="14">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+            <span class="text-xs font-mono font-bold tracking-widest uppercase text-kgu-blue dark:text-sky-400">SLIDE 14 · AI 종합 분석 명세</span>
+            <span class="text-xs text-slate-400">프롬프트 엔지니어링</span>
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">
+            AI 종합 분석 명세: 선택과 통제는 인간이 한다
+          </h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-6">
+            AI에게 "알아서 좋은 변환 골라줘"라고 모호하게 요청하지 않습니다. 엄격한 제약조건과 출력 규칙을 명세하여 AI가 관측을 임의 삭제하지 못하도록 통제합니다.
+          </p>
+
+          <!-- Prompt Box -->
+          <div class="bg-slate-900 text-slate-100 rounded-xl p-5 font-mono text-xs leading-relaxed border border-slate-800 shadow-md relative">
+            <div class="flex justify-between items-center pb-3 mb-3 border-b border-slate-800 text-slate-400">
+              <span class="font-bold flex items-center gap-1.5 text-sky-400">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"/></svg>
+                Colab / LLM 전달용 표준 프롬프트 명세서
+              </span>
+              <button onclick="copyPromptText()" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-sky-300 font-sans text-xs flex items-center gap-1 transition">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+                명세 전체 복사
+              </button>
+            </div>
+            <pre id="promptText" class="whitespace-pre-wrap text-slate-200">
+[자료탐색방법론 7차수 분석 명세]
+1. 자료 입력 및 보존:
+   - 가상 월 소득 데이터(전체 22건: 120, 140, 150, 160, 170, 180, 190, 200, 210, 220, 230, 240, 250, 270, 300, 350, 400, 500, 700, 1200, np.nan, np.nan)를 pandas DataFrame의 'Income_raw'에 원본 그대로 보존하시오.
+   - 전체 수(22), 결측 수(2), 유효 분석 관측치 수(20)를 먼저 확인하고 출력하시오.
+2. 정의역 및 유한성 사전 검사:
+   - 유효 관측치가 모두 양수(x > 0)인지 확인하고, 0 또는 음수가 있을 경우 로그변환 전 경고를 띄우고 중단하는 방어 로직을 작성하시오.
+3. 4개 척도 열 생성:
+   - 'Income_raw' (원자료), 'Income_sqrt' (np.sqrt), 'Income_log' (np.log, 자연로그), 'Income_sq' (x**2) 4개 열을 독립 생성하시오.
+4. 요약 통계량 표 출력:
+   - 4개 척도 각각에 대해 유효 관측수, 최솟값, Q1(선형보간), 중앙값, 평균, Q3(선형보간), 최댓값, 표본 왜도(Series.skew)를 하나의 표로 요약하시오.
+   - 120과 1200의 변환값과 양수 영역에서의 순서 보존 여부를 출력하시오.
+5. 시각화 (2x2 서브플롯):
+   - 4개 척도의 히스토그램과 상자그림을 Matplotlib으로 작성하되, 각 축 레이블에 정확한 변환 단위(만 원, √만 원, ln(만 원), 만 원²)와 동일한 구간 개수(bins=7)를 표기하시오.
+   - 임의로 관측치를 삭제하거나 특정 변환을 최적으로 자동 선택하지 말고 학생이 직접 비교하도록 코드를 구성하시오.
+            </pre>
+          </div>
+
+          <!-- Checklist -->
+          <div class="mt-4 p-4 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+            <h4 class="text-xs font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wider mb-2">명세 6대 필수 점검 체크리스트</h4>
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
+              <label class="flex items-center gap-1.5 text-slate-700 dark:text-slate-300 cursor-pointer">
+                <input type="checkbox" checked class="rounded text-kgu-blue"> 원자료 보존 명시
+              </label>
+              <label class="flex items-center gap-1.5 text-slate-700 dark:text-slate-300 cursor-pointer">
+                <input type="checkbox" checked class="rounded text-kgu-blue"> 결측 수 분리 확인
+              </label>
+              <label class="flex items-center gap-1.5 text-slate-700 dark:text-slate-300 cursor-pointer">
+                <input type="checkbox" checked class="rounded text-kgu-blue"> 양수 정의역 방어 검사
+              </label>
+              <label class="flex items-center gap-1.5 text-slate-700 dark:text-slate-300 cursor-pointer">
+                <input type="checkbox" checked class="rounded text-kgu-blue"> 표본 왜도 공식 표기
+              </label>
+              <label class="flex items-center gap-1.5 text-slate-700 dark:text-slate-300 cursor-pointer">
+                <input type="checkbox" checked class="rounded text-kgu-blue"> 축 단위 및 구간 명기
+              </label>
+              <label class="flex items-center gap-1.5 text-slate-700 dark:text-slate-300 cursor-pointer">
+                <input type="checkbox" checked class="rounded text-kgu-blue"> 임의 삭제 금지 조항
+              </label>
+            </div>
+          </div>
+        </article>
+
+        <!-- SLIDE 15 -->
+        <article class="slide-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-sm mb-8" data-slide="15">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+            <span class="text-xs font-mono font-bold tracking-widest uppercase text-kgu-blue dark:text-sky-400">SLIDE 15 · Colab 셀 1</span>
+            <span class="text-xs text-slate-400">데이터 보존 & 정의역 검사</span>
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">
+            셀 1: 원자료 보존, 결측 분리 및 정의역 유효성 검사
+          </h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">
+            자료를 메모리에 올리고 결측을 카운트한 후, 로그변환의 치명적 오류를 막기 위한 사전 양수 검사를 수행합니다.
+          </p>
+
+          <!-- Code Box -->
+          <div class="bg-slate-900 text-slate-100 rounded-xl p-5 font-mono text-xs leading-relaxed border border-slate-800 shadow-md">
+            <div class="flex justify-between items-center text-slate-400 text-xs pb-3 mb-3 border-b border-slate-800">
+              <span class="font-bold text-emerald-400">Cell 1 · Data Load & Domain Check</span>
+              <button onclick="copyCode('codeCell1')" class="hover:text-white text-[11px] flex items-center gap-1">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                코드 복사
+              </button>
+            </div>
+            <pre id="codeCell1" class="text-slate-200">
+import numpy as np
+import pandas as pd
+
+# 1. 원자료 정의 (20개 유효값 + 2개 결측값)
+raw_income = [
+    120, 140, 150, 160, 170, 180, 190, 200, 210, 220,
+    230, 240, 250, 270, 300, 350, 400, 500, 700, 1200,
+    np.nan, np.nan
+]
+
+df = pd.DataFrame({'Income_raw': raw_income})
+
+# 2. 건수 검증
+total_cnt = len(df)
+missing_cnt = df['Income_raw'].isna().sum()
+valid_cnt = df['Income_raw'].notna().sum()
+
+print(f"[데이터 확인] 전체: {total_cnt}건 | 결측: {missing_cnt}건 | 유효: {valid_cnt}건")
+assert total_cnt == 22 and missing_cnt == 2 and valid_cnt == 20, "건수 불일치 오류!"
+
+# 3. 정의역 방어 검사 (양수 및 유한성)
+valid_series = df['Income_raw'].dropna()
+
+if not np.all(valid_series > 0):
+    raise ValueError("로그변환 불가: 0 또는 음수 관측치가 포함되어 있습니다.")
+if not np.all(np.isfinite(valid_series)):
+    raise ValueError("유효하지 않은 무한대(inf) 값이 존재합니다.")
+
+print("✅ 정의역 검사 완료: 20개 유효 관측치가 모두 양수(x > 0)임을 검증했습니다.")
+            </pre>
+          </div>
+
+          <!-- Execution check output -->
+          <div class="mt-4 p-4 rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-xs">
+            <span class="font-bold text-slate-700 dark:text-slate-300 block mb-1">🖥️ Colab 예상 출력:</span>
+            <div class="font-mono text-slate-600 dark:text-slate-400 bg-white dark:bg-slate-900 p-2.5 rounded border border-slate-200 dark:border-slate-700">
+              [데이터 확인] 전체: 22건 | 결측: 2건 | 유효: 20건<br>
+              ✅ 정의역 검사 완료: 20개 유효 관측치가 모두 양수(x > 0)임을 검증했습니다.
+            </div>
+          </div>
+        </article>
+
+        <!-- SLIDE 16 -->
+        <article class="slide-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-sm mb-8" data-slide="16">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+            <span class="text-xs font-mono font-bold tracking-widest uppercase text-kgu-blue dark:text-sky-400">SLIDE 16 · Colab 셀 2</span>
+            <span class="text-xs text-slate-400">변환 열 생성 & 요약통계량</span>
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">
+            셀 2: 4개 척도 열 생성과 검증된 요약통계표
+          </h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">
+            실제 파이썬 환경에서 계산된 4개 척도의 5수요약, 평균 및 표본 왜도(sample skewness) 결과표입니다.
+          </p>
+
+          <!-- Computed Summary Table -->
+          <div class="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700 mb-4">
+            <table class="w-full text-center text-xs sm:text-sm border-collapse bg-white dark:bg-slate-900">
+              <thead class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold">
+                <tr>
+                  <th class="p-3 text-left">척도 명칭 (Scale)</th>
+                  <th class="p-3">유효 N</th>
+                  <th class="p-3">Min</th>
+                  <th class="p-3">Q1 (25%)</th>
+                  <th class="p-3">Median</th>
+                  <th class="p-3">Mean</th>
+                  <th class="p-3">Q3 (75%)</th>
+                  <th class="p-3">Max</th>
+                  <th class="p-3 font-bold text-kgu-blue dark:text-sky-400">표본 왜도(Skew)</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100 dark:divide-slate-800 font-mono">
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40">
+                  <td class="p-3 text-left font-sans font-bold text-slate-800 dark:text-slate-200">원자료 ($x$, 만 원)</td>
+                  <td class="p-3">20</td>
+                  <td class="p-3">120.0</td>
+                  <td class="p-3">177.5</td>
+                  <td class="p-3 font-semibold">225.0</td>
+                  <td class="p-3">309.0</td>
+                  <td class="p-3">312.5</td>
+                  <td class="p-3 text-rose-600 font-bold">1200.0</td>
+                  <td class="p-3 text-rose-600 font-bold">+2.74</td>
+                </tr>
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 bg-sky-50/20 dark:bg-sky-950/20">
+                  <td class="p-3 text-left font-sans font-bold text-sky-700 dark:text-sky-300">제곱근 ($\sqrt{x}$)</td>
+                  <td class="p-3">20</td>
+                  <td class="p-3">10.95</td>
+                  <td class="p-3">13.32</td>
+                  <td class="p-3 font-semibold">15.00</td>
+                  <td class="p-3">16.69</td>
+                  <td class="p-3">17.67</td>
+                  <td class="p-3">34.64</td>
+                  <td class="p-3 text-sky-600 font-bold">+2.04</td>
+                </tr>
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 bg-emerald-50/30 dark:bg-emerald-950/30">
+                  <td class="p-3 text-left font-sans font-bold text-emerald-700 dark:text-emerald-300">자연로그 ($\ln x$)</td>
+                  <td class="p-3">20</td>
+                  <td class="p-3">4.79</td>
+                  <td class="p-3">5.18</td>
+                  <td class="p-3 font-semibold">5.42</td>
+                  <td class="p-3">5.54</td>
+                  <td class="p-3">5.74</td>
+                  <td class="p-3">7.09</td>
+                  <td class="p-3 text-emerald-600 font-bold">+1.30</td>
+                </tr>
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40">
+                  <td class="p-3 text-left font-sans font-bold text-amber-700 dark:text-amber-300">제곱 ($x^2$, 만 원²)</td>
+                  <td class="p-3">20</td>
+                  <td class="p-3">1.44e4</td>
+                  <td class="p-3">3.16e4</td>
+                  <td class="p-3 font-semibold">5.07e4</td>
+                  <td class="p-3">1.56e5</td>
+                  <td class="p-3">9.81e4</td>
+                  <td class="p-3 text-amber-600 font-bold">1.44e6</td>
+                  <td class="p-3 text-amber-600 font-bold">+3.75</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Interpretation & Caution -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm">
+            <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+              <h4 class="font-bold text-slate-800 dark:text-slate-200 mb-1">🔍 왜도 변화 관찰</h4>
+              <p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                원자료 왜도 <strong>+2.74</strong> (심한 오른쪽 비대칭)에서 제곱근 <strong>+2.04</strong>, 자연로그 <strong>+1.30</strong>으로 급격히 감소하여 오른쪽 치우침이 줄어들지만 완전한 대칭을 뜻하지는 않습니다.
+              </p>
+            </div>
+            <div class="p-4 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800">
+              <h4 class="font-bold text-amber-800 dark:text-amber-300 mb-1">⚠️ 해석 금기사항</h4>
+              <p class="text-amber-700 dark:text-amber-400 leading-relaxed">
+                "로그 평균 5.54은 원자료 평균 309보다 훨씬 작다"라고 비교하면 안 됩니다. 5.54의 단위는 '만 원'이 아니라 '$\ln(\text{만 원})$'입니다. 서로 다른 척도의 절댓값을 직접 비교하는 것은 무의미합니다.
+              </p>
+            </div>
+          </div>
+        </article>
+
+        <!-- SLIDE 17 -->
+        <article class="slide-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-sm mb-8" data-slide="17">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+            <span class="text-xs font-mono font-bold tracking-widest uppercase text-kgu-blue dark:text-sky-400">SLIDE 17 · 시각화 비교</span>
+            <span class="text-xs text-slate-400">그림 7-3 · 4개 척도 다중 패널</span>
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">
+            그림 7-3: 4개 척도 히스토그램과 상자그림 시각 비교
+          </h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">
+            동일한 구간 수(7개)를 적용하더라도 척도마다 구간 폭과 경계가 완전히 달라집니다. (결측 2건 제외, 유효 20건 보존)
+          </p>
+
+          <!-- Interactive Scale Switcher / Visualization -->
+          <div class="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-5 border border-slate-200 dark:border-slate-700 my-2">
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-bold text-slate-600 dark:text-slate-300">척도별 시각화 탐색:</span>
+                <div class="flex gap-1 text-xs">
+                  <button onclick="renderScalePlot('raw')" id="btnScale_raw" class="px-2.5 py-1 rounded bg-kgu-blue text-white font-bold">원자료</button>
+                  <button onclick="renderScalePlot('sqrt')" id="btnScale_sqrt" class="px-2.5 py-1 rounded bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300">제곱근</button>
+                  <button onclick="renderScalePlot('log')" id="btnScale_log" class="px-2.5 py-1 rounded bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300">자연로그</button>
+                  <button onclick="renderScalePlot('sq')" id="btnScale_sq" class="px-2.5 py-1 rounded bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300">제곱</button>
+                </div>
+              </div>
+              <span id="currentScaleDesc" class="text-xs font-mono text-slate-500 hidden sm:inline">원자료: 왜도 +2.74 (강한 오른쪽 꼬리)</span>
+            </div>
+
+            <!-- Dynamic SVG Graphic Display -->
+            <div id="dynamicPlotBox" class="w-full bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700 p-4 min-h-[220px] flex flex-col justify-center items-center">
+              <!-- Rendered via JS renderScalePlot() -->
+            </div>
+          </div>
+
+          <div class="mt-3 text-xs text-slate-500 dark:text-slate-400 space-y-1">
+            <p>• <strong>히스토그램 관찰:</strong> 원자료는 대부분의 관측치가 첫 1~2개 빈에 몰려 쏠려있지만, 자연로그 척도에서는 빈들이 중앙을 중심으로 고르게 분산됩니다.</p>
+            <p>• <strong>상자그림 관찰:</strong> 상자 내부의 중앙값 위치와 위아래 수염 길이가 자연로그에서 가장 균형 잡힌 대칭을 형성합니다.</p>
+          </div>
+        </article>
+
+        <!-- SLIDE 18 -->
+        <article class="slide-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-sm mb-8" data-slide="18">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+            <span class="text-xs font-mono font-bold tracking-widest uppercase text-kgu-blue dark:text-sky-400">SLIDE 18 · 검증 3종 세트</span>
+            <span class="text-xs text-slate-400">무결성 감사 원칙</span>
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">
+            검증 3종 세트: 계산이 맞는가, 표현이 올바른가?
+          </h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-6">
+            AI가 내놓은 코드를 맹신하지 않고 3단계 검증을 통해 코드의 무결성을 독립 감사(Audit)합니다.
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-4">
+            
+            <!-- Check 1: Manual Calculation -->
+            <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center gap-1.5 text-xs font-bold text-blue-600 dark:text-sky-400 mb-2">
+                  <span>① 손계산·계산기 대조</span>
+                </div>
+                <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                  극값 관측치에 대해 독립 계산기로 직접 검증:
+                </p>
+                <div class="mt-2 p-2.5 bg-white dark:bg-slate-900 rounded text-xs font-mono space-y-1 text-slate-700 dark:text-slate-300">
+                  <div>$\sqrt{120} \approx 10.95445$</div>
+                  <div>$\sqrt{1200} \approx 34.64101$</div>
+                  <div>$\ln(1200)-\ln(120)=\ln(10) \approx 2.30258$</div>
+                </div>
+              </div>
+              <div class="mt-3 text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-1">
+                ✓ 코드 연산 결과와 소수점 4자리 완전 일치
+              </div>
+            </div>
+
+            <!-- Check 2: Cross Validation -->
+            <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center gap-1.5 text-xs font-bold text-emerald-600 dark:text-emerald-400 mb-2">
+                  <span>② 도구 간 교차 확인</span>
+                </div>
+                <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                  NumPy 벡터 연산과 Python `math` 표준 라이브러리 간 부동소수 오차 교차 검증:
+                </p>
+                <div class="mt-2 p-2.5 bg-white dark:bg-slate-900 rounded text-xs font-mono text-slate-700 dark:text-slate-300">
+                  <code>np.isclose(np.log(120), math.log(120))</code>
+                  <div class="text-emerald-600 text-[11px] mt-1">True (허용오차 1e-12 이내)</div>
+                </div>
+              </div>
+              <div class="mt-3 text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-1">
+                ✓ 복수 라이브러리 교차 검증 통과
+              </div>
+            </div>
+
+            <!-- Check 3: Edge Case Guard -->
+            <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center gap-1.5 text-xs font-bold text-purple-600 dark:text-purple-400 mb-2">
+                  <span>③ 경계 사례(Edge cases) 방어</span>
+                </div>
+                <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                  별도 검증 데이터 `[0, -1, np.nan, 4]` 투입 시 비정상 종료 방지 테스트:
+                </p>
+                <div class="mt-2 p-2.5 bg-white dark:bg-slate-900 rounded text-xs font-mono text-slate-700 dark:text-slate-300 space-y-0.5">
+                  <div>$\sqrt{0} = 0$ (정상)</div>
+                  <div class="text-rose-500">$\sqrt{-1} \to \text{NaN}$ (경고 감지)</div>
+                  <div class="text-rose-500">$\ln(0) \to -\infty$ (방어 차단)</div>
+                </div>
+              </div>
+              <div class="mt-3 text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-1">
+                ✓ 예외 처리 및 경고 포착 로직 검증 완료
+              </div>
+            </div>
+
+          </div>
+        </article>
+
+        <!-- SLIDE 19 -->
+        <article class="slide-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-sm mb-8" data-slide="19">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+            <span class="text-xs font-mono font-bold tracking-widest uppercase text-kgu-blue dark:text-sky-400">SLIDE 19 · 심화 7-A</span>
+            <span class="text-xs text-slate-400">이상점 표시 변화의 수학적 원리</span>
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">
+            심화 7-A: 변환 전후 이상점(Outlier) 표시는 왜 달라질까?
+          </h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">
+            원자료 상자그림에서는 이상점으로 찍히던 700만 원이, 로그 상자그림에서는 왜 일반 수염 안쪽으로 들어오는가?
+          </p>
+
+          <!-- Side-by-side Outlier Fence Table -->
+          <div class="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700 mb-4">
+            <table class="w-full text-center text-xs sm:text-sm border-collapse bg-white dark:bg-slate-900">
+              <thead class="bg-slate-100 dark:bg-slate-800 font-bold text-slate-700 dark:text-slate-200">
+                <tr>
+                  <th class="p-3 text-left">구분</th>
+                  <th class="p-3">Q1</th>
+                  <th class="p-3">Q3</th>
+                  <th class="p-3">IQR</th>
+                  <th class="p-3 text-rose-600">위쪽 울타리 ($Q3 + 1.5 \times \text{IQR}$)</th>
+                  <th class="p-3">울타리 밖 표시 관측치</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100 dark:divide-slate-800 font-mono">
+                <tr>
+                  <td class="p-3 text-left font-sans font-bold">원자료 ($x$)</td>
+                  <td class="p-3">177.5</td>
+                  <td class="p-3">312.5</td>
+                  <td class="p-3">135.0</td>
+                  <td class="p-3 font-bold text-rose-600">515.0만 원</td>
+                  <td class="p-3 font-bold text-rose-600">700, 1200 (2개)</td>
+                </tr>
+                <tr class="bg-emerald-50/30 dark:bg-emerald-950/20">
+                  <td class="p-3 text-left font-sans font-bold text-emerald-700 dark:text-emerald-300">자연로그 ($\ln x$)</td>
+                  <td class="p-3">5.18</td>
+                  <td class="p-3">5.74</td>
+                  <td class="p-3">0.56</td>
+                  <td class="p-3 font-bold text-emerald-600">6.59 ($\approx 727.8$만 원 상당)</td>
+                  <td class="p-3 font-bold text-emerald-600">1200만 원 (ln 7.09, 단 1개)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Explanation box -->
+          <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800 text-xs sm:text-sm text-slate-700 dark:text-slate-300 space-y-3">
+            <h4 class="font-bold text-slate-900 dark:text-white">💡 핵심 질문: "한 척도에서는 이상점인데 다른 척도에서는 아니면, 어느 쪽이 참인가요?"</h4>
+            <p class="leading-relaxed">
+              둘 다 참입니다. 상자그림의 점 표시는 '절대적인 오류'를 가리키는 것이 아니라, <strong>해당 척도에서 정의된 $1.5 \times \text{IQR}$ 규칙을 기계적으로 적용한 결과</strong>일 뿐입니다.
+            </p>
+            <p class="leading-relaxed">
+              비선형 변환은 간격을 재배치하므로 분위수와 IQR의 폭이 재조정되어 울타리의 위치가 달라집니다. 따라서 변환 후 이상점이 사라졌다고 해서 "문제가 해결되어 관측치를 지웠다"고 해석하는 것은 심각한 오류입니다.
+            </p>
+          </div>
+        </article>
+
+        <!-- SLIDE 20 -->
+        <article class="slide-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-sm mb-8" data-slide="20">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+            <span class="text-xs font-mono font-bold tracking-widest uppercase text-kgu-blue dark:text-sky-400">SLIDE 20 · 오류 교정 실습</span>
+            <span class="text-xs text-slate-400">보고서 비판 및 교정</span>
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">
+            잘못된 분석 보고서 고치기 & 분석 기록 템플릿
+          </h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-6">
+            실무와 연구에서 흔히 저지르는 치명적 오류 보고서 초안을 읽고 비판적으로 교정합니다.
+          </p>
+
+          <!-- Bad Report vs Corrected Report -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-4">
+            
+            <!-- Bad Report Draft -->
+            <div class="p-5 rounded-xl bg-rose-50/60 dark:bg-rose-950/40 border-2 border-rose-200 dark:border-rose-900 flex flex-col justify-between">
+              <div>
+                <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-rose-200 dark:bg-rose-900 text-rose-800 dark:text-rose-200 mb-2">
+                  ❌ 오류 가득한 학생 보고서 초안
+                </span>
+                <p class="text-xs sm:text-sm text-rose-950 dark:text-rose-200 leading-relaxed font-serif italic space-y-2">
+                  “로그변환 후 왜도가 1.30으로 가장 작으므로 정규분포가 완벽히 증명되었다. 1200만 원은 이상치였으나 변환 후 울타리 안쪽으로 자연스럽게 흡수되었으므로 불필요해 삭제 처리했다. 또한 로그 평균 5.54은 표본의 평균 소득이 5.54만 원임을 의미한다.”
+                </p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-rose-200 dark:border-rose-900 text-xs text-rose-700 dark:text-rose-400">
+                ⚠️ 오류 3가지: 왜도만으로 정규성 단정 / 이상치 임의 삭제 / 단위 왜곡
+              </div>
+            </div>
+
+            <!-- Corrected Direction -->
+            <div class="p-5 rounded-xl bg-emerald-50/60 dark:bg-emerald-950/40 border-2 border-emerald-200 dark:border-emerald-900 flex flex-col justify-between">
+              <div>
+                <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-200 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-200 mb-2">
+                  ✅ 바르게 교정된 전문 분석 문장
+                </span>
+                <p class="text-xs sm:text-sm text-emerald-950 dark:text-emerald-200 leading-relaxed space-y-2">
+                  “자연로그 변환을 통해 표본 왜도가 +2.74에서 +1.30으로 감소하여 오른쪽 꼬리가 대칭화되었습니다. 변환은 관측치를 삭제하지 않으며 20건의 유효 표본을 온전히 보존합니다. 로그 척도의 평균 5.54은 $\ln(\text{만 원})$ 단위의 요약이며, 원래 소득 단위의 기하평균은 $e^{5.54} \approx 256$만 원으로 산출됩니다.”
+                </p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-emerald-200 dark:border-emerald-900 text-xs text-emerald-700 dark:text-emerald-400">
+                ✓ 원자료 보존 명시 / 단위 구분 / 통계적 한계와 해석 명확화
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Documentation Standard Template Box -->
+          <div class="mt-4 p-4 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+            <h4 class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">표준 분석 기록 양식</h4>
+            <p class="text-xs font-mono text-slate-600 dark:text-slate-400">
+              [분석 질문] → [실제 AI 명세 프롬프트] → [자료 및 결측치 현황] → [사전 예측] → [변환 및 그림 비교] → [3종 검증 결과] → [변환 선택 근거] → [원래 단위로의 맥락 해석과 한계]
+            </p>
+          </div>
+        </article>
+
+        <!-- SLIDE 21 -->
+        <article class="slide-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-sm mb-8" data-slide="21">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+            <span class="text-xs font-mono font-bold tracking-widest uppercase text-kgu-blue dark:text-sky-400">SLIDE 21 · 종료 질문 & 차수 예고</span>
+            <span class="text-xs text-slate-400">자기 평가</span>
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">
+            종료 질문 (Exit Questions) 및 8차수 예고
+          </h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-6">
+            오늘 배운 6가지 핵심 질문에 대해 스스로 답을 떠올려본 뒤 카드를 클릭해 정답을 확인하세요.
+          </p>
+
+          <!-- 6 Exit Questions Accordion -->
+          <div class="space-y-2.5 my-4">
+            
+            <details class="group bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-3.5 transition">
+              <summary class="flex items-center justify-between font-bold text-xs sm:text-sm text-slate-800 dark:text-slate-200 cursor-pointer list-none">
+                <span>Q1. 자료 재표현의 3대 목적은 무엇인가?</span>
+                <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <div class="mt-2 text-xs text-slate-600 dark:text-slate-300 pt-2 border-t border-slate-200 dark:border-slate-700">
+                <strong>정답:</strong> 분포의 대칭화(Symmetrizing), 분산 안정화(Equal spread), 두 변수 관계의 선형화(Linearizing).
+              </div>
+            </details>
+
+            <details class="group bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-3.5 transition">
+              <summary class="flex items-center justify-between font-bold text-xs sm:text-sm text-slate-800 dark:text-slate-200 cursor-pointer list-none">
+                <span>Q2. 양의 선형변환($y = a+bx, b>0$)이 분포의 비대칭을 줄일 수 있는가?</span>
+                <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <div class="mt-2 text-xs text-slate-600 dark:text-slate-300 pt-2 border-t border-slate-200 dark:border-slate-700">
+                <strong>정답:</strong> 불가능합니다. 선형변환은 모든 점의 간격을 같은 배율로 바꾸므로 왜도와 표준화된 분포 형태가 100% 동일하게 유지됩니다.
+              </div>
+            </details>
+
+            <details class="group bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-3.5 transition">
+              <summary class="flex items-center justify-between font-bold text-xs sm:text-sm text-slate-800 dark:text-slate-200 cursor-pointer list-none">
+                <span>Q3. 자연로그($\ln x$)를 적용하기 위해 자료가 반드시 만족해야 할 조건은?</span>
+                <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <div class="mt-2 text-xs text-slate-600 dark:text-slate-300 pt-2 border-t border-slate-200 dark:border-slate-700">
+                <strong>정답:</strong> 모든 유효 관측치가 엄밀한 양수($x > 0$)여야 합니다. 0에서는 $-\infty$로 발산하며 음수에서는 실수가 정의되지 않습니다.
+              </div>
+            </details>
+
+            <details class="group bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-3.5 transition">
+              <summary class="flex items-center justify-between font-bold text-xs sm:text-sm text-slate-800 dark:text-slate-200 cursor-pointer list-none">
+                <span>Q4. 로그 척도에서의 두 값의 차이는 원래 척도에서 무엇을 의미하는가?</span>
+                <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <div class="mt-2 text-xs text-slate-600 dark:text-slate-300 pt-2 border-t border-slate-200 dark:border-slate-700">
+                <strong>정답:</strong> 원래 값들의 '비율(Ratio)' 또는 '배율'에 대응합니다. ($\ln b - \ln a = \ln(b/a)$)
+              </div>
+            </details>
+
+            <details class="group bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-3.5 transition">
+              <summary class="flex items-center justify-between font-bold text-xs sm:text-sm text-slate-800 dark:text-slate-200 cursor-pointer list-none">
+                <span>Q5. 변환 후 상자그림에서 이상점 표시가 달라지면 무엇을 뜻하는가?</span>
+                <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <div class="mt-2 text-xs text-slate-600 dark:text-slate-300 pt-2 border-t border-slate-200 dark:border-slate-700">
+                <strong>정답:</strong> 비선형 간격 재배치에 의해 해당 척도의 사분위수와 $1.5 \times \text{IQR}$ 울타리가 새로 계산된 규칙의 결과일 뿐, 실제 오류 여부는 원자료 맥락에서 별도 조사해야 합니다.
+              </div>
+            </details>
+
+            <details class="group bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-3.5 transition">
+              <summary class="flex items-center justify-between font-bold text-xs sm:text-sm text-slate-800 dark:text-slate-200 cursor-pointer list-none">
+                <span>Q6. 왜도 수치 하나만 보고 가장 작은 변환을 자동 선택해도 되는가?</span>
+                <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <div class="mt-2 text-xs text-slate-600 dark:text-slate-300 pt-2 border-t border-slate-200 dark:border-slate-700">
+                <strong>정답:</strong> 안 됩니다! 히스토그램의 빈 분포, 봉우리 형태, 도메인 해석 가능성, 원래 목적(대칭화 vs 선형화)을 종합적으로 고려해 분석자가 최종 결정해야 합니다.
+              </div>
+            </details>
+
+          </div>
+
+          <!-- Next Lecture Preview -->
+          <div class="mt-6 p-4 rounded-xl bg-gradient-to-r from-blue-900 to-kgu-blue text-white shadow-md">
+            <span class="text-xs font-semibold uppercase tracking-wider text-sky-300">Next Step</span>
+            <h4 class="text-base font-bold mt-1">8차수 예고: 표준화, 로버스트 표준화 및 Box-Cox 연속 변환</h4>
+            <p class="text-xs text-blue-100 mt-1 leading-relaxed">
+              선형변환인 z-표준화와 비선형 멱승변환의 장점을 연결하고, 최적의 변환 파라미터 $\lambda$를 데이터로부터 수학적으로 추정하는 Box-Cox 체계를 탐구합니다.
+            </p>
+          </div>
+        </article>
+
+        <!-- SLIDE 22 -->
+        <article class="slide-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-sm mb-8" data-slide="22">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+            <span class="text-xs font-mono font-bold tracking-widest uppercase text-kgu-blue dark:text-sky-400">SLIDE 22 · 자가 실습 과제</span>
+            <span class="text-xs text-slate-400">0을 포함한 오른쪽 꼬리</span>
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">
+            자가 실습: 주간 과제 소요 시간과 '0'의 처리 문제
+          </h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">
+            가상 학생 13명의 주간 과제 시간 데이터에는 <strong>0시간</strong>이 포함되어 있습니다.
+          </p>
+
+          <!-- Self study dataset -->
+          <div class="bg-slate-900 text-slate-100 rounded-xl p-4 font-mono text-xs sm:text-sm my-3">
+            <div class="text-slate-400 text-xs mb-1">가상 과제 소요 시간 (단위: 시간) · 전체 13건</div>
+            <p class="text-emerald-400 font-bold">0, 1, 1, 2, 2, 3, 3, 4, 5, 6, 8, 12, 결측</p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
+            <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+              <h4 class="text-xs font-bold text-slate-700 dark:text-slate-200 mb-2">과제 요구사항</h4>
+              <ul class="text-xs text-slate-600 dark:text-slate-400 space-y-1.5 list-disc list-inside">
+                <li>전체 13건 중 유효 12건, 결측 1건 분리 보존</li>
+                <li>원자료와 제곱근($\sqrt{x}$) 변환의 분포 비교</li>
+                <li>자연로그($\ln x$)를 0에 바로 적용할 수 없는 이유 설명</li>
+                <li>만약 $\log(x+1)$을 쓴다면 1시간의 임의성과 한계 보고</li>
+              </ul>
+            </div>
+
+            <div class="p-4 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800">
+              <h4 class="text-xs font-bold text-amber-800 dark:text-amber-300 mb-2">자가 검증 기준값</h4>
+              <ul class="text-xs text-amber-700 dark:text-amber-300 space-y-1.5 font-mono">
+                <li>• $\sqrt{0} = 0.0$ (제곱근은 0을 자연스럽게 보존)</li>
+                <li>• $\sqrt{4} = 2.0$</li>
+                <li>• $\sqrt{12} \approx 3.4641$</li>
+                <li>• $\ln(0) \to -\infty$ (직접 적용 불가!)</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <!-- SLIDE 23 -->
+        <article class="slide-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-sm mb-8" data-slide="23">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+            <span class="text-xs font-mono font-bold tracking-widest uppercase text-kgu-blue dark:text-sky-400">SLIDE 23 · 자가 실습 프롬프트 & 자료</span>
+            <span class="text-xs text-slate-400">학습 마무리</span>
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">
+            자가 실습 완성 프롬프트 & 공식 참고문헌
+          </h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">
+            자가 실습을 수행할 때 Colab이나 LLM에 전달할 수 있는 엄밀한 완성형 프롬프트입니다.
+          </p>
+
+          <!-- Copyable Self-study prompt -->
+          <div class="bg-slate-900 text-slate-100 rounded-xl p-5 font-mono text-xs leading-relaxed border border-slate-800 shadow-md relative my-4">
+            <div class="flex justify-between items-center pb-2 mb-2 border-b border-slate-800 text-slate-400">
+              <span class="text-sky-400 font-bold">자가 실습용 표준 프롬프트</span>
+              <button onclick="copySelfPrompt()" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-sky-300 text-xs">
+                프롬프트 복사
+              </button>
+            </div>
+            <pre id="selfPromptText" class="whitespace-pre-wrap text-slate-200">
+[자가 실습 명세: 주간 과제 소요 시간 분석]
+1. 데이터: [0, 1, 1, 2, 2, 3, 3, 4, 5, 6, 8, 12, np.nan] (단위: 시간)
+2. DataFrame에 원자료 'Hours_raw'를 온전히 보존하고 전체 13건 중 결측 1건을 식별하여 출력해줘.
+3. 제곱근 변환('Hours_sqrt')을 수행하여 0, 4, 12의 변환 결과를 손계산(0, 2, 3.464)과 교차 검증해줘.
+4. 0에 대해 자연로그 np.log를 직접 적용했을 때 발생하는 오류(RuntimeWarning, -inf)를 코드로 시연하고 이유를 설명해줘.
+5. 대안으로 np.log1p(log(x+1))을 적용할 경우, 더해진 상수 '1시간'이 원래 분석 단위에서 갖는 임의적 왜곡과 한계를 명시해줘.
+6. 원자료와 각 변환의 요약통계량(5수요약, 평균, 표본 왜도)을 비교하는 표를 출력해줘.
+            </pre>
+          </div>
+
+          <!-- Official Documentation Links -->
+          <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 my-4">
+            <h4 class="text-xs font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wider mb-2">공식 기술 문서 및 학술 참고자료</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+              <a href="https://numpy.org/doc/stable/reference/generated/numpy.log.html" target="_blank" rel="noopener" class="p-2.5 rounded bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-sky-600 dark:text-sky-400 hover:underline flex items-center justify-between">
+                <span>NumPy 공식: `numpy.log` 매뉴얼</span>
+                <span class="text-slate-400">↗</span>
+              </a>
+              <a href="https://pandas.pydata.org/docs/reference/api/pandas.Series.skew.html" target="_blank" rel="noopener" class="p-2.5 rounded bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-sky-600 dark:text-sky-400 hover:underline flex items-center justify-between">
+                <span>pandas 공식: `Series.skew` 편향 보정 공식</span>
+                <span class="text-slate-400">↗</span>
+              </a>
+              <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.boxplot.html" target="_blank" rel="noopener" class="p-2.5 rounded bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-sky-600 dark:text-sky-400 hover:underline flex items-center justify-between">
+                <span>Matplotlib 공식: 상자그림 사분위수 설정</span>
+                <span class="text-slate-400">↗</span>
+              </a>
+              <div class="p-2.5 rounded bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400">
+                <span>J. W. Tukey (1977), <em>Exploratory Data Analysis</em>, Ch. 3-4</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="text-center py-6 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500">
+            경기대학교 응용통계학과 · 자료탐색방법론 2026학년도 2학기 · 7차수 강의 슬라이드 웹 교재
+          </div>
+        </article>
+
+      </div>
+
+      <!-- Slide Navigation Footer (Slide Mode) -->
+      <footer id="slideFooterNav" class="no-print w-full max-w-5xl mx-auto pt-4 pb-8 flex items-center justify-between border-t border-slate-200 dark:border-slate-800">
+        <button id="footerPrevBtn" class="flex items-center gap-1.5 px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+          이전 슬라이드
+        </button>
+        <span class="text-xs text-slate-400 font-medium hidden sm:inline">단축키: 키보드 좌우 방향키 (← / →)</span>
+        <button id="footerNextBtn" class="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-kgu-blue hover:bg-kgu-light text-white text-xs font-bold transition shadow-xs">
+          다음 슬라이드
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        </button>
+      </footer>
+    </main>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast" class="no-print fixed bottom-6 right-6 z-50 bg-slate-900 text-white dark:bg-white dark:text-slate-900 text-xs font-semibold px-4 py-2.5 rounded-xl shadow-lg transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none flex items-center gap-2">
+    <span id="toastIcon">📋</span>
+    <span id="toastMsg">복사되었습니다.</span>
+  </div>
+
+  <!-- JavaScript Application Logic -->
+  <script>
+    // State Management
+    let currentSlide = 1;
+    const totalSlides = 23;
+    let isSlideMode = true;
+
+    // Slide Titles for TOC
+    const slideTitles = [
+      "01. 표지 · 자료의 재표현과 변환의 사다리",
+      "02. 기존 차수 연결 & 학습 목표",
+      "03. 7차수 전체 학습 로드맵",
+      "04. 6차수 복습 · 90분을 어떻게 다룰까?",
+      "05. 재표현은 무엇을 바꾸는가?",
+      "06. 재표현의 세 가지 목적",
+      "07. 선형변환과 비선형변환",
+      "08. 멱승변환의 사다리 (Ladder of Powers)",
+      "09. 그림 7-2 · 같은 값, 달라지는 간격",
+      "10. 제곱근·로그·제곱의 정의역과 해석",
+      "11. 지수변환과 방향 선택의 한계",
+      "12. 손계산 실습 · AI 전 예측 훈련",
+      "13. 실습 문제 · 가상 월 소득 자료",
+      "14. AI 종합 분석 명세서",
+      "15. 셀 1 · 원자료 보존 & 정의역 검증",
+      "16. 셀 2 · 변환 열 생성 & 요약통계표",
+      "17. 셀 3 · 4개 척도 시각화 비교",
+      "18. 검증 3종 세트 (손계산·교차·경계)",
+      "19. 심화 7-A · 이상점 표시 변화 원리",
+      "20. 잘못된 보고서 고치기 & 템플릿",
+      "21. 종료 질문 & 8차수 예고",
+      "22. 자가 실습 · 주간 과제 소요 시간",
+      "23. 자가 실습 프롬프트 & 참고문헌"
+    ];
+
+    // Initialize DOM
+    document.addEventListener('DOMContentLoaded', () => {
+      buildTOC();
+      updateSlideView();
+      const params = new URLSearchParams(location.search);
+      if (params.get('read') === '1') setSlideMode(false);
+      if (params.get('print') === '1') { setSlideMode(false); setTimeout(() => window.print(), 700); }
+      renderScalePlot('raw');
+
+      // Initialize KaTeX
+      if (window.renderMathInElement) {
+        renderMathInElement(document.body, {
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false}
+          ],
+          throwOnError: false
+        });
+      }
+
+      // Check System Theme
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.classList.add('dark');
+      }
+    });
+
+    // TOC Generator
+    function buildTOC() {
+      const tocList = document.getElementById('tocList');
+      tocList.innerHTML = '';
+      slideTitles.forEach((title, idx) => {
+        const slideNum = idx + 1;
+        const item = document.createElement('button');
+        item.className = `w-full text-left px-3 py-2 rounded-lg text-xs font-medium transition flex items-center justify-between ${
+          currentSlide === slideNum && isSlideMode
+            ? 'bg-kgu-blue text-white font-bold'
+            : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+        }`;
+        item.innerHTML = `<span class="truncate">${title}</span>`;
+        item.onclick = () => {
+          goToSlide(slideNum);
+          closeSidebar();
+        };
+        tocList.appendChild(item);
+      });
+    }
+
+    // Slide Navigation
+    function goToSlide(num) {
+      if (num < 1 || num > totalSlides) return;
+      currentSlide = num;
+      if (!isSlideMode) {
+        setSlideMode(true);
+      }
+      updateSlideView();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function updateSlideView() {
+      // Progress & Indicator
+      document.getElementById('currentSlideNum').innerText = currentSlide;
+      document.getElementById('totalSlideNum').innerText = totalSlides;
+      const progressPct = ((currentSlide / totalSlides) * 100).toFixed(2);
+      document.getElementById('progressBar').style.width = `${progressPct}%`;
+
+      // Disable buttons
+      document.getElementById('prevSlideBtn').disabled = (currentSlide === 1);
+      document.getElementById('nextSlideBtn').disabled = (currentSlide === totalSlides);
+      document.getElementById('footerPrevBtn').disabled = (currentSlide === 1);
+      document.getElementById('footerNextBtn').disabled = (currentSlide === totalSlides);
+
+      const slides = document.querySelectorAll('.slide-card');
+      slides.forEach(slide => {
+        const sNum = parseInt(slide.getAttribute('data-slide'));
+        if (isSlideMode) {
+          if (sNum === currentSlide) {
+            slide.classList.remove('hidden');
+            slide.classList.add('fade-in');
+          } else {
+            slide.classList.add('hidden');
+            slide.classList.remove('fade-in');
+          }
+        } else {
+          // Document Mode: all visible
+          slide.classList.remove('hidden');
+          slide.classList.remove('fade-in');
+        }
+      });
+
+      // Update TOC Highlight
+      buildTOC();
+    }
+
+    // View Mode Switching
+    function setSlideMode(slideMode) {
+      isSlideMode = slideMode;
+      const slideControls = document.getElementById('slideControls');
+      const footerNav = document.getElementById('slideFooterNav');
+      const btnSlide = document.getElementById('modeSlideBtn');
+      const btnDoc = document.getElementById('modeDocBtn');
+
+      if (isSlideMode) {
+        slideControls.classList.remove('hidden');
+        footerNav.classList.remove('hidden');
+        btnSlide.className = "px-2.5 py-1 rounded-md bg-white dark:bg-slate-700 text-kgu-blue dark:text-sky-400 shadow-xs font-semibold flex items-center gap-1";
+        btnDoc.className = "px-2.5 py-1 rounded-md text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white flex items-center gap-1";
+      } else {
+        slideControls.classList.add('hidden');
+        footerNav.classList.add('hidden');
+        btnDoc.className = "px-2.5 py-1 rounded-md bg-white dark:bg-slate-700 text-kgu-blue dark:text-sky-400 shadow-xs font-semibold flex items-center gap-1";
+        btnSlide.className = "px-2.5 py-1 rounded-md text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white flex items-center gap-1";
+      }
+      updateSlideView();
+    }
+
+    // Event Listeners for Nav
+    document.getElementById('prevSlideBtn').onclick = () => goToSlide(currentSlide - 1);
+    document.getElementById('nextSlideBtn').onclick = () => goToSlide(currentSlide + 1);
+    document.getElementById('footerPrevBtn').onclick = () => goToSlide(currentSlide - 1);
+    document.getElementById('footerNextBtn').onclick = () => goToSlide(currentSlide + 1);
+
+    document.getElementById('modeSlideBtn').onclick = () => setSlideMode(true);
+    document.getElementById('modeDocBtn').onclick = () => setSlideMode(false);
+
+    // Keyboard Arrow Keys
+    window.addEventListener('keydown', (e) => {
+      if (!isSlideMode) return;
+      if (e.key === 'ArrowRight' || e.key === 'PageDown') {
+        goToSlide(currentSlide + 1);
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        goToSlide(currentSlide - 1);
+      }
+    });
+
+    // Dark Mode Toggle
+    document.getElementById('darkModeBtn').onclick = () => {
+      document.documentElement.classList.toggle('dark');
+    };
+
+    // Sidebar Toggle
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    function openSidebar() {
+      sidebar.classList.remove('-translate-x-full');
+      overlay.classList.remove('hidden');
+    }
+    function closeSidebar() {
+      sidebar.classList.add('-translate-x-full');
+      overlay.classList.add('hidden');
+    }
+    document.getElementById('sidebarToggleBtn').onclick = openSidebar;
+    document.getElementById('sidebarCloseBtn').onclick = closeSidebar;
+    overlay.onclick = closeSidebar;
+
+    // Toast Function (Alert Free)
+    function showToast(message, icon = '📋') {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastMsg').innerText = message;
+      document.getElementById('toastIcon').innerText = icon;
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      setTimeout(() => {
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 2500);
+    }
+
+    // Clipboard Fallback Safe Copy
+    function copyTextToClipboard(text, successMsg = '클립보드에 복사되었습니다.') {
+      const textArea = document.createElement("textarea");
+      textArea.value = text;
+      textArea.style.position = "fixed";
+      textArea.style.top = "-9999px";
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        showToast(successMsg, '✅');
+      } catch (err) {
+        showToast('복사에 실패했습니다.', '⚠️');
+      }
+      document.body.removeChild(textArea);
+    }
+
+    function copyRawData() {
+      const text = document.getElementById('rawDataText').innerText.trim();
+      copyTextToClipboard(text, '실습 원자료가 복사되었습니다.');
+    }
+
+    function copyPromptText() {
+      const text = document.getElementById('promptText').innerText.trim();
+      copyTextToClipboard(text, 'AI 분석 명세 프롬프트가 복사되었습니다.');
+    }
+
+    function copyCode(id) {
+      const text = document.getElementById(id).innerText.trim();
+      copyTextToClipboard(text, '파이썬 코드가 복사되었습니다.');
+    }
+
+    function copySelfPrompt() {
+      const text = document.getElementById('selfPromptText').innerText.trim();
+      copyTextToClipboard(text, '자가 실습 프롬프트가 복사되었습니다.');
+    }
+
+    // Slide 12: Manual Calculation Check
+    function checkManualCalc() {
+      const v1 = document.getElementById('ans_sq1').value.trim();
+      const v2 = document.getElementById('ans_sq2').value.trim();
+      const v3 = document.getElementById('ans_sq3').value.trim();
+      const v4 = document.getElementById('ans_sq4').value.trim();
+      const v5 = document.getElementById('ans_sq5').value.trim();
+      const diff = document.getElementById('ans_sq_diff').value.trim();
+      const med = document.getElementById('ans_sq_med').value.trim();
+
+      const resultMsg = document.getElementById('manualResultMsg');
+
+      if (v1==='1' && v2==='2' && v3==='3' && v4==='4' && v5==='10' && diff==='6' && med==='3') {
+        resultMsg.className = "text-xs font-bold text-emerald-600 dark:text-emerald-400";
+        resultMsg.innerText = "🎉 완벽합니다! 모든 계산과 예측이 정확히 일치합니다.";
+        showToast("손계산 정답입니다!", "🎉");
+      } else {
+        resultMsg.className = "text-xs font-bold text-rose-600 dark:text-rose-400";
+        resultMsg.innerText = "오답이 있습니다. 빈칸과 계산을 다시 확인하거나 해설을 확인하세요.";
+      }
+    }
+
+    function toggleManualAnswer() {
+      const sol = document.getElementById('manualCalcSolution');
+      sol.classList.toggle('hidden');
+    }
+
+    // Seven equally spaced bins computed directly from the displayed data.
+    function renderScalePlot(scale) {
+      const data=[120,140,150,160,170,180,190,200,210,220,230,240,250,270,300,350,400,500,700,1200];
+      const transforms={raw:x=>x,sqrt:Math.sqrt,log:Math.log,sq:x=>x*x};
+      const titles={raw:'원자료 (만 원)',sqrt:'제곱근 척도',log:'자연로그 척도',sq:'제곱 척도'};
+      const vals=data.map(transforms[scale]);const lo=Math.min(...vals),hi=Math.max(...vals),bins=Array(7).fill(0);vals.forEach(v=>bins[Math.min(6,Math.floor((v-lo)/(hi-lo)*7))]++);const max=Math.max(...bins);
+      document.getElementById('currentScaleDesc').innerText=titles[scale]+' · 유효 20건 · 구간 7개';
+      document.getElementById('dynamicPlotBox').innerHTML='<svg viewBox="0 0 600 190" class="w-full h-44" role="img" aria-label="선택한 척도의 히스토그램">'+bins.map((v,i)=>{let ht=v/max*110;return '<rect x="'+(55+i*65)+'" y="'+(135-ht)+'" width="60" height="'+ht+'" fill="#0284c7"/><text x="'+(85+i*65)+'" y="'+(130-ht)+'" text-anchor="middle" font-size="12" fill="#475569">'+v+'</text>';}).join('')+'<line x1="50" y1="135" x2="510" y2="135" stroke="#64748b"/><text x="50" y="160" font-size="11" fill="#475569">'+lo.toPrecision(4)+'</text><text x="510" y="160" text-anchor="end" font-size="11" fill="#475569">'+hi.toPrecision(4)+'</text><text x="280" y="183" text-anchor="middle" font-size="11" fill="#475569">'+titles[scale]+' · 각 막대 위 숫자는 빈도</text></svg>';
+      ['raw','sqrt','log','sq'].forEach(b=>{document.getElementById('btnScale_'+b).className=b===scale?'px-2.5 py-1 rounded bg-kgu-blue text-white font-bold':'px-2.5 py-1 rounded bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300';});
+    }
+  </script>
+<script>
+const fsBtn=document.getElementById('fullscreen-toggle');
+fsBtn.addEventListener('click',async()=>{try{if(document.fullscreenElement) await document.exitFullscreen(); else await document.documentElement.requestFullscreen();}catch(e){fsBtn.textContent='전체화면을 사용할 수 없습니다';}});
+document.addEventListener('fullscreenchange',()=>{const active=!!document.fullscreenElement;fsBtn.textContent=active?'전체화면 해제':'화면 전체보기';fsBtn.setAttribute('aria-pressed',String(active));});
+</script>
+</body>
+</html>
