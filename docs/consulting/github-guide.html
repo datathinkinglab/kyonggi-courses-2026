@@ -1,0 +1,2535 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>경기대학교 통계컨설팅의 이해 | GitHub 파일 업로드와 웹 배포 실습 강의노트</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Phosphor Icons CDN -->
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <!-- Google Fonts: Pretendard / Noto Sans KR & JetBrains Mono -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Noto+Sans+KR:wght@400;500;700;800;900&display=swap">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            kgu: {
+              navy: '#00264d',
+              deep: '#001a35',
+              blue: '#0284c7',
+              gold: '#cba86a',
+              red: '#d9252c'
+            }
+          },
+          fontFamily: {
+            sans: ['"Noto Sans KR"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace']
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      background-color: #0f172a;
+      color: #f8fafc;
+      overflow-x: hidden;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scroll::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 9999px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb:hover {
+      background: #cba86a;
+    }
+    @keyframes pulseDanger {
+      0%, 100% { background-color: rgba(220, 38, 38, 0.16); }
+      50% { background-color: rgba(220, 38, 38, 0.36); }
+    }
+    .row-risk-glow {
+      animation: pulseDanger 2.2s infinite ease-in-out;
+    }
+    .slide-fade {
+      animation: fadeIn 0.25s ease-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col select-none">
+  <div class="bg-amber-100 text-amber-950 text-center px-4 py-2 text-xs font-bold">교육용 가상 사례: 이 페이지의 조직·인물·고객 정보와 수치는 수업을 위한 가상 예시이며 실제 고객 자료가 아닙니다.</div>
+
+  <!-- Top Navigation Header -->
+  <header class="bg-[#001a35] border-b border-slate-800 px-4 py-2.5 flex items-center justify-between z-30 shadow-md">
+    <div class="flex items-center space-x-3">
+      <button onclick="openModal('modalToc')" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-[#cba86a] hover:bg-[#b89558] text-[#001a35] font-extrabold text-xs shadow transition" title="전체 슬라이드 목차 팝업 열기">
+        <i class="ph-bold ph-list-bullets text-base"></i>
+        <span>목차 보기</span>
+      </button>
+      <div class="flex items-center space-x-2">
+        <span class="px-2 py-0.5 text-[11px] font-extrabold bg-slate-800 text-[#cba86a] border border-[#cba86a]/40 rounded tracking-wider">경기대학교</span>
+        <span class="text-xs font-bold text-slate-300 hidden sm:inline">통계컨설팅의 이해 (4차수 후속)</span>
+      </div>
+      <h1 class="text-sm sm:text-base font-extrabold text-white truncate max-w-xs sm:max-w-md md:max-w-xl">
+        GitHub 파일 업로드와 웹 배포 상세 강의슬라이드
+      </h1>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex items-center space-x-2">
+      <button onclick="openModal('modalLabSimulator')" class="flex items-center space-x-1.5 px-3 py-1.5 bg-[#0284c7] hover:bg-sky-500 text-white text-xs font-bold rounded-lg shadow transition">
+        <i class="ph-bold ph-terminal-window text-sm"></i>
+        <span>단계별 배포 실습 시뮬레이터</span>
+      </button>
+      <button onclick="openModal('modalYuantaPreview')" class="flex items-center space-x-1.5 px-3 py-1.5 bg-[#d9252c] hover:bg-red-700 text-white text-xs font-bold rounded-lg shadow transition">
+        <i class="ph-bold ph-chart-Polar text-sm"></i>
+        <span>실습파일(유안타 지점장) 라이브 체험</span>
+      </button>
+      <button onclick="openModal('modalChecklist')" class="hidden md:flex items-center space-x-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-[#cba86a]/50 text-[#cba86a] text-xs font-bold rounded-lg transition">
+        <i class="ph-bold ph-check-square-offset text-sm"></i>
+        <span>학생 검증표</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content Layout: Slide Stage + Instructor Panel -->
+  <div class="flex-grow flex overflow-hidden relative">
+
+    <!-- Center Stage: Slide Deck Viewer -->
+    <main class="flex-grow flex flex-col bg-slate-950 overflow-y-auto custom-scroll relative">
+      
+      <!-- Top Progress Bar -->
+      <div class="w-full bg-slate-900 h-1.5">
+        <div id="topProgressBar" class="bg-gradient-to-r from-[#0284c7] via-[#cba86a] to-[#d9252c] h-full transition-all duration-300" style="width: 3.125%"></div>
+      </div>
+
+      <!-- Slide Canvas Container -->
+      <div class="flex-grow flex items-center justify-center p-4 sm:p-6 md:p-8">
+        <div id="slideStage" class="w-full max-w-5xl bg-white text-slate-900 rounded-2xl shadow-2xl border border-slate-300 overflow-hidden flex flex-col min-h-[520px] sm:min-h-[560px] transition-all slide-fade">
+          <!-- Slide Header Strip -->
+          <div id="slideHeaderBar" class="bg-[#00264d] text-white px-6 py-3.5 flex items-center justify-between border-b border-[#1a467c]">
+            <div class="flex items-center space-x-2.5">
+              <span id="slideNumberBadge" class="px-2.5 py-0.5 bg-[#cba86a] text-[#001a35] font-mono text-xs font-extrabold rounded">SLIDE 01</span>
+              <span id="slideCategoryBadge" class="text-xs font-bold text-amber-200 tracking-wide">도입 및 학습목표</span>
+            </div>
+            <div class="flex items-center space-x-2">
+              <span class="text-[11px] text-slate-300 hidden sm:inline">경기대 「통계컨설팅의 이해」</span>
+              <button id="btnSlideLabTrigger" onclick="openModal('modalLabSimulator')" class="px-2.5 py-1 bg-[#d9252c] hover:bg-red-700 text-white text-[11px] font-bold rounded flex items-center gap-1 shadow transition">
+                <i class="ph-bold ph-play-circle"></i> 이 단계 실습 열기
+              </button>
+            </div>
+          </div>
+
+          <!-- Slide Body Content -->
+          <div id="slideContentArea" class="p-6 sm:p-10 flex-grow flex flex-col justify-between bg-white">
+            <!-- Injected by JS -->
+          </div>
+
+          <!-- Instructor Note Bottom Drawer inside Slide -->
+          <div id="instructorNoteBox" class="bg-slate-900 text-slate-100 px-6 py-4 border-t border-slate-800">
+            <div class="flex items-start space-x-3">
+              <div class="p-1.5 rounded-lg bg-[#cba86a]/20 text-[#cba86a] mt-0.5 shrink-0">
+                <i class="ph-fill ph-chalkboard-teacher text-lg"></i>
+              </div>
+              <div class="flex-grow">
+                <div class="flex items-center justify-between">
+                  <span class="text-[11px] font-extrabold uppercase tracking-wider text-[#cba86a]">강사 설명 가이드 & 핵심 코칭 포인트</span>
+                  <span class="text-[11px] text-slate-400">키보드 ← / → 키로 슬라이드 이동</span>
+                </div>
+                <p id="slideInstructorNote" class="text-xs sm:text-sm text-slate-200 mt-1 leading-relaxed font-normal"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Slide Controls -->
+      <div class="bg-slate-900/90 border-t border-slate-800 px-6 py-3 flex items-center justify-between sticky bottom-0 z-10 backdrop-blur">
+        <button id="btnPrevSlide" class="flex items-center space-x-2 px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold transition disabled:opacity-40">
+          <i class="ph-bold ph-caret-left"></i>
+          <span>이전 슬라이드</span>
+        </button>
+
+        <div class="flex items-center space-x-2.5">
+          <button onclick="openModal('modalToc')" class="px-3 py-1.5 rounded-lg bg-[#00264d] hover:bg-[#083260] text-[#cba86a] text-xs font-bold border border-[#cba86a]/50 flex items-center gap-1.5 transition">
+            <i class="ph-bold ph-list-numbers"></i>
+            <span>목차 팝업 (<span id="bottomSlideCounter" class="font-mono text-white">1 / 32</span>)</span>
+          </button>
+          <button onclick="openModal('modalAppendix')" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold border border-slate-700 transition">
+            부록 A·B·C 보기
+          </button>
+          <button onclick="openModal('modalAppDeploy')" class="px-3 py-1.5 rounded-lg bg-sky-800 hover:bg-sky-700 text-white text-xs font-bold border border-sky-500 transition">
+            Streamlit·React 배포 참고
+          </button>
+        </div>
+
+        <button id="btnNextSlide" class="flex items-center space-x-2 px-4 py-2 rounded-xl bg-[#cba86a] hover:bg-[#b89558] text-[#001a35] text-xs font-extrabold transition disabled:opacity-40">
+          <span>다음 슬라이드</span>
+          <i class="ph-bold ph-caret-right"></i>
+        </button>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL 0: 전체 슬라이드 목차 (Table of Contents) 팝업 모달 -->
+  <!-- ===================================================================== -->
+  <div id="modalToc" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border-2 border-[#cba86a] rounded-2xl max-w-4xl w-full max-h-[88vh] flex flex-col shadow-2xl overflow-hidden">
+      <div class="bg-[#00264d] px-6 py-4 border-b border-[#1a467c] flex items-center justify-between">
+        <div class="flex items-center space-x-2.5">
+          <i class="ph-bold ph-presentation-chart text-xl text-[#cba86a]"></i>
+          <div>
+            <h2 class="text-base sm:text-lg font-extrabold text-white">전체 강의 슬라이드 목차 (32 Slides)</h2>
+            <p class="text-xs text-amber-200">원하는 슬라이드를 클릭하면 즉시 해당 슬라이드로 이동합니다.</p>
+          </div>
+        </div>
+        <div class="flex items-center space-x-3">
+          <span id="sidebarProgressBadge" class="text-xs font-mono bg-[#001a35] text-[#cba86a] border border-[#cba86a]/40 px-2.5 py-1 rounded-lg font-bold">01 / 32</span>
+          <button onclick="closeModal('modalToc')" class="p-1.5 rounded-lg bg-slate-800 hover:bg-red-600 text-slate-300 hover:text-white transition">
+            <i class="ph-bold ph-x text-lg"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Search Bar inside TOC Modal -->
+      <div class="p-4 bg-slate-950 border-b border-slate-800">
+        <div class="relative">
+          <input type="text" id="inputSlideSearch" placeholder="슬라이드 번호, 제목 또는 키워드(예: 커밋, Pages, 모달, 404) 검색..." 
+            class="w-full bg-slate-900 border border-slate-700 rounded-xl pl-9 pr-4 py-2 text-xs sm:text-sm text-white placeholder-slate-400 focus:outline-none focus:border-[#cba86a]">
+          <i class="ph-bold ph-magnifying-glass absolute left-3 top-2.5 text-[#cba86a] text-sm"></i>
+        </div>
+      </div>
+
+      <!-- Grid List of Slides -->
+      <div id="slideListContainer" class="flex-grow overflow-y-auto custom-scroll p-4 grid grid-cols-1 sm:grid-cols-2 gap-2.5 bg-slate-900">
+        <!-- Populated by JS -->
+      </div>
+
+      <div class="bg-slate-950 px-6 py-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+        <span>💡 단축키 안내: 키보드 좌/우 화살표(←, →)로도 슬라이드를 이동할 수 있습니다.</span>
+        <button onclick="closeModal('modalToc')" class="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold rounded-lg transition">
+          닫기
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL 1: 인터랙티브 실습 시뮬레이터 (첨부파일 기반 단계별 코드/익명화/배포 체험) -->
+  <!-- ===================================================================== -->
+  <div id="modalLabSimulator" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-2 sm:p-4">
+    <div class="bg-[#001a35] border-2 border-[#cba86a] rounded-2xl max-w-6xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden">
+      
+      <!-- Modal Header -->
+      <div class="bg-[#00264d] px-6 py-4 border-b border-[#1a467c] flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+          <span class="p-2 rounded-xl bg-[#d9252c] text-white">
+            <i class="ph-bold ph-code-block text-xl"></i>
+          </span>
+          <div>
+            <h2 class="text-base sm:text-lg font-extrabold text-white">
+              첨부파일(`유안타증권_지점장.html`) 기반 단계별 배포 실습 워크벤치
+            </h2>
+            <p class="text-xs text-amber-200">실제 첨부파일의 코드 구조·익명화·GitHub 업로드·Pages 설정·트러블슈팅을 직접 클릭하며 따라 하세요.</p>
+          </div>
+        </div>
+        <button onclick="closeModal('modalLabSimulator')" class="p-1.5 rounded-lg bg-slate-800 hover:bg-red-600 text-slate-300 hover:text-white transition">
+          <i class="ph-bold ph-x text-lg"></i>
+        </button>
+      </div>
+
+      <!-- Lab Step Tabs -->
+      <div class="bg-[#081628] px-4 py-2.5 border-b border-[#1a467c] flex flex-wrap gap-1.5">
+        <button onclick="switchLabTab(1)" id="labTabBtn1" class="lab-tab-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-[#cba86a] text-[#001a35] transition">
+          Step 1. 원본 분석 & 교육용 사본(익명화) 만들기
+        </button>
+        <button onclick="switchLabTab(2)" id="labTabBtn2" class="lab-tab-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-[#00264d] text-slate-300 hover:text-white transition">
+          Step 2. 파일명 index.html 변경 & 구조 점검
+        </button>
+        <button onclick="switchLabTab(3)" id="labTabBtn3" class="lab-tab-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-[#00264d] text-slate-300 hover:text-white transition">
+          Step 3. GitHub 저장소 생성 & 파일 Commit
+        </button>
+        <button onclick="switchLabTab(4)" id="labTabBtn4" class="lab-tab-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-[#00264d] text-slate-300 hover:text-white transition">
+          Step 4. Settings → Pages 브랜치 배포 시뮬레이션
+        </button>
+        <button onclick="switchLabTab(5)" id="labTabBtn5" class="lab-tab-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-[#00264d] text-slate-300 hover:text-white transition">
+          Step 5. 메모 저장(메모리) 원리 & 재배포 실험
+        </button>
+      </div>
+
+      <!-- Lab Body Content -->
+      <div class="p-6 overflow-y-auto custom-scroll flex-grow space-y-6 text-slate-100">
+        
+        <!-- TAB 1: 익명화 및 교육용 사본 준비 (슬라이드 11~13 연계) -->
+        <div id="labTabContent1" class="lab-tab-pane space-y-4">
+          <div class="bg-red-950/60 border border-red-600/70 rounded-xl p-4 flex items-start space-x-3">
+            <i class="ph-fill ph-shield-warning text-2xl text-red-400 shrink-0 mt-0.5"></i>
+            <div class="text-xs leading-relaxed">
+              <strong class="text-red-300 text-sm block mb-1">필수 보안 점검 (슬라이드 11~13 실습)</strong>
+              첨부된 <code>유안타증권_지점장.html</code>에는 <strong>"유안타증권 강남금융센터"</strong>, <strong>"김유안 수석PB"</strong>, <strong>"YT-9021 (김*회)"</strong> 등 실제 기업명과 유사한 명칭이 들어 있습니다. 공개 저장소(Public)에 올리기 전 반드시 <strong>가상의 조직명·교육용 시뮬레이션 안내 문구</strong>로 변환해야 합니다.
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <!-- 원본 코드 발췌 -->
+            <div class="bg-slate-950 border border-slate-800 rounded-xl p-4">
+              <div class="flex items-center justify-between pb-2 mb-3 border-b border-slate-800">
+                <span class="text-xs font-bold text-red-400 flex items-center gap-1">
+                  <i class="ph-bold ph-file-html"></i> [변경 전] 유안타증권_지점장.html (원본 코드 발췌)
+                </span>
+                <span class="text-[11px] bg-red-950 text-red-300 px-2 py-0.5 rounded border border-red-800">즉시 공개 불가</span>
+              </div>
+              <pre class="text-xs font-mono text-slate-300 overflow-x-auto leading-relaxed"><code>&lt;title&gt;<span class="bg-red-900/80 text-white px-1 rounded">유안타증권 지점장실</span> | VIP 고객 관리&lt;/title&gt;
+...
+&lt;span class="text-amber-300"&gt;
+  <span class="bg-red-900/80 text-white px-1 rounded">강남금융센터 VIP 라운지</span>
+&lt;/span&gt;
+&lt;h1&gt;지점장 일일 VIP 고객 관리 & 영업 성과 대시보드&lt;/h1&gt;
+...
+// JS 데이터셋 (Line 342)
+let vipClients = [
+  { id: 1, code: "<span class="bg-red-900/80 text-white px-1 rounded">YT-9021 (김*회)</span>", pb: "<span class="bg-red-900/80 text-white px-1 rounded">김유안 수석PB</span>", aumValue: 148.5 }
+];</code></pre>
+            </div>
+
+            <!-- 변환 후 교육용 코드 -->
+            <div class="bg-slate-950 border border-emerald-700/70 rounded-xl p-4">
+              <div class="flex items-center justify-between pb-2 mb-3 border-b border-slate-800">
+                <span class="text-xs font-bold text-emerald-400 flex items-center gap-1">
+                  <i class="ph-bold ph-check-circle"></i> [변경 후] index.html (교육용 안전 사본)
+                </span>
+                <button onclick="applySanitizeDemo()" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 text-white text-[11px] font-bold rounded transition">
+                  익명화 자동 변환 실행하기
+                </button>
+              </div>
+              <pre id="sanitizedCodePreview" class="text-xs font-mono text-emerald-200 overflow-x-auto leading-relaxed"><code>&lt;!-- 우측 상단 [익명화 자동 변환 실행하기] 버튼을 눌러보세요 --&gt;</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 2: 파일명 index.html 변경 & 디렉터리 규칙 (슬라이드 13~14 연계) -->
+        <div id="labTabContent2" class="lab-tab-pane hidden space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-[#00264d] border border-[#1a467c] rounded-xl p-5 space-y-3">
+              <h3 class="text-sm font-bold text-[#cba86a] flex items-center gap-2">
+                <i class="ph-bold ph-folder-open text-lg"></i> 실습 1: 올바른 파일명 테스트
+              </h3>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                GitHub Pages에서 <code>/(root)</code> 경로로 배포할 때, 시작 화면으로 자동 인식되는 파일명을 아래에서 직접 선택해 보세요.
+              </p>
+              <div class="space-y-2 pt-2">
+                <button onclick="checkFileNameQuiz('유안타증권_지점장.html')" class="w-full text-left px-3.5 py-2.5 rounded-lg bg-[#001a35] hover:bg-slate-800 border border-[#1a467c] text-xs font-mono flex items-center justify-between">
+                  <span>1. 유안타증권_지점장.html</span>
+                  <span class="text-slate-400">선택</span>
+                </button>
+                <button onclick="checkFileNameQuiz('index.html.html')" class="w-full text-left px-3.5 py-2.5 rounded-lg bg-[#001a35] hover:bg-slate-800 border border-[#1a467c] text-xs font-mono flex items-center justify-between">
+                  <span>2. index.html.html (확장자 숨김 실수)</span>
+                  <span class="text-slate-400">선택</span>
+                </button>
+                <button onclick="checkFileNameQuiz('Index.HTML')" class="w-full text-left px-3.5 py-2.5 rounded-lg bg-[#001a35] hover:bg-slate-800 border border-[#1a467c] text-xs font-mono flex items-center justify-between">
+                  <span>3. Index.HTML (대소문자 혼용)</span>
+                  <span class="text-slate-400">선택</span>
+                </button>
+                <button onclick="checkFileNameQuiz('index.html')" class="w-full text-left px-3.5 py-2.5 rounded-lg bg-[#001a35] hover:bg-slate-800 border border-emerald-600/60 text-xs font-mono flex items-center justify-between">
+                  <span class="text-emerald-300 font-bold">4. index.html (영문 소문자 정확 일치)</span>
+                  <span class="text-emerald-400">선택</span>
+                </button>
+              </div>
+              <div id="fileNameQuizResult" class="p-3 rounded-lg bg-slate-950 text-xs text-slate-300 border border-slate-800">
+                파일명을 클릭하면 GitHub Pages 서버의 반응 결과가 여기에 표시됩니다.
+              </div>
+            </div>
+
+            <div class="bg-[#00264d] border border-[#1a467c] rounded-xl p-5 space-y-3">
+              <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                <i class="ph-bold ph-file-code text-lg text-sky-400"></i> 첨부파일의 외부 CDN 의존성 구조 확인
+              </h3>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                <code>유안타증권_지점장.html</code> 파일은 별도의 이미지나 CSS 폴더 없이 단일 파일로 작동하지만, 아래 <strong>3가지 외부 CDN 라이브러리</strong>를 인터넷을 통해 불러옵니다.
+              </p>
+              <div class="bg-slate-950 p-3.5 rounded-lg border border-slate-800 space-y-2 text-xs font-mono">
+                <div class="text-sky-400">1. Tailwind CSS (디자인/다크네이비 컬러 테마)</div>
+                <div class="text-slate-400 pl-3 text-[11px]">https://cdn.tailwindcss.com</div>
+                <div class="text-amber-300">2. Chart.js (PB 달성률 가로바 & 자산배분 도넛차트)</div>
+                <div class="text-slate-400 pl-3 text-[11px]">https://cdn.jsdelivr.net/npm/chart.js</div>
+                <div class="text-emerald-400">3. Phosphor Icons (왕관, 빌딩, 경고 아이콘)</div>
+                <div class="text-slate-400 pl-3 text-[11px]">https://unpkg.com/@phosphor-icons/web</div>
+              </div>
+              <p class="text-[11px] text-amber-200">
+                ※ 따라서 오프라인 환경이나 사내 방화벽이 CDN을 차단하면 차트나 아이콘이 보이지 않을 수 있습니다 (슬라이드 24 & 27 검증 항목).
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 3: GitHub 저장소 생성 & 파일 업로드 시뮬레이션 (슬라이드 16~20 연계) -->
+        <div id="labTabContent3" class="lab-tab-pane hidden space-y-4">
+          <div class="bg-[#00264d] border border-[#1a467c] rounded-xl p-5">
+            <h3 class="text-sm font-bold text-white mb-3 flex items-center gap-2">
+              <i class="ph-bold ph-git-commit text-[#cba86a] text-lg"></i> GitHub 웹 인터페이스 업로드 & Commit 체험
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+              <div class="bg-[#001a35] p-4 rounded-xl border border-[#1a467c] space-y-2">
+                <span class="px-2 py-0.5 bg-sky-900 text-sky-300 rounded font-bold">1단계: New Repository</span>
+                <label class="block text-slate-400 mt-2">Repository Name 입력:</label>
+                <input type="text" id="simRepoName" value="dashboard-demo" class="w-full bg-slate-950 border border-slate-700 rounded px-2.5 py-1.5 text-white font-mono">
+                <label class="flex items-center space-x-2 mt-2 text-emerald-300">
+                  <input type="radio" checked disabled> <span>Public (무료 Pages 배포 필수)</span>
+                </label>
+                <label class="flex items-center space-x-2 text-slate-300">
+                  <input type="checkbox" checked disabled> <span>Add a README file</span>
+                </label>
+              </div>
+
+              <div class="bg-[#001a35] p-4 rounded-xl border border-[#1a467c] space-y-2">
+                <span class="px-2 py-0.5 bg-amber-900 text-amber-200 rounded font-bold">2단계: Add file → Upload files</span>
+                <p class="text-slate-300 mt-1">업로드할 파일 선택 (최대 25MiB):</p>
+                <div class="p-3 border-2 border-dashed border-[#cba86a]/60 rounded-lg text-center bg-slate-950/60">
+                  <i class="ph-bold ph-file-html text-2xl text-[#cba86a]"></i>
+                  <p class="font-mono text-white font-bold mt-1">index.html (유안타 교육용 사본)</p>
+                  <span class="text-[10px] text-emerald-400">위치: /(root) 최상위 경로 확인 완료</span>
+                </div>
+              </div>
+
+              <div class="bg-[#001a35] p-4 rounded-xl border border-[#1a467c] space-y-2">
+                <span class="px-2 py-0.5 bg-emerald-900 text-emerald-200 rounded font-bold">3단계: Commit changes</span>
+                <label class="block text-slate-400 mt-1">커밋 메시지 입력 (슬라이드 19):</label>
+                <input type="text" id="simCommitMsg" value="Add dashboard" class="w-full bg-slate-950 border border-slate-700 rounded px-2.5 py-1.5 text-white font-mono">
+                <button onclick="runCommitSimulation()" class="w-full mt-2 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg shadow transition">
+                  Commit changes 실행
+                </button>
+              </div>
+            </div>
+            <div id="simCommitOutput" class="mt-4 p-3.5 rounded-lg bg-slate-950 border border-slate-800 text-xs font-mono text-slate-300">
+              위 [Commit changes 실행] 버튼을 누르면 저장소 주소와 상태가 생성됩니다.
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 4: Settings -> Pages 배포 설정 (슬라이드 21~23 연계) -->
+        <div id="labTabContent4" class="lab-tab-pane hidden space-y-4">
+          <div class="bg-[#00264d] border border-[#1a467c] rounded-xl p-5 space-y-4">
+            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+              <i class="ph-bold ph-rocket-launch text-[#cba86a] text-lg"></i> Settings → Pages → Build and deployment 시뮬레이터
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+              <div>
+                <label class="block text-xs text-slate-300 mb-1">1. Source (배포 방식)</label>
+                <select class="w-full bg-[#001a35] border border-[#1a467c] rounded-lg px-3 py-2 text-xs text-white font-semibold">
+                  <option>Deploy from a branch (기본 권장)</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs text-slate-300 mb-1">2. Branch & Folder 선택</label>
+                <div class="flex space-x-2">
+                  <select id="simBranchSelect" class="w-1/2 bg-[#001a35] border border-[#1a467c] rounded-lg px-3 py-2 text-xs text-white font-mono">
+                    <option value="none">None</option>
+                    <option value="main" selected>main</option>
+                  </select>
+                  <select id="simFolderSelect" class="w-1/2 bg-[#001a35] border border-[#1a467c] rounded-lg px-3 py-2 text-xs text-white font-mono">
+                    <option value="/(root)" selected>/(root)</option>
+                    <option value="/docs">/docs</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <button onclick="runPagesDeploySimulation()" class="w-full py-2 bg-[#cba86a] hover:bg-[#b89558] text-[#001a35] font-extrabold text-xs rounded-lg shadow transition">
+                  Save & 배포 시작하기
+                </button>
+              </div>
+            </div>
+
+            <div id="simPagesStatusBox" class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2 text-xs">
+              <div class="text-slate-400">Branch를 <code>main</code>, 폴더를 <code>/(root)</code>로 선택하고 <strong>Save</strong>를 클릭하세요.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 5: 메모 저장 원리 비교 실험 (슬라이드 24~26 연계) -->
+        <div id="labTabContent5" class="lab-tab-pane hidden space-y-4">
+          <div class="bg-[#00264d] border border-[#1a467c] rounded-xl p-5 space-y-3">
+            <h3 class="text-sm font-bold text-[#cba86a] flex items-center gap-2">
+              <i class="ph-bold ph-database text-lg"></i> 핵심 검증: "지점장 코멘트 저장"이나 "조치 상태 변경"은 다른 사람에게도 보일까?
+            </h3>
+            <p class="text-xs text-slate-200 leading-relaxed">
+              첨부된 <code>유안타증권_지점장.html</code> 파일의 코드를 분석하면 다음과 같은 특징이 있습니다:
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2 text-xs">
+              <div class="bg-[#001a35] p-4 rounded-xl border border-amber-700/60 space-y-2">
+                <div class="font-bold text-amber-300">1. 첨부파일(`유안타증권_지점장.html`)의 실제 구현</div>
+                <p class="text-slate-300 leading-relaxed">
+                  VIP 고객의 조치 상태(<code>조치대기 → 통화완료</code>) 변경과 모달창의 <code>지점장 코멘트 저장</code>은 JavaScript 메모리 변수(<code>vipClients</code> 배열)와 토스트 알림만 작동합니다.
+                </p>
+                <p class="text-red-300 font-semibold">
+                  → 새로고침(F5)하거나 다른 브라우저로 열면 초기 상태로 돌아갑니다.
+                </p>
+              </div>
+              <div class="bg-[#001a35] p-4 rounded-xl border border-sky-700/60 space-y-2">
+                <div class="font-bold text-sky-300">2. 브라우저 저장 공간(`localStorage`) 사용 시 (슬라이드 25)</div>
+                <p class="text-slate-300 leading-relaxed">
+                   만약 <code>localStorage</code>로 메모를 저장하더라도 <strong>"내 컴퓨터의 내 브라우저"</strong> 안에만 저장됩니다.
+                </p>
+                <p class="text-emerald-300 font-semibold">
+                  → 의뢰인이나 다른 지점 직원이 같은 링크를 열어도 내 메모는 절대 공유되지 않습니다. (다자간 공유는 별도 서버/DB 필요)
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="bg-[#001a35] px-6 py-3 border-t border-[#1a467c] flex items-center justify-between">
+        <span class="text-xs text-slate-400">우측 버튼을 눌러 실제 첨부파일 화면을 직접 조작해 볼 수 있습니다.</span>
+        <div class="flex space-x-2">
+          <button onclick="closeModal('modalLabSimulator'); openModal('modalYuantaPreview');" class="px-4 py-1.5 bg-[#d9252c] hover:bg-red-700 text-white text-xs font-bold rounded-lg transition">
+            유안타 지점장 대시보드 라이브 실행 →
+          </button>
+          <button onclick="closeModal('modalLabSimulator')" class="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold rounded-lg transition">
+            닫기
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL 2: 첨부파일(유안타증권_지점장.html) 100% 라이브 인터랙티브 샌드박스 -->
+  <!-- ===================================================================== -->
+  <div id="modalYuantaPreview" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 hidden flex items-center justify-center p-2 sm:p-4">
+    <div class="bg-[#081628] border-2 border-[#d9252c] rounded-2xl max-w-7xl w-full max-h-[94vh] flex flex-col shadow-2xl overflow-hidden">
+      
+      <!-- Top Control Bar for Sandbox -->
+      <div class="bg-slate-950 px-4 py-2.5 border-b border-slate-800 flex flex-wrap items-center justify-between gap-2">
+        <div class="flex items-center space-x-2">
+          <span class="px-2 py-0.5 bg-[#d9252c] text-white text-[11px] font-extrabold rounded">LIVE PREVIEW</span>
+          <span class="text-xs font-mono text-slate-300" id="sandboxUrlBar">https://kgu-student.github.io/dashboard-demo/index.html</span>
+          <span id="sandboxModeBadge" class="px-2 py-0.5 bg-amber-950 text-amber-300 border border-amber-700 rounded text-[11px] font-bold">
+            원본 모드 (유안타증권_지점장.html)
+          </span>
+        </div>
+
+        <div class="flex items-center space-x-2">
+          <button id="btnToggleSanitizeLive" onclick="toggleYuantaSanitizeMode()" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-lg transition flex items-center gap-1">
+            <i class="ph-bold ph-shield-check"></i>
+            <span>교육용 익명화 사본으로 전환 (슬라이드 12~13 실습)</span>
+          </button>
+          <button onclick="closeModal('modalYuantaPreview')" class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded-lg">
+            닫기 ✕
+          </button>
+        </div>
+      </div>
+
+      <!-- Educational Notice Banner (Hidden in Raw Mode, Shown in Sanitized Mode) -->
+      <div id="eduNoticeBanner" class="hidden bg-emerald-950 border-b border-emerald-700 px-6 py-2 text-xs text-emerald-200 flex items-center justify-between">
+        <div>
+          <strong>[교육용 가상 데이터 안내]</strong> 본 대시보드의 모든 수치(AUM, 순증액, 수익률)는 「통계컨설팅의 이해」 배포 실습을 위해 생성된 가상 시나리오이며, 실제 금융투자 판단에 사용할 수 없습니다.
+        </div>
+        <span class="font-mono text-[11px] text-emerald-400 shrink-0 ml-2">단위: 억원, % | 가정: 모닝 브리핑 시뮬레이션</span>
+      </div>
+
+      <!-- Actual Yuanta Dashboard Content -->
+      <div class="overflow-y-auto custom-scroll flex-grow bg-[#081628] text-slate-100 p-4 sm:p-6 space-y-6">
+        
+        <!-- Yuanta Header -->
+        <div class="bg-[#00264d] border border-[#1a467c] rounded-xl px-5 py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-lg">
+          <div class="flex items-center space-x-3.5">
+            <div class="h-11 w-11 rounded-xl bg-gradient-to-br from-[#d9252c] via-[#b81d23] to-[#00264d] flex items-center justify-center text-white shadow-lg shrink-0 border border-red-500/40">
+              <i class="ph-bold ph-buildings text-2xl text-amber-200"></i>
+            </div>
+            <div>
+              <div class="flex items-center space-x-2">
+                <span id="yuantaBrandTag" class="text-[11px] font-bold tracking-wider text-[#d9252c] bg-red-950/80 px-2 py-0.5 rounded border border-red-700/60 uppercase">
+                  YUANTA BRANCH HEADQUARTERS
+                </span>
+                <span id="yuantaLoungeTag" class="text-[11px] text-amber-300 font-semibold flex items-center gap-1">
+                  <i class="ph-fill ph-crown-simple text-xs"></i> 강남금융센터 VIP 라운지
+                </span>
+              </div>
+              <h2 id="yuantaMainTitle" class="text-base sm:text-lg font-extrabold tracking-tight text-white mt-0.5">
+                지점장 일일 VIP 고객 관리 & 영업 성과 대시보드
+              </h2>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2.5">
+            <button onclick="refreshYuantaSandbox()" class="flex items-center gap-1.5 px-3 py-1.5 bg-[#001a35] hover:bg-[#083260] text-slate-200 border border-[#1a467c] hover:border-[#cba86a] font-medium text-xs rounded-lg transition">
+              <i class="ph-bold ph-arrows-clockwise text-sm text-[#cba86a]"></i>
+              <span>새로고침</span>
+            </button>
+            <button onclick="window.print()" class="flex items-center gap-1.5 px-3.5 py-1.5 bg-[#d9252c] hover:bg-[#b81d23] text-white font-semibold text-xs rounded-lg shadow transition">
+              <i class="ph-bold ph-printer text-sm"></i>
+              <span>모닝 브리핑 출력</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 4 KPI Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="bg-[#00264d] border border-[#1a467c] rounded-xl p-4 shadow-lg">
+            <div class="flex items-center justify-between text-xs text-slate-300">
+              <span>지점 총 AUM 달성률</span>
+              <i class="ph-bold ph-chart-pie-slice text-[#cba86a]"></i>
+            </div>
+            <div class="mt-2 flex items-baseline gap-2">
+              <span class="text-2xl font-extrabold text-white">104.8%</span>
+              <span class="text-xs text-emerald-400 font-bold">+4.8%p 초과</span>
+            </div>
+            <div class="mt-2 text-[11px] text-slate-400 flex justify-between">
+              <span>관리잔고: <strong class="text-white">1조 2,580억</strong></span>
+              <span>목표 1조 2,000억</span>
+            </div>
+          </div>
+
+          <div class="bg-[#00264d] border border-[#1a467c] rounded-xl p-4 shadow-lg">
+            <div class="flex items-center justify-between text-xs text-slate-300">
+              <span>당월 신규 순증 예탁자산</span>
+              <i class="ph-bold ph-trend-up text-emerald-400"></i>
+            </div>
+            <div class="mt-2 flex items-baseline gap-2">
+              <span class="text-2xl font-extrabold text-emerald-400">₩ +342 억</span>
+              <span class="text-xs text-slate-400">당월 누계</span>
+            </div>
+            <div class="mt-2 text-[11px] text-slate-400 flex justify-between">
+              <span>전월 동기 대비: <strong class="text-emerald-300">+18.5%</strong></span>
+              <span class="text-[#cba86a]">법인 자금 유입</span>
+            </div>
+          </div>
+
+          <div class="bg-[#00264d] border border-[#1a467c] rounded-xl p-4 shadow-lg">
+            <div class="flex items-center justify-between text-xs text-slate-300">
+              <span>만기 도래 (14일 이내)</span>
+              <i class="ph-bold ph-calendar-check text-amber-300"></i>
+            </div>
+            <div class="mt-2 flex items-baseline gap-2">
+              <span class="text-2xl font-extrabold text-amber-300">8 건</span>
+              <span class="text-xs text-slate-400">(총 ₩ 146억원)</span>
+            </div>
+            <p class="mt-2 text-[11px] text-amber-300/90">ELS 상환 & 채권 만기 롤오버 집중</p>
+          </div>
+
+          <div class="bg-[#00264d] border border-[#1a467c] rounded-xl p-4 shadow-lg">
+            <div class="flex items-center justify-between text-xs text-slate-300">
+              <span>이탈 위험 VIP 고객</span>
+              <i class="ph-bold ph-shield-warning text-red-400"></i>
+            </div>
+            <div class="mt-2 flex items-baseline gap-2">
+              <span class="text-2xl font-extrabold text-red-400" id="sandboxRiskCount">3 명</span>
+              <span class="text-xs text-red-300 font-bold">즉시 면담 요망</span>
+            </div>
+            <p class="mt-2 text-[11px] text-red-400">최근 1개월 자산 -10% 이상 급감 고객</p>
+          </div>
+        </div>
+
+        <!-- 2 Charts Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div class="lg:col-span-7 bg-[#00264d] border border-[#1a467c] rounded-xl p-5 shadow-lg">
+            <div class="flex items-center justify-between pb-3 border-b border-[#1a467c]">
+              <h3 class="text-sm font-bold text-white flex items-center gap-1.5">
+                <i class="ph-bold ph-chart-bar-horizontal text-[#cba86a]"></i>
+                PB별 목표 대비 실적 달성률 (AUM 기준)
+              </h3>
+              <span class="text-[11px] text-[#cba86a] bg-[#001a35] px-2 py-0.5 rounded border border-[#1a467c]">지점 평균: 103.2%</span>
+            </div>
+            <div class="h-56 w-full pt-3">
+              <canvas id="sandboxPbChart"></canvas>
+            </div>
+          </div>
+
+          <div class="lg:col-span-5 bg-[#00264d] border border-[#1a467c] rounded-xl p-5 shadow-lg">
+            <div class="flex items-center justify-between pb-3 border-b border-[#1a467c]">
+              <h3 class="text-sm font-bold text-white flex items-center gap-1.5">
+                <i class="ph-bold ph-chart-pie text-red-400"></i>
+                지점 총 운용 자산군별 비중
+              </h3>
+              <span class="text-[11px] text-slate-400 font-mono">총 1조 2,580억</span>
+            </div>
+            <div class="h-56 w-full relative flex items-center justify-center pt-2">
+              <canvas id="sandboxAssetChart"></canvas>
+              <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                <span class="text-[11px] text-slate-400">안전자산 비중</span>
+                <span class="text-base font-bold text-[#cba86a]">52.0%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- VIP Client Table & Filter Controls (슬라이드 24 기능 검증 대상) -->
+        <div class="bg-[#00264d] border border-[#1a467c] rounded-xl overflow-hidden shadow-xl">
+          <div class="p-4 bg-[#001a35] border-b border-[#1a467c] flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-2">
+              <span class="h-2.5 w-2.5 rounded-full bg-[#d9252c] animate-pulse"></span>
+              <h3 class="text-sm font-bold text-white">우선 조치 필요 VIP 고객 리스트 (모닝 케어 실습)</h3>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-2">
+              <select id="sandboxPbFilter" onchange="renderSandboxVipTable()" class="bg-[#00264d] border border-[#1a467c] rounded-lg px-2.5 py-1.5 text-xs text-white">
+                <option value="all">전체 담당 PB</option>
+                <option value="PB-A">김유안 수석PB (PB-A)</option>
+                <option value="PB-B">박태훈 책임PB (PB-B)</option>
+                <option value="PB-C">이지은 선임PB (PB-C)</option>
+                <option value="PB-D">최민호 PB (PB-D)</option>
+                <option value="PB-E">정수아 PB (PB-E)</option>
+              </select>
+
+              <button id="btnSandboxRiskOnly" onclick="toggleSandboxRiskFilter()" class="px-2.5 py-1.5 bg-[#00264d] border border-[#1a467c] hover:border-red-500 text-xs font-semibold text-slate-200 rounded-lg transition flex items-center gap-1">
+                <i class="ph-bold ph-warning-octagon text-red-400"></i>
+                <span>이탈위험(-10%)만 보기</span>
+              </button>
+
+              <input type="text" id="sandboxSearchInput" oninput="renderSandboxVipTable()" placeholder="고객코드/상품 검색..." 
+                class="bg-[#00264d] border border-[#1a467c] rounded-lg px-2.5 py-1.5 text-xs text-white placeholder-slate-400 w-40">
+            </div>
+          </div>
+
+          <div class="overflow-x-auto custom-scroll">
+            <table class="w-full text-left text-xs text-slate-200 border-collapse min-w-[850px]">
+              <thead>
+                <tr class="bg-[#00264d] text-slate-300 font-semibold border-b border-[#1a467c]">
+                  <th class="py-2.5 px-3 text-center">No</th>
+                  <th class="py-2.5 px-3">고객코드 (성명)</th>
+                  <th class="py-2.5 px-3 text-center">등급</th>
+                  <th class="py-2.5 px-3">담당 PB</th>
+                  <th class="py-2.5 px-3 text-right">총 평가금액</th>
+                  <th class="py-2.5 px-3 text-right">최근 1M 변동</th>
+                  <th class="py-2.5 px-3">상품 만기일</th>
+                  <th class="py-2.5 px-3 text-center">조치 상태 (변경 실습)</th>
+                  <th class="py-2.5 px-3 text-center">상세/메모</th>
+                </tr>
+              </thead>
+              <tbody id="sandboxVipTbody" class="divide-y divide-[#1a467c]/60 bg-[#001a35]">
+                <!-- Populated by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Inner Client Detail Modal (유안타 원본의 clientDetailModal 재현) -->
+      <div id="sandboxClientDetailModal" class="fixed inset-0 bg-black/75 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-[#00264d] border-2 border-[#cba86a] rounded-xl max-w-md w-full p-5 shadow-2xl space-y-4 text-xs">
+          <div class="flex items-center justify-between border-b border-[#1a467c] pb-2.5">
+            <span class="font-bold text-white text-sm flex items-center gap-1.5">
+              <i class="ph-bold ph-identification-card text-[#cba86a] text-lg"></i> VIP 고객 상세 케어 카드 & 지점장 메모
+            </span>
+            <button onclick="closeSandboxClientModal()" class="text-slate-400 hover:text-white">✕</button>
+          </div>
+          <div id="sandboxClientDetailBody" class="space-y-2"></div>
+          <div class="space-y-1.5">
+            <label class="block text-slate-300 font-semibold">지점장 모닝 특이 지시사항 (Action Order):</label>
+            <textarea id="sandboxBranchMemoInput" rows="3" class="w-full bg-[#001a35] border border-[#1a467c] rounded-lg p-2 text-white" placeholder="예: 10시 장 개장 직후 담당 PB와 함께 대안 포트폴리오 제안 요망"></textarea>
+            <p class="text-[11px] text-amber-300">※ [슬라이드 25 검증] 메모 입력 후 알림만 표시하며, 메모 내용은 실제로 보관하지 않습니다.</p>
+          </div>
+          <div class="flex justify-end gap-2 pt-2 border-t border-[#1a467c]">
+            <button onclick="saveSandboxClientMemo()" class="px-4 py-1.5 bg-[#cba86a] text-[#001a35] font-bold rounded-lg">지점장 코멘트 저장</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL 3: 부록 A. 학생용 검증표 (인터랙티브 체크 및 클립보드 복사) -->
+  <!-- ===================================================================== -->
+  <div id="modalChecklist" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border-2 border-[#cba86a] rounded-2xl max-w-4xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+      <div class="bg-[#00264d] px-6 py-4 border-b border-[#1a467c] flex items-center justify-between">
+        <div>
+          <h2 class="text-base sm:text-lg font-extrabold text-white">부록 A. 학생용 실습 검증표 (과제 제출용)</h2>
+          <p class="text-xs text-amber-200">각 단계를 수행하며 결과를 입력한 뒤 [검증표 복사하기]를 눌러 제출물에 붙여넣으세요.</p>
+        </div>
+        <button onclick="closeModal('modalChecklist')" class="p-1.5 rounded-lg bg-slate-800 text-slate-300 hover:text-white">✕</button>
+      </div>
+
+      <div class="p-6 overflow-y-auto custom-scroll space-y-4 text-xs">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-slate-950 p-4 rounded-xl border border-slate-800">
+          <div>
+            <label class="text-slate-400 block mb-1">1. 내 GitHub 저장소 주소:</label>
+            <input type="text" id="chkRepoUrl" placeholder="https://github.com/사용자명/dashboard-demo" class="w-full bg-slate-900 border border-slate-700 rounded px-2.5 py-1.5 text-white font-mono">
+          </div>
+          <div>
+            <label class="text-slate-400 block mb-1">2. 내 GitHub Pages 배포 주소:</label>
+            <input type="text" id="chkPagesUrl" placeholder="https://사용자명.github.io/dashboard-demo/" class="w-full bg-slate-900 border border-slate-700 rounded px-2.5 py-1.5 text-white font-mono">
+          </div>
+        </div>
+
+        <table class="w-full text-left border-collapse border border-slate-800 text-slate-200">
+          <thead>
+            <tr class="bg-slate-800 text-[#cba86a]">
+              <th class="p-2.5 border border-slate-700 w-1/4">검증 항목</th>
+              <th class="p-2.5 border border-slate-700 w-2/5">확인한 행동과 결과</th>
+              <th class="p-2.5 border border-slate-700 w-1/5">환경·확인 시각</th>
+              <th class="p-2.5 border border-slate-700 w-15 text-center">완료</th>
+            </tr>
+          </thead>
+          <tbody id="studentChecklistBody" class="divide-y divide-slate-800 bg-slate-950">
+            <tr>
+              <td class="p-2.5 font-bold">1. 저장소와 파일 (index.html)</td>
+              <td class="p-2.5"><input type="text" value="최상위 /(root)에 교육용 index.html 업로드 완료" class="w-full bg-slate-900 border border-slate-800 rounded px-2 py-1 text-white"></td>
+              <td class="p-2.5"><input type="text" value="Chrome / 수업중" class="w-full bg-slate-900 border border-slate-800 rounded px-2 py-1 text-white"></td>
+              <td class="p-2.5 text-center"><input type="checkbox" checked class="h-4 w-4 accent-[#cba86a]"></td>
+            </tr>
+            <tr>
+              <td class="p-2.5 font-bold">2. Pages 주소 접속</td>
+              <td class="p-2.5"><input type="text" value="github.io 주소로 대시보드 정상 로드 확인" class="w-full bg-slate-900 border border-slate-800 rounded px-2 py-1 text-white"></td>
+              <td class="p-2.5"><input type="text" value="Chrome, 모바일" class="w-full bg-slate-900 border border-slate-800 rounded px-2 py-1 text-white"></td>
+              <td class="p-2.5 text-center"><input type="checkbox" checked class="h-4 w-4 accent-[#cba86a]"></td>
+            </tr>
+            <tr>
+              <td class="p-2.5 font-bold">3. 차트(Chart.js)와 필터 버튼</td>
+              <td class="p-2.5"><input type="text" value="PB 가로바·도넛 차트 렌더링 및 -10% 위험필터 작동" class="w-full bg-slate-900 border border-slate-800 rounded px-2 py-1 text-white"></td>
+              <td class="p-2.5"><input type="text" value="정상 작동" class="w-full bg-slate-900 border border-slate-800 rounded px-2 py-1 text-white"></td>
+              <td class="p-2.5 text-center"><input type="checkbox" checked class="h-4 w-4 accent-[#cba86a]"></td>
+            </tr>
+            <tr>
+              <td class="p-2.5 font-bold">4. 조치상태 변경 & 모달 메모</td>
+              <td class="p-2.5"><input type="text" value="상태 변경 및 지점장 메모 토스트 확인 (새로고침 시 초기화 확인)" class="w-full bg-slate-900 border border-slate-800 rounded px-2 py-1 text-white"></td>
+              <td class="p-2.5"><input type="text" value="브라우저 메모리 한계 확인" class="w-full bg-slate-900 border border-slate-800 rounded px-2 py-1 text-white"></td>
+              <td class="p-2.5 text-center"><input type="checkbox" checked class="h-4 w-4 accent-[#cba86a]"></td>
+            </tr>
+            <tr>
+              <td class="p-2.5 font-bold">5. 가상자료·단위·가정 안내</td>
+              <td class="p-2.5"><input type="text" value="상단 교육용 가상 데이터 배너 및 단위(억원, %) 명시" class="w-full bg-slate-900 border border-slate-800 rounded px-2 py-1 text-white"></td>
+              <td class="p-2.5"><input type="text" value="소스코드/화면 확인" class="w-full bg-slate-900 border border-slate-800 rounded px-2 py-1 text-white"></td>
+              <td class="p-2.5 text-center"><input type="checkbox" checked class="h-4 w-4 accent-[#cba86a]"></td>
+            </tr>
+            <tr>
+              <td class="p-2.5 font-bold">6. 수정 후 재배포 확인</td>
+              <td class="p-2.5"><input type="text" value="제목 수정 커밋 후 Actions 완료 및 사이트 반영 확인" class="w-full bg-slate-900 border border-slate-800 rounded px-2 py-1 text-white"></td>
+              <td class="p-2.5"><input type="text" value="약 1분 소요" class="w-full bg-slate-900 border border-slate-800 rounded px-2 py-1 text-white"></td>
+              <td class="p-2.5 text-center"><input type="checkbox" checked class="h-4 w-4 accent-[#cba86a]"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="bg-slate-950 px-6 py-3 border-t border-slate-800 flex justify-between items-center">
+        <span class="text-xs text-slate-400">클립보드 복사 후 LMS 과제 제출란에 붙여넣으세요.</span>
+        <div class="flex gap-2">
+          <button onclick="copyChecklistToClipboard()" class="px-4 py-1.5 bg-[#cba86a] text-[#001a35] font-extrabold text-xs rounded-lg">
+            검증표 텍스트 복사하기
+          </button>
+          <button onclick="closeModal('modalChecklist')" class="px-4 py-1.5 bg-slate-800 text-slate-300 text-xs font-bold rounded-lg">닫기</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL 4: 부록 B(강사용 사전 점검) & 부록 C(공식 참고자료) -->
+  <!-- ===================================================================== -->
+  <div id="modalAppDeploy" role="dialog" aria-modal="true" aria-labelledby="appDeployTitle" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-slate-900 border-2 border-[#cba86a] rounded-2xl max-w-4xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+      <div class="bg-[#00264d] px-6 py-4 flex items-center justify-between gap-4">
+        <div>
+          <h2 id="appDeployTitle" class="text-base sm:text-lg font-extrabold text-white">참고 | Streamlit과 React 앱 배포하기</h2>
+          <p class="text-xs text-amber-200 mt-1">GitHub에 코드를 저장하고, 앱에 맞는 실행 환경에 연결합니다.</p>
+        </div>
+        <button onclick="closeModal('modalAppDeploy')" aria-label="배포 참고 닫기" class="p-2 rounded-lg bg-slate-800 hover:bg-red-700 text-white">✕</button>
+      </div>
+      <div class="overflow-y-auto custom-scroll p-5 sm:p-6 space-y-5 text-sm leading-relaxed text-slate-200">
+        <div class="bg-sky-950/70 border border-sky-700 rounded-xl p-4">
+          <strong class="text-sky-200">먼저 구분하기</strong>
+          <p class="mt-1">GitHub는 코드를 저장하는 곳입니다. GitHub Pages는 HTML·CSS·JavaScript 같은 정적 파일을 제공하며, 서버에서 Python을 실행하지 않습니다. Streamlit은 Python 실행 환경이 필요하고, React 화면은 보통 빌드한 정적 파일을 게시합니다.</p>
+        </div>
+        <section class="bg-slate-800 rounded-xl p-4 sm:p-5 space-y-3">
+          <h3 class="text-base font-extrabold text-[#cba86a]">① Streamlit: GitHub + Community Cloud</h3>
+          <p>데이터 분석·시각화 코드가 들어 있는 <code>app.py</code>를 Python 환경에서 실행하고 웹 주소로 공유합니다.</p>
+          <pre class="bg-slate-950 text-emerald-200 p-3 rounded-lg text-xs overflow-x-auto">my-app/
+├── app.py
+├── requirements.txt
+└── data/sample.csv  (필요한 경우)</pre>
+          <p><code>requirements.txt</code>에 앱이 사용하는 패키지를 한 줄씩 적습니다. 예: <code>streamlit</code>, <code>pandas</code>, <code>matplotlib</code>. 실제 import와 파일 경로를 확인하고 필요한 데이터 파일도 준비합니다.</p>
+          <ol class="list-decimal pl-5 space-y-1.5">
+            <li>위 파일을 GitHub 저장소에 올립니다. 공개 저장소에는 비밀번호·API 키·개인정보를 올리지 않습니다.</li>
+            <li><a href="https://share.streamlit.io/" target="_blank" rel="noopener noreferrer" class="text-sky-300 underline">Streamlit Community Cloud</a>에 로그인하고 GitHub를 연결합니다. 배포할 저장소에 필요한 권한이 있어야 합니다.</li>
+            <li><strong>Create app</strong>에서 기존 앱을 선택하고 저장소, 브랜치, 실행 파일 경로(예: <code>app.py</code>)를 지정합니다.</li>
+            <li>필요하면 Advanced settings에서 Python 버전과 Secrets를 설정하고 <strong>Deploy</strong>를 누릅니다.</li>
+            <li>생성된 <code>streamlit.app</code> 주소에서 데이터와 기능을 확인합니다. 이후 연결된 브랜치의 코드 변경은 앱에 반영됩니다.</li>
+          </ol>
+          <p class="text-xs text-amber-200">Community Cloud는 무료로 시작할 수 있으나 자원 제한이 있습니다. 저장소 공개 여부와 앱의 접근 범위는 각각 확인하세요.</p>
+          <a href="https://docs.streamlit.io/deploy/streamlit-community-cloud/deploy-your-app/deploy" target="_blank" rel="noopener noreferrer" class="text-sky-300 underline text-xs">Streamlit 공식 배포 안내 ↗</a>
+        </section>
+        <section class="bg-slate-800 rounded-xl p-4 sm:p-5 space-y-3">
+          <h3 class="text-base font-extrabold text-[#cba86a]">② React: GitHub Pages에 정적 앱 배포</h3>
+          <p>React 프로젝트는 보통 <code>app.py</code>가 아니라 JavaScript 또는 TypeScript로 작성합니다. 소스 전체를 GitHub에 올리고, 빌드한 결과물을 Pages에 게시합니다.</p>
+          <ol class="list-decimal pl-5 space-y-1.5">
+            <li><code>package.json</code>, 소스 파일, 잠금 파일 등 프로젝트를 GitHub 저장소에 올립니다.</li>
+            <li>Vite 프로젝트를 <code>https://사용자명.github.io/저장소명/</code>에 게시한다면 <code>vite.config.js</code>의 <code>base</code>를 <code>'/저장소명/'</code>으로 설정합니다. 사용자 사이트나 사용자 지정 도메인의 루트에서는 보통 <code>'/'</code>를 사용합니다.</li>
+            <li>저장소의 <strong>Settings → Pages → Source</strong>에서 <strong>GitHub Actions</strong>를 선택합니다. Vite 공식 안내의 워크플로를 추가해 의존성 설치, 빌드, 배포가 실행되도록 합니다.</li>
+            <li><strong>Actions</strong>에서 완료 여부를 확인하고 Pages 주소를 열어 이미지·화면 이동·기능을 점검합니다. 이후 지정 브랜치에 변경 사항을 올리면 워크플로가 다시 실행됩니다.</li>
+          </ol>
+          <p class="text-xs text-amber-200">위 설정은 Vite 프로젝트의 예입니다. 다른 React 도구는 빌드 명령과 출력 폴더를 해당 프로젝트에 맞게 확인하세요. 프로젝트 주소의 하위 경로와 화면 이동 방식에 따라 추가 설정이 필요할 수 있습니다.</p>
+          <a href="https://vite.dev/guide/static-deploy.html" target="_blank" rel="noopener noreferrer" class="text-sky-300 underline text-xs">Vite 공식 GitHub Pages 배포 안내 ↗</a>
+        </section>
+        <section class="bg-slate-800 rounded-xl p-4 sm:p-5 space-y-2">
+          <h3 class="text-base font-extrabold text-[#cba86a]">③ React의 다른 선택지와 서버가 필요한 경우</h3>
+          <p>Vercel이나 Netlify에 GitHub 저장소를 연결해 React 프로젝트를 빌드·배포할 수도 있습니다. 서비스에서 저장소를 선택하고 빌드 설정을 확인한 뒤 배포 주소를 검증합니다.</p>
+          <p>React 화면에서 Python 분석이나 여러 사용자가 공유하는 데이터를 처리하려면 별도의 서버 또는 외부 서비스가 필요합니다. 화면과 서버를 각각 배포하고 연결하며, 인증·데이터 보관 방식도 확인합니다.</p>
+          <a href="https://vercel.com/kb/guide/deploying-react-with-vercel" target="_blank" rel="noopener noreferrer" class="text-sky-300 underline text-xs">Vercel React 배포 안내 ↗</a>
+        </section>
+        <p class="text-xs text-slate-400">공개 전 확인: 실제 고객 정보와 비밀키를 제거하고, 배포 주소에서 다른 기기 접속과 주요 기능을 점검하세요. 플랫폼의 화면과 요금·제한은 변경될 수 있습니다.</p>
+      </div>
+      <div class="bg-slate-950 px-6 py-3 text-right"><button onclick="closeModal('modalAppDeploy')" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded-lg text-white text-xs font-bold">닫기</button></div>
+    </div>
+  </div>
+
+  <div id="modalAppendix" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-3xl w-full p-6 space-y-5 text-xs text-slate-200 shadow-2xl">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <h3 class="text-base font-extrabold text-[#cba86a]">부록 B. 강사용 사전 점검 & 부록 C. 공식 참고자료</h3>
+        <button onclick="closeModal('modalAppendix')" class="text-slate-400 hover:text-white text-base">✕</button>
+      </div>
+
+      <div class="space-y-2">
+        <h4 class="font-bold text-white text-sm">부록 B. 강사용 수업 전 필수 점검 5계명</h4>
+        <ol class="list-decimal list-inside space-y-1.5 text-slate-300 leading-relaxed bg-slate-950 p-4 rounded-xl border border-slate-800">
+          <li>사용 권한이 있는 가상 HTML을 준비하고 원본(<code>유안타증권_지점장.html</code>)의 실제 조직명·수치·민감한 내용이 남지 않았는지 소스까지 확인한다.</li>
+          <li>가상 수치의 생성 목적, 의미, 단위(억원, %), 가정을 설명하고 화면에 표시한다.</li>
+          <li>테스트용 계정과 저장소로 현재 GitHub 메뉴, Pages 설정, 배포 및 삭제·관리 절차를 미리 확인한다.</li>
+          <li>외부 라이브러리(Tailwind, Chart.js, Phosphor Icons) 접속, 차트, 필터, 메모, 인쇄를 실습실 네트워크에서 점검한다.</li>
+          <li>수업용 계정 준비가 어려운 학생을 위해 조별 시연과 개별 설명·검증 기록 양식을 준비한다.</li>
+        </ol>
+      </div>
+
+      <div class="space-y-2">
+        <h4 class="font-bold text-white text-sm">부록 C. 공식 참고 문서 (GitHub Docs & Streamlit)</h4>
+        <ul class="space-y-1.5 bg-slate-950 p-4 rounded-xl border border-slate-800 text-sky-400 font-mono">
+          <li>• GitHub 저장소에 파일 추가: https://docs.github.com/en/repositories/working-with-files/managing-files/adding-a-file-to-a-repository</li>
+          <li>• GitHub Pages 사이트 만들기: https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site</li>
+          <li>• 게시 원본(Source) 설정: https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site</li>
+          <li>• Streamlit Community Cloud 앱 배포: https://docs.streamlit.io/deploy/streamlit-community-cloud/deploy-your-app/deploy</li>
+        </ul>
+      </div>
+
+      <div class="flex justify-end">
+        <button onclick="closeModal('modalAppendix')" class="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-white rounded-lg font-bold">닫기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Global Toast Notification -->
+  <div id="globalToast" class="fixed bottom-5 right-5 bg-[#00264d] text-white border-2 border-[#cba86a] px-4 py-3 rounded-xl shadow-2xl flex items-center space-x-2.5 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none z-50">
+    <i class="ph-bold ph-check-circle text-[#cba86a] text-lg"></i>
+    <span id="globalToastMsg" class="text-xs font-bold">알림 메시지</span>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- JAVASCRIPT: 32 SLIDES DATA + LAB SIMULATOR + YUANTA SANDBOX LOGIC -->
+  <!-- ===================================================================== -->
+  <script>
+    // 1. 32개의 상세 설계 슬라이드 데이터 (설계안 1~32번 완벽 반영 + 첨부파일 실습 연동)
+    const slidesData = [
+      {
+        num: 1,
+        cat: "도입 및 개요",
+        title: "표지 | GitHub에 파일을 올리고 웹으로 배포하기",
+        labTab: 1,
+        bodyHtml: `
+          <div class="bg-gradient-to-br from-[#001a35] via-[#00264d] to-[#083260] text-white rounded-2xl p-8 sm:p-10 shadow-xl border border-[#1a467c] flex flex-col justify-between min-h-[340px]">
+            <div>
+              <span class="inline-block px-3 py-1 bg-[#cba86a] text-[#001a35] text-xs font-extrabold rounded-full uppercase tracking-wider mb-4">
+                경기대학교 「통계컨설팅의 이해」 4차수 후속 실습
+              </span>
+              <h2 class="text-2xl sm:text-4xl font-black tracking-tight leading-tight">
+                GitHub에 파일을 올리고 웹으로 배포하기
+              </h2>
+              <p class="text-base sm:text-xl text-amber-200 font-semibold mt-2">
+                분석 결과를 링크(URL)로 의뢰인에게 전달하는 첫걸음
+              </p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-8 pt-6 border-t border-white/15 text-xs">
+              <div class="bg-black/25 p-3.5 rounded-xl border border-white/10">
+                <div class="text-[#cba86a] font-bold mb-1">1. 내 노트북의 HTML 파일</div>
+                <div class="text-slate-300">유안타 지점장 대시보드 교육용 사본 (<code>index.html</code>) 준비</div>
+              </div>
+              <div class="bg-black/25 p-3.5 rounded-xl border border-white/10">
+                <div class="text-sky-300 font-bold mb-1">2. GitHub 원격 저장소</div>
+                <div class="text-slate-300">웹 업로드 및 변경 기록(Commit) 관리</div>
+              </div>
+              <div class="bg-black/25 p-3.5 rounded-xl border border-white/10">
+                <div class="text-emerald-300 font-bold mb-1">3. 웹 주소를 가진 대시보드</div>
+                <div class="text-slate-300">GitHub Pages 배포 및 기능·자료 한계 검증</div>
+              </div>
+            </div>
+          </div>
+        `,
+        note: "4차수에서 만든 결과물을 다른 사람이 어떻게 접근하고 확인할 수 있는지에 초점을 둡니다. 오늘은 첨부된 '유안타증권_지점장.html'의 구조와 기능을 참고하되 공개 가능한 교육용 HTML 사본을 사용합니다."
+      },
+      {
+        num: 2,
+        cat: "도입 및 개요",
+        title: "학습목표 | 오늘 수업이 끝나면 할 수 있는 4가지",
+        labTab: 1,
+        bodyHtml: `
+          <div class="space-y-4">
+            <p class="text-sm font-bold text-slate-600">수업이 끝나면 수강생 여러분은 다음 4가지를 수행할 수 있습니다.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="p-5 rounded-xl bg-slate-50 border-l-4 border-[#00264d] shadow-sm">
+                <span class="text-xs font-extrabold text-[#00264d] uppercase">목표 01</span>
+                <h3 class="text-base font-extrabold text-slate-900 mt-1">저장소와 웹사이트의 역할 구분</h3>
+                <p class="text-xs text-slate-600 mt-1.5 leading-relaxed">파일을 보관하는 GitHub 저장소(github.com)와 실제 화면을 보여주는 웹사이트(github.io)의 차이를 구분합니다.</p>
+              </div>
+              <div class="p-5 rounded-xl bg-slate-50 border-l-4 border-[#0284c7] shadow-sm">
+                <span class="text-xs font-extrabold text-[#0284c7] uppercase">목표 02</span>
+                <h3 class="text-base font-extrabold text-slate-900 mt-1">HTML과 Python 앱의 배포 환경 설명</h3>
+                <p class="text-xs text-slate-600 mt-1.5 leading-relaxed">정적 HTML(GitHub Pages)과 4차수 Python Streamlit 앱에 필요한 실행 환경 차이를 설명합니다.</p>
+              </div>
+              <div class="p-5 rounded-xl bg-slate-50 border-l-4 border-[#cba86a] shadow-sm">
+                <span class="text-xs font-extrabold text-amber-700 uppercase">목표 03</span>
+                <h3 class="text-base font-extrabold text-slate-900 mt-1">GitHub 파일 업로드 및 Pages 설정</h3>
+                <p class="text-xs text-slate-600 mt-1.5 leading-relaxed">명령줄(CLI) 없이 웹 브라우저만으로 <code>index.html</code>을 올리고 Pages 배포를 완료합니다.</p>
+              </div>
+              <div class="p-5 rounded-xl bg-slate-50 border-l-4 border-[#d9252c] shadow-sm">
+                <span class="text-xs font-extrabold text-[#d9252c] uppercase">목표 04</span>
+                <h3 class="text-base font-extrabold text-slate-900 mt-1">공개 화면의 기능과 자료 한계 검증</h3>
+                <p class="text-xs text-slate-600 mt-1.5 leading-relaxed">차트·필터·모달 메모의 작동 범위와 가상 데이터의 가정을 의뢰인 관점에서 검증합니다.</p>
+              </div>
+            </div>
+          </div>
+        `,
+        note: "단순히 버튼을 눌러 링크를 만드는 것에서 그치지 않습니다. 누구에게 무엇이 공개되는지, 의뢰인이 어떤 조건에서 결과를 신뢰할 수 있는지까지 판단하는 것이 통계컨설턴트의 역할입니다."
+      },
+      {
+        num: 3,
+        cat: "컨설팅 시나리오",
+        title: "의뢰 상황 | 파일을 보내는 것 vs 링크를 주는 것",
+        labTab: 1,
+        bodyHtml: `
+          <div class="space-y-5">
+            <div class="bg-[#00264d] text-white p-5 rounded-xl border-l-8 border-[#cba86a] shadow">
+              <p class="text-base sm:text-lg font-extrabold">
+                “지점장용 VIP 대시보드는 잘 만들었는데, 파일을 내려받지 않고 링크로 바로 볼 수 있을까요?”
+              </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+              <div class="p-4 rounded-xl bg-slate-100 border border-slate-300">
+                <div class="font-extrabold text-slate-800 text-sm mb-1">💻 제작자 (학생)</div>
+                <p class="text-slate-600 leading-relaxed">내 컴퓨터에서는 <code>유안타증권_지점장.html</code>이 정상 실행됨. 하지만 파일을 메일로 보낼 때마다 버전이 꼬임.</p>
+              </div>
+              <div class="p-4 rounded-xl bg-slate-100 border border-slate-300">
+                <div class="font-extrabold text-slate-800 text-sm mb-1">👔 의뢰인 (지점장/임원)</div>
+                <p class="text-slate-600 leading-relaxed">복잡한 프로그램 설치나 파일 다운로드 없이 스마트폰·태블릿에서 주소 클릭 한 번으로 접속하고 싶음.</p>
+              </div>
+              <div class="p-4 rounded-xl bg-amber-50 border border-amber-300">
+                <div class="font-extrabold text-amber-900 text-sm mb-1">⚖️ 통계컨설턴트의 판단</div>
+                <p class="text-amber-800 leading-relaxed">접근성(웹 링크 제공)과 <strong>공개 범위(내부 고객정보 보호 및 가상자료 명시)</strong>를 함께 결정해야 함.</p>
+              </div>
+            </div>
+            <div class="p-3.5 rounded-lg bg-sky-50 border border-sky-200 text-xs text-sky-900 font-semibold">
+              💬 토의 질문: 파일을 직접 보내는 방법과 웹 링크(URL)를 제공하는 방법은 버전 관리와 보안 측면에서 어떻게 다를까요?
+            </div>
+          </div>
+        `,
+        note: "파일 전달은 받은 사람이 각자 사본을 갖게 되어 수정 시 재전송해야 합니다. 웹 게시에서는 최신 버전을 한 주소에서 제공할 수 있지만, 공개 범위와 이용 가능성을 별도로 관리해야 합니다."
+      },
+      {
+        num: 4,
+        cat: "컨설팅 시나리오",
+        title: "오늘의 결과물과 완료 기준",
+        labTab: 4,
+        bodyHtml: `
+          <div class="space-y-6">
+            <div class="flex flex-wrap items-center justify-between gap-2 bg-slate-900 text-white p-4 rounded-xl text-xs font-bold">
+              <span class="px-3 py-2 bg-[#00264d] rounded-lg border border-[#cba86a]">1. 공개 가능한 HTML</span>
+              <i class="ph-bold ph-arrow-right text-[#cba86a]"></i>
+              <span class="px-3 py-2 bg-[#00264d] rounded-lg">2. 저장소 업로드</span>
+              <i class="ph-bold ph-arrow-right text-[#cba86a]"></i>
+              <span class="px-3 py-2 bg-[#00264d] rounded-lg">3. Pages 설정</span>
+              <i class="ph-bold ph-arrow-right text-[#cba86a]"></i>
+              <span class="px-3 py-2 bg-[#00264d] rounded-lg">4. 주소 접속</span>
+              <i class="ph-bold ph-arrow-right text-[#cba86a]"></i>
+              <span class="px-3 py-2 bg-[#d9252c] rounded-lg">5. 기능·내용 확인</span>
+            </div>
+            <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 space-y-3">
+              <h3 class="text-sm font-extrabold text-slate-900">✅ 오늘 실습의 완료 기준 (3가지 모두 충족)</h3>
+              <ul class="space-y-2 text-xs sm:text-sm text-slate-700">
+                <li class="flex items-center gap-2"><i class="ph-fill ph-check-circle text-emerald-600 text-lg"></i> <strong>다른 브라우저(또는 스마트폰)</strong>에서 내 대시보드 링크가 정상적으로 열린다.</li>
+                <li class="flex items-center gap-2"><i class="ph-fill ph-check-circle text-emerald-600 text-lg"></i> <strong>버튼(이탈위험 필터, 상세 모달, 새로고침)과 그래프(PB 실적, 자산 비중)</strong>를 실제로 눌러 확인한다.</li>
+                <li class="flex items-center gap-2"><i class="ph-fill ph-check-circle text-emerald-600 text-lg"></i> <strong>자료의 가정(교육용 가상 수치, 단위)과 확인 결과</strong>를 함께 정리해 전달한다.</li>
+              </ul>
+            </div>
+          </div>
+        `,
+        note: "URL이 생겼다는 사실과 의뢰인이 문제없이 사용할 수 있다는 사실은 다릅니다. 마지막 검증까지가 오늘의 실습입니다."
+      },
+      {
+        num: 5,
+        cat: "기초 개념 점검",
+        title: "선수지식 확인 | 3가지 핵심 질문",
+        labTab: 2,
+        bodyHtml: `
+          <div class="space-y-4">
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+              <h4 class="text-sm font-extrabold text-[#00264d]">Q1. 컴퓨터의 HTML 파일을 여는 프로그램은 무엇인가?</h4>
+              <p class="text-xs text-slate-600 mt-1">→ <strong>웹 브라우저(Chrome, Edge, Safari 등)</strong>가 HTML 태그를 해석하여 화면을 그립니다.</p>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+              <h4 class="text-sm font-extrabold text-[#00264d]">Q2. 파일에 적힌 화면 구조와 버튼의 동작은 같은 것인가?</h4>
+              <p class="text-xs text-slate-600 mt-1">→ <strong>HTML</strong>은 구조를, <strong>CSS(Tailwind)</strong>는 디자인 표현을, <strong>JavaScript(Chart.js 및 이벤트 함수)</strong>는 상호작용 동작을 담당합니다.</p>
+            </div>
+            <div class="p-4 rounded-xl bg-red-50 border border-red-200">
+              <h4 class="text-sm font-extrabold text-red-800">Q3. 인터넷 주소를 받으면 누구나 볼 수 있는가?</h4>
+              <p class="text-xs text-red-700 mt-1">→ 주소를 안다고 항상 볼 수 있는 것은 아니지만(사내망/권한 제한 가능), <strong>이번 GitHub Pages 실습은 전 세계 누구나 열람 가능한 '공개 웹 게시(Public)'</strong>입니다.</p>
+            </div>
+          </div>
+        `,
+        note: "첨부된 유안타증권_지점장.html 역시 HTML 구조 + Tailwind CSS 스타일 + Chart.js 및 필터 JavaScript가 하나로 합쳐진 파일임을 이해시킵니다."
+      },
+      {
+        num: 6,
+        cat: "아키텍처 이해",
+        title: "파일이 웹 화면이 되기까지 (4단계 흐름)",
+        labTab: 3,
+        bodyHtml: `
+          <div class="space-y-4">
+            <table class="w-full text-left border-collapse border border-slate-300 text-xs sm:text-sm">
+              <thead>
+                <tr class="bg-[#00264d] text-white">
+                  <th class="p-3 border border-slate-300 w-1/4">장소 (단계)</th>
+                  <th class="p-3 border border-slate-300">하는 일</th>
+                  <th class="p-3 border border-slate-300 w-1/3">주소 형태 예시</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200">
+                <tr>
+                  <td class="p-3 font-bold bg-slate-50">1. 내 컴퓨터</td>
+                  <td class="p-3">파일 작성, 익명화 및 사전 확인</td>
+                  <td class="p-3 font-mono text-xs text-slate-500">file:///C:/실습폴더/index.html</td>
+                </tr>
+                <tr>
+                  <td class="p-3 font-bold bg-slate-50">2. GitHub 저장소</td>
+                  <td class="p-3">파일 보관과 변경 기록(Commit) 관리</td>
+                  <td class="p-3 font-mono text-xs text-sky-700">github.com/사용자명/dashboard-demo</td>
+                </tr>
+                <tr>
+                  <td class="p-3 font-bold bg-amber-50">3. GitHub Pages</td>
+                  <td class="p-3 font-semibold text-amber-900">선택한 브랜치/폴더의 파일을 웹에 제공</td>
+                  <td class="p-3 font-mono text-xs text-emerald-700 font-bold">사용자명.github.io/dashboard-demo/</td>
+                </tr>
+                <tr>
+                  <td class="p-3 font-bold bg-slate-50">4. 사용자 브라우저</td>
+                  <td class="p-3">게시된 파일을 받아 화면과 JS 동작 실행</td>
+                  <td class="p-3 text-xs text-slate-600">의뢰인의 PC·모바일 화면</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        `,
+        note: "GitHub에 저장했다는 것(2단계)과 Pages를 통해 웹에 게시했다는 것(3단계)은 서로 다른 상태입니다. 브라우저는 게시된 파일을 받아 해석합니다."
+      },
+      {
+        num: 7,
+        cat: "아키텍처 이해",
+        title: "꼭 알아둘 네 가지 핵심 용어",
+        labTab: 3,
+        bodyHtml: `
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+              <div class="text-xs font-mono font-bold text-sky-700">01. Repository</div>
+              <h4 class="text-base font-extrabold text-slate-900 mt-0.5">저장소 (Repository)</h4>
+              <p class="text-xs text-slate-600 mt-1">프로젝트 파일과 과거부터 현재까지의 모든 변경 기록을 모으는 공간입니다.</p>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+              <div class="text-xs font-mono font-bold text-emerald-700">02. Commit</div>
+              <h4 class="text-base font-extrabold text-slate-900 mt-0.5">커밋 (Commit)</h4>
+              <p class="text-xs text-slate-600 mt-1">파일의 변경 내용을 한 줄 설명(커밋 메시지)과 함께 영구 기록한 시점입니다.</p>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+              <div class="text-xs font-mono font-bold text-amber-700">03. Branch</div>
+              <h4 class="text-base font-extrabold text-slate-900 mt-0.5">브랜치 (Branch)</h4>
+              <p class="text-xs text-slate-600 mt-1">변경 기록이 이어지는 작업 흐름입니다. 이번 실습은 기본 브랜치인 <code>main</code>을 사용합니다.</p>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+              <div class="text-xs font-mono font-bold text-red-700">04. Deployment</div>
+              <h4 class="text-base font-extrabold text-slate-900 mt-0.5">배포 (Deployment)</h4>
+              <p class="text-xs text-slate-600 mt-1">외부 사용자가 웹 주소로 접근하도록 결과물을 변환·제공하는 과정입니다.</p>
+            </div>
+          </div>
+        `,
+        note: "이번 실습은 기본 브랜치 main에 직접 올리는 단순한 흐름입니다. 실제 브랜치 이름은 각 저장소에서 확인합니다."
+      },
+      {
+        num: 8,
+        cat: "아키텍처 이해",
+        title: "저장소 주소 vs 웹사이트 주소 비교",
+        labTab: 4,
+        bodyHtml: `
+          <div class="space-y-4">
+            <table class="w-full text-left border-collapse border border-slate-300 text-xs sm:text-sm">
+              <thead>
+                <tr class="bg-slate-800 text-white">
+                  <th class="p-3 border border-slate-300">구분</th>
+                  <th class="p-3 border border-slate-300">주소 예시</th>
+                  <th class="p-3 border border-slate-300">보여주는 것</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="border-b border-slate-200">
+                  <td class="p-3 font-bold">저장소 주소</td>
+                  <td class="p-3 font-mono text-sky-700">github.com/사용자명/dashboard-demo</td>
+                  <td class="p-3">소스 코드 파일 목록(<code>index.html</code>, <code>README.md</code>)과 커밋 변경 기록</td>
+                </tr>
+                <tr class="bg-emerald-50">
+                  <td class="p-3 font-extrabold text-emerald-900">Pages 주소</td>
+                  <td class="p-3 font-mono font-bold text-emerald-700">사용자명.github.io/dashboard-demo/</td>
+                  <td class="p-3 font-bold text-emerald-900">브라우저에 렌더링된 실제 대시보드 웹 화면</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="p-4 rounded-xl bg-amber-50 border border-amber-300 text-xs text-amber-900">
+              <strong>❓ 확인 질문:</strong> 지점장(의뢰인)에게 대시보드를 사용하도록 안내할 때 어느 주소를 먼저 전달할까요?<br>
+              <span class="text-slate-700 mt-1 block">→ 사용자에게는 <strong>Pages 주소(github.io)</strong>를 먼저 제공하고, 분석 재현과 코드 관리가 필요한 경우 저장소 주소도 함께 제공합니다.</span>
+            </div>
+          </div>
+        `,
+        note: "학생들이 과제 제출 시 가장 많이 하는 실수가 저장소 주소만 내거나 두 주소를 혼동하는 것입니다. 명확히 구분하도록 지도합니다."
+      },
+      {
+        num: 9,
+        cat: "4차수 연계 비교",
+        title: "4차수 실습과 연결하기 | HTML vs Python Streamlit",
+        labTab: 2,
+        bodyHtml: `
+          <div class="space-y-4">
+            <table class="w-full text-left border-collapse border border-slate-300 text-xs sm:text-sm">
+              <thead>
+                <tr class="bg-[#00264d] text-white">
+                  <th class="p-3 border border-slate-300">구분</th>
+                  <th class="p-3 border border-slate-300">이번 실습 (정적 웹 대시보드)</th>
+                  <th class="p-3 border border-slate-300">4차수 실습 (Python 대시보드)</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200">
+                <tr>
+                  <td class="p-3 font-bold bg-slate-50">주요 파일</td>
+                  <td class="p-3 font-mono text-sky-700 font-bold">index.html (HTML·CSS·JS 포함)</td>
+                  <td class="p-3 font-mono text-slate-700">Python <code>app.py</code>, <code>requirements.txt</code></td>
+                </tr>
+                <tr>
+                  <td class="p-3 font-bold bg-slate-50">파일 관리</td>
+                  <td class="p-3">GitHub 저장소</td>
+                  <td class="p-3">GitHub 저장소</td>
+                </tr>
+                <tr>
+                  <td class="p-3 font-bold bg-slate-50">화면 제공</td>
+                  <td class="p-3 font-bold text-emerald-700">GitHub Pages (정적 호스팅)</td>
+                  <td class="p-3 font-bold text-purple-700">Streamlit Community Cloud</td>
+                </tr>
+                <tr>
+                  <td class="p-3 font-bold bg-slate-50">동작 위치</td>
+                  <td class="p-3">사용자의 웹 브라우저</td>
+                  <td class="p-3">Python 서버 실행 환경 + 브라우저</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        `,
+        note: "GitHub는 두 경우 모두 파일 관리에 활용합니다. 단, GitHub Pages는 정적 파일을 제공할 뿐 서버에서 Python(app.py)을 실행하지 않습니다."
+      },
+      {
+        num: 10,
+        cat: "4차수 연계 비교",
+        title: "버튼이 움직이면 무조건 서버가 필요한가?",
+        labTab: 5,
+        bodyHtml: `
+          <div class="space-y-4">
+            <div class="p-4 rounded-xl bg-sky-50 border-l-4 border-sky-600 text-sm font-bold text-sky-950">
+              “화면의 상호작용(차트 툴팁, 필터링, 모달 팝업)은 서버 없이 브라우저에서도 실행할 수 있습니다!”
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+              <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                <div class="font-extrabold text-slate-900 text-sm mb-1">⚡ JavaScript (브라우저 실행)</div>
+                <p class="text-slate-600 leading-relaxed">첨부된 유안타 대시보드의 <strong>담당 PB 필터, -10% 이탈위험 토글, Chart.js 그래프, 상세 모달창</strong>은 모두 사용자의 브라우저가 직접 실행합니다.</p>
+              </div>
+              <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                <div class="font-extrabold text-slate-900 text-sm mb-1">🗂️ 브라우저 저장 공간</div>
+                <p class="text-slate-600 leading-relaxed">내 브라우저의 메모리나 로컬 저장소에만 남는 메모 기능은 서버 없이 작동하지만 남과 공유되지 않습니다.</p>
+              </div>
+              <div class="p-4 rounded-xl bg-red-50 border border-red-200">
+                <div class="font-extrabold text-red-900 text-sm mb-1">🖥️ 서버가 반드시 필요한 예</div>
+                <p class="text-red-800 leading-relaxed">Python 실시간 통계 모델 실행, 실시간 증권사 DB 조회, <strong>지점장이 쓴 코멘트를 담당 PB 컴퓨터에 즉시 공유(공동 저장)</strong>하는 경우.</p>
+              </div>
+            </div>
+          </div>
+        `,
+        note: "Pages의 '정적 호스팅(Static Hosting)'이라는 말과 사용자 눈에 보이는 '동적 인터랙션 화면'은 양립할 수 있음을 첨부파일 사례로 명쾌하게 설명합니다."
+      },
+      {
+        num: 11,
+        cat: "사전 보안 점검",
+        title: "공개 전에 멈춰서 확인하기 (보안 체크리스트)",
+        labTab: 1,
+        bodyHtml: `
+          <div class="space-y-4">
+            <div class="bg-red-600 text-white p-4 rounded-xl font-extrabold text-sm flex items-center gap-2 shadow">
+              <i class="ph-bold ph-warning-octagon text-xl"></i>
+              <span>공개 저장소(Public)와 GitHub Pages는 전 세계 인터넷에 즉시 공개됩니다!</span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+              <div class="p-4 rounded-xl bg-slate-50 border border-slate-300 flex items-start gap-2.5">
+                <input type="checkbox" checked class="mt-0.5 h-4 w-4 accent-red-600">
+                <div>
+                  <strong class="text-slate-900 block">1. 조직명과 실제 업무 자료의 공개 권한</strong>
+                  <span class="text-slate-600">첨부파일의 '유안타증권 강남금융센터' 등 실제 기업명을 승인 없이 게시하지 않았는가?</span>
+                </div>
+              </div>
+              <div class="p-4 rounded-xl bg-slate-50 border border-slate-300 flex items-start gap-2.5">
+                <input type="checkbox" checked class="mt-0.5 h-4 w-4 accent-red-600">
+                <div>
+                  <strong class="text-slate-900 block">2. 개인정보·비밀번호·API 키 포함 여부</strong>
+                  <span class="text-slate-600">실제 VIP 고객명, 계좌번호, 사내 API 토큰이 코드에 남아있지 않은가?</span>
+                </div>
+              </div>
+              <div class="p-4 rounded-xl bg-slate-50 border border-slate-300 flex items-start gap-2.5">
+                <input type="checkbox" checked class="mt-0.5 h-4 w-4 accent-red-600">
+                <div>
+                  <strong class="text-slate-900 block">3. 화면뿐 아니라 HTML 소스코드 내부 점검</strong>
+                  <span class="text-slate-600">화면에 안 보여도 <code>&lt;script&gt;</code> 내부 배열(<code>vipClients</code>)이나 주석에 민감 정보가 없는가?</span>
+                </div>
+              </div>
+              <div class="p-4 rounded-xl bg-slate-50 border border-slate-300 flex items-start gap-2.5">
+                <input type="checkbox" checked class="mt-0.5 h-4 w-4 accent-red-600">
+                <div>
+                  <strong class="text-slate-900 block">4. 가상 수치라는 표시와 가정 명시</strong>
+                  <span class="text-slate-600">교육용 시뮬레이션 수치임과 단위(억원, %)를 화면 상단에 명확히 밝혔는가?</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        `,
+        note: "링크를 아는 사람에게만 제한되는 공유가 아닙니다. 공개 허가가 불확실하면 절대 게시하지 않으며, 모든 사전 검토는 업로드 전에 수행합니다."
+      },
+      {
+        num: 12,
+        cat: "사전 보안 점검",
+        title: "실습 사례와 자료 설명 | 첨부파일 구조 해부",
+        labTab: 1,
+        bodyHtml: `
+          <div class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+              <div class="p-4 rounded-xl bg-[#00264d] text-white space-y-2">
+                <span class="px-2 py-0.5 bg-[#cba86a] text-[#001a35] font-extrabold rounded">첨부파일 구조 분석</span>
+                <h4 class="text-sm font-bold mt-1">유안타증권_지점장.html의 핵심 특징</h4>
+                <ul class="space-y-1.5 text-slate-200 list-disc list-inside leading-relaxed">
+                  <li><strong>KPI 4종:</strong> 지점 총 AUM 달성률(104.8%), 당월 순증(+342억), 만기 도래(8건), 이탈위험 VIP(3명)</li>
+                  <li><strong>Chart.js 차트 2종:</strong> PB 5인 목표 달성률 가로 막대차트, 자산군별 비중 도넛차트</li>
+                  <li><strong>인터랙티브 테이블:</strong> 담당 PB 필터, <code>-10%</code> 이상 자산 급감 고객 적색 점멸 및 필터, 상세 모달창</li>
+                </ul>
+              </div>
+              <div class="p-4 rounded-xl bg-slate-50 border border-slate-300 space-y-2">
+                <span class="px-2 py-0.5 bg-emerald-700 text-white font-extrabold rounded">실습 검증 질문 3가지</span>
+                <h4 class="text-sm font-bold text-slate-900 mt-1">교육용 사본 배포 후 확인할 질문</h4>
+                <ol class="space-y-2 text-slate-700 list-decimal list-inside leading-relaxed">
+                  <li>링크를 받은 사람이 별도 설치 없이 화면을 열 수 있는가?</li>
+                  <li>PB 필터 버튼, 이탈위험 토글, 차트, 상세 모달이 의도대로 작동하는가?</li>
+                  <li>수치의 의미(단위: 억원, %)와 한계(교육용 가상 수치)를 오해 없이 이해할 수 있는가?</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        `,
+        note: "우측 상단 [이 단계 실습 열기] 또는 [실습파일 라이브 체험] 버튼을 눌러 실제 유안타 대시보드의 구조와 익명화 전환 모드를 학생들에게 시연합니다."
+      },
+      {
+        num: 13,
+        cat: "파일 준비 실습",
+        title: "업로드할 파일 준비 (4단계 사전 작업)",
+        labTab: 2,
+        bodyHtml: `
+          <div class="space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+              <div class="p-4 rounded-xl bg-slate-50 border border-slate-300">
+                <span class="font-mono font-extrabold text-sky-700">STEP 01</span>
+                <h4 class="font-extrabold text-slate-900 text-sm mt-1">교육용 사본 복사</h4>
+                <p class="text-slate-600 mt-1">강사가 제공한 교육용 HTML(익명화 완료본)을 내 컴퓨터의 별도 실습 폴더에 복사합니다.</p>
+              </div>
+              <div class="p-4 rounded-xl bg-amber-50 border border-amber-300">
+                <span class="font-mono font-extrabold text-amber-800">STEP 02</span>
+                <h4 class="font-extrabold text-slate-900 text-sm mt-1">index.html 이름 변경</h4>
+                <p class="text-slate-700 mt-1">사본 파일 이름을 소문자 <code>index.html</code>로 바꿉니다. (<code>index.html.html</code> 중복 확장자 주의!)</p>
+              </div>
+              <div class="p-4 rounded-xl bg-slate-50 border border-slate-300">
+                <span class="font-mono font-extrabold text-sky-700">STEP 03</span>
+                <h4 class="font-extrabold text-slate-900 text-sm mt-1">로컬 브라우저 사전 확인</h4>
+                <p class="text-slate-600 mt-1">더블클릭하여 브라우저로 열어 제목, 가상자료 안내 배너, 차트와 버튼을 먼저 확인합니다.</p>
+              </div>
+              <div class="p-4 rounded-xl bg-slate-50 border border-slate-300">
+                <span class="font-mono font-extrabold text-sky-700">STEP 04</span>
+                <h4 class="font-extrabold text-slate-900 text-sm mt-1">소스코드 최종 점검</h4>
+                <p class="text-slate-600 mt-1">우클릭 → '페이지 소스 보기'로 화면과 소스에 공개 불가 내용이 없는지 재점검합니다.</p>
+              </div>
+            </div>
+          </div>
+        `,
+        note: "파일 이름만 index.html로 바꾼다고 자료가 자동 익명화되는 것은 아닙니다. 교육용 사본이 준비되었는지 먼저 확인합니다."
+      },
+      {
+        num: 14,
+        cat: "파일 준비 실습",
+        title: "왜 파일 이름을 index.html로 바꾸는가?",
+        labTab: 2,
+        bodyHtml: `
+          <div class="space-y-4">
+            <p class="text-xs sm:text-sm font-bold text-slate-700">GitHub Pages 웹 서버는 게시 위치의 기본 시작 파일(Entry Point)로 <code>index.html</code>을 찾습니다.</p>
+            <div class="bg-slate-900 text-emerald-300 font-mono text-xs sm:text-sm p-5 rounded-xl border border-slate-700 leading-relaxed">
+              dashboard-demo/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← 게시 위치 설정: /(root)<br>
+              ├── <strong>index.html</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← 웹 주소 접속 시 자동으로 열리는 시작 화면<br>
+              └── README.md &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← 프로젝트 설명 문서
+            </div>
+            <div class="p-4 rounded-xl bg-red-50 border border-red-200 text-xs text-red-900">
+              <strong>❓ 확인 질문:</strong> 만약 <code>index.html</code>이 하위 폴더(예: <code>dashboard-demo/sub/index.html</code>) 안에만 있다면 <code>/(root)</code> 설정과 맞을까요?<br>
+              <span class="text-slate-700 mt-1 block">→ <strong>맞지 않습니다!</strong> <code>index.html</code>은 선택한 게시 폴더(<code>/(root)</code>)의 최상위에 있어야 주소 접속 시 바로 열립니다. 만약 없을 경우 <code>README.md</code>가 대신 보이거나 404 오류가 발생합니다.</span>
+            </div>
+          </div>
+        `,
+        note: "실습 시뮬레이터 Step 2 탭에서 파일명을 다르게 했을 때 왜 404 에러가 나는지 퀴즈로 체험해 볼 수 있습니다."
+      },
+      {
+        num: 15,
+        cat: "본 실습 (5단계)",
+        title: "실습 지도 | 오늘 따라 할 전체 5단계 경로",
+        labTab: 3,
+        bodyHtml: `
+          <div class="space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-5 gap-2.5 text-xs">
+              <div class="p-3.5 rounded-xl bg-[#00264d] text-white">
+                <div class="text-[#cba86a] font-mono font-bold">STAGE 01</div>
+                <div class="font-extrabold text-sm mt-1">저장소 만들기</div>
+                <p class="text-slate-300 mt-1 text-[11px]">로그인 후 Public 저장소 생성</p>
+              </div>
+              <div class="p-3.5 rounded-xl bg-[#00264d] text-white">
+                <div class="text-[#cba86a] font-mono font-bold">STAGE 02</div>
+                <div class="font-extrabold text-sm mt-1">업로드와 커밋</div>
+                <p class="text-slate-300 mt-1 text-[11px]"><code>index.html</code> 추가 및 Commit</p>
+              </div>
+              <div class="p-3.5 rounded-xl bg-[#00264d] text-white">
+                <div class="text-[#cba86a] font-mono font-bold">STAGE 03</div>
+                <div class="font-extrabold text-sm mt-1">Pages 설정</div>
+                <p class="text-slate-300 mt-1 text-[11px]">Settings → main / /(root)</p>
+              </div>
+              <div class="p-3.5 rounded-xl bg-[#00264d] text-white">
+                <div class="text-[#cba86a] font-mono font-bold">STAGE 04</div>
+                <div class="font-extrabold text-sm mt-1">배포·주소 확인</div>
+                <p class="text-slate-300 mt-1 text-[11px]">Actions 완료 후 사이트 방문</p>
+              </div>
+              <div class="p-3.5 rounded-xl bg-[#d9252c] text-white">
+                <div class="text-amber-200 font-mono font-bold">STAGE 05</div>
+                <div class="font-extrabold text-sm mt-1">검증과 재배포</div>
+                <p class="text-red-100 mt-1 text-[11px]">기능 테스트 및 문구 수정 반영</p>
+              </div>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-100 border border-slate-300 text-xs font-semibold text-slate-700 flex items-center justify-between">
+              <span>🤝 수업 진행 방식: <strong>강사의 화면 시연 → 학생 각자 수행 → 옆 학생(짝)과 결과 교차 확인</strong></span>
+              <span class="text-[#00264d]">한 단계가 끝날 때마다 함께 확인 후 이동합니다.</span>
+            </div>
+          </div>
+        `,
+        note: "계정이나 네트워크 문제가 있는 학생은 조별 시연에 참여하고 자신의 관찰과 검증 설명을 기록하도록 안내합니다."
+      },
+      {
+        num: 16,
+        cat: "본 실습 (5단계)",
+        title: "실습 ① 저장소(Repository) 만들기",
+        labTab: 3,
+        bodyHtml: `
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5 items-center">
+            <div class="space-y-3 text-xs sm:text-sm">
+              <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+                <strong>1.</strong> GitHub 로그인 → 오른쪽 위 <code>+</code> 아이콘 클릭 → <strong>New repository</strong> 선택
+              </div>
+              <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+                <strong>2. Repository name:</strong> <code class="text-sky-700 font-bold">dashboard-demo</code> 입력
+              </div>
+              <div class="p-3.5 rounded-xl bg-amber-50 border border-amber-300">
+                <strong>3. 공개 범위:</strong> 공개 가능한 실습 자료인지 재확인 후 <strong>Public</strong> 선택
+              </div>
+              <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+                <strong>4.</strong> <strong>Add a README file</strong> 체크 → 하단 녹색 <strong>Create repository</strong> 클릭
+              </div>
+            </div>
+            <div class="bg-slate-900 text-white p-5 rounded-xl border border-slate-700 space-y-3 text-xs font-mono">
+              <div class="text-[#cba86a] font-sans font-bold">GitHub 화면 미리보기 (Create a new repository)</div>
+              <div class="bg-slate-950 p-3 rounded border border-slate-800">
+                Repository name *<br>
+                <span class="text-emerald-400 font-bold">dashboard-demo</span>
+              </div>
+              <div class="bg-slate-950 p-3 rounded border border-slate-800">
+                (●) <strong>Public</strong> - Anyone on the internet can see this repository.<br>
+                [✓] <strong>Add a README file</strong>
+              </div>
+              <div class="bg-emerald-600 text-white text-center py-2 rounded font-sans font-bold">
+                Create repository
+              </div>
+            </div>
+          </div>
+        `,
+        note: "GitHub Free 요금제에서 공개 저장소(Public)를 이용해 무료로 Pages를 배포하는 흐름을 안내합니다."
+      },
+      {
+        num: 17,
+        cat: "본 실습 (5단계)",
+        title: "저장소 생성 확인 (짝과 함께 점검하기)",
+        labTab: 3,
+        bodyHtml: `
+          <div class="space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm">
+              <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                ✅ <strong>저장소 이름 확인:</strong> 상단에 <code>사용자명 / dashboard-demo</code>가 의도한 대로 표시되는가?
+              </div>
+              <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                ✅ <strong>기본 브랜치 확인:</strong> 좌측 상단 브랜치 드롭다운 이름이 <code>main</code>인가?
+              </div>
+              <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                ✅ <strong>파일 목록 확인:</strong> 현재 파일 목록에 <code>README.md</code>가 보이는가?
+              </div>
+              <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                ✅ <strong>공개 상태 확인:</strong> 저장소 이름 옆에 <code>Public</code> 배지가 표시되어 있는가?
+              </div>
+            </div>
+            <div class="p-4 rounded-xl bg-sky-50 border border-sky-200 text-xs text-sky-900 font-bold">
+              🗣️ 학생 활동 (1분): 내 화면에서 저장소 이름과 기본 브랜치(main)의 위치를 짝에게 가리키며 설명해 보세요.
+            </div>
+          </div>
+        `,
+        note: "README.md는 프로젝트를 설명하는 마크다운 파일입니다. 아직 HTML 업로드 전이므로 대시보드가 표시되지 않는 것이 정상입니다."
+      },
+      {
+        num: 18,
+        cat: "본 실습 (5단계)",
+        title: "실습 ② 파일 업로드 (index.html)",
+        labTab: 3,
+        bodyHtml: `
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5 items-center">
+            <div class="space-y-2.5 text-xs sm:text-sm">
+              <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                <strong>1.</strong> 저장소 상단 <strong>Code</strong> 탭 → <strong>Add file</strong> 버튼 → <strong>Upload files</strong> 클릭
+              </div>
+              <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                <strong>2.</strong> 준비한 교육용 <code>index.html</code> 파일을 끌어놓거나(Drag & Drop) 선택
+              </div>
+              <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                <strong>3.</strong> 업로드된 파일 이름이 정확히 <code>index.html</code>인지 확인
+              </div>
+              <div class="p-3 rounded-xl bg-amber-50 border border-amber-300">
+                <strong>4. Commit changes 입력란:</strong> 변경 설명으로 <code class="font-bold text-amber-900">Add dashboard</code> 입력
+              </div>
+              <div class="p-3 rounded-xl bg-emerald-50 border border-emerald-300">
+                <strong>5.</strong> 기본 브랜치(<code>main</code>)에 직접 커밋 확인 후 녹색 <strong>Commit changes</strong> 클릭!
+              </div>
+            </div>
+            <div class="bg-slate-900 text-white p-5 rounded-xl border border-slate-700 space-y-3 text-xs font-mono">
+              <div class="p-4 border-2 border-dashed border-slate-600 rounded text-center text-slate-300">
+                📄 <strong>index.html</strong> (첨부파일 익명화 사본 업로드 완료)
+              </div>
+              <div class="bg-slate-950 p-3 rounded border border-slate-800 space-y-1.5">
+                <div class="text-slate-400">Commit changes</div>
+                <div class="p-1.5 bg-slate-900 border border-slate-700 rounded text-white">Add dashboard</div>
+                <div class="text-[11px] text-emerald-400">(●) Commit directly to the main branch</div>
+              </div>
+              <div class="bg-emerald-600 text-center py-2 rounded font-sans font-bold">Commit changes</div>
+            </div>
+          </div>
+        `,
+        note: "웹 브라우저 업로드에는 파일당 25 MiB 제한이 있습니다. 파일을 끌어놓은 뒤 반드시 하단의 Commit changes 버튼까지 눌러야 저장소에 반영됩니다."
+      },
+      {
+        num: 19,
+        cat: "본 실습 (5단계)",
+        title: "커밋(Commit)은 무엇을 남기는가?",
+        labTab: 3,
+        bodyHtml: `
+          <div class="space-y-4">
+            <table class="w-full text-left border-collapse border border-slate-300 text-xs sm:text-sm">
+              <thead>
+                <tr class="bg-[#00264d] text-white">
+                  <th class="p-3 border border-slate-300 w-1/3">수행한 변경 작업</th>
+                  <th class="p-3 border border-slate-300">좋은 커밋 설명(Message)의 예</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200">
+                <tr>
+                  <td class="p-3 font-bold bg-slate-50">처음 대시보드 파일 추가</td>
+                  <td class="p-3 font-mono text-emerald-700 font-bold">Add dashboard</td>
+                </tr>
+                <tr>
+                  <td class="p-3 font-bold bg-slate-50">가상자료 안내 문구 보완</td>
+                  <td class="p-3 font-mono text-sky-700 font-bold">Clarify sample data notice</td>
+                </tr>
+                <tr>
+                  <td class="p-3 font-bold bg-slate-50">대시보드 제목 수정</td>
+                  <td class="p-3 font-mono text-amber-700 font-bold">Update dashboard title</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="p-4 rounded-xl bg-red-50 border border-red-200 text-xs text-red-900 space-y-1">
+              <strong>⚠️ 핵심 주의사항:</strong>
+              <p>1. 나중에 나 또는 동료가 변경 이유와 내용을 이해할 수 있게 명확히 씁니다.</p>
+              <p>2. <strong>공개된 내용은 과거 커밋 기록(History)에도 영구히 남으므로</strong> 민감한 정보나 비밀번호는 처음부터 절대 올리지 마세요.</p>
+            </div>
+          </div>
+        `,
+        note: "한 번 커밋한 민감 정보는 나중에 파일을 지워도 커밋 히스토리에 남는다는 점을 강조합니다."
+      },
+      {
+        num: 20,
+        cat: "본 실습 (5단계)",
+        title: "업로드 확인 | 아직 웹 배포는 아니다!",
+        labTab: 3,
+        bodyHtml: `
+          <div class="space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm">
+              <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                <strong>1. 파일 목록 확인:</strong> 저장소 <strong>Code</strong> 화면에 <code>index.html</code>이 <code>README.md</code>와 함께 보이는가?
+              </div>
+              <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                <strong>2. 경로 위치 확인:</strong> 하위 폴더 안이 아니라 <strong>저장소 최상위(root)</strong>에 놓여 있는가?
+              </div>
+              <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                <strong>3. 커밋 메시지 확인:</strong> 파일 옆에 방금 적은 <code>Add dashboard</code> 설명이 보이는가?
+              </div>
+              <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                <strong>4. 파일 내용 확인:</strong> <code>index.html</code>을 클릭했을 때 익명화된 올바른 사본 코드가 보이는가?
+              </div>
+            </div>
+            <div class="p-4 rounded-xl bg-amber-50 border border-amber-300 text-xs text-amber-900 font-semibold">
+              💡 GitHub에서 <code>index.html</code>을 클릭했을 때 대시보드 화면이 아니라 <strong>HTML 소스코드가 보이는 것은 지극히 정상</strong>입니다! 이제 다음 슬라이드에서 Pages 설정을 해야 웹사이트로 바뀝니다.
+            </div>
+          </div>
+        `,
+        note: "많은 학생들이 GitHub 저장소에서 index.html을 클릭해 보고 '왜 차트가 안 나오고 코드가 나오나요?'라고 질문합니다. 저장소와 Pages의 차이를 다시 짚어줍니다."
+      },
+      {
+        num: 21,
+        cat: "본 실습 (5단계)",
+        title: "실습 ③ GitHub Pages 게시 설정",
+        labTab: 4,
+        bodyHtml: `
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5 items-center">
+            <div class="space-y-2.5 text-xs sm:text-sm">
+              <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                <strong>1.</strong> 저장소 상단 탭 메뉴에서 <strong>⚙️ Settings</strong> 클릭 → 왼쪽 메뉴에서 <strong>Pages</strong> 클릭
+              </div>
+              <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                <strong>2. Build and deployment</strong> 섹션 아래 <strong>Source</strong> 확인
+              </div>
+              <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                <strong>3.</strong> <strong>Deploy from a branch</strong> 선택 유지
+              </div>
+              <div class="p-3 rounded-xl bg-amber-50 border border-amber-300">
+                <strong>4. Branch 설정:</strong> <code>None</code> 버튼을 눌러 실제 기본 브랜치인 <strong><code>main</code></strong> 선택
+              </div>
+              <div class="p-3 rounded-xl bg-emerald-50 border border-emerald-300">
+                <strong>5. 폴더 설정:</strong> 옆의 폴더가 <strong><code>/(root)</code></strong>인지 확인 후 <strong>Save</strong> 클릭!
+              </div>
+            </div>
+            <div class="bg-slate-900 text-white p-5 rounded-xl border border-slate-700 space-y-3 text-xs font-mono">
+              <div class="text-[#cba86a] font-sans font-bold">Settings → Pages 설정 화면 요약</div>
+              <div class="bg-slate-950 p-3 rounded border border-slate-800">
+                Source: [ Deploy from a branch ▼ ]
+              </div>
+              <div class="bg-slate-950 p-3 rounded border border-emerald-600/80 flex items-center justify-between">
+                <span>Branch: [ <strong>main</strong> ▼ ]</span>
+                <span>[ <strong>/(root)</strong> ▼ ]</span>
+                <span class="px-3 py-1 bg-slate-800 border border-slate-600 rounded font-sans font-bold">Save</span>
+              </div>
+              <p class="text-[11px] font-sans text-slate-400">※ 상단 [이 단계 실습 열기]에서 직접 클릭해 볼 수 있습니다.</p>
+            </div>
+          </div>
+        `,
+        note: "/(root)는 저장소 최상위 경로입니다. 18번 슬라이드에서 업로드한 파일 위치와 게시 위치가 정확히 일치해야 합니다."
+      },
+      {
+        num: 22,
+        cat: "본 실습 (5단계)",
+        title: "게시가 끝났는지 확인하기 (Actions & 배포 상태)",
+        labTab: 4,
+        bodyHtml: `
+          <div class="space-y-5">
+            <div class="flex items-center justify-between bg-slate-900 text-white p-4 rounded-xl text-xs font-bold">
+              <span>1. 설정 Save</span>
+              <i class="ph-bold ph-arrow-right text-[#cba86a]"></i>
+              <span>2. 배포 진행 (Actions 대기)</span>
+              <i class="ph-bold ph-arrow-right text-[#cba86a]"></i>
+              <span>3. 완료 확인 (Your site is live)</span>
+              <i class="ph-bold ph-arrow-right text-[#cba86a]"></i>
+              <span class="text-emerald-400">4. 사이트 방문 (Visit site)</span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+              <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                <strong class="text-slate-900 block mb-1">🔗 실제 사이트 주소 확인</strong>
+                <p class="text-slate-600">1~2분 뒤 Pages 화면을 새로고침하면 상단에 <code>Your site is live at https://...</code> 주소 박스가 나타납니다.</p>
+              </div>
+              <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                <strong class="text-slate-900 block mb-1">⚙️ 지연/실패 시 Actions 확인</strong>
+                <p class="text-slate-600">상단 <strong>Actions</strong> 탭에서 <code>pages build and deployment</code>가 주황색(진행중)인지 녹색 체크(완료)인지 확인합니다.</p>
+              </div>
+              <div class="p-4 rounded-xl bg-amber-50 border border-amber-200">
+                <strong class="text-amber-900 block mb-1">⏳ 성급한 접속 주의</strong>
+                <p class="text-amber-800">배포가 끝나기 전에 주소를 먼저 열면 일시적으로 404 오류가 보일 수 있습니다. 완료 후 접속하세요.</p>
+              </div>
+            </div>
+          </div>
+        `,
+        note: "정확한 배포 완료 시간은 서버 상황에 따라 30초~3분가량 걸릴 수 있습니다. 기다리는 동안 브랜치·폴더 설정을 다시 점검하게 합니다."
+      },
+      {
+        num: 23,
+        cat: "본 실습 (5단계)",
+        title: "실습 ④ 공개 주소 접속 및 교차 환경 확인",
+        labTab: 4,
+        bodyHtml: `
+          <div class="space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm">
+              <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                <strong>1.</strong> Pages 설정 상단에 표시된 <strong>Visit site</strong>를 눌러 주소를 엽니다.
+              </div>
+              <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                <strong>2.</strong> 대시보드 제목과 상단의 <strong>가상자료 안내 문구</strong>가 정상 표시되는지 확인합니다.
+              </div>
+              <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-300">
+                <strong>3. 교차 환경 접속:</strong> 내 스마트폰(모바일 브라우저)이나 시크릿 창, 짝의 컴퓨터에서 내 주소를 열어봅니다.
+              </div>
+              <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                <strong>4. 기록 남기기:</strong> 접속한 주소, 확인 시각, 브라우저 환경과 결과를 검증표에 기록합니다.
+              </div>
+            </div>
+            <div class="p-4 rounded-xl bg-[#00264d] text-white text-xs">
+              <strong class="text-[#cba86a]">❓ 핵심 질문:</strong> 내 GitHub 계정이 로그인된 내 노트북에서만 화면을 확인했다면, 의뢰인(지점장)도 문제없이 접속할 수 있다고 단정할 수 있을까요?<br>
+              <span class="text-slate-200 mt-1 block">→ 다른 기기·브라우저(모바일, 시크릿 모드)에서의 확인이 접근성에 대한 중요한 추가 근거가 됩니다!</span>
+            </div>
+          </div>
+        `,
+        note: "한 번의 성공이 모든 기기나 향후 서비스 가용성을 영구 보장하지는 않지만, 최소한 타 환경 교차 검증을 거치는 것이 컨설팅의 기본 프로토콜입니다."
+      },
+      {
+        num: 24,
+        cat: "기능 및 한계 검증",
+        title: "기능 검증 | 첨부 대시보드에서 무엇을 눌러 볼까?",
+        labTab: 5,
+        bodyHtml: `
+          <div class="space-y-3">
+            <p class="text-xs font-bold text-slate-600">상단 <span class="text-[#d9252c]">[실습파일(유안타 지점장) 라이브 체험]</span> 버튼을 열고 아래 4가지 기능을 직접 작동시켜 보세요.</p>
+            <table class="w-full text-left border-collapse border border-slate-300 text-xs">
+              <thead>
+                <tr class="bg-[#00264d] text-white">
+                  <th class="p-2.5 border border-slate-300">검증 기능 (첨부파일 기준)</th>
+                  <th class="p-2.5 border border-slate-300">확인 행동 (Action)</th>
+                  <th class="p-2.5 border border-slate-300">기대 결과 (Expected Result)</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200">
+                <tr>
+                  <td class="p-2.5 font-bold bg-slate-50">1. 차트 & PB 필터</td>
+                  <td class="p-2.5">Chart.js 가로바·도넛 마우스 오버 및 담당 PB 드롭다운 선택</td>
+                  <td class="p-2.5">달성률 툴팁 표시 및 선택한 PB의 담당 VIP 고객만 표에 필터링</td>
+                </tr>
+                <tr>
+                  <td class="p-2.5 font-bold bg-slate-50">2. 이탈위험(-10%) 필터 & 상태 변경</td>
+                  <td class="p-2.5"><code>이탈위험(-10%)만 보기</code> 클릭 및 조치상태(조치대기→통화완료) 변경</td>
+                  <td class="p-2.5">적색 점멸 고객 3명만 필터링되고, 상태 변경 시 우측 하단 토스트 알림 표시</td>
+                </tr>
+                <tr>
+                  <td class="p-2.5 font-bold bg-amber-50">3. 상세 모달 & 지점장 메모</td>
+                  <td class="p-2.5">우측 <code>[상세]</code> 버튼 클릭 → 코멘트 입력 후 저장 → <strong>새로고침(F5)</strong></td>
+                  <td class="p-2.5 font-semibold text-amber-900">저장 토스트가 뜨지만, 새로고침하거나 다른 기기에서 열면 초기화됨 확인</td>
+                </tr>
+                <tr>
+                  <td class="p-2.5 font-bold bg-slate-50">4. 모닝 브리핑 출력 (인쇄)</td>
+                  <td class="p-2.5">우측 상단 <code>모닝 브리핑 출력</code> 버튼 클릭 (<code>window.print()</code>)</td>
+                  <td class="p-2.5">브라우저의 인쇄 미리보기 화면이 정상 호출됨</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        `,
+        note: "원본 설계안의 체크리스트/시나리오/메모/인쇄 검증을 실제 첨부파일(유안타증권_지점장.html)에 구현된 기능과 1:1로 매칭하여 실습합니다."
+      },
+      {
+        num: 25,
+        cat: "기능 및 한계 검증",
+        title: "심층 탐구 | 메모와 상태 변경은 어디에 저장될까?",
+        labTab: 5,
+        bodyHtml: `
+          <div class="space-y-4">
+            <div class="bg-slate-900 text-white p-4 rounded-xl text-xs sm:text-sm font-mono flex items-center justify-between">
+              <span>[내 브라우저의 메모리 / 사이트 저장 공간]</span>
+              <span class="text-[#cba86a]">← 지점장 코멘트 저장 & 조치 상태 변경</span>
+              <span class="text-red-400">✖ (서버 전송 없음 / 타인 공유 안 됨)</span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+              <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+                <h4 class="font-extrabold text-slate-900 text-sm">📌 정적 웹 대시보드 저장 동작의 한계</h4>
+                <ul class="list-disc list-inside space-y-1.5 text-slate-700 leading-relaxed">
+                  <li><code>localStorage</code>를 쓰더라도 <strong>같은 컴퓨터의 같은 브라우저</strong>에서만 유지됩니다.</li>
+                  <li>다른 사람(담당 PB)이나 다른 기기(스마트폰)에 <strong>자동 공유되지 않습니다.</strong></li>
+                  <li>특히 첨부된 <code>유안타증권_지점장.html</code>의 상태 변경과 모달 메모는 JS 변수 배열(<code>vipClients</code>)만 수정하므로 <strong>새로고침 시 초기 상태로 돌아갑니다.</strong></li>
+                </ul>
+              </div>
+              <div class="p-4 rounded-xl bg-amber-50 border border-amber-300 space-y-2">
+                <h4 class="font-extrabold text-amber-900 text-sm">🧪 학생 실험 활동</h4>
+                <p class="text-amber-900 leading-relaxed">
+                  1. 내 브라우저에서 1번 고객(김*회)의 조치 상태를 <code>통화완료</code>로 바꾸고 상세 모달에 메모를 저장해 보세요.<br>
+                  2. 스마트폰이나 옆 친구 브라우저에서 같은 주소를 열어 상태가 바뀌었는지 확인하고 차이를 기록하세요.
+                </p>
+                <p class="text-red-700 font-bold">※ 실습 입력란에는 절대 민감한 실제 내용을 입력하지 않습니다.</p>
+              </div>
+            </div>
+          </div>
+        `,
+        note: "화면에 '지점장 코멘트 저장'이라는 버튼 이름만 보고 서버 DB 저장이나 공동 편집이 된다고 가정하면 큰 컨설팅 사고로 이어집니다."
+      },
+      {
+        num: 26,
+        cat: "본 실습 (5단계)",
+        title: "실습 ⑤ 수정하고 다시 배포 확인하기",
+        labTab: 4,
+        bodyHtml: `
+          <div class="space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-5 gap-2.5 text-xs">
+              <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-300">
+                <strong class="text-[#00264d] block">1. 코드 수정</strong>
+                GitHub의 <code>index.html</code> 화면에서 연필 아이콘(Edit)을 눌러 제목 또는 가상자료 안내 문구를 수정합니다.
+              </div>
+              <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-300">
+                <strong class="text-[#00264d] block">2. 커밋 기록</strong>
+                <code>Update demo title</code>처럼 변경 설명을 쓰고 <strong>Commit changes</strong>를 누릅니다.
+              </div>
+              <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-300">
+                <strong class="text-[#00264d] block">3. Actions 확인</strong>
+                <strong>Actions</strong> 탭에서 재배포 빌드가 완료(녹색 체크)될 때까지 기다립니다.
+              </div>
+              <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-300">
+                <strong class="text-[#00264d] block">4. 새로고침 확인</strong>
+                Pages 주소를 강력 새로고침(<code>Ctrl+F5</code>)하여 변경된 제목을 확인합니다.
+              </div>
+              <div class="p-3.5 rounded-xl bg-emerald-50 border border-emerald-300">
+                <strong class="text-emerald-900 block">5. 이력 기록</strong>
+                수정 전후 내용과 실제 사이트 반영 확인 시각을 검증표에 기록합니다.
+              </div>
+            </div>
+            <p class="text-xs text-slate-600 bg-slate-100 p-3 rounded-lg border border-slate-200">
+              💡 <strong>Tip:</strong> GitHub 웹 화면의 연필 아이콘(Edit this file)으로 직접 고치거나, 내 컴퓨터에서 수정한 <code>index.html</code>을 같은 경로에 다시 업로드(덮어쓰기)할 수 있습니다.
+            </p>
+          </div>
+        `,
+        note: "저장소의 코드가 바뀐 시점과 실제 Pages 사이트에 반영되는 시점 사이에는 약간의 시간차(빌드 및 브라우저 캐시)가 있음을 직접 경험하게 합니다."
+      },
+      {
+        num: 27,
+        cat: "트러블슈팅",
+        title: "문제가 생겼을 때 | 증상부터 구분하여 해결하기",
+        labTab: 2,
+        bodyHtml: `
+          <div class="space-y-3">
+            <table class="w-full text-left border-collapse border border-slate-300 text-xs">
+              <thead>
+                <tr class="bg-slate-800 text-white">
+                  <th class="p-2.5 border border-slate-300 w-1/4">화면에 나타난 증상</th>
+                  <th class="p-2.5 border border-slate-300">가장 먼저 확인할 순서 (Troubleshooting)</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200">
+                <tr>
+                  <td class="p-2.5 font-bold text-red-700 bg-red-50">404 오류 또는 빈 화면</td>
+                  <td class="p-2.5">실제 Pages 주소 철자 → Actions 배포 상태 → 브랜치(<code>main</code>)·폴더(<code>/(root)</code>) → 최상위에 소문자 <code>index.html</code> 존재 여부</td>
+                </tr>
+                <tr>
+                  <td class="p-2.5 font-bold bg-slate-50">코드나 파일 목록이 보임</td>
+                  <td class="p-2.5"><strong>저장소 주소(github.com)</strong>와 <strong>Pages 주소(github.io)</strong>를 혼동했는지 확인</td>
+                </tr>
+                <tr>
+                  <td class="p-2.5 font-bold bg-slate-50">차트/디자인이 깨져 보임</td>
+                  <td class="p-2.5">인터넷 연결 상태, 외부 CDN(Tailwind, Chart.js) 접근 차단 여부, 브라우저 개발자도구(F12 → Console) 오류 확인</td>
+                </tr>
+                <tr>
+                  <td class="p-2.5 font-bold bg-slate-50">수정한 내용이 안 바뀜</td>
+                  <td class="p-2.5">Commit 완료 여부 → Actions 재배포 완료 여부 → 브라우저 캐시 무시 새로고침(<code>Ctrl+Shift+R</code>)</td>
+                </tr>
+                <tr>
+                  <td class="p-2.5 font-bold text-purple-800 bg-purple-50"><code>app.py</code>가 실행되지 않음</td>
+                  <td class="p-2.5">GitHub Pages는 정적 HTML만 호스팅함 → Python 앱은 <strong>Streamlit Community Cloud</strong> 실행 환경 필요</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        `,
+        note: "오류 로그나 캡처 화면을 질문방에 공유할 때 개인 토큰이나 민감 정보가 포함되지 않도록 주의시킵니다."
+      },
+      {
+        num: 28,
+        cat: "응용 및 확장 실습",
+        title: "함께 적용하기 | 가상자료 안내 문구 개선 및 상호 검증",
+        labTab: 1,
+        bodyHtml: `
+          <div class="space-y-4">
+            <div class="p-4 rounded-xl bg-[#00264d] text-white space-y-2">
+              <h4 class="text-sm font-extrabold text-[#cba86a]">📝 대시보드 상단에 다음 3가지를 명확히 표시해 보세요</h4>
+              <ul class="list-disc list-inside text-xs space-y-1 text-slate-200">
+                <li><strong>교육용 가상 시나리오라는 사실</strong> (실제 유안타증권 지점 실적이 아님)</li>
+                <li><strong>수치의 단위, 가정과 기준 시점</strong> (단위: 억원, % / 1개월 변동률 -10% 이하를 이탈위험으로 가정)</li>
+                <li><strong>실제 투자·인사·업무 판단에 사용할 수 없다는 면책 설명</strong></li>
+              </ul>
+            </div>
+            <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-300 text-xs text-emerald-950 space-y-2">
+              <div class="font-extrabold text-sm">🔄 조별 상호 검증 프로토콜</div>
+              <p class="leading-relaxed">
+                <code>안내 문구 수정</code> → <code>Commit</code> → <code>배포 확인</code> → <strong>다른 조에게 내 Pages 주소 전달</strong> → <strong>상대 조가 화면만 보고 자료의 의미와 한계를 설명</strong>
+              </p>
+              <p class="text-slate-600">※ 상대 조의 설명이 내 의도와 다르다면 안내 문구를 더 직관적으로 개선합니다.</p>
+            </div>
+          </div>
+        `,
+        note: "단순히 '가상 데이터입니다'라고 세 글자만 적는 것에 그치지 않고, 어떤 수치가 어떤 단위와 가정에 의해 만들어졌는지 제3자가 이해할 수 있어야 합니다."
+      },
+      {
+        num: 29,
+        cat: "응용 및 확장 실습",
+        title: "스스로 적용하기 | 새로운 캠퍼스 의뢰 시나리오",
+        labTab: 1,
+        bodyHtml: `
+          <div class="space-y-4">
+            <div class="flex flex-wrap gap-2">
+              <span class="px-3 py-1 bg-sky-100 text-sky-900 rounded-full text-xs font-extrabold">선택 사례 A: 학과 행사 참여율 대시보드</span>
+              <span class="px-3 py-1 bg-amber-100 text-amber-900 rounded-full text-xs font-extrabold">선택 사례 B: 경기대 도서관 열람실 이용 현황</span>
+              <span class="px-3 py-1 bg-emerald-100 text-emerald-900 rounded-full text-xs font-extrabold">선택 사례 C: 캠퍼스 셔틀버스/식당 혼잡도</span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+              <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                <strong class="text-slate-900 block mb-1">1. 의사결정 정의</strong>
+                누가(학생회장, 도서관 사서, 총무팀) 어떤 결정을 내리기 위해 이 화면을 보는가?
+              </div>
+              <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                <strong class="text-slate-900 block mb-1">2. 공개 가능한 가상 자료 설계</strong>
+                생성 목적, 변수명, 단위(명, 분, %), 시나리오 가정을 어떻게 설정할 것인가?
+              </div>
+              <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                <strong class="text-slate-900 block mb-1">3. 오해 방지 표시</strong>
+                실제 학교 공식 통계로 오해받지 않도록 어떤 안내 배너를 넣을 것인가?
+              </div>
+              <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                <strong class="text-slate-900 block mb-1">4. 배포 후 검증 계획</strong>
+                배포 후 누가 어떤 기기에서 어떤 버튼을 눌러 확인할 것인가?
+              </div>
+            </div>
+          </div>
+        `,
+        note: "수업시간 여건에 따라 조별 확장 활동이나 개인 과제로 활용합니다. 학생이 만든 가상 수치는 절대 실제 현황으로 주장하지 않도록 지도합니다."
+      },
+      {
+        num: 30,
+        cat: "마무리 및 평가",
+        title: "의뢰인에게 무엇을 전달할까? (컨설팅 보고 체계)",
+        labTab: 5,
+        bodyHtml: `
+          <div class="space-y-3">
+            <table class="w-full text-left border-collapse border border-slate-300 text-xs sm:text-sm">
+              <thead>
+                <tr class="bg-[#00264d] text-white">
+                  <th class="p-3 border border-slate-300 w-1/4">보고 구분</th>
+                  <th class="p-3 border border-slate-300">의뢰인 전달 메시지 예시</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200">
+                <tr>
+                  <td class="p-3 font-bold bg-slate-50">1. 확인된 사실 (Fact)</td>
+                  <td class="p-3">“11월 1일 14:00 기준, Chrome(PC)과 Safari(모바일)에서 페이지 로드와 PB 필터·차트·모달 버튼을 확인했습니다.”</td>
+                </tr>
+                <tr>
+                  <td class="p-3 font-bold bg-slate-50">2. 해석 (Interpretation)</td>
+                  <td class="p-3">“해당 환경에서 별도 설치 없이 지점장 모닝 브리핑 시나리오 데모 검토가 가능합니다.”</td>
+                </tr>
+                <tr>
+                  <td class="p-3 font-bold bg-slate-50">3. 추가 확인 사항</td>
+                  <td class="p-3">“사내 방화벽 환경에서의 외부 차트 라이브러리(CDN) 접속 여부와 사용자의 단위 이해도를 추가 확인해야 합니다.”</td>
+                </tr>
+                <tr>
+                  <td class="p-3 font-bold bg-amber-50">4. 권고 (Recommendation)</td>
+                  <td class="p-3 font-semibold text-amber-900">“화면 상단 가상 자료 가정을 유지한 상태로 1차 UI 검토를 진행하고, 메모 공유 기능은 추후 서버 연동으로 구축할 것을 권고합니다.”</td>
+                </tr>
+                <tr>
+                  <td class="p-3 font-bold bg-slate-50">5. 효과 검증 계획</td>
+                  <td class="p-3">“실제 사용자의 접속 성공 여부, 필터 탐색 과제 수행 결과, 수치 해석 피드백을 기록하겠습니다.”</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        `,
+        note: "웹 배포 성공은 데이터의 정확성이나 통계 분석 타당성의 증거가 아닙니다. 사실·해석·권고를 구분해 전달하는 컨설팅 화법을 훈련합니다."
+      },
+      {
+        num: 31,
+        cat: "마무리 및 평가",
+        title: "이해도 확인 | 5가지 핵심 총정리 질문",
+        labTab: 5,
+        bodyHtml: `
+          <div class="space-y-2.5 text-xs">
+            <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+              <strong>Q1. 파일을 GitHub에 올린 뒤 Pages를 따로 설정하는 이유는?</strong><br>
+              <span class="text-sky-800">→ 코드 보관(저장소)과 웹 화면 제공(호스팅 게시)의 역할이 다르기 때문입니다.</span>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+              <strong>Q2. JavaScript 버튼과 차트가 있는 HTML을 정적 호스팅(Pages)에서 제공할 수 있는 이유는?</strong><br>
+              <span class="text-sky-800">→ 서버가 아니라 <strong>접속한 사용자의 웹 브라우저</strong>가 JavaScript를 받아 실행하기 때문입니다.</span>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+              <strong>Q3. 대시보드에서 지점장 메모를 저장하면 다른 사람도 볼 수 있는가?</strong><br>
+              <span class="text-sky-800">→ 아니요! 이 사례는 브라우저 메모리/로컬 저장 공간에만 반응하므로 타인과 자동 공유되지 않습니다.</span>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+              <strong>Q4. 웹 배포 성공만으로 대시보드의 수치가 정확하다고 판단할 수 있는가?</strong><br>
+              <span class="text-sky-800">→ 절대 아닙니다. 데이터의 출처·계산식·가정을 별도로 검증해야 합니다.</span>
+            </div>
+            <div class="p-3 rounded-xl bg-red-50 border border-red-200">
+              <strong>Q5. 공개 허가가 없는 내부 파일(예: 원본 유안타 파일)을 어떻게 다뤄야 하는가?</strong><br>
+              <span class="text-red-800 font-bold">→ 공개 저장소에 올리지 않고, 승인된 자료나 완전히 대체된 가상 교육용 자료를 사용합니다.</span>
+            </div>
+          </div>
+        `,
+        note: "수강생들에게 질문을 던지고 스스로 답변하게 한 뒤 강사 해설을 공개합니다."
+      },
+      {
+        num: 32,
+        cat: "마무리 및 평가",
+        title: "제출물과 평가 기준 안내",
+        labTab: 5,
+        bodyHtml: `
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2 text-xs">
+              <h4 class="font-extrabold text-[#00264d] text-sm">📦 필수 제출물 5가지</h4>
+              <ol class="list-decimal list-inside space-y-1.5 text-slate-700 leading-relaxed">
+                <li><strong>GitHub 저장소 주소</strong>와 <strong>Pages 웹사이트 주소</strong></li>
+                <li>업로드한 파일 및 <strong>가상 자료·단위·가정 설명</strong></li>
+                <li><strong>기능과 내용 검증표(부록 A)</strong>, 확인 환경·시각</li>
+                <li>의뢰인 보고용 <strong>사실·해석·추가 질문·권고 행동</strong></li>
+                <li>커밋 변경 내역, 개인 기여도 및 <strong>AI 활용·검증 기록</strong></li>
+              </ol>
+              <button onclick="openModal('modalChecklist')" class="mt-2 w-full py-2 bg-[#00264d] text-[#cba86a] font-extrabold rounded-lg">
+                부록 A. 학생용 검증표 작성창 열기
+              </button>
+            </div>
+            <div class="p-4 rounded-xl bg-amber-50 border border-amber-300 space-y-2 text-xs">
+              <h4 class="font-extrabold text-amber-950 text-sm">📊 평가 비중 예시 (총 100%)</h4>
+              <ul class="space-y-1.5 text-amber-900">
+                <li class="flex justify-between"><span>• 공개 적합성·자료 설명</span> <strong>20%</strong></li>
+                <li class="flex justify-between"><span>• 배포 과정·재현성</span> <strong>25%</strong></li>
+                <li class="flex justify-between"><span>• 기능 검증·오류 대응</span> <strong>25%</strong></li>
+                <li class="flex justify-between"><span>• 결과 해석·권고 수준</span> <strong>20%</strong></li>
+                <li class="flex justify-between"><span>• 개인 설명력·AI 검증 기록</span> <strong>10%</strong></li>
+              </ul>
+              <p class="text-[11px] text-slate-600 pt-2 border-t border-amber-200">
+                ※ 배포에 실패한 경우에도 <strong>실패 단계, 시도한 내용, 확인 증거(캡처), 다음 조치 계획</strong>을 제출하면 과정 점수를 인정받습니다.
+              </p>
+            </div>
+          </div>
+        `,
+        note: "팀 과제인 경우에도 팀원 각자가 배포 과정과 검증 결과를 직접 설명할 수 있는지 확인합니다."
+      }
+    ];
+
+    let currentSlideIndex = 0;
+
+    // Render TOC Modal List
+    function renderSidebarList(filterText = "") {
+      const container = document.getElementById('slideListContainer');
+      container.innerHTML = '';
+
+      slidesData.forEach((slide, idx) => {
+        if (filterText.trim() !== "") {
+          const q = filterText.toLowerCase();
+          if (!slide.title.toLowerCase().includes(q) && !slide.cat.toLowerCase().includes(q) && !String(slide.num).includes(q)) return;
+        }
+
+        const btn = document.createElement('button');
+        const isActive = idx === currentSlideIndex;
+        btn.className = `w-full text-left p-3 rounded-xl text-xs flex items-start space-x-3 border transition ${
+          isActive 
+            ? 'bg-[#cba86a] text-[#001a35] border-[#cba86a] font-extrabold shadow-lg' 
+            : 'bg-slate-950/80 text-slate-200 border-slate-800 hover:border-[#cba86a]/60 hover:bg-slate-800'
+        }`;
+        btn.onclick = () => {
+          goToSlide(idx);
+          closeModal('modalToc');
+        };
+        btn.innerHTML = `
+          <span class="px-2 py-0.5 rounded font-mono text-[11px] shrink-0 mt-0.5 ${isActive ? 'bg-[#001a35] text-[#cba86a]' : 'bg-slate-800 text-[#cba86a]'}">${String(slide.num).padStart(2, '0')}</span>
+          <div class="overflow-hidden">
+            <div class="text-[10px] ${isActive ? 'text-[#001a35]/80 font-bold' : 'text-slate-400'}">${slide.cat}</div>
+            <div class="truncate font-bold mt-0.5">${slide.title.split('|')[1] || slide.title}</div>
+          </div>
+        `;
+        container.appendChild(btn);
+      });
+    }
+
+    // Go To Specific Slide
+    function goToSlide(index) {
+      if (index < 0 || index >= slidesData.length) return;
+      currentSlideIndex = index;
+      const slide = slidesData[currentSlideIndex];
+
+      // Update Header & Badges safely
+      const numBadge = document.getElementById('slideNumberBadge');
+      if (numBadge) numBadge.textContent = `SLIDE ${String(slide.num).padStart(2, '0')}`;
+
+      const catBadge = document.getElementById('slideCategoryBadge');
+      if (catBadge) catBadge.textContent = slide.cat;
+
+      const progBadge = document.getElementById('sidebarProgressBadge');
+      if (progBadge) progBadge.textContent = `${String(slide.num).padStart(2, '0')} / ${slidesData.length}`;
+
+      const bottomCounter = document.getElementById('bottomSlideCounter');
+      if (bottomCounter) bottomCounter.textContent = `${slide.num} / ${slidesData.length}`;
+
+      // Progress Bar
+      const pct = ((currentSlideIndex + 1) / slidesData.length) * 100;
+      const topBar = document.getElementById('topProgressBar');
+      if (topBar) topBar.style.width = `${pct}%`;
+
+      // Update Slide Content
+      const contentArea = document.getElementById('slideContentArea');
+      if (contentArea) {
+        contentArea.innerHTML = `
+          <div class="space-y-5">
+            <div class="border-b border-slate-200 pb-3 flex items-center justify-between">
+              <h2 class="text-xl sm:text-2xl font-black text-[#00264d] tracking-tight">${slide.title}</h2>
+            </div>
+            <div>${slide.bodyHtml}</div>
+          </div>
+          <div class="pt-4 mt-6 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
+            <span>경기대학교 「통계컨설팅의 이해」 | GitHub 웹 배포 상세 설계</span>
+            <span>실습 참조 파일: 유안타증권_지점장.html → index.html</span>
+          </div>
+        `;
+      }
+
+      // Update Instructor Note
+      const noteEl = document.getElementById('slideInstructorNote');
+      if (noteEl) noteEl.textContent = slide.note;
+
+      // Update Lab Trigger Button to open matching tab
+      const labBtn = document.getElementById('btnSlideLabTrigger');
+      if (labBtn) {
+        labBtn.onclick = () => {
+          openModal('modalLabSimulator');
+          switchLabTab(slide.labTab || 1);
+        };
+      }
+
+      // Update Prev/Next disabled state
+      const prevBtn = document.getElementById('btnPrevSlide');
+      if (prevBtn) prevBtn.disabled = currentSlideIndex === 0;
+
+      const nextBtn = document.getElementById('btnNextSlide');
+      if (nextBtn) nextBtn.disabled = currentSlideIndex === slidesData.length - 1;
+
+      const searchInput = document.getElementById('inputSlideSearch');
+      renderSidebarList(searchInput ? searchInput.value : "");
+    }
+
+    // Navigation Listeners
+    document.getElementById('btnPrevSlide').addEventListener('click', () => goToSlide(currentSlideIndex - 1));
+    document.getElementById('btnNextSlide').addEventListener('click', () => goToSlide(currentSlideIndex + 1));
+
+    document.getElementById('inputSlideSearch').addEventListener('input', (e) => {
+      renderSidebarList(e.target.value);
+    });
+
+    // Keyboard Navigation
+    window.addEventListener('keydown', (e) => {
+      const anyModalOpen = !document.getElementById('modalToc').classList.contains('hidden') ||
+                           !document.getElementById('modalLabSimulator').classList.contains('hidden') ||
+                           !document.getElementById('modalYuantaPreview').classList.contains('hidden') ||
+                           !document.getElementById('modalChecklist').classList.contains('hidden') ||
+                           !document.getElementById('modalAppendix').classList.contains('hidden') ||
+                           !document.getElementById('modalAppDeploy').classList.contains('hidden');
+      if (anyModalOpen) {
+        if (e.key === 'Escape') {
+          closeModal('modalToc');
+          closeModal('modalLabSimulator');
+          closeModal('modalYuantaPreview');
+          closeModal('modalChecklist');
+          closeModal('modalAppendix');
+          closeModal('modalAppDeploy');
+        }
+        return;
+      }
+      if (e.key === 'ArrowRight') goToSlide(currentSlideIndex + 1);
+      if (e.key === 'ArrowLeft') goToSlide(currentSlideIndex - 1);
+    });
+
+    // Modal Helpers
+    function openModal(id) {
+      document.getElementById(id).classList.remove('hidden');
+      if (id === 'modalYuantaPreview') {
+        setTimeout(() => {
+          initSandboxCharts();
+          renderSandboxVipTable();
+        }, 80);
+      }
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+    }
+
+    function showGlobalToast(msg) {
+      const t = document.getElementById('globalToast');
+      document.getElementById('globalToastMsg').textContent = msg;
+      t.classList.remove('translate-y-24', 'opacity-0');
+      t.classList.add('translate-y-0', 'opacity-100');
+      setTimeout(() => {
+        t.classList.remove('translate-y-0', 'opacity-100');
+        t.classList.add('translate-y-24', 'opacity-0');
+      }, 2600);
+    }
+
+    // ===================================================================
+    // LAB SIMULATOR FUNCTIONS (Modal 1)
+    // ===================================================================
+    function switchLabTab(tabNum) {
+      for (let i = 1; i <= 5; i++) {
+        const pane = document.getElementById(`labTabContent${i}`);
+        const btn = document.getElementById(`labTabBtn${i}`);
+        if (i === tabNum) {
+          pane.classList.remove('hidden');
+          btn.className = "lab-tab-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-[#cba86a] text-[#001a35] transition";
+        } else {
+          pane.classList.add('hidden');
+          btn.className = "lab-tab-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-[#00264d] text-slate-300 hover:text-white transition";
+        }
+      }
+    }
+
+    function applySanitizeDemo() {
+      const preview = document.getElementById('sanitizedCodePreview');
+      preview.innerHTML = `&lt;title&gt;<span class="bg-emerald-800 text-white px-1 rounded">[교육용 가상] KGU 금융센터 지점장 대시보드</span>&lt;/title&gt;
+...
+&lt;!-- 상단 가상 데이터 안내 및 단위·가정 배너 추가 --&gt;
+&lt;div class="bg-emerald-950 text-emerald-200 p-2 text-xs"&gt;
+  본 화면의 수치는 통계컨설팅 실습용 가상 데이터(단위: 억원, %)이며 실제 투자 판단에 사용할 수 없습니다.
+&lt;/div&gt;
+...
+// JS 데이터셋 완전 익명화
+let vipClients = [
+  { id: 1, code: "<span class="bg-emerald-800 text-white px-1 rounded">DEMO-101 (가상고객A)</span>", pb: "<span class="bg-emerald-800 text-white px-1 rounded">PB-A 수석</span>", aumValue: 148.5 }
+];`;
+      showGlobalToast("익명화 및 가상자료 안내 문구 변환이 완료되었습니다!");
+    }
+
+    function checkFileNameQuiz(choice) {
+      const box = document.getElementById('fileNameQuizResult');
+      if (choice === 'index.html') {
+        box.className = "p-3 rounded-lg bg-emerald-950 text-xs text-emerald-200 border border-emerald-600 font-bold";
+        box.innerHTML = "✅ 정답입니다! <code>index.html</code>(영문 소문자)은 이 실습에서 웹 주소로 바로 열리는 시작 파일입니다.";
+      } else if (choice === 'index.html.html') {
+        box.className = "p-3 rounded-lg bg-red-950 text-xs text-red-200 border border-red-600";
+        box.innerHTML = "❌ 오답 (404 Not Found 발생): 윈도우 파일 탐색기에서 '파일 확장명 숨기기'가 켜져 있을 때 가장 흔히 발생하는 실수입니다.";
+      } else if (choice === 'Index.HTML') {
+        box.className = "p-3 rounded-lg bg-amber-950 text-xs text-amber-200 border border-amber-600";
+        box.innerHTML = "⚠️ 주의 (404 위험): GitHub Pages 서버(Linux 기반)는 대소문자를 엄격히 구분하므로 반드시 소문자 <code>index.html</code>로 작성해야 합니다.";
+      } else {
+        box.className = "p-3 rounded-lg bg-red-950 text-xs text-red-200 border border-red-600";
+        box.innerHTML = "❌ 오답: <code>유안타증권_지점장.html</code> 이름으로 올리면 기본 주소의 시작 파일로 열리지 않습니다. 파일 경로를 주소에 지정하면 접근할 수 있습니다.";
+      }
+    }
+
+    function runCommitSimulation() {
+      const repo = document.getElementById('simRepoName').value.trim() || 'dashboard-demo';
+      const msg = document.getElementById('simCommitMsg').value.trim() || 'Add dashboard';
+      const out = document.getElementById('simCommitOutput');
+      out.className = "mt-4 p-3.5 rounded-lg bg-emerald-950/80 border border-emerald-600 text-xs font-mono text-emerald-200 space-y-1";
+      out.innerHTML = `
+        <div>✔ <strong>Commit 완료!</strong> (브랜치: <code>main</code> | 커밋 설명: <code>"${msg}"</code>)</div>
+        <div>• 저장소 주소: <code>https://github.com/kgu-student/${repo}</code> (현재 상태: 코드만 저장됨, 아직 웹 배포 아님)</div>
+        <div class="text-amber-300">→ 이제 상단 [Step 4. Settings → Pages] 탭으로 이동하여 웹 배포를 활성화하세요!</div>
+      `;
+      showGlobalToast("저장소에 index.html 커밋이 반영되었습니다.");
+    }
+
+    function runPagesDeploySimulation() {
+      const branch = document.getElementById('simBranchSelect').value;
+      const folder = document.getElementById('simFolderSelect').value;
+      const box = document.getElementById('simPagesStatusBox');
+
+      if (branch !== 'main') {
+        box.className = "p-4 rounded-xl bg-red-950 border border-red-600 text-xs text-red-200";
+        box.innerHTML = "⚠️ Branch가 None으로 되어 있으면 사이트가 배포되지 않습니다. <code>main</code>을 선택하세요.";
+        return;
+      }
+      if (folder !== '/(root)') {
+        box.className = "p-4 rounded-xl bg-amber-950 border border-amber-600 text-xs text-amber-200";
+        box.innerHTML = "⚠️ 우리는 <code>index.html</code>을 최상위 경로에 올렸으므로 <code>/docs</code>가 아닌 <code>/(root)</code>를 선택해야 404 오류가 나지 않습니다.";
+        return;
+      }
+
+      box.className = "p-4 rounded-xl bg-emerald-950 border border-emerald-500 text-xs text-emerald-100 space-y-2";
+      box.innerHTML = `
+        <div class="font-bold text-sm text-emerald-300 flex items-center gap-1.5">
+          <i class="ph-fill ph-check-circle text-lg"></i> GitHub Pages 배포 완료! (Actions: pages build and deployment ✔)
+        </div>
+        <div>🌐 <strong>Your site is live at:</strong> <code class="text-amber-300 font-bold">https://kgu-student.github.io/dashboard-demo/</code></div>
+        <div>이제 우측 하단 <strong>[유안타 지점장 대시보드 라이브 실행]</strong> 버튼을 눌러 배포된 화면의 기능을 검증하세요!</div>
+      `;
+      showGlobalToast("GitHub Pages 배포가 성공적으로 활성화되었습니다!");
+    }
+
+    // ===================================================================
+    // YUANTA DASHBOARD LIVE SANDBOX LOGIC (Modal 2 - 첨부파일 완벽 재현)
+    // ===================================================================
+    let isYuantaSanitized = false;
+    let sandboxRiskOnly = false;
+    let sandboxPbChartInstance = null;
+    let sandboxAssetChartInstance = null;
+
+    let sandboxVipData = [
+      { id: 1, rawCode: "YT-9021 (김*회)", eduCode: "DEMO-101 (가상고객A)", tier: "VVIP", rawPb: "김유안 수석PB", eduPb: "PB-A 수석", pbKey: "PB-A", aumDisplay: "148억 5,000만", monthlyChange: -12.4, maturityDate: "2026-10-14", productNote: "사모 ELS 84호 (녹인 구간 근접)", status: "긴급면담예정" },
+      { id: 2, rawCode: "YT-8810 (이*진)", eduCode: "DEMO-102 (가상고객B)", tier: "VVIP", rawPb: "박태훈 책임PB", eduPb: "PB-B 책임", pbKey: "PB-B", aumDisplay: "210억 원", monthlyChange: 3.8, maturityDate: "2026-10-18", productNote: "국채 30년물 분할 매수", status: "통화완료" },
+      { id: 3, rawCode: "YT-7742 (박*호)", eduCode: "DEMO-103 (가상고객C)", tier: "VIP", rawPb: "이지은 선임PB", eduPb: "PB-C 선임", pbKey: "PB-C", aumDisplay: "62억 원", monthlyChange: -14.2, maturityDate: "2026-10-11", productNote: "해외 하이일드 펀드 환헤지 손실", status: "조치대기" },
+      { id: 4, rawCode: "YT-6531 (최*우)", eduCode: "DEMO-104 (가상고객D)", tier: "VIP", rawPb: "김유안 수석PB", eduPb: "PB-A 수석", pbKey: "PB-A", aumDisplay: "45억 2,000만", monthlyChange: 1.2, maturityDate: "2026-10-25", productNote: "지수형 ELS 만기 상환 대기", status: "통화완료" },
+      { id: 5, rawCode: "YT-5409 (정*영)", eduCode: "DEMO-105 (가상고객E)", tier: "우수", rawPb: "최민호 PB", eduPb: "PB-D 주임", pbKey: "PB-D", aumDisplay: "28억 5,000만", monthlyChange: -10.8, maturityDate: "2026-10-09", productNote: "코스닥 벤처신탁 환매 요청", status: "조치대기" },
+      { id: 6, rawCode: "YT-4328 (한*석)", eduCode: "DEMO-106 (가상고객F)", tier: "VIP", rawPb: "박태훈 책임PB", eduPb: "PB-B 책임", pbKey: "PB-B", aumDisplay: "88억 원", monthlyChange: -4.5, maturityDate: "2026-10-15", productNote: "특판 단기채 롤오버", status: "상담진행중" },
+      { id: 7, rawCode: "YT-3211 ((주)세*글로벌)", eduCode: "DEMO-107 (가상법인G)", tier: "VVIP", rawPb: "정수아 PB", eduPb: "PB-E 전담", pbKey: "PB-E", aumDisplay: "320억 원 (법인)", monthlyChange: 7.9, maturityDate: "2026-10-12", productNote: "법인 MMF 및 전단채", status: "관리완료" },
+      { id: 8, rawCode: "YT-2105 (오*림)", eduCode: "DEMO-108 (가상고객H)", tier: "우수", rawPb: "이지은 선임PB", eduPb: "PB-C 선임", pbKey: "PB-C", aumDisplay: "19억 8,000만", monthlyChange: -2.1, maturityDate: "2026-10-20", productNote: "미국 빅테크 분할 랩", status: "상담진행중" }
+    ];
+
+    function initSandboxCharts() {
+      const pbCtx = document.getElementById('sandboxPbChart').getContext('2d');
+      if (sandboxPbChartInstance) sandboxPbChartInstance.destroy();
+
+      const pbLabels = isYuantaSanitized 
+        ? ['PB-A 수석', 'PB-B 책임', 'PB-C 선임', 'PB-D 주임', 'PB-E 전담']
+        : ['김유안 수석', '박태훈 책임', '이지은 선임', '최민호 PB', '정수아 PB'];
+
+      sandboxPbChartInstance = new Chart(pbCtx, {
+        type: 'bar',
+        data: {
+          labels: pbLabels,
+          datasets: [{
+            label: '목표 달성률 (%)',
+            data: [112.5, 108.4, 96.2, 88.0, 111.0],
+            backgroundColor: (ctx) => ctx.raw >= 100 ? '#cba86a' : (ctx.raw >= 90 ? '#0284c7' : '#ef4444'),
+            borderRadius: 6,
+            barThickness: 16
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { min: 50, max: 130, ticks: { color: '#94a3b8' }, grid: { color: 'rgba(26,70,124,0.3)' } },
+            y: { ticks: { color: '#e2e8f0', font: { weight: 'bold' } }, grid: { display: false } }
+          }
+        }
+      });
+
+      const assetCtx = document.getElementById('sandboxAssetChart').getContext('2d');
+      if (sandboxAssetChartInstance) sandboxAssetChartInstance.destroy();
+
+      sandboxAssetChartInstance = new Chart(assetCtx, {
+        type: 'doughnut',
+        data: {
+          labels: ['국내주식', '해외주식', '국공채·회사채', '펀드/신탁/랩'],
+          datasets: [{
+            data: [28.0, 20.0, 34.0, 18.0],
+            backgroundColor: ['#0284c7', '#e11d48', '#cba86a', '#10b981'],
+            borderColor: '#00264d',
+            borderWidth: 3
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '70%',
+          plugins: { legend: { display: false } }
+        }
+      });
+    }
+
+    function renderSandboxVipTable() {
+      const tbody = document.getElementById('sandboxVipTbody');
+      const pbFilter = document.getElementById('sandboxPbFilter').value;
+      const search = document.getElementById('sandboxSearchInput').value.toLowerCase();
+      tbody.innerHTML = '';
+
+      const filtered = sandboxVipData.filter(c => {
+        if (pbFilter !== 'all' && c.pbKey !== pbFilter) return false;
+        if (sandboxRiskOnly && c.monthlyChange > -10) return false;
+        const codeStr = (isYuantaSanitized ? c.eduCode : c.rawCode).toLowerCase();
+        if (search && !codeStr.includes(search) && !c.productNote.toLowerCase().includes(search)) return false;
+        return true;
+      });
+
+      filtered.forEach((c, idx) => {
+        const isRisk = c.monthlyChange <= -10;
+        const tr = document.createElement('tr');
+        tr.className = isRisk ? "row-risk-glow border-b border-red-900/60" : "hover:bg-[#083260]/60 border-b border-[#1a467c]/40";
+
+        const displayCode = isYuantaSanitized ? c.eduCode : c.rawCode;
+        const displayPb = isYuantaSanitized ? c.eduPb : c.rawPb;
+
+        tr.innerHTML = `
+          <td class="py-2.5 px-3 text-center font-mono text-slate-400">${idx + 1}</td>
+          <td class="py-2.5 px-3">
+            <div class="font-bold text-white">${isRisk ? '⚠️ ' : ''}${displayCode}</div>
+            <div class="text-[11px] text-slate-400">${c.productNote}</div>
+          </td>
+          <td class="py-2.5 px-3 text-center"><span class="px-2 py-0.5 rounded bg-[#00264d] border border-[#cba86a]/40 text-[#cba86a] text-[10px] font-bold">${c.tier}</span></td>
+          <td class="py-2.5 px-3 text-slate-200">${displayPb}</td>
+          <td class="py-2.5 px-3 text-right font-mono font-bold text-white">${c.aumDisplay}</td>
+          <td class="py-2.5 px-3 text-right font-mono font-bold ${isRisk ? 'text-red-400' : (c.monthlyChange < 0 ? 'text-amber-300' : 'text-emerald-400')}">
+            ${c.monthlyChange > 0 ? '+' : ''}${c.monthlyChange}%
+          </td>
+          <td class="py-2.5 px-3 font-mono text-slate-300">${c.maturityDate}</td>
+          <td class="py-2.5 px-3 text-center">
+            <select onchange="updateSandboxClientStatus(${c.id}, this.value)" class="bg-[#001a35] border border-[#1a467c] rounded px-2 py-1 text-xs text-amber-200">
+              <option value="조치대기" ${c.status === '조치대기' ? 'selected' : ''}>조치대기</option>
+              <option value="긴급면담예정" ${c.status === '긴급면담예정' ? 'selected' : ''}>긴급면담예정</option>
+              <option value="상담진행중" ${c.status === '상담진행중' ? 'selected' : ''}>상담진행중</option>
+              <option value="통화완료" ${c.status === '통화완료' ? 'selected' : ''}>통화완료</option>
+              <option value="관리완료" ${c.status === '관리완료' ? 'selected' : ''}>관리완료</option>
+            </select>
+          </td>
+          <td class="py-2.5 px-3 text-center">
+            <button onclick="openSandboxClientModal(${c.id})" class="px-2.5 py-1 bg-[#00264d] hover:bg-[#0c386b] border border-[#cba86a]/50 text-[#cba86a] rounded text-[11px] font-bold">상세</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function updateSandboxClientStatus(id, newStatus) {
+      const item = sandboxVipData.find(x => x.id === id);
+      if (item) {
+        item.status = newStatus;
+        const name = isYuantaSanitized ? item.eduCode : item.rawCode;
+        showGlobalToast(`${name} 조치상태가 [${newStatus}](으)로 변경되었습니다 (브라우저 메모리).`);
+      }
+    }
+
+    function toggleSandboxRiskFilter() {
+      sandboxRiskOnly = !sandboxRiskOnly;
+      const btn = document.getElementById('btnSandboxRiskOnly');
+      if (sandboxRiskOnly) {
+        btn.classList.add('bg-red-900/70', 'border-red-500');
+        showGlobalToast("최근 1개월 자산 -10% 이상 급감한 이탈위험 VIP 3명만 표시합니다.");
+      } else {
+        btn.classList.remove('bg-red-900/70', 'border-red-500');
+      }
+      renderSandboxVipTable();
+    }
+
+    function toggleYuantaSanitizeMode() {
+      isYuantaSanitized = !isYuantaSanitized;
+      const badge = document.getElementById('sandboxModeBadge');
+      const banner = document.getElementById('eduNoticeBanner');
+      const brandTag = document.getElementById('yuantaBrandTag');
+      const loungeTag = document.getElementById('yuantaLoungeTag');
+      const title = document.getElementById('yuantaMainTitle');
+      const btn = document.getElementById('btnToggleSanitizeLive');
+
+      if (isYuantaSanitized) {
+        badge.textContent = "교육용 익명화 사본 모드 (index.html - 공개 배포 가능)";
+        badge.className = "px-2 py-0.5 bg-emerald-950 text-emerald-300 border border-emerald-600 rounded text-[11px] font-bold";
+        banner.classList.remove('hidden');
+        brandTag.textContent = "KGU STATISTICAL CONSULTING DEMO";
+        loungeTag.innerHTML = `<i class="ph-fill ph-crown-simple text-xs"></i> 가상 금융센터 VIP 라운지 (교육용)`;
+        title.textContent = "[교육용 가상] 지점장 일일 VIP 고객 관리 & 영업 성과 대시보드";
+        btn.innerHTML = `<i class="ph-bold ph-arrow-counter-clockwise"></i><span>원본(유안타증권_지점장.html) 모드로 되돌리기</span>`;
+        showGlobalToast("슬라이드 11~13 기준에 따라 조직명·PB명·고객명이 교육용 사본으로 익명화되었습니다!");
+      } else {
+        badge.textContent = "원본 모드 (유안타증권_지점장.html)";
+        badge.className = "px-2 py-0.5 bg-amber-950 text-amber-300 border border-amber-700 rounded text-[11px] font-bold";
+        banner.classList.add('hidden');
+        brandTag.textContent = "YUANTA BRANCH HEADQUARTERS";
+        loungeTag.innerHTML = `<i class="ph-fill ph-crown-simple text-xs"></i> 강남금융센터 VIP 라운지`;
+        title.textContent = "지점장 일일 VIP 고객 관리 & 영업 성과 대시보드";
+        btn.innerHTML = `<i class="ph-bold ph-shield-check"></i><span>교육용 익명화 사본으로 전환 (슬라이드 12~13 실습)</span>`;
+      }
+      initSandboxCharts();
+      renderSandboxVipTable();
+    }
+
+    function refreshYuantaSandbox() {
+      renderSandboxVipTable();
+      showGlobalToast("시연 화면을 다시 표시했습니다. 실시간 데이터 연결은 없습니다.");
+    }
+
+    function openSandboxClientModal(id) {
+      const c = sandboxVipData.find(x => x.id === id);
+      if (!c) return;
+      const body = document.getElementById('sandboxClientDetailBody');
+      const displayCode = isYuantaSanitized ? c.eduCode : c.rawCode;
+      const displayPb = isYuantaSanitized ? c.eduPb : c.rawPb;
+
+      body.innerHTML = `
+        <div class="bg-[#001a35] p-3 rounded-lg border border-[#1a467c] space-y-1.5">
+          <div class="flex justify-between"><span class="text-slate-400">고객명/코드:</span><strong class="text-white">${displayCode}</strong></div>
+          <div class="flex justify-between"><span class="text-slate-400">등급 / 담당 PB:</span><span class="text-[#cba86a] font-bold">${c.tier} | ${displayPb}</span></div>
+          <div class="flex justify-between"><span class="text-slate-400">총 평가 잔고:</span><span class="text-emerald-400 font-mono font-bold">${c.aumDisplay}</span></div>
+          <div class="flex justify-between"><span class="text-slate-400">최근 1M 변동:</span><span class="text-red-400 font-mono font-bold">${c.monthlyChange}%</span></div>
+          <div class="pt-1 border-t border-[#1a467c] text-slate-300">보유 상품 이슈: <strong>${c.productNote}</strong></div>
+        </div>
+      `;
+      document.getElementById('sandboxBranchMemoInput').value = '';
+      document.getElementById('sandboxClientDetailModal').classList.remove('hidden');
+    }
+
+    function closeSandboxClientModal() {
+      document.getElementById('sandboxClientDetailModal').classList.add('hidden');
+    }
+
+    function saveSandboxClientMemo() {
+      const memo = document.getElementById('sandboxBranchMemoInput').value.trim();
+      closeSandboxClientModal();
+      showGlobalToast(memo ? "시연입니다. 입력한 코멘트는 저장되지 않았습니다." : "확인 완료 처리되었습니다.");
+    }
+
+    // Copy Student Checklist to Clipboard
+    function copyChecklistToClipboard() {
+      const repo = document.getElementById('chkRepoUrl').value || '(미입력)';
+      const pages = document.getElementById('chkPagesUrl').value || '(미입력)';
+      const text = `[통계컨설팅의 이해 - GitHub 웹 배포 실습 검증표]\n• 저장소 주소: ${repo}\n• Pages 주소: ${pages}\n• 검증 결과: index.html 업로드, 차트/필터/모달 동작, 브라우저 메모리 저장 한계, 가상자료 안내 문구 및 재배포 확인 완료.`;
+      
+      const temp = document.createElement('textarea');
+      temp.value = text;
+      document.body.appendChild(temp);
+      temp.select();
+      document.execCommand('copy');
+      document.body.removeChild(temp);
+      showGlobalToast("검증표 내용이 클립보드에 복사되었습니다!");
+    }
+
+    // Initialize App on Load
+    window.onload = function() {
+      renderSidebarList();
+      goToSlide(0);
+    };
+  </script>
+</body>
+</html>
+
