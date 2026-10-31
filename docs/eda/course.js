@@ -33,8 +33,8 @@
     { week: 4, title: "분포·줄기와 잎·히스토그램의 통계 이론", activity: "분포·빈도·상대빈도·밀도와 면적·구간 선택을 설명하고 같은 자료의 그림으로 확인합니다.", slide: "slides/week-04.html", slideCount: 40, printFrom: 1, printTo: 40, notion: "https://app.notion.com/p/3fd96f1add76814ab4e0c6a9ceb60c29", sessionTitle: "분포를 이해하고<br>그림으로 설명하기", copy: "통계 이론과 직접 만든 설명 그림을 먼저 학습하고 Colab에서 확인합니다. 상세 실습은 별도 참고 슬라이드에서 이어갑니다.", agenda: ["분포·경험분포·자료의 종류","줄기와 잎·빈도·누적비율","밀도와 면적·구간 선택","이론을 AI와 Colab으로 확인"] },
     { week: 5, title: "중심위치와 저항성", activity: "평균·중앙값·최빈값·분위수·IQR의 원리를 이해하고 값 교체 실험으로 저항성을 확인합니다.", slide: "slides/week-05.html", slideCount: 21, printFrom: 1, printTo: 21, sessionTitle: "중심위치를 이해하고<br>저항성을 검증하기", copy: "대표값을 목적에 맞게 선택하고 손계산과 AI·Colab 실습으로 요약값의 변화와 근거를 확인합니다.", agenda: ["목적에 따른 대표값 선택", "저항성과 값 교체 실험", "분위수·IQR과 손계산", "프롬프트·Colab·자가 실습"] },
     { week: 6, title: "5수요약과 상자그림", activity: "5수요약·울타리·수염·이상점의 규칙을 확인하고 그룹별 분포를 비교합니다.", slide: "slides/week-06.html", slideCount: 21, printFrom: 1, printTo: 21, sessionTitle: "5수요약을 이해하고<br>상자그림으로 비교하기", copy: "상자그림의 계산 기준과 이상점의 의미를 손계산·AI·Colab으로 확인하고, 같은 축에서 그룹별 분포를 비교합니다.", agenda: ["5수요약과 상자그림의 구조", "울타리·수염·이상점의 규칙", "그룹별 분포 비교와 해석", "손계산·프롬프트·Colab 실습"] },
-    { week: 7, title: "재표현: 변환의 사다리", activity: "여러 변환을 적용하고 왜도의 변화를 비교합니다." },
-    { week: 8, title: "표준화와 Box–Cox", activity: "표준화·로버스트 표준화·Box–Cox 변환을 다룹니다." },
+    { week: 7, title: "재표현: 변환의 사다리", activity: "변환 전후 분포와 왜도를 비교하고 선택 근거를 검증합니다.", slide: "slides/week-07.html", slideCount: 23, printFrom: 1, printTo: 23, sessionTitle: "자료를 다른 척도로<br>표현하고 비교하기", copy: "제곱근·로그·제곱 변환을 손계산과 Colab으로 비교하고 선택 근거를 설명합니다.", agenda: ["재표현의 목적","변환의 사다리","손계산과 분포 비교","명세·검증·해석"] },
+    { week: 8, title: "표준화와 Box–Cox", activity: "표준화·로버스트 표준화·Box–Cox 변환을 다룹니다.", slide: "slides/week-08.html", slideCount: 27, printFrom: 1, printTo: 27, sessionTitle: "기준을 비교하고<br>변환을 검증하기", copy: "Z점수·최소–최대·MAD와 Box–Cox 변환을 비교하고 결과의 근거를 확인합니다.", agenda: ["세 가지 표준화","극단값과 기준 비교","Box–Cox와 λ 추정","명세·검증·해석"] },
     { week: 9, title: "확률분포와 Q–Q 플롯", activity: "정규분포와 확률플롯을 이용해 분포 적합성을 살펴봅니다." },
     { week: 10, title: "여러 분포와 플롯 진단", activity: "연속·이산분포의 꼬리와 비대칭을 진단합니다." },
     { week: 11, title: "이원 자료와 빈도표", activity: "주변합·비율·모자이크 플롯으로 범주형 관계를 탐색합니다." },
@@ -152,7 +152,7 @@
     notionLink.href = item.notion || notionCourse;
     notionLink.textContent = item.notion ? `${item.week}차수 원문 ↗` : "전체 Notion 강의노트 ↗";
     byId("current-card-help").innerHTML = item.slide
-      ? ([5, 6].includes(item.week) ? "방향키 이동 · M 전체 목차 · 전체 읽기 · 화면 전체보기<br>프롬프트·코드 복사 · 해설 팝업" : [3, 4].includes(item.week) ? "방향키 이동 · O 전체 목차<br>전체 읽기 · 코드 복사 · Colab 실습" : "방향키로 이동 · O 전체 목록<br>N 강사 노트 · 전체 화면 지원")
+      ? ([7, 8].includes(item.week) ? "방향키 이동 · 목차 · 전체 읽기 · 화면 전체보기<br>프롬프트·코드 복사" : [5, 6].includes(item.week) ? "방향키 이동 · M 전체 목차 · 전체 읽기 · 화면 전체보기<br>프롬프트·코드 복사 · 해설 팝업" : [3, 4].includes(item.week) ? "방향키 이동 · O 전체 목차<br>전체 읽기 · 코드 복사 · Colab 실습" : "방향키로 이동 · O 전체 목록<br>N 강사 노트 · 전체 화면 지원")
       : "해당 차수 슬라이드가 추가되면<br>이 버튼이 자동으로 활성화됩니다.";
 
     const headerLink = byId("header-slide-link");
