@@ -1,0 +1,1818 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>자료탐색방법론 8차수 강의노트 · 표준화와 Box–Cox 변환</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            kgu: {
+              blue: '#003876',
+              light: '#005bac',
+              dark: '#00224b',
+              accent: '#f39200',
+              soft: '#eaf2fa'
+            }
+          },
+          fontFamily: {
+            sans: ['Pretendard', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            mono: ['JetBrains Mono', 'Fira Code', 'Consolas', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- KaTeX for Math Expressions -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+
+  <!-- Google Fonts & Pretendard -->
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.05);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+    .dark ::-webkit-scrollbar-thumb {
+      background: #475569;
+    }
+
+    /* Print Optimization */
+    @media print {
+      body {
+        background: white !important;
+        color: black !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .slide-card {
+        display: block !important;
+        page-break-after: always;
+        break-after: page;
+        box-shadow: none !important;
+        border: 1px solid #e2e8f0 !important;
+        margin-bottom: 2rem !important;
+      }
+      .slide-mode-only {
+        display: none !important;
+      }
+      .document-mode-only {
+        display: block !important;
+      }
+    }
+
+    /* Slide transition & animations */
+    .fade-in {
+      animation: fadeIn 0.25s ease-out forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+<style>@media(max-width:640px){header h1,header .inline-flex{display:none!important} #fullscreen-toggle{font-size:0!important} #fullscreen-toggle::after{content:"⛶";font-size:16px} main,.slide-card{min-width:0;max-width:100%} .slide-card pre{max-width:100%;overflow-x:auto}} @media print { .slide-card.hidden {display:block!important} .slide-card{break-after:page;page-break-after:always} .no-print{display:none!important} }</style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col font-sans antialiased transition-colors duration-200">
+
+  <!-- Top Sticky Navigation Bar -->
+  <header class="no-print sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur border-b border-slate-200 dark:border-slate-800 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+      
+      <!-- Brand & Title -->
+      <div class="flex items-center gap-3">
+        <button id="sidebarToggleBtn" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 focus:outline-none" title="목차 열기/닫기">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <div class="flex items-center gap-2">
+          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-kgu-blue text-white shadow-sm">
+            KGU EDA 2026-2
+          </span>
+          <span class="text-xs font-medium text-slate-500 dark:text-slate-400 hidden sm:inline">8차수 강의노트</span>
+        </div>
+        <div class="h-4 w-px bg-slate-300 dark:bg-slate-700 hidden sm:block"></div>
+        <h1 class="text-sm md:text-base font-bold text-slate-900 dark:text-white truncate max-w-[200px] sm:max-w-md">
+          표준화와 Box–Cox 변환
+        </h1>
+      </div>
+
+      <!-- Controls: Slide Navigator & Mode Switchers -->
+      <div class="flex items-center gap-2">
+        <!-- View Mode Switcher -->
+        <div class="bg-slate-100 dark:bg-slate-800 p-1 rounded-lg flex items-center text-xs font-medium">
+          <button id="modeSlideBtn" class="px-2.5 py-1 rounded-md bg-white dark:bg-slate-700 text-kgu-blue dark:text-sky-400 shadow-xs font-semibold flex items-center gap-1">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/></svg>
+            <span class="hidden md:inline">슬라이드 모드</span>
+          </button>
+          <button id="modeDocBtn" class="px-2.5 py-1 rounded-md text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white flex items-center gap-1">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            <span class="hidden md:inline">전체 읽기</span>
+          </button>
+        </div>
+
+        <!-- Slide Stepper (Visible in Slide Mode) -->
+        <div id="slideControls" class="flex items-center gap-1.5">
+          <button id="prevSlideBtn" class="p-1.5 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed" title="이전 (←)">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+          </button>
+          <span class="text-xs font-mono font-medium text-slate-600 dark:text-slate-300 min-w-[50px] text-center">
+            <span id="currentSlideNum">1</span> / <span id="totalSlideNum">27</span>
+          </span>
+          <button id="nextSlideBtn" class="p-1.5 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed" title="다음 (→)">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+
+        <button id="fullscreen-toggle" type="button" aria-label="화면 전체보기" title="화면 전체보기" class="p-2 rounded-lg border text-xs">화면 전체보기</button>
+        <!-- Utility: Dark mode & Print -->
+        <button id="darkModeBtn" class="p-2 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800" title="다크/라이트 모드">
+          <svg id="moonIcon" class="w-4 h-4 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+          <svg id="sunIcon" class="w-4 h-4 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+        </button>
+        <button onclick="window.print()" class="p-2 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hidden sm:block" title="인쇄 및 PDF 저장">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Progress Indicator Bar -->
+    <div class="w-full bg-slate-200 dark:bg-slate-800 h-1">
+      <div id="progressBar" class="bg-kgu-blue dark:bg-sky-500 h-1 transition-all duration-300" style="width: 3.70%;"></div>
+    </div>
+  </header>
+
+  <div class="flex-1 flex max-w-7xl w-full mx-auto relative">
+    
+    <!-- Sidebar / Table of Contents -->
+    <aside id="sidebar" class="no-print fixed inset-y-0 left-0 z-50 w-72 sm:w-80 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 transform -translate-x-full transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:z-10 flex flex-col pt-16 lg:pt-0">
+      <div class="p-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+        <div>
+          <h2 class="text-xs font-semibold uppercase tracking-wider text-slate-400">강의 슬라이드 목차</h2>
+          <p class="text-sm font-bold text-slate-800 dark:text-slate-200">총 27개 슬라이드</p>
+        </div>
+        <button id="sidebarCloseBtn" class="lg:hidden p-1.5 rounded-md text-slate-400 hover:text-slate-700 dark:hover:text-slate-200">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <!-- Dynamic TOC List -->
+      <nav id="tocList" class="flex-1 overflow-y-auto p-2 space-y-1 text-xs sm:text-sm">
+        <!-- Rendered by buildTOC() -->
+      </nav>
+
+      <!-- Sidebar Footer Badge -->
+      <div class="p-3 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 text-xs text-slate-500">
+        <div class="flex items-center gap-2 mb-1">
+          <span class="w-2 h-2 rounded-full bg-kgu-accent"></span>
+          <span class="font-medium text-slate-700 dark:text-slate-300">실습 데이터 A, B 및 가상 소득</span>
+        </div>
+        <p class="text-[11px] text-slate-400">표본편차 ddof=1 · 원 MAD · Box–Cox</p>
+      </div>
+    </aside>
+
+    <!-- Overlay for mobile sidebar -->
+    <div id="sidebarOverlay" class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-40 hidden lg:hidden"></div>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 min-w-0 p-4 sm:p-6 lg:p-8 flex flex-col justify-between">
+      
+      <!-- Slide Wrapper -->
+      <div id="slideContentContainer" class="w-full max-w-5xl mx-auto">
+
+        <!-- SLIDE 01 -->
+        <article class="slide-card bg-gradient-to-br from-[#001b3d] via-[#002855] to-[#00132b] text-white rounded-2xl border border-blue-900/60 p-6 sm:p-10 shadow-xl mb-8 relative overflow-hidden" data-slide="1">
+          <!-- Subtle background glow -->
+          <div class="absolute -right-20 -top-20 w-80 h-80 rounded-full bg-blue-500/10 blur-3xl pointer-events-none"></div>
+          <div class="absolute -left-20 -bottom-20 w-80 h-80 rounded-full bg-sky-500/10 blur-3xl pointer-events-none"></div>
+
+          <div class="flex items-center justify-between border-b border-blue-800/60 pb-4 mb-6 relative z-10">
+            <span class="text-xs font-mono font-bold tracking-widest uppercase text-amber-400">SLIDE 01 · 표지</span>
+            <span class="text-xs text-blue-200/80 font-medium">자료탐색방법론 2026-2 · 8차수</span>
+          </div>
+
+          <div class="text-center py-6 sm:py-10 relative z-10">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-semibold bg-sky-500/20 text-sky-200 border border-sky-400/30 mb-4 shadow-sm backdrop-blur-sm">
+              ✨ 8차수 핵심 질문
+            </div>
+            <h2 class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight leading-snug max-w-3xl mx-auto drop-shadow-sm">
+              서로 다른 척도의 값을 어떻게 비교하고, 분포를 어떤 근거로 재표현할 것인가?
+            </h2>
+            <p class="mt-4 text-base sm:text-lg text-blue-100 font-medium max-w-2xl mx-auto leading-relaxed">
+              자료의 재표현 ②: 표준화와 Box–Cox 변환 <br class="hidden sm:inline"><span class="text-sky-300 text-sm sm:text-base">(Z점수 · 최소–최대 · 중앙값과 원 MAD · Box–Cox)</span>
+            </p>
+          </div>
+
+          <!-- Conceptual Visual: Scaling vs Transformation -->
+          <div class="my-6 bg-[#001633]/85 rounded-xl p-5 border border-blue-800/60 shadow-inner relative z-10">
+            <h4 class="text-xs font-bold text-sky-300 uppercase tracking-wider mb-3">개념 시각화: 상대적 위치 표현(선형) vs 분포 형태 변경(비선형)</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="p-3.5 bg-[#002248]/90 rounded-lg border border-blue-700/60 text-xs">
+                <div class="flex justify-between font-bold text-sky-300 mb-2">
+                  <span>① 선형 표준화 (Standardization)</span>
+                  <span class="font-mono text-sky-200">y = (x - c) / s</span>
+                </div>
+                <p class="text-blue-100/90 mb-2.5">형태와 비대칭도는 보존한 채, 기준점과 눈금 배율만 일치시킴.</p>
+                <div class="h-6 bg-[#00142b] rounded relative flex items-center px-2 border border-blue-900/80">
+                  <div class="w-2.5 h-2.5 rounded-full bg-sky-400 absolute left-[15%]"></div>
+                  <div class="w-2.5 h-2.5 rounded-full bg-sky-400 absolute left-[30%]"></div>
+                  <div class="w-2.5 h-2.5 rounded-full bg-sky-400 absolute left-[50%]"></div>
+                  <div class="w-2.5 h-2.5 rounded-full bg-rose-400 absolute left-[88%]"></div>
+                </div>
+                <span class="text-[10px] text-blue-300/80 block mt-1.5 text-center">오른쪽 비대칭 꼬리 형태 불변</span>
+              </div>
+
+              <div class="p-3.5 bg-[#002248]/90 rounded-lg border border-blue-700/60 text-xs">
+                <div class="flex justify-between font-bold text-emerald-300 mb-2">
+                  <span>② 비선형 변환 (Box–Cox, $\lambda$)</span>
+                  <span class="font-mono text-emerald-200">T_λ(x) = (x^λ - 1)/λ</span>
+                </div>
+                <p class="text-blue-100/90 mb-2.5">데이터에 내재된 최적의 파라미터 $\lambda$를 추정하여 꼬리를 대칭화.</p>
+                <div class="h-6 bg-[#00142b] rounded relative flex items-center px-2 border border-blue-900/80">
+                  <div class="w-2.5 h-2.5 rounded-full bg-emerald-400 absolute left-[20%]"></div>
+                  <div class="w-2.5 h-2.5 rounded-full bg-emerald-400 absolute left-[38%]"></div>
+                  <div class="w-2.5 h-2.5 rounded-full bg-emerald-400 absolute left-[58%]"></div>
+                  <div class="w-2.5 h-2.5 rounded-full bg-emerald-300 absolute left-[80%]"></div>
+                </div>
+                <span class="text-[10px] text-emerald-300/80 block mt-1.5 text-center">큰 값 간격 압축을 통한 대칭화 달성</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-amber-950/50 border-l-4 border-amber-400 p-4 rounded-r-xl text-sm text-amber-100 leading-relaxed border border-amber-900/50 relative z-10">
+            <strong class="text-amber-300">💡 강사 핵심 메시지:</strong> 자료의 상대적 위치를 표현하는 표준화(스케일링)와 분포의 비대칭 형태를 교정하는 비선형 변환(Box–Cox)은 전혀 다른 목적의 통계적 도구입니다. 두 행위의 수학적 본질을 구별하는 것이 본 차수의 출발점입니다.
+          </div>
+        </article>
+
+        <!-- SLIDE 02 -->
+        <article class="slide-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-sm mb-8" data-slide="2">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+            <span class="text-xs font-mono font-bold tracking-widest uppercase text-kgu-blue dark:text-sky-400">SLIDE 02 · 기존 차수 연결 & 학습 목표</span>
+            <span class="text-xs text-slate-400">학습의 연속성</span>
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-4">
+            5~7차수의 지식 기반에서 8차수로 확장하기
+          </h3>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-6">
+            <!-- Previous lectures recap -->
+            <div class="bg-slate-50 dark:bg-slate-800/40 rounded-xl p-5 border border-slate-200 dark:border-slate-700">
+              <h4 class="text-sm font-bold text-slate-700 dark:text-slate-200 flex items-center gap-2 mb-3">
+                <span class="w-2.5 h-2.5 rounded-full bg-slate-400"></span> 누적된 이전 학습 개념
+              </h4>
+              <ul class="space-y-2.5 text-xs sm:text-sm text-slate-600 dark:text-slate-400">
+                <li class="flex items-start gap-2">
+                  <strong class="text-slate-800 dark:text-slate-200 min-w-[54px]">5차수:</strong>
+                  <span>중심위치, 이상치와 중앙값의 통계적 저항성(Resistance)</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <strong class="text-slate-800 dark:text-slate-200 min-w-[54px]">6차수:</strong>
+                  <span>5수요약, 상자그림 및 사분위수 범위(IQR) 산포 척도</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <strong class="text-slate-800 dark:text-slate-200 min-w-[54px]">7차수:</strong>
+                  <span>변환의 사다리($p = 2, 1, 0.5, 0$), 양의 선형변환과 비선형 압축 비교</span>
+                </li>
+              </ul>
+            </div>
+
+            <!-- 8th Lecture Goals -->
+            <div class="bg-blue-50/70 dark:bg-blue-950/30 rounded-xl p-5 border border-blue-200 dark:border-blue-900/60">
+              <h4 class="text-sm font-bold text-kgu-blue dark:text-sky-300 flex items-center gap-2 mb-3">
+                <span class="w-2.5 h-2.5 rounded-full bg-kgu-blue dark:bg-sky-400"></span> 8차수 오늘의 핵심 학습 목표
+              </h4>
+              <ol class="space-y-2 text-xs sm:text-sm text-slate-700 dark:text-slate-300 list-decimal list-inside">
+                <li>세 가지 표준화(Z, 최소–최대, 중앙값과 원 MAD) 계산 및 해석</li>
+                <li>극단값(이상치)이 각 표준화 기준에 미치는 민감도 비교</li>
+                <li>양의 선형변환이 왜도 및 분포 형태를 바꾸지 못함을 확인</li>
+                <li>Box–Cox 변환식, 적용 조건($x > 0$), $\lambda$의 수학적 역할 이해</li>
+                <li>최대우도 추정(MLE) 기반 $\lambda$ 도출과 고정 그리드 교차 검증</li>
+                <li>경계 사례(상수 자료, 분모 0, MAD=0)에 대한 방어적 예외 처리</li>
+              </ol>
+            </div>
+          </div>
+
+          <div class="p-4 bg-sky-50 dark:bg-sky-950/40 rounded-xl border border-sky-200 dark:border-sky-800 text-sm">
+            <span class="font-bold text-sky-900 dark:text-sky-300">💬 탐구 발문:</span>
+            <span class="text-sky-800 dark:text-sky-200 ml-1">“같은 관측값 '8'이 기준 집단 A$[2,4,6,8,10]$과 극단값이 포함된 집단 B$[2,4,6,8,30]$에서 서로 어떻게 다른 위치로 평가될까요?”</span>
+          </div>
+        </article>
+
+        <!-- SLIDE 03 -->
+        <article class="slide-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-sm mb-8" data-slide="3">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+            <span class="text-xs font-mono font-bold tracking-widest uppercase text-kgu-blue dark:text-sky-400">SLIDE 03 · 로드맵</span>
+            <span class="text-xs text-slate-400">학습 흐름 파이프라인</span>
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">
+            8차수 전체 학습 로드맵 및 인간-AI 협업
+          </h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-6">
+            수식을 기계적으로 적용하기 전에 기준 집단의 정의와 극단치의 영향을 손으로 먼저 추적합니다.
+          </p>
+
+          <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2 text-center my-6">
+            <div class="p-3 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+              <span class="text-[10px] font-bold text-slate-400 block">STEP 1</span>
+              <span class="text-xs font-bold text-slate-800 dark:text-slate-200 mt-1 block">상대적 위치</span>
+              <span class="text-[11px] text-slate-500 mt-0.5 block">단위와 척도 문제</span>
+            </div>
+            <div class="p-3 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+              <span class="text-[10px] font-bold text-slate-400 block">STEP 2</span>
+              <span class="text-xs font-bold text-slate-800 dark:text-slate-200 mt-1 block">세 가지 기준</span>
+              <span class="text-[11px] text-slate-500 mt-0.5 block">Z / MinMax / MAD</span>
+            </div>
+            <div class="p-3 rounded-lg bg-blue-50 dark:bg-blue-950/50 border border-blue-200 dark:border-blue-800">
+              <span class="text-[10px] font-bold text-blue-500 block">STEP 3</span>
+              <span class="text-xs font-bold text-blue-900 dark:text-blue-200 mt-1 block">손계산 실험</span>
+              <span class="text-[11px] text-blue-700 dark:text-blue-300 mt-0.5 block">자료 A, B 대조</span>
+            </div>
+            <div class="p-3 rounded-lg bg-amber-50 dark:bg-amber-950/50 border border-amber-200 dark:border-amber-800">
+              <span class="text-[10px] font-bold text-amber-500 block">STEP 4</span>
+              <span class="text-xs font-bold text-amber-900 dark:text-amber-200 mt-1 block">형태 보존성</span>
+              <span class="text-[11px] text-amber-700 dark:text-amber-300 mt-0.5 block">선형변환의 한계</span>
+            </div>
+            <div class="p-3 rounded-lg bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800">
+              <span class="text-[10px] font-bold text-emerald-500 block">STEP 5</span>
+              <span class="text-xs font-bold text-emerald-900 dark:text-emerald-200 mt-1 block">Box–Cox와 λ</span>
+              <span class="text-[11px] text-emerald-700 dark:text-emerald-300 mt-0.5 block">우도 추정 & 그리드</span>
+            </div>
+            <div class="p-3 rounded-lg bg-purple-50 dark:bg-purple-950/50 border border-purple-200 dark:border-purple-800">
+              <span class="text-[10px] font-bold text-purple-500 block">STEP 6</span>
+              <span class="text-xs font-bold text-purple-900 dark:text-purple-200 mt-1 block">AI 실습·검증</span>
+              <span class="text-[11px] text-purple-700 dark:text-purple-300 mt-0.5 block">Colab & 3종 검증</span>
+            </div>
+            <div class="p-3 rounded-lg bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800">
+              <span class="text-[10px] font-bold text-rose-500 block">STEP 7</span>
+              <span class="text-xs font-bold text-rose-900 dark:text-rose-200 mt-1 block">오류 교정</span>
+              <span class="text-[11px] text-rose-700 dark:text-rose-300 mt-0.5 block">정규성 오해 방지</span>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+            <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm">
+              <span class="font-bold text-kgu-blue dark:text-sky-400 block mb-1">👤 학생의 주도적 역할:</span>
+              기준 집단 선택의 타당성 판단, 극단치 존재 시 스케일러 선택(로버스트 vs Z), 손계산 사전 예측, $\lambda$ 추정 결과의 통계적 해석과 비판.
+            </div>
+            <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm">
+              <span class="font-bold text-emerald-600 dark:text-emerald-400 block mb-1">🤖 AI의 보조적 역할:</span>
+              엄밀한 명세(ddof=1, 원 MAD, x>0)에 따른 NumPy/SciPy 코드 작성, 프로파일 로그우도 함수 계산, 서브플롯 시각화 및 그리드 교차검증 연산.
+            </div>
+          </div>
+        </article>
+
+        <!-- SLIDE 04 -->
+        <article class="slide-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-sm mb-8" data-slide="4">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+            <span class="text-xs font-mono font-bold tracking-widest uppercase text-kgu-blue dark:text-sky-400">SLIDE 04 · 문제 제기</span>
+            <span class="text-xs text-slate-400">숫자와 상대적 위치</span>
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">
+            문제 제기: 관측 숫자가 같으면 그 위치도 같은가?
+          </h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-6">
+            두 가상 자료 집단 A와 B를 살펴봅시다. 관측값 '8'은 동일하게 존재하지만 주변 집단이 다릅니다.
+          </p>
+
+          <div class="bg-slate-50 dark:bg-slate-800/60 rounded-xl p-6 border border-slate-200 dark:border-slate-700 my-4">
+            <div class="space-y-6">
+              <div>
+                <div class="flex justify-between items-center text-xs font-bold text-slate-700 dark:text-slate-300 mb-2">
+                  <span>자료 집단 A: [2, 4, 6, 8, 10] (균등한 대칭 표본)</span>
+                  <span class="font-mono text-kgu-blue dark:text-sky-300">평균 = 6.0</span>
+                </div>
+                <div class="h-10 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700 relative flex items-center px-4">
+                  <div class="w-full h-0.5 bg-slate-200 dark:bg-slate-700"></div>
+                  <!-- Points: 2, 4, 6, 8, 10 on scale 0 to 32 -->
+                  <div class="absolute left-[6.25%] -top-1 flex flex-col items-center"><span class="w-3 h-3 rounded-full bg-blue-500"></span><span class="text-[10px] font-mono mt-1">2</span></div>
+                  <div class="absolute left-[12.5%] -top-1 flex flex-col items-center"><span class="w-3 h-3 rounded-full bg-blue-500"></span><span class="text-[10px] font-mono mt-1">4</span></div>
+                  <div class="absolute left-[18.75%] -top-1 flex flex-col items-center"><span class="w-3 h-3 rounded-full bg-blue-500"></span><span class="text-[10px] font-mono mt-1">6</span></div>
+                  <div class="absolute left-[25%] -top-1 flex flex-col items-center ring-4 ring-amber-300 dark:ring-amber-900/60 rounded-full"><span class="w-3.5 h-3.5 rounded-full bg-amber-500"></span><span class="text-[10px] font-mono font-bold text-amber-600 mt-1">8</span></div>
+                  <div class="absolute left-[31.25%] -top-1 flex flex-col items-center"><span class="w-3 h-3 rounded-full bg-blue-500"></span><span class="text-[10px] font-mono mt-1">10</span></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between items-center text-xs font-bold text-slate-700 dark:text-slate-300 mb-2">
+                  <span>자료 집단 B: [2, 4, 6, 8, 30] (10이 30으로 바뀐 극단치 표본)</span>
+                  <span class="font-mono text-rose-600 dark:text-rose-400">평균 = 10.0</span>
+                </div>
+                <div class="h-10 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700 relative flex items-center px-4">
+                  <div class="w-full h-0.5 bg-slate-200 dark:bg-slate-700"></div>
+                  <div class="absolute left-[6.25%] -top-1 flex flex-col items-center"><span class="w-3 h-3 rounded-full bg-blue-500"></span><span class="text-[10px] font-mono mt-1">2</span></div>
+                  <div class="absolute left-[12.5%] -top-1 flex flex-col items-center"><span class="w-3 h-3 rounded-full bg-blue-500"></span><span class="text-[10px] font-mono mt-1">4</span></div>
+                  <div class="absolute left-[18.75%] -top-1 flex flex-col items-center"><span class="w-3 h-3 rounded-full bg-blue-500"></span><span class="text-[10px] font-mono mt-1">6</span></div>
+                  <div class="absolute left-[25%] -top-1 flex flex-col items-center ring-4 ring-amber-300 dark:ring-amber-900/60 rounded-full"><span class="w-3.5 h-3.5 rounded-full bg-amber-500"></span><span class="text-[10px] font-mono font-bold text-amber-600 mt-1">8</span></div>
+                  <div class="absolute left-[93.75%] -top-1 flex flex-col items-center"><span class="w-3.5 h-3.5 rounded-full bg-rose-600"></span><span class="text-[10px] font-mono font-bold text-rose-600 mt-1">30</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs sm:text-sm text-slate-700 dark:text-slate-300 space-y-2">
+            <p>• <strong>집단 A에서 8:</strong> 평균(6.0)보다 분명히 위에 위치한 우수한 값 ($8 > 6$).</p>
+            <p>• <strong>집단 B에서 8:</strong> 30이라는 단 하나의 극단값으로 인해 평균이 10.0으로 폭증하면서, 8은 <strong>평균 이하($8 < 10$)</strong>의 값으로 전락합니다!</p>
+            <p class="text-rose-600 dark:text-rose-400 font-medium">⚠️ 관측된 숫자 '8' 자체는 변하지 않았지만, 기준이 달라지면 위치와 해석이 완전히 뒤집힙니다.</p>
+          </div>
+        </article>
+
+        <!-- SLIDE 05 -->
+        <article class="slide-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-sm mb-8" data-slide="5">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+            <span class="text-xs font-mono font-bold tracking-widest uppercase text-kgu-blue dark:text-sky-400">SLIDE 05 · Z점수의 원리와 식</span>
+            <span class="text-xs text-slate-400">평균과 표준편차 기준</span>
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">
+            Z점수의 원리와 수학적 정의
+          </h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-6">
+            관측값이 평균으로부터 표준편차의 몇 배만큼 떨어져 있는지를 나타내는 고전적 표준화 점수입니다.
+          </p>
+
+          <div class="bg-blue-50/50 dark:bg-blue-950/30 rounded-xl p-6 border border-blue-200 dark:border-blue-900 text-center my-4">
+            <div class="text-xl sm:text-2xl font-mono font-bold text-kgu-blue dark:text-sky-300">
+              $$z = \frac{x - \bar{x}}{s}$$
+            </div>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">
+              ($\bar{x}$: 표본평균, $s$: 표본표준편차 `ddof=1`)
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm">
+            <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+              <h4 class="font-bold text-slate-800 dark:text-slate-200 mb-1.5">부호와 절댓값의 해석</h4>
+              <ul class="space-y-1 text-slate-600 dark:text-slate-400">
+                <li>• <strong>부호($+$ / $-$):</strong> 관측값이 평균보다 위($z > 0$)인지 아래($z < 0$)인지 표시</li>
+                <li>• <strong>절댓값($|z|$):</strong> 평균으로부터 떨어진 '표준편차 단위의 거리'</li>
+                <li>• 동일 표본 내부에서 산출 시: $\text{mean}(z) = 0$, $\text{std}(z, \text{ddof}=1) = 1$ 보장</li>
+              </ul>
+            </div>
+
+            <div class="p-4 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900">
+              <h4 class="font-bold text-rose-800 dark:text-rose-300 mb-1.5">⚠️ 오개념 방지 경고</h4>
+              <ul class="space-y-1 text-rose-700 dark:text-rose-300">
+                <li>• Z점수 자체는 백분위수나 확률이 아닙니다. (정규분포 가정 없이는 면적으로 변환 불가)</li>
+                <li>• 모든 관측값이 같아 분모 $s = 0$이 되면 정의되지 않으며(ZeroDivision), 임의로 계산할 수 없습니다.</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <!-- SLIDE 06 -->
+        <article class="slide-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-sm mb-8" data-slide="6">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+            <span class="text-xs font-mono font-bold tracking-widest uppercase text-kgu-blue dark:text-sky-400">SLIDE 06 · 표본표준편차와 기준 집단</span>
+            <span class="text-xs text-slate-400">ddof=1의 의미</span>
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">
+            표본표준편차($s$, ddof=1)와 기준 집단의 문제
+          </h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">
+            통계학에서 표본의 분산을 계산할 때는 자유도 보정($n-1$, `ddof=1`)을 사용하는 것이 불편추정량(Unbiased Estimator) 원칙입니다.
+          </p>
+
+          <div class="bg-slate-900 text-slate-100 rounded-xl p-4 font-mono text-xs sm:text-sm my-4">
+            $$s = \sqrt{\frac{1}{n-1}\sum_{i=1}^n (x_i - \bar{x})^2} \quad (\text{pandas 기본: ddof=1, NumPy 기본: ddof=0})$$
+          </div>
+
+          <div class="p-4 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 text-xs sm:text-sm text-amber-900 dark:text-amber-200 space-y-2">
+            <h4 class="font-bold flex items-center gap-1.5">
+              <span>⚠️ 집단별 표준화가 초래하는 치명적 착시</span>
+            </h4>
+            <p>
+              집단 1(평균 100점)과 집단 2(평균 50점)를 각자의 평균과 표준편차로 독립 표준화하면, 두 집단 모두 변환 후 평균이 0이 됩니다.
+            </p>
+            <p class="font-bold">
+              확인 질문: "두 집단 모두 Z점수 평균이 0이 되었으니, 원래 두 집단의 실력 수준도 같았던 것일까요?"
+            </p>
+            <p class="text-rose-700 dark:text-rose-300">
+              절대 아닙니다! 집단별 표준화는 두 집단 간의 '원래 평균 수준 차이'를 통째로 지워버립니다. 따라서 집단 간 비교 시 공통 기준을 쓸 것인지 집단별 기준을 쓸 것인지 명확히 보고해야 합니다.
+            </p>
+          </div>
+        </article>
+
+        <!-- SLIDE 07 -->
+        <article class="slide-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-sm mb-8" data-slide="7">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+            <span class="text-xs font-mono font-bold tracking-widest uppercase text-kgu-blue dark:text-sky-400">SLIDE 07 · 최소–최대 변환</span>
+            <span class="text-xs text-slate-400">Min–Max Scaling</span>
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">
+            최소–최대 변환: 기준 범위 $[0, 1]$로 표현하기
+          </h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-6">
+            자료의 관측 범위를 기준으로 최솟값을 0, 최댓값을 1로 맞추는 스케일링 기법입니다.
+          </p>
+
+          <div class="bg-slate-50 dark:bg-slate-800/60 rounded-xl p-5 border border-slate-200 dark:border-slate-700 text-center my-4">
+            <div class="text-xl sm:text-2xl font-mono font-bold text-emerald-600 dark:text-emerald-400">
+              $$u = \frac{x - x_{\min}}{x_{\max} - x_{\min}}$$
+            </div>
+            <p class="text-xs text-slate-500 mt-2">최솟값은 0, 최댓값은 1로 선형 변환됨</p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm">
+            <div class="p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+              <h4 class="font-bold text-slate-800 dark:text-slate-200 mb-1">장점과 해석</h4>
+              <p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                변환 결과가 고정된 구간 $[0, 1]$에 들어가 직관적이며, 머신러닝의 거리 기반 알고리즘(KNN, 인공신경망)에서 특성 간 배율을 맞추는 데 빈번히 사용됩니다.
+              </p>
+            </div>
+            <div class="p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+              <h4 class="font-bold text-rose-600 dark:text-rose-400 mb-1">한계와 취약점</h4>
+              <p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                최댓값이나 최솟값 하나가 이상치이면 전체 데이터가 한쪽 구석으로 찌그러집니다. 또한 분모(범위)가 0인 상수 자료에서는 나눗셈이 불가능합니다.
+              </p>
+            </div>
+          </div>
+        </article>
+
+        <!-- SLIDE 08 -->
+        <article class="slide-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-sm mb-8" data-slide="8">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+            <span class="text-xs font-mono font-bold tracking-widest uppercase text-kgu-blue dark:text-sky-400">SLIDE 08 · 로버스트 표준화</span>
+            <span class="text-xs text-slate-400">중앙값과 원 MAD</span>
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">
+            로버스트 표준화: 중앙값과 원 MAD (Raw MAD)
+          </h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">
+            이상치에 취약한 평균과 표준편차 대신, 저항성이 강한 중앙값($m$)과 중위수 절대편차(MAD)를 분모와 중심으로 사용합니다.
+          </p>
+
+          <div class="bg-indigo-50/50 dark:bg-indigo-950/30 rounded-xl p-5 border border-indigo-200 dark:border-indigo-900 text-center my-4 font-mono text-xs sm:text-sm">
+            <div class="text-base sm:text-lg font-bold text-indigo-900 dark:text-indigo-300">
+              $$m = \text{median}(x), \quad \text{MAD} = \text{median}(|x - m|)$$
+              $$r = \frac{x - m}{\text{MAD}}$$
+            </div>
+            <p class="text-xs text-slate-500 mt-2 font-sans font-normal">
+              * 본 강의에서는 정규분포 상수 보정($1.4826$)을 곱하지 않는 <strong>순수 원 MAD(Raw MAD)</strong>를 엄밀히 적용합니다.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm text-slate-700 dark:text-slate-300 space-y-2">
+            <span class="font-bold text-slate-900 dark:text-white block">💡 로버스트 점수($r$)의 특성과 주의점</span>
+            <p>• 중앙값과 MAD는 극단값에 대해 최대 50%의 붕괴점(Breakdown point)을 가져 극단치에 흔들리지 않습니다.</p>
+            <p>• $r$은 일반 Z점수와 단위 척도가 다릅니다. ($r=1$은 1 표준편차가 아니라 1 MAD 거리입니다.)</p>
+            <p class="text-rose-600 dark:text-rose-400">• 만약 절반 이상의 관측값이 동일하여 $\text{MAD} = 0$이 발생하면, 임의의 작은 수($10^{-5}$)를 억지로 대입해 왜곡하지 말고 계산 불가로 기록해야 합니다.</p>
+          </div>
+        </article>
+
+        <!-- SLIDE 09 -->
+        <article class="slide-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-sm mb-8" data-slide="9">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+            <span class="text-xs font-mono font-bold tracking-widest uppercase text-kgu-blue dark:text-sky-400">SLIDE 09 · 세 가지 표준화 비교</span>
+            <span class="text-xs text-slate-400">스케일러 종합 매트릭스</span>
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">
+            세 가지 표준화 방식의 종합 비교 매트릭스
+          </h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">
+            모든 상황에 항상 최적인 만능 표준화 방법은 없습니다. 목적과 자료의 이상치 분포에 맞춰 합리적으로 선택합니다.
+          </p>
+
+          <div class="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700 my-4">
+            <table class="w-full text-left text-xs sm:text-sm border-collapse">
+              <thead class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold">
+                <tr>
+                  <th class="p-3">표준화 방식</th>
+                  <th class="p-3">중심(Center)</th>
+                  <th class="p-3">척도(Scale, 분모)</th>
+                  <th class="p-3">변환 후 결과 범위</th>
+                  <th class="p-3">이상치(극단값) 민감도</th>
+                  <th class="p-3">분모 = 0 조건</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100 dark:divide-slate-800 font-mono">
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40">
+                  <td class="p-3 font-sans font-bold text-kgu-blue dark:text-sky-400">Z점수</td>
+                  <td class="p-3 font-sans">평균 ($\bar{x}$)</td>
+                  <td class="p-3 font-sans">표본표준편차 ($s$, ddof=1)</td>
+                  <td class="p-3">$(-\infty, +\infty)$, 평균=0, s=1</td>
+                  <td class="p-3 text-rose-600 font-sans font-bold">매우 민감 (평균·s 왜곡)</td>
+                  <td class="p-3 text-slate-500 font-sans">모든 값이 같을 때 ($s=0$)</td>
+                </tr>
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 bg-emerald-50/20 dark:bg-emerald-950/20">
+                  <td class="p-3 font-sans font-bold text-emerald-600 dark:text-emerald-400">최소–최대</td>
+                  <td class="p-3 font-sans">최솟값 ($x_{\min}$)</td>
+                  <td class="p-3 font-sans">범위 ($x_{\max} - x_{\min}$)</td>
+                  <td class="p-3">기준 표본: $[0, 1]$</td>
+                  <td class="p-3 text-rose-600 font-sans font-bold">극단적으로 취약 (압축 왜곡)</td>
+                  <td class="p-3 text-slate-500 font-sans">최대 = 최소 ($Range=0$)</td>
+                </tr>
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 bg-indigo-50/20 dark:bg-indigo-950/20">
+                  <td class="p-3 font-sans font-bold text-indigo-600 dark:text-indigo-400">로버스트</td>
+                  <td class="p-3 font-sans">중앙값 ($m$)</td>
+                  <td class="p-3 font-sans">원 MAD ($\text{median}(|x-m|)$)</td>
+                  <td class="p-3">$(-\infty, +\infty)$, 중앙값=0</td>
+                  <td class="p-3 text-emerald-600 font-sans font-bold">매우 저항적 (강인함)</td>
+                  <td class="p-3 text-slate-500 font-sans">절반 이상 동일값 ($\text{MAD}=0$)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <!-- SLIDE 10 -->
+        <article class="slide-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-sm mb-8" data-slide="10">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+            <span class="text-xs font-mono font-bold tracking-widest uppercase text-kgu-blue dark:text-sky-400">SLIDE 10 · 그림 8-1</span>
+            <span class="text-xs text-slate-400">공통값 8의 위치 대조</span>
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">
+            그림 8-1: 같은 값 '8'의 서로 다른 위치 (자료 A vs B)
+          </h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">
+            자료 집단 A$[2,4,6,8,10]$와 집단 B$[2,4,6,8,30]$에서 계산된 값 8의 세 가지 표준화 점수 결과입니다.
+          </p>
+
+          <!-- SVG Visual 8-1 -->
+          <div class="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-5 border border-slate-200 dark:border-slate-700 my-2">
+            <div class="overflow-x-auto">
+              <svg viewBox="0 0 650 170" class="w-full min-w-[550px] h-44 select-none">
+                <!-- Group A Container -->
+                <rect x="20" y="15" width="290" height="140" fill="white" class="dark:fill-slate-900" stroke="#cbd5e1" rx="8" />
+                <text x="35" y="35" class="text-xs font-bold fill-slate-800 dark:fill-slate-200 font-sans">집단 A: [2, 4, 6, 8, 10]</text>
+                <text x="35" y="50" class="text-[10px] fill-slate-500 font-mono">Mean=6.0, s=√10≈3.16, Med=6, MAD=2</text>
+                
+                <g class="font-mono text-xs">
+                  <!-- Z -->
+                  <text x="35" y="80" class="fill-slate-600 dark:fill-slate-400">Z점수:</text>
+                  <rect x="110" y="70" width="85" height="14" fill="#3b82f6" rx="3"/>
+                  <text x="205" y="81" class="fill-blue-600 dark:fill-sky-400 font-bold">+0.632</text>
+                  
+                  <!-- Min-Max -->
+                  <text x="35" y="105" class="fill-slate-600 dark:fill-slate-400">최소–최대:</text>
+                  <rect x="110" y="95" width="105" height="14" fill="#10b981" rx="3"/>
+                  <text x="225" y="106" class="fill-emerald-600 dark:fill-emerald-400 font-bold">0.750</text>
+
+                  <!-- Robust -->
+                  <text x="35" y="130" class="fill-slate-600 dark:fill-slate-400">로버스트:</text>
+                  <rect x="110" y="120" width="135" height="14" fill="#6366f1" rx="3"/>
+                  <text x="255" y="131" class="fill-indigo-600 dark:fill-indigo-400 font-bold">1.000</text>
+                </g>
+
+                <!-- Group B Container -->
+                <rect x="340" y="15" width="290" height="140" fill="white" class="dark:fill-slate-900" stroke="#cbd5e1" rx="8" />
+                <text x="355" y="35" class="text-xs font-bold fill-slate-800 dark:fill-slate-200 font-sans">집단 B: [2, 4, 6, 8, 30] (10→30 변경)</text>
+                <text x="355" y="50" class="text-[10px] fill-slate-500 font-mono">Mean=10.0, s=√130≈11.40, Med=6, MAD=2</text>
+
+                <g class="font-mono text-xs">
+                  <!-- Z -->
+                  <text x="355" y="80" class="fill-slate-600 dark:fill-slate-400">Z점수:</text>
+                  <rect x="430" y="70" width="25" height="14" fill="#ef4444" rx="3"/>
+                  <text x="465" y="81" class="fill-rose-600 dark:fill-rose-400 font-bold">-0.175 (음수 전환!)</text>
+
+                  <!-- Min-Max -->
+                  <text x="355" y="105" class="fill-slate-600 dark:fill-slate-400">최소–최대:</text>
+                  <rect x="430" y="95" width="30" height="14" fill="#10b981" rx="3"/>
+                  <text x="470" y="106" class="fill-emerald-600 dark:fill-emerald-400 font-bold">0.214 (축소!)</text>
+
+                  <!-- Robust -->
+                  <text x="355" y="130" class="fill-slate-600 dark:fill-slate-400">로버스트:</text>
+                  <rect x="430" y="120" width="135" height="14" fill="#6366f1" rx="3"/>
+                  <text x="575" y="131" class="fill-indigo-600 dark:fill-indigo-400 font-bold">1.000 (불변!)</text>
+                </g>
+              </svg>
+            </div>
+          </div>
+
+          <div class="mt-3 p-3.5 bg-slate-100 dark:bg-slate-800 rounded-xl text-xs text-slate-700 dark:text-slate-300">
+            <strong>핵심 통찰:</strong> 10이 30으로 바뀐 단 하나의 관측치 때문에 Z점수는 $+0.632$에서 $-0.175$로 부호 자체가 바뀌고, 최소–최대는 $0.75$에서 $0.214$로 쪼그라듭니다. 반면, <strong>로버스트 점수는 정확히 1.000을 그대로 유지</strong>하여 이상치에 대한 저항성을 완벽히 입증합니다.
+          </div>
+        </article>
+
+        <!-- SLIDE 11 -->
+        <article class="slide-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-sm mb-8" data-slide="11">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+            <span class="text-xs font-mono font-bold tracking-widest uppercase text-kgu-blue dark:text-sky-400">SLIDE 11 · 손계산 ①</span>
+            <span class="text-xs text-slate-400">자료 A의 세 기준</span>
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">
+            손계산 ①: 자료 A $[2, 4, 6, 8, 10]$의 통계량과 8의 점수
+          </h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">
+            직접 손으로 계산해 빈칸에 값을 입력한 후 채점해 보세요.
+          </p>
+
+          <div class="bg-slate-50 dark:bg-slate-800/60 rounded-xl p-5 border border-slate-200 dark:border-slate-700">
+            <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 text-center text-xs mb-4">
+              <div class="p-2.5 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700">
+                <span class="text-slate-500 block mb-1">표본평균</span>
+                <input type="text" id="ans_a_mean" class="w-16 p-1 text-center font-mono border rounded" placeholder="?">
+              </div>
+              <div class="p-2.5 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700">
+                <span class="text-slate-500 block mb-1">표본분산($s^2$)</span>
+                <input type="text" id="ans_a_var" class="w-16 p-1 text-center font-mono border rounded" placeholder="?">
+              </div>
+              <div class="p-2.5 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700">
+                <span class="text-slate-500 block mb-1">중앙값</span>
+                <input type="text" id="ans_a_med" class="w-16 p-1 text-center font-mono border rounded" placeholder="?">
+              </div>
+              <div class="p-2.5 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700">
+                <span class="text-slate-500 block mb-1">원 MAD</span>
+                <input type="text" id="ans_a_mad" class="w-16 p-1 text-center font-mono border rounded" placeholder="?">
+              </div>
+              <div class="p-2.5 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700">
+                <span class="text-slate-500 block mb-1">범위(Max-Min)</span>
+                <input type="text" id="ans_a_range" class="w-16 p-1 text-center font-mono border rounded" placeholder="?">
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3">
+              <button onclick="checkCalcA()" class="px-4 py-2 bg-kgu-blue hover:bg-kgu-light text-white text-xs font-bold rounded-lg transition">
+                채점하기
+              </button>
+              <button onclick="toggleSolA()" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200 text-xs font-bold rounded-lg transition">
+                해설 보기
+              </button>
+              <span id="msgCalcA" class="text-xs font-bold"></span>
+            </div>
+
+            <div id="solA" class="mt-4 p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 hidden text-xs sm:text-sm space-y-1.5 text-slate-700 dark:text-slate-300">
+              <p>• <strong>평균:</strong> $(2+4+6+8+10)/5 = \mathbf{6.0}$</p>
+              <p>• <strong>편차 제곱합:</strong> $(-4)^2 + (-2)^2 + 0^2 + 2^2 + 4^2 = 40 \implies s^2 = 40/4 = \mathbf{10.0} \;(s = \sqrt{10})$</p>
+              <p>• <strong>중앙값:</strong> $\mathbf{6.0}$, 편차 절대값: $[4, 2, 0, 2, 4] \implies$ 정렬: $[0, 2, 2, 4, 4] \implies \text{MAD} = \mathbf{2.0}$</p>
+              <p>• <strong>8의 표준화:</strong> $Z = 2/\sqrt{10} \approx 0.632$, 최소–최대 = $6/8 = 0.75$, 로버스트 = $2/2 = 1.0$</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- SLIDE 12 -->
+        <article class="slide-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-sm mb-8" data-slide="12">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+            <span class="text-xs font-mono font-bold tracking-widest uppercase text-kgu-blue dark:text-sky-400">SLIDE 12 · 손계산 ②</span>
+            <span class="text-xs text-slate-400">한 값을 바꾸면? (자료 B)</span>
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">
+            손계산 ②: 자료 B $[2, 4, 6, 8, 30]$의 통계량 계산
+          </h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">
+            10을 30으로 바꾼 집단 B에서 통계량이 어떻게 요동치는지 직접 계산해 보세요.
+          </p>
+
+          <div class="bg-slate-50 dark:bg-slate-800/60 rounded-xl p-5 border border-slate-200 dark:border-slate-700">
+            <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 text-center text-xs mb-4">
+              <div class="p-2.5 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700">
+                <span class="text-slate-500 block mb-1">표본평균</span>
+                <input type="text" id="ans_b_mean" class="w-16 p-1 text-center font-mono border rounded" placeholder="?">
+              </div>
+              <div class="p-2.5 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700">
+                <span class="text-slate-500 block mb-1">표본분산($s^2$)</span>
+                <input type="text" id="ans_b_var" class="w-16 p-1 text-center font-mono border rounded" placeholder="?">
+              </div>
+              <div class="p-2.5 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700">
+                <span class="text-slate-500 block mb-1">중앙값</span>
+                <input type="text" id="ans_b_med" class="w-16 p-1 text-center font-mono border rounded" placeholder="?">
+              </div>
+              <div class="p-2.5 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700">
+                <span class="text-slate-500 block mb-1">원 MAD</span>
+                <input type="text" id="ans_b_mad" class="w-16 p-1 text-center font-mono border rounded" placeholder="?">
+              </div>
+              <div class="p-2.5 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700">
+                <span class="text-slate-500 block mb-1">범위(Max-Min)</span>
+                <input type="text" id="ans_b_range" class="w-16 p-1 text-center font-mono border rounded" placeholder="?">
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3">
+              <button onclick="checkCalcB()" class="px-4 py-2 bg-kgu-blue hover:bg-kgu-light text-white text-xs font-bold rounded-lg transition">
+                채점하기
+              </button>
+              <button onclick="toggleSolB()" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200 text-xs font-bold rounded-lg transition">
+                해설 보기
+              </button>
+              <span id="msgCalcB" class="text-xs font-bold"></span>
+            </div>
+
+            <div id="solB" class="mt-4 p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 hidden text-xs sm:text-sm space-y-1.5 text-slate-700 dark:text-slate-300">
+              <p>• <strong>평균:</strong> $(2+4+6+8+30)/5 = \mathbf{10.0}$ (6에서 10으로 급등)</p>
+              <p>• <strong>편차 제곱합:</strong> $(-8)^2 + (-6)^2 + (-4)^2 + (-2)^2 + 20^2 = 520 \implies s^2 = 520/4 = \mathbf{130.0} \;(s = \sqrt{130} \approx 11.40)$</p>
+              <p>• <strong>중앙값:</strong> 여전히 $\mathbf{6.0}$, 편차 절대값: $[4, 2, 0, 2, 24] \implies$ 정렬: $[0, 2, 2, 4, 24] \implies \text{MAD} = \mathbf{2.0}$ (불변!)</p>
+              <p>• <strong>8의 표준화:</strong> $Z = (8-10)/\sqrt{130} \approx -0.175$, 최소–최대 = $6/28 \approx 0.214$, 로버스트 = $2/2 = \mathbf{1.0}$</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- SLIDE 13 -->
+        <article class="slide-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-sm mb-8" data-slide="13">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+            <span class="text-xs font-mono font-bold tracking-widest uppercase text-kgu-blue dark:text-sky-400">SLIDE 13 · 기준 적용 방식</span>
+            <span class="text-xs text-slate-400">공통 기준 vs 집단별 기준</span>
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">
+            공통 기준(Common Baseline)과 집단별 기준의 선택
+          </h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-6">
+            머신러닝이나 그룹 간 비교에서 '어디서 추정한 기준을 적용할 것인가'는 데이터 누수(Data Leakage)와 직결되는 중대한 의사결정입니다.
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-4">
+            <div class="p-5 rounded-xl bg-blue-50/60 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900">
+              <h4 class="font-bold text-kgu-blue dark:text-sky-300 text-sm mb-2">방법 1: 훈련용 기준 A를 고정하여 B에 적용</h4>
+              <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mb-3">
+                A에서 구한 평균(6)과 표준편차($\sqrt{10}$)를 고정한 뒤, B의 8을 변환합니다:
+              </p>
+              <div class="p-2.5 bg-white dark:bg-slate-900 rounded font-mono text-xs text-center">
+                $$z_{\text{B using A}} = \frac{8 - 6}{\sqrt{10}} = \frac{2}{\sqrt{10}} \approx +0.632$$
+              </div>
+              <p class="text-[11px] text-slate-500 mt-2">✓ 테스트 셋 평가나 절대 척도 비교 시 필수적인 원칙입니다.</p>
+            </div>
+
+            <div class="p-5 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700">
+              <h4 class="font-bold text-slate-800 dark:text-slate-200 text-sm mb-2">방법 2: B 집단 내부에서 기준을 재추정</h4>
+              <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mb-3">
+                B 집단 자체의 평균(10)과 표준편차($\sqrt{130}$)로 변환합니다:
+              </p>
+              <div class="p-2.5 bg-white dark:bg-slate-900 rounded font-mono text-xs text-center">
+                $$z_{\text{B recomputed}} = \frac{8 - 10}{\sqrt{130}} = \frac{-2}{\sqrt{130}} \approx -0.175$$
+              </div>
+              <p class="text-[11px] text-slate-500 mt-2">✓ 해당 집단 내부에서의 상대적 등수(Rank)를 살필 때 사용합니다.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- SLIDE 14 -->
+        <article class="slide-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-sm mb-8" data-slide="14">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+            <span class="text-xs font-mono font-bold tracking-widest uppercase text-kgu-blue dark:text-sky-400">SLIDE 14 · 표준화와 분포 형태</span>
+            <span class="text-xs text-slate-400">선형변환의 형태 보존성</span>
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">
+            표준화는 분포의 모양(비대칭도)을 바꾸는가?
+          </h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-6">
+            많은 입문자가 "Z-표준화를 하면 정규분포가 된다"고 오해합니다. 이는 완전히 거짓(False)입니다.
+          </p>
+
+          <div class="bg-slate-50 dark:bg-slate-800/60 rounded-xl p-5 border border-slate-200 dark:border-slate-700 my-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+              <div>
+                <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">양의 선형변환의 불변성</h4>
+                <p class="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed space-y-1.5">
+                  세 가지 표준화는 모두 $y = a + bx \; (b > 0)$ 형태의 <strong>양의 선형변환</strong>입니다.
+                  <br>• 관측치들의 순서(Rank)가 100% 동일하게 유지됩니다.
+                  <br>• 두 점 사이의 상대적 간격 비율 $\frac{x_3 - x_2}{x_2 - x_1}$ 이 완벽히 불변합니다.
+                  <br>• <strong>표본 왜도(Skewness)가 정확히 동일</strong>합니다: $\text{skew}(z) = \text{skew}(x)$
+                </p>
+              </div>
+
+              <!-- SVG Visual of shape preservation -->
+              <div class="bg-white dark:bg-slate-900 p-3 rounded-lg border border-slate-200 dark:border-slate-700">
+                <span class="text-[11px] font-bold text-slate-500 block mb-1">원자료(오른쪽 꼬리) → Z변환 후:</span>
+                <svg viewBox="0 0 250 80" class="w-full h-20 select-none">
+                  <path d="M 10 70 Q 50 10 90 60 T 240 70" fill="none" stroke="#003876" stroke-width="2.5" class="dark:stroke-sky-400"/>
+                  <line x1="10" y1="70" x2="240" y2="70" stroke="#94a3b8" stroke-width="1"/>
+                  <text x="50" y="30" class="text-[9px] fill-rose-600 font-bold">형태와 꼬리가 100% 복제 유지됨</text>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-4 bg-sky-50 dark:bg-sky-950/40 rounded-xl border border-sky-200 dark:border-sky-800 text-xs sm:text-sm text-sky-900 dark:text-sky-200">
+            <strong>전환점:</strong> 따라서 오른쪽으로 길게 늘어진 비대칭 꼬리를 좌우 대칭으로 '형태 자체'를 뜯어고치려면 선형 표준화가 아니라, 7차수에서 맛보았던 로그나 거듭제곱을 포괄하는 <strong>비선형 변환 체계(Box–Cox)</strong>로 나아가야 합니다!
+          </div>
+        </article>
+
+        <!-- SLIDE 15 -->
+        <article class="slide-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-sm mb-8" data-slide="15">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+            <span class="text-xs font-mono font-bold tracking-widest uppercase text-kgu-blue dark:text-sky-400">SLIDE 15 · Box–Cox 변환</span>
+            <span class="text-xs text-slate-400">연속적 멱승변환 체계</span>
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">
+            Box–Cox 변환의 수학적 정의와 파라미터 $\lambda$
+          </h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-6">
+            1964년 조지 박스(George Box)와 데이비드 콕스(David Cox)가 제안한, $\lambda$를 통해 사다리 변환을 연속 함수로 연결한 모델입니다.
+          </p>
+
+          <div class="bg-slate-900 text-slate-100 rounded-xl p-6 font-mono text-center my-4 border border-slate-800 shadow-md">
+            <div class="text-lg sm:text-2xl font-bold text-emerald-400">
+              $$T_\lambda(x) = \begin{cases} \dfrac{x^\lambda - 1}{\lambda} & (\lambda \ne 0) \\ \ln(x) & (\lambda = 0) \end{cases}$$
+            </div>
+            <p class="text-xs text-rose-400 font-sans mt-3">
+              ⚠️ 엄격한 적용 조건: 모든 유효 관측값이 양수($x > 0$)여야 함.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm">
+            <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+              <h4 class="font-bold text-slate-800 dark:text-slate-200 mb-1">연속성의 기적 ($\lambda \to 0$)</h4>
+              <p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                분모의 $\lambda$와 분자의 $-1$ 덕분에 $\lambda \to 0$ 극한에서 로피탈 정리에 의해 정확히 자연로그 $\ln(x)$로 부드럽게 이어집니다.
+              </p>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+              <h4 class="font-bold text-slate-800 dark:text-slate-200 mb-1">데이터 보존 원칙</h4>
+              <p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                변환 시 원자료 열을 덮어쓰지 않고 새로운 열을 생성하며, 결측치는 사전 기록 후 변환 및 우도 추정에서 제외합니다.
+              </p>
+            </div>
+          </div>
+        </article>
+
+        <!-- SLIDE 16 -->
+        <article class="slide-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-sm mb-8" data-slide="16">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+            <span class="text-xs font-mono font-bold tracking-widest uppercase text-kgu-blue dark:text-sky-400">SLIDE 16 · $\lambda$ 값의 직접 비교</span>
+            <span class="text-xs text-slate-400">상수항과 배율의 의미</span>
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">
+            $\lambda = 1, \; 0.5, \; 0$의 직접 비교: $x = 4$일 때의 값
+          </h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">
+            Box–Cox 식의 $-1$과 분모 $\lambda$ 때문에 각 변환은 원자료나 단순 제곱근과 상수항 및 배율 차이가 납니다.
+          </p>
+
+          <div class="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700 my-4">
+            <table class="w-full text-center text-xs sm:text-sm border-collapse bg-white dark:bg-slate-900 font-mono">
+              <thead class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold font-sans">
+                <tr>
+                  <th class="p-3 text-left">파라미터 ($\lambda$)</th>
+                  <th class="p-3">Box–Cox 수식 ($T_\lambda(x)$)</th>
+                  <th class="p-3">원 변환과의 관계</th>
+                  <th class="p-3 font-bold text-kgu-blue dark:text-sky-400">$x = 4$ 대입 결과</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                <tr>
+                  <td class="p-3 text-left font-bold text-amber-600 font-sans">$\lambda = 1$</td>
+                  <td class="p-3 font-bold">$\dfrac{x^1 - 1}{1} = x - 1$</td>
+                  <td class="p-3 font-sans text-slate-500">원자료를 $-1$ 평행이동</td>
+                  <td class="p-3 font-bold">$4 - 1 = \mathbf{3.0}$</td>
+                </tr>
+                <tr class="bg-sky-50/20 dark:bg-sky-950/20">
+                  <td class="p-3 text-left font-bold text-sky-600 font-sans">$\lambda = 0.5$</td>
+                  <td class="p-3 font-bold">$\dfrac{\sqrt{x} - 1}{0.5} = 2(\sqrt{x} - 1)$</td>
+                  <td class="p-3 font-sans text-slate-500">제곱근의 2배 및 $-2$ 이동</td>
+                  <td class="p-3 font-bold">$2(2 - 1) = \mathbf{2.0}$</td>
+                </tr>
+                <tr class="bg-emerald-50/30 dark:bg-emerald-950/30">
+                  <td class="p-3 text-left font-bold text-emerald-600 font-sans">$\lambda = 0$</td>
+                  <td class="p-3 font-bold">$\ln(x)$</td>
+                  <td class="p-3 font-sans text-slate-500">순수 자연로그</td>
+                  <td class="p-3 font-bold">$\ln(4) \approx \mathbf{1.3863}$</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="p-4 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+            <strong>질문 점검:</strong> “$\lambda = 1$이면 변환 결과가 원자료 $x$와 같을까요?”<br>
+            아닙니다! $T_1(x) = x - 1$로 모든 관측값에서 1이 빠집니다. 물론 이는 선형변환이므로 자료의 상대적 형태나 왜도는 원자료와 완전히 동일합니다.
+          </div>
+        </article>
+
+        <!-- SLIDE 17 -->
+        <article class="slide-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-sm mb-8" data-slide="17">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+            <span class="text-xs font-mono font-bold tracking-widest uppercase text-kgu-blue dark:text-sky-400">SLIDE 17 · $\lambda$의 추정</span>
+            <span class="text-xs text-slate-400">프로파일 로그우도 함수</span>
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">
+            최적의 $\lambda$는 어떻게 찾는가? (최대우도 추정, MLE)
+          </h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-6">
+            통계학은 사람이 눈대중으로 $\lambda$를 맞추는 대신, 변환된 자료가 정규분포를 따를 가능성(프로파일 로그우도)을 최대화하는 최적해를 수학적으로 탐색합니다.
+          </p>
+
+          <div class="bg-slate-50 dark:bg-slate-800/60 rounded-xl p-5 border border-slate-200 dark:border-slate-700 my-4">
+            <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">프로파일 로그우도 곡선(Profile Log-Likelihood) 개념도</h4>
+            <div class="w-full bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700 p-4 flex flex-col items-center">
+              <svg viewBox="0 0 500 120" class="w-full max-w-md h-28 select-none">
+                <!-- Axes -->
+                <line x1="40" y1="100" x2="460" y2="100" stroke="#94a3b8" stroke-width="1.5"/>
+                <line x1="40" y1="20" x2="40" y2="100" stroke="#94a3b8" stroke-width="1.5"/>
+                <!-- Log-lik curve: upside down parabola peaking around lambda = -0.882 -->
+                <path d="M 60 90 Q 230 15 440 95" fill="none" stroke="#003876" stroke-width="3" class="dark:stroke-sky-400"/>
+                <!-- Peak point -->
+                <circle cx="230" cy="30" r="4.5" fill="#e11d48"/>
+                <line x1="230" y1="30" x2="230" y2="100" stroke="#e11d48" stroke-dasharray="3,3"/>
+                <text x="230" y="20" text-anchor="middle" class="text-[10px] fill-rose-600 font-bold font-mono">최대우도 추정치 λ_opt</text>
+                <text x="230" y="115" text-anchor="middle" class="text-[10px] fill-slate-500 font-mono">λ = -0.882</text>
+                <text x="40" y="15" class="text-[9px] fill-slate-400">Log-Likelihood L(λ)</text>
+              </svg>
+            </div>
+          </div>
+
+          <div class="p-4 bg-amber-50 dark:bg-amber-950/40 rounded-xl border border-amber-200 dark:border-amber-800 text-xs sm:text-sm text-amber-900 dark:text-amber-200 space-y-1">
+            <strong>⚠️ 엄밀한 해석 주의사항:</strong>
+            <p>1. 우도를 최대화하는 $\lambda$를 찾았다고 해서 변환된 자료가 <strong>정규분포를 따른다는 보증(증명)은 아닙니다.</strong> 주어진 모형 안에서의 상대적 최적값일 뿐입니다.</p>
+            <p>2. 곡선 정상이 평평할 경우 최적값 주변의 표준오차(불확실성)를 함께 고려해야 하며, 실무에서는 해석의 직관성을 위해 $-0.882$ 대신 $\lambda = 0$ (로그)을 채택하기도 합니다.</p>
+          </div>
+        </article>
+
+        <!-- SLIDE 18 -->
+        <article class="slide-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-sm mb-8" data-slide="18">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+            <span class="text-xs font-mono font-bold tracking-widest uppercase text-kgu-blue dark:text-sky-400">SLIDE 18 · 실습 데이터셋</span>
+            <span class="text-xs text-slate-400">소득 데이터와 분석 질문</span>
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">
+            실습 자료: 가상 월 소득 22건 (유효 20건, 결측 2건)
+          </h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">
+            7차수에서 대칭화를 시도했던 가상 월 소득 자료에 대해 Box–Cox의 최적 $\lambda$를 직접 추정합니다.
+          </p>
+
+          <div class="bg-slate-900 text-slate-100 rounded-xl p-5 font-mono text-xs sm:text-sm shadow-inner relative my-4">
+            <div class="text-slate-400 text-xs mb-2">가상 월 소득 자료 (단위: 만 원) · 교육용 표본</div>
+            <p class="leading-relaxed text-emerald-400">
+              120, 140, 150, 160, 170, 180, 190, 200, 210, 220, 230, 240, 250, 270, 300, 350, 400, 500, 700, 1200, 결측, 결측
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm">
+            <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+              <span class="font-bold text-slate-800 dark:text-slate-200 block mb-1">🎯 실습 분석 질문 1</span>
+              <p class="text-slate-600 dark:text-slate-400">
+                자료 A$[2,4,6,8,10]$와 B$[2,4,6,8,30]$에서 표준화 기준(평균, s, 최소-최대, MAD)이 극단치에 의해 얼마나 흔들리는가?
+              </p>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+              <span class="font-bold text-slate-800 dark:text-slate-200 block mb-1">🎯 실습 분석 질문 2</span>
+              <p class="text-slate-600 dark:text-slate-400">
+                월 소득 자료에서 SciPy의 최대우도 추정 $\lambda$는 얼마이며, 고정 그리드 탐색 결과와 그리드 간격 안에서 근접하는가?
+              </p>
+            </div>
+          </div>
+        </article>
+
+        <!-- SLIDE 19 -->
+        <article class="slide-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-sm mb-8" data-slide="19">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+            <span class="text-xs font-mono font-bold tracking-widest uppercase text-kgu-blue dark:text-sky-400">SLIDE 19 · AI 분석 명세서</span>
+            <span class="text-xs text-slate-400">표준 프롬프트 엔지니어링</span>
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">
+            AI 종합 분석 명세: 규칙과 검증 조건을 빠짐없이
+          </h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-6">
+            AI에게 코드를 요청할 때는 표본표준편차 `ddof=1`, 원 MAD, 결측 보존 등 엄격한 조건을 명시해야 오류를 방지할 수 있습니다.
+          </p>
+
+          <div class="bg-slate-900 text-slate-100 rounded-xl p-5 font-mono text-xs leading-relaxed border border-slate-800 shadow-md relative">
+            <div class="flex justify-between items-center pb-3 mb-3 border-b border-slate-800 text-slate-400">
+              <span class="font-bold text-sky-400 flex items-center gap-1.5">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"/></svg>
+                8차수 표준 분석 명세 프롬프트
+              </span>
+              <button onclick="copyPrompt8()" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-sky-300 font-sans text-xs flex items-center gap-1 transition">
+                명세 복사
+              </button>
+            </div>
+            <pre id="promptText8" class="whitespace-pre-wrap text-slate-200">
+[자료탐색방법론 8차수 분석 명세]
+1. 자료 입력 및 보존:
+   - 자료 A: [2, 4, 6, 8, 10], 자료 B: [2, 4, 6, 8, 30]
+   - 가상 월 소득 22건(20개 유효 + 2개 np.nan)을 DataFrame에 온전히 보존하시오.
+2. 세 가지 표준화 계산 규칙 (자료 A, B):
+   - Z점수는 표본표준편차 ddof=1을 엄격히 적용하시오.
+   - 로버스트 점수는 1.4826을 곱하지 않은 원 MAD(Raw MAD)를 사용하시오.
+   - 값 8의 세 점수를 출력하고 손계산과 대조하시오. 분모=0 시 예외 처리하시오.
+3. Box–Cox 분석 (소득 자료):
+   - 양수(x > 0) 및 유한성을 사전 검사하시오.
+   - scipy.stats.boxcox로 최대우도 λ를 추정하고, λ=-1부터 2까지 0.001 간격 고정 그리드에서 우도 최댓값이 추정값과 근접하는지 교차 검증하시오.
+   - λ=0 (자연로그)일 때의 우도 및 왜도와 비교하시오.
+4. 시각화:
+   - 원자료 소득 히스토그램, Box–Cox 변환 히스토그램, λ별 프로파일 로그우도 곡선을 서브플롯으로 그리시오.
+   - 특정 변환이 정규성을 보장한다고 단정하지 마시오.
+            </pre>
+          </div>
+        </article>
+
+        <!-- SLIDE 20 -->
+        <article class="slide-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-sm mb-8" data-slide="20">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+            <span class="text-xs font-mono font-bold tracking-widest uppercase text-kgu-blue dark:text-sky-400">SLIDE 20 · Colab 셀 1</span>
+            <span class="text-xs text-slate-400">표준화 계산 & 손계산 대조</span>
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">
+            셀 1: 표준화 계산과 손계산 결과의 엄밀한 검증
+          </h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">
+            자료 A와 B에 대해 세 가지 표준화 기준과 값 8의 점수를 산출하는 파이썬 코드입니다.
+          </p>
+
+          <div class="bg-slate-900 text-slate-100 rounded-xl p-5 font-mono text-xs leading-relaxed border border-slate-800 shadow-md">
+            <div class="flex justify-between items-center text-slate-400 text-xs pb-3 mb-3 border-b border-slate-800">
+              <span class="font-bold text-emerald-400">Cell 1 · Standardization on A & B</span>
+              <button onclick="copyCode('codeCell8_1')" class="hover:text-white text-[11px] flex items-center gap-1">
+                코드 복사
+              </button>
+            </div>
+            <pre id="codeCell8_1" class="text-slate-200">
+import numpy as np
+import pandas as pd
+
+def compute_scalers(data, name):
+    arr = np.array(data, dtype=float)
+    n = len(arr)
+    mean_val = np.mean(arr)
+    s_val = np.std(arr, ddof=1)
+    min_val, max_val = np.min(arr), np.max(arr)
+    rng = max_val - min_val
+    med_val = np.median(arr)
+    mad_val = np.median(np.abs(arr - med_val)) # 원 MAD
+    
+    # 8의 점수
+    target = 8.0
+    z_8 = (target - mean_val) / s_val if s_val > 0 else np.nan
+    mm_8 = (target - min_val) / rng if rng > 0 else np.nan
+    rob_8 = (target - med_val) / mad_val if mad_val > 0 else np.nan
+    
+    return {
+        '집단': name, '평균': mean_val, 's(ddof=1)': s_val,
+        '중앙값': med_val, '원 MAD': mad_val, '범위': rng,
+        '8의 Z': z_8, '8의 MinMax': mm_8, '8의 로버스트': rob_8
+    }
+
+res_a = compute_scalers([2, 4, 6, 8, 10], 'A')
+res_b = compute_scalers([2, 4, 6, 8, 30], 'B')
+summary_df = pd.DataFrame([res_a, res_b])
+print(summary_df.to_string(index=False))
+            </pre>
+          </div>
+
+          <div class="mt-4 p-4 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs">
+            <span class="font-bold text-slate-700 dark:text-slate-300 block mb-1">🖥️ Colab 실행 결과:</span>
+            <div class="font-mono text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-900 p-2.5 rounded border border-slate-200 dark:border-slate-700 overflow-x-auto">
+집단  평균  s(ddof=1)  중앙값  원 MAD  범위    8의 Z  8의 MinMax  8의 로버스트<br>
+  A   6.0    3.162277    6.0     2.0   8.0  0.632456    0.750000          1.0<br>
+  B  10.0   11.401754    6.0     2.0  28.0 -0.175412    0.214286          1.0
+            </div>
+          </div>
+        </article>
+
+        <!-- SLIDE 21 -->
+        <article class="slide-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-sm mb-8" data-slide="21">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+            <span class="text-xs font-mono font-bold tracking-widest uppercase text-kgu-blue dark:text-sky-400">SLIDE 21 · Colab 셀 2</span>
+            <span class="text-xs text-slate-400">Box–Cox 최대우도 & 그리드</span>
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">
+            셀 2: 소득 자료 Box–Cox 최대우도 $\lambda$ 및 그리드 탐색
+          </h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">
+            SciPy의 `boxcox` 최적화와 독립적인 고정 그리드(Grid Search) 결과를 교차 확인합니다.
+          </p>
+
+          <div class="bg-slate-900 text-slate-100 rounded-xl p-5 font-mono text-xs leading-relaxed border border-slate-800 shadow-md">
+            <div class="flex justify-between items-center text-slate-400 text-xs pb-3 mb-3 border-b border-slate-800">
+              <span class="font-bold text-emerald-400">Cell 2 · Box–Cox Estimation</span>
+              <button onclick="copyCode('codeCell8_2')" class="hover:text-white text-[11px] flex items-center gap-1">
+                코드 복사
+              </button>
+            </div>
+            <pre id="codeCell8_2" class="text-slate-200">
+from scipy import stats
+
+# 1. 7차수 가상 소득 자료 정의
+income_raw = [
+    120, 140, 150, 160, 170, 180, 190, 200, 210, 220,
+    230, 240, 250, 270, 300, 350, 400, 500, 700, 1200,
+    np.nan, np.nan
+]
+s_valid = pd.Series(income_raw).dropna()
+
+# 2. 정의역 확인 (모두 양수)
+assert np.all(s_valid > 0), "Box-Cox는 엄격한 양수만 지원합니다."
+
+# 3. SciPy 최대우도 추정
+transformed_income, opt_lambda = stats.boxcox(s_valid)
+print(f"✅ Box–Cox 최적 λ (MLE): {opt_lambda:.4f}")
+
+# 4. 고정 그리드 (-3.0 ~ 3.0, step 0.001) 프로파일 로그우도 검증
+grid_lambdas = np.linspace(-3.0, 3.0, 6001)
+grid_llf = [stats.boxcox_llf(l, s_valid) for l in grid_lambdas]
+best_grid_idx = np.argmax(grid_llf)
+print(f"✅ 그리드 최고점 λ: {grid_lambdas[best_grid_idx]:.3f} (Log-Likelihood: {grid_llf[best_grid_idx]:.2f})")
+            </pre>
+          </div>
+
+          <div class="mt-4 p-4 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs text-slate-700 dark:text-slate-300">
+            <strong>실행 결과 해석:</strong> 가상 소득 데이터의 최적 $\lambda$는 약 <strong>$-0.882$</strong>로 추정됩니다. 이는 정규 모형의 프로파일 우도를 최대화하는 추정값입니다. 로그 변환과 비교하고 그림 및 우도 곡선을 확인해야 하며 정규성의 증명은 아닙니다.
+          </div>
+        </article>
+
+        <!-- SLIDE 22 -->
+        <article class="slide-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-sm mb-8" data-slide="22">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+            <span class="text-xs font-mono font-bold tracking-widest uppercase text-kgu-blue dark:text-sky-400">SLIDE 22 · 그림 8-2</span>
+            <span class="text-xs text-slate-400">소득 자료 변환과 우도 곡선</span>
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">
+            그림 8-2: 원자료 히스토그램, Box–Cox 변환 및 프로파일 우도 곡선
+          </h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">
+            변환 전후의 분포 대칭화 효과와 $\lambda$ 최적점의 형상을 3개 패널로 확인합니다.
+          </p>
+
+          <div class="p-5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200">
+            <p class="font-bold">실제 계산으로 분포와 우도 곡선 확인하기</p>
+            <p class="text-sm mt-2">앞 셀의 최대우도 추정 λ는 약 −0.882입니다. 아래 코드를 셀 2 다음에 실행하면 원자료와 변환 자료의 히스토그램 및 우도 곡선을 표시합니다. 각 히스토그램의 구간 경계는 다릅니다.</p>
+            <button onclick="copyCode('codeCell8_plot')" class="mt-3 px-3 py-2 bg-kgu-blue text-white rounded">그림 코드 복사</button>
+            <pre id="codeCell8_plot" class="mt-3 overflow-x-auto bg-slate-900 text-white p-4 rounded text-xs">import matplotlib.pyplot as plt
+fig, axes = plt.subplots(1, 3, figsize=(14, 4))
+axes[0].hist(s_valid, bins=8, edgecolor='white')
+axes[0].set(title='Original income, n=20', xlabel='10,000 KRW')
+axes[1].hist(transformed_income, bins=8, edgecolor='white')
+axes[1].set(title=f'Box-Cox, lambda={opt_lambda:.3f}', xlabel='Transformed scale')
+axes[2].plot(grid_lambdas, grid_llf)
+axes[2].axvline(opt_lambda, color='red', linestyle='--')
+axes[2].set(title='Profile log-likelihood', xlabel='lambda', ylabel='log-likelihood')
+plt.tight_layout()
+plt.show()</pre>
+          </div>
+        </article>
+
+        <!-- SLIDE 23 -->
+        <article class="slide-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-sm mb-8" data-slide="23">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+            <span class="text-xs font-mono font-bold tracking-widest uppercase text-kgu-blue dark:text-sky-400">SLIDE 23 · 검증 3종 세트</span>
+            <span class="text-xs text-slate-400">경계 사례와 예외 방어</span>
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">
+            검증 3종 세트와 경계 사례(Edge Cases) 방어
+          </h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-6">
+            어떤 라이브러리를 쓰든 계산 실패나 수치 왜곡을 일으키는 경계 조건에 대해 방어 로직을 마련해야 합니다.
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-4">
+            
+            <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs">
+              <span class="font-bold text-kgu-blue dark:text-sky-400 block mb-1">① 손계산 검증</span>
+              <p class="text-slate-600 dark:text-slate-400 mb-2">A와 B의 8의 표준화 점수 3종(Z, MinMax, Rob)을 코드 결과와 100% 일치 확인.</p>
+              <div class="font-mono bg-white dark:bg-slate-900 p-2 rounded text-[11px]">
+                Z_A = 2/√10 ≈ 0.632<br>
+                Z_B = -2/√130 ≈ -0.175
+              </div>
+            </div>
+
+            <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs">
+              <span class="font-bold text-emerald-600 dark:text-emerald-400 block mb-1">② 대안 계산 (그리드 교차)</span>
+              <p class="text-slate-600 dark:text-slate-400 mb-2">SciPy `boxcox`의 최적화 해와 고정 그리드 결과가 간격 범위 내에서 근접하는지 비교. 같은 우도 함수를 사용하므로 완전히 독립적인 구현 검증은 아님.</p>
+              <div class="font-mono bg-white dark:bg-slate-900 p-2 rounded text-[11px]">
+                λ_opt = -0.882<br>
+                λ_0 = ln(x) 기준점 비교
+              </div>
+            </div>
+
+            <div class="p-4 rounded-xl bg-rose-50/60 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900 text-xs">
+              <span class="font-bold text-rose-700 dark:text-rose-300 block mb-1">③ 경계 사례 (Edge Cases)</span>
+              <p class="text-rose-900 dark:text-rose-200 mb-1">• $[5, 5, 5]$: $s=0, \text{Range}=0, \text{MAD}=0 \implies$ 세 분모 모두 0</p>
+              <p class="text-rose-900 dark:text-rose-200 mb-1">• $[0, 0, 0, 0, 100]$: 상수가 아니지만 $\text{MAD}=0$ 발생</p>
+              <p class="text-rose-900 dark:text-rose-200">• $x \le 0$: Box–Cox 실행 시 즉시 중단</p>
+            </div>
+
+          </div>
+        </article>
+
+        <!-- SLIDE 24 -->
+        <article class="slide-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-sm mb-8" data-slide="24">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+            <span class="text-xs font-mono font-bold tracking-widest uppercase text-kgu-blue dark:text-sky-400">SLIDE 24 · 심화</span>
+            <span class="text-xs text-slate-400">스케일링 기준과 새 관측값</span>
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">
+            심화: 기준 범위 밖의 새로운 관측값 ($x = 14$) 다루기
+          </h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">
+            기준 집단 A$[2, 10]$의 최소–최대 스케일러에 새로운 값 $x = 14$가 입력되면 어떻게 될까요?
+          </p>
+
+          <div class="bg-slate-50 dark:bg-slate-800/60 rounded-xl p-5 border border-slate-200 dark:border-slate-700 my-4 text-xs sm:text-sm">
+            <div class="text-center font-mono my-2 text-base font-bold text-kgu-blue dark:text-sky-300">
+              $$u_{\text{new}} = \frac{14 - 2}{10 - 2} = \frac{12}{8} = \mathbf{1.5} \quad (> 1.0)$$
+            </div>
+            <div class="p-3 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700 mt-3 space-y-1">
+              <span class="font-bold text-slate-800 dark:text-slate-200 block">질문: "결과가 1.0을 초과했으니 수식이나 코드의 계산 오류인가요?"</span>
+              <p class="text-slate-600 dark:text-slate-400">
+                아닙니다! 고정된 기준 범위 $[2, 10]$를 벗어난 새 관측값이 입력되었으므로 $1.5$가 나오는 것이 수학적으로 지극히 정상입니다.
+              </p>
+              <p class="text-slate-600 dark:text-slate-400">
+                인공지능 실무에서 이를 억지로 $[0, 1]$로 자르기(Clip)보다는, 기준 집단 밖의 이상치임을 인지하고 기준 갱신 여부를 데이터 거버넌스 차원에서 결정해야 합니다.
+              </p>
+            </div>
+          </div>
+        </article>
+
+        <!-- SLIDE 25 -->
+        <article class="slide-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-sm mb-8" data-slide="25">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+            <span class="text-xs font-mono font-bold tracking-widest uppercase text-kgu-blue dark:text-sky-400">SLIDE 25 · 오류 교정</span>
+            <span class="text-xs text-slate-400">보고서 비판 및 교정</span>
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">
+            잘못된 분석 보고서 고치기 & 분석 기록 템플릿
+          </h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-6">
+            실무 보고서에서 빈번히 적발되는 3대 치명적 오류를 식별하고 비판적으로 교정합니다.
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-4">
+            
+            <div class="p-5 rounded-xl bg-rose-50/60 dark:bg-rose-950/40 border-2 border-rose-200 dark:border-rose-900 flex flex-col justify-between">
+              <div>
+                <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-rose-200 dark:bg-rose-900 text-rose-800 dark:text-rose-200 mb-2">
+                  ❌ 오류 가득한 학생 보고서 문장
+                </span>
+                <p class="text-xs sm:text-sm text-rose-950 dark:text-rose-200 leading-relaxed font-serif italic space-y-2">
+                  “A와 B 집단을 각각 Z-표준화하였더니 두 집단 모두 평균이 0이 되어 동일한 수준의 집단임이 증명되었다. 또한 MAD=0인 변수에 대해서는 0.001을 분모에 더해 정상 변환했다. 소득 자료는 Box–Cox 최적 λ=-0.882에서 로그우도가 최대이므로 완벽한 정규분포가 입증되었다.”
+                </p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-rose-200 dark:border-rose-900 text-xs text-rose-700 dark:text-rose-400 font-semibold">
+                ⚠️ 집단 수준 소멸 착시 / 인위적 엡실론 조작 / 우도 최대를 정규성 증명으로 왜곡
+              </div>
+            </div>
+
+            <div class="p-5 rounded-xl bg-emerald-50/60 dark:bg-emerald-950/40 border-2 border-emerald-200 dark:border-emerald-900 flex flex-col justify-between">
+              <div>
+                <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-200 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-200 mb-2">
+                  ✅ 바르게 교정된 전문 분석 문장
+                </span>
+                <p class="text-xs sm:text-sm text-emerald-950 dark:text-emerald-200 leading-relaxed space-y-2">
+                  “집단별 표준화는 원래 두 집단의 평균 차이(6 vs 10)를 소거하므로 공통 기준을 명시해야 합니다. MAD=0은 중앙값과 같은 관측이 충분히 많을 때도 발생하므로 계산 불가로 처리하고 사유를 보고합니다. Box–Cox의 λ=-0.882는 모형 우도를 최대화하는 경험적 적합치이며 정규성 성립을 증명하는 것은 아닙니다.”
+                </p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-emerald-200 dark:border-emerald-900 text-xs text-emerald-700 dark:text-emerald-400 font-semibold">
+                ✓ 기준 집단 명시 / 분모 0의 솔직한 공개 / 통계적 한계와 모형 전제 존중
+              </div>
+            </div>
+
+          </div>
+        </article>
+
+        <!-- SLIDE 26 -->
+        <article class="slide-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-sm mb-8" data-slide="26">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+            <span class="text-xs font-mono font-bold tracking-widest uppercase text-kgu-blue dark:text-sky-400">SLIDE 26 · 종료 질문 & 예고</span>
+            <span class="text-xs text-slate-400">학습 자가 평가</span>
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">
+            종료 질문 (Exit Questions) 및 다음 차수 예고
+          </h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-6">
+            오늘 학습한 핵심 개념 6가지를 점검해 보세요. 각 카드를 클릭하면 정답이 펼쳐집니다.
+          </p>
+
+          <div class="space-y-2.5 my-4">
+            <details class="group bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-3.5 transition">
+              <summary class="flex items-center justify-between font-bold text-xs sm:text-sm text-slate-800 dark:text-slate-200 cursor-pointer list-none">
+                <span>Q1. Z점수는 백분위수나 확률을 뜻하는가?</span>
+                <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <div class="mt-2 text-xs text-slate-600 dark:text-slate-300 pt-2 border-t border-slate-200 dark:border-slate-700">
+                <strong>정답:</strong> 아닙니다. 단지 평균으로부터 떨어진 표준편차 단위의 거리일 뿐이며, 정규분포 가정이 성립하지 않으면 확률로 환산할 수 없습니다.
+              </div>
+            </details>
+
+            <details class="group bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-3.5 transition">
+              <summary class="flex items-center justify-between font-bold text-xs sm:text-sm text-slate-800 dark:text-slate-200 cursor-pointer list-none">
+                <span>Q2. 서로 다른 집단별 기준을 적용하면 무엇을 잃게 되는가?</span>
+                <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <div class="mt-2 text-xs text-slate-600 dark:text-slate-300 pt-2 border-t border-slate-200 dark:border-slate-700">
+                <strong>정답:</strong> 원래 집단 간에 존재하던 '절대적인 평균 수준 차이'가 모두 0으로 맞춰지면서 집단 간 비교 정보가 완전히 소실됩니다.
+              </div>
+            </details>
+
+            <details class="group bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-3.5 transition">
+              <summary class="flex items-center justify-between font-bold text-xs sm:text-sm text-slate-800 dark:text-slate-200 cursor-pointer list-none">
+                <span>Q3. $\text{MAD} = 0$이라는 것은 자료의 모든 값이 동일한 상수라는 뜻인가?</span>
+                <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <div class="mt-2 text-xs text-slate-600 dark:text-slate-300 pt-2 border-t border-slate-200 dark:border-slate-700">
+                <strong>정답:</strong> 아닙니다. $[0, 0, 0, 0, 100]$처럼 과반수(50% 이상)만 중앙값과 일치하면 나머지 값이 달라도 $\text{MAD} = 0$이 될 수 있습니다.
+              </div>
+            </details>
+
+            <details class="group bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-3.5 transition">
+              <summary class="flex items-center justify-between font-bold text-xs sm:text-sm text-slate-800 dark:text-slate-200 cursor-pointer list-none">
+                <span>Q4. 새로운 관측값의 최소–최대 점수는 $[0, 1]$을 벗어날 수 있는가?</span>
+                <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <div class="mt-2 text-xs text-slate-600 dark:text-slate-300 pt-2 border-t border-slate-200 dark:border-slate-700">
+                <strong>정답:</strong> 가능합니다. 새 데이터가 기준 표본의 최댓값보다 크면 $1$을 초과하고, 최솟값보다 작으면 음수가 됩니다.
+              </div>
+            </details>
+
+            <details class="group bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-3.5 transition">
+              <summary class="flex items-center justify-between font-bold text-xs sm:text-sm text-slate-800 dark:text-slate-200 cursor-pointer list-none">
+                <span>Q5. Box–Cox에서 $\lambda = 1$일 때의 변환식은 무엇인가?</span>
+                <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <div class="mt-2 text-xs text-slate-600 dark:text-slate-300 pt-2 border-t border-slate-200 dark:border-slate-700">
+                <strong>정답:</strong> $T_1(x) = x - 1$ 입니다. (단순 $x$가 아니라 1이 감산됩니다.)
+              </div>
+            </details>
+
+            <details class="group bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-3.5 transition">
+              <summary class="flex items-center justify-between font-bold text-xs sm:text-sm text-slate-800 dark:text-slate-200 cursor-pointer list-none">
+                <span>Q6. 최대우도 $\lambda$를 찾으면 변환 후 정규분포가 증명되는가?</span>
+                <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <div class="mt-2 text-xs text-slate-600 dark:text-slate-300 pt-2 border-t border-slate-200 dark:border-slate-700">
+                <strong>정답:</strong> 아닙니다. 정규분포 가정을 전제로 한 모형 내 최선책일 뿐, 정규성 검증(Q-Q 플롯, 적합도 검정)은 별도로 수행해야 합니다.
+              </div>
+            </details>
+          </div>
+
+          <div class="mt-6 p-4 rounded-xl bg-gradient-to-r from-blue-900 to-kgu-blue text-white shadow-md">
+            <span class="text-xs font-semibold uppercase tracking-wider text-sky-300">Next Step</span>
+            <h4 class="text-base font-bold mt-1">다음 차수 예고: 정규분포와 정규 Q–Q 플롯 (Q–Q Plot)</h4>
+            <p class="text-xs text-blue-100 mt-1 leading-relaxed">
+              Box–Cox 변환 전후의 데이터가 이론적 정규분포와 실제로 얼마나 부합하는지를 시각적으로 정밀 진단하는 정규 분위수-분위수 플롯(Normal Q–Q Plot)의 구성 원리를 학습합니다.
+            </p>
+          </div>
+        </article>
+
+        <!-- SLIDE 27 -->
+        <article class="slide-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-sm mb-8" data-slide="27">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
+            <span class="text-xs font-mono font-bold tracking-widest uppercase text-kgu-blue dark:text-sky-400">SLIDE 27 · 자가 실습 & 참고자료</span>
+            <span class="text-xs text-slate-400">실습 과제</span>
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">
+            자가 실습 과제 및 공식 참고문헌
+          </h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">
+            가상 시간 데이터 $[1, 2, 2, 3, 4, 5, 6, 20, \text{NaN}]$에 대해 20을 40으로 바꾸는 이상치 충격 실험을 수행합니다.
+          </p>
+
+          <div class="bg-slate-900 text-slate-100 rounded-xl p-5 font-mono text-xs leading-relaxed border border-slate-800 shadow-md relative my-4">
+            <div class="flex justify-between items-center pb-2 mb-2 border-b border-slate-800 text-slate-400">
+              <span class="text-sky-400 font-bold">자가 실습용 완성 프롬프트</span>
+              <button onclick="copySelfPrompt8()" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-sky-300 text-xs">
+                프롬프트 복사
+              </button>
+            </div>
+            <pre id="selfPromptText8" class="whitespace-pre-wrap text-slate-200">
+[자가 실습 명세: 주간 과제 소요 시간 스케일링 실험]
+1. 자료: [1, 2, 2, 3, 4, 5, 6, 20, np.nan] (단위: 시간, 유효 8건, 결측 1건)
+2. 표본표준편차 ddof=1과 원 MAD를 사용해 세 가지 표준화 기준을 계산하시오.
+3. 20을 40으로 바꾼 복사본 자료를 만들고, 기존 기준을 고정 적용한 결과와 새 기준을 재추정한 결과를 나누어 대조하시오.
+4. 양수 유효 관측치에 대해 scipy.stats.boxcox로 최대우도 λ를 구하고, 정규성 증명으로 왜곡하지 않는 해석 한계를 보고서로 정리하시오.
+            </pre>
+          </div>
+
+          <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 my-4">
+            <h4 class="text-xs font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wider mb-2">공식 기술 매뉴얼</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+              <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.boxcox.html" target="_blank" rel="noopener" class="p-2.5 rounded bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-sky-600 dark:text-sky-400 hover:underline flex items-center justify-between">
+                <span>SciPy 공식: `scipy.stats.boxcox`</span>
+                <span class="text-slate-400">↗</span>
+              </a>
+              <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.boxcox_llf.html" target="_blank" rel="noopener" class="p-2.5 rounded bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-sky-600 dark:text-sky-400 hover:underline flex items-center justify-between">
+                <span>SciPy 공식: `boxcox_llf` 로그우도</span>
+                <span class="text-slate-400">↗</span>
+              </a>
+              <a href="https://numpy.org/doc/stable/reference/generated/numpy.std.html" target="_blank" rel="noopener" class="p-2.5 rounded bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-sky-600 dark:text-sky-400 hover:underline flex items-center justify-between">
+                <span>NumPy 공식: `numpy.std` ddof 매뉴얼</span>
+                <span class="text-slate-400">↗</span>
+              </a>
+              <div class="p-2.5 rounded bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400">
+                <span>Box & Cox (1964), <em>An Analysis of Transformations</em>, JRSS-B</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="text-center py-6 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500">
+            경기대학교 응용통계전공 · 자료탐색방법론 2026학년도 2학기 · 8차수 강의 슬라이드 웹 교재
+          </div>
+        </article>
+
+      </div>
+
+      <!-- Slide Navigation Footer (Slide Mode) -->
+      <footer id="slideFooterNav" class="no-print w-full max-w-5xl mx-auto pt-4 pb-8 flex items-center justify-between border-t border-slate-200 dark:border-slate-800">
+        <button id="footerPrevBtn" class="flex items-center gap-1.5 px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+          이전 슬라이드
+        </button>
+        <span class="text-xs text-slate-400 font-medium hidden sm:inline">단축키: 키보드 좌우 방향키 (← / →)</span>
+        <button id="footerNextBtn" class="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-kgu-blue hover:bg-kgu-light text-white text-xs font-bold transition shadow-xs">
+          다음 슬라이드
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        </button>
+      </footer>
+    </main>
+  </div>
+
+  <!-- Toast Notification Container (Alert Free) -->
+  <div id="toast" class="no-print fixed bottom-6 right-6 z-50 bg-slate-900 text-white dark:bg-white dark:text-slate-900 text-xs font-semibold px-4 py-2.5 rounded-xl shadow-lg transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none flex items-center gap-2">
+    <span id="toastIcon">📋</span>
+    <span id="toastMsg">복사되었습니다.</span>
+  </div>
+
+  <!-- JavaScript Application Logic -->
+  <script>
+    let currentSlide = 1;
+    const totalSlides = 27;
+    let isSlideMode = true;
+
+    const slideTitles = [
+      "01. 표지 · 표준화와 Box–Cox 변환",
+      "02. 기존 차수 연결과 학습 목표",
+      "03. 8차수 전체 학습 로드맵",
+      "04. 문제 제기 · 숫자가 같아도 위치가 같은가?",
+      "05. Z점수의 원리와 식",
+      "06. 표본표준편차와 기준 집단 (ddof=1)",
+      "07. 최소–최대 변환 · 기준 범위 [0, 1]",
+      "08. 로버스트 표준화 · 중앙값과 원 MAD",
+      "09. 세 가지 표준화 종합 비교표",
+      "10. 그림 8-1 · 같은 값 8의 서로 다른 위치",
+      "11. 손계산 ① · 자료 A의 세 기준",
+      "12. 손계산 ② · 한 값을 바꾸면? (자료 B)",
+      "13. 공통 기준 vs 집단별 기준",
+      "14. 표준화는 분포의 모양을 바꾸는가?",
+      "15. Box–Cox 변환의 식과 λ",
+      "16. λ=1, 0.5, 0 직접 비교",
+      "17. 최적의 λ는 어떻게 찾는가? (MLE)",
+      "18. 실습 자료와 분석 질문",
+      "19. AI 종합 분석 명세서",
+      "20. 셀 1 · 표준화 계산과 손계산 검증",
+      "21. 셀 2 · Box–Cox 최대우도 & 그리드",
+      "22. 그림 8-2 · 소득 자료 변환과 우도 곡선",
+      "23. 검증 3종 세트와 경계 사례",
+      "24. 심화 · 스케일링 기준과 새 관측값",
+      "25. 잘못된 보고서 고치기 & 템플릿",
+      "26. 종료 질문 & 9차수 예고",
+      "27. 자가 실습 과제 & 참고자료"
+    ];
+
+    document.addEventListener('DOMContentLoaded', () => {
+      buildTOC();
+      updateSlideView();
+      const params = new URLSearchParams(location.search);
+      if (params.get('read') === '1') setSlideMode(false);
+      if (params.get('print') === '1') { setSlideMode(false); setTimeout(() => window.print(), 700); }
+
+      if (window.renderMathInElement) {
+        renderMathInElement(document.body, {
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false}
+          ],
+          throwOnError: false
+        });
+      }
+
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.classList.add('dark');
+      }
+    });
+
+    function buildTOC() {
+      const tocList = document.getElementById('tocList');
+      tocList.innerHTML = '';
+      slideTitles.forEach((title, idx) => {
+        const slideNum = idx + 1;
+        const item = document.createElement('button');
+        item.className = `w-full text-left px-3 py-2 rounded-lg text-xs font-medium transition flex items-center justify-between ${
+          currentSlide === slideNum && isSlideMode
+            ? 'bg-kgu-blue text-white font-bold'
+            : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+        }`;
+        item.innerHTML = `<span class="truncate">${title}</span>`;
+        item.onclick = () => {
+          goToSlide(slideNum);
+          closeSidebar();
+        };
+        tocList.appendChild(item);
+      });
+    }
+
+    function goToSlide(num) {
+      if (num < 1 || num > totalSlides) return;
+      currentSlide = num;
+      if (!isSlideMode) setSlideMode(true);
+      updateSlideView();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function updateSlideView() {
+      document.getElementById('currentSlideNum').innerText = currentSlide;
+      document.getElementById('totalSlideNum').innerText = totalSlides;
+      const progressPct = ((currentSlide / totalSlides) * 100).toFixed(2);
+      document.getElementById('progressBar').style.width = `${progressPct}%`;
+
+      document.getElementById('prevSlideBtn').disabled = (currentSlide === 1);
+      document.getElementById('nextSlideBtn').disabled = (currentSlide === totalSlides);
+      document.getElementById('footerPrevBtn').disabled = (currentSlide === 1);
+      document.getElementById('footerNextBtn').disabled = (currentSlide === totalSlides);
+
+      const slides = document.querySelectorAll('.slide-card');
+      slides.forEach(slide => {
+        const sNum = parseInt(slide.getAttribute('data-slide'));
+        if (isSlideMode) {
+          if (sNum === currentSlide) {
+            slide.classList.remove('hidden');
+            slide.classList.add('fade-in');
+          } else {
+            slide.classList.add('hidden');
+            slide.classList.remove('fade-in');
+          }
+        } else {
+          slide.classList.remove('hidden');
+          slide.classList.remove('fade-in');
+        }
+      });
+
+      buildTOC();
+    }
+
+    function setSlideMode(slideMode) {
+      isSlideMode = slideMode;
+      const slideControls = document.getElementById('slideControls');
+      const footerNav = document.getElementById('slideFooterNav');
+      const btnSlide = document.getElementById('modeSlideBtn');
+      const btnDoc = document.getElementById('modeDocBtn');
+
+      if (isSlideMode) {
+        slideControls.classList.remove('hidden');
+        footerNav.classList.remove('hidden');
+        btnSlide.className = "px-2.5 py-1 rounded-md bg-white dark:bg-slate-700 text-kgu-blue dark:text-sky-400 shadow-xs font-semibold flex items-center gap-1";
+        btnDoc.className = "px-2.5 py-1 rounded-md text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white flex items-center gap-1";
+      } else {
+        slideControls.classList.add('hidden');
+        footerNav.classList.add('hidden');
+        btnDoc.className = "px-2.5 py-1 rounded-md bg-white dark:bg-slate-700 text-kgu-blue dark:text-sky-400 shadow-xs font-semibold flex items-center gap-1";
+        btnSlide.className = "px-2.5 py-1 rounded-md text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white flex items-center gap-1";
+      }
+      updateSlideView();
+    }
+
+    document.getElementById('prevSlideBtn').onclick = () => goToSlide(currentSlide - 1);
+    document.getElementById('nextSlideBtn').onclick = () => goToSlide(currentSlide + 1);
+    document.getElementById('footerPrevBtn').onclick = () => goToSlide(currentSlide - 1);
+    document.getElementById('footerNextBtn').onclick = () => goToSlide(currentSlide + 1);
+
+    document.getElementById('modeSlideBtn').onclick = () => setSlideMode(true);
+    document.getElementById('modeDocBtn').onclick = () => setSlideMode(false);
+
+    window.addEventListener('keydown', (e) => {
+      if (!isSlideMode) return;
+      if (e.key === 'ArrowRight' || e.key === 'PageDown') {
+        goToSlide(currentSlide + 1);
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        goToSlide(currentSlide - 1);
+      }
+    });
+
+    document.getElementById('darkModeBtn').onclick = () => {
+      document.documentElement.classList.toggle('dark');
+    };
+
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    function openSidebar() {
+      sidebar.classList.remove('-translate-x-full');
+      overlay.classList.remove('hidden');
+    }
+    function closeSidebar() {
+      sidebar.classList.add('-translate-x-full');
+      overlay.classList.add('hidden');
+    }
+    document.getElementById('sidebarToggleBtn').onclick = openSidebar;
+    document.getElementById('sidebarCloseBtn').onclick = closeSidebar;
+    overlay.onclick = closeSidebar;
+
+    function showToast(message, icon = '📋') {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastMsg').innerText = message;
+      document.getElementById('toastIcon').innerText = icon;
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      setTimeout(() => {
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 2500);
+    }
+
+    function copyTextToClipboard(text, successMsg = '클립보드에 복사되었습니다.') {
+      const textArea = document.createElement("textarea");
+      textArea.value = text;
+      textArea.style.position = "fixed";
+      textArea.style.top = "-9999px";
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        showToast(successMsg, '✅');
+      } catch (err) {
+        showToast('복사에 실패했습니다.', '⚠️');
+      }
+      document.body.removeChild(textArea);
+    }
+
+    function copyPrompt8() {
+      const text = document.getElementById('promptText8').innerText.trim();
+      copyTextToClipboard(text, '8차수 AI 분석 명세 프롬프트가 복사되었습니다.');
+    }
+
+    function copyCode(id) {
+      const text = document.getElementById(id).innerText.trim();
+      copyTextToClipboard(text, '파이썬 코드가 복사되었습니다.');
+    }
+
+    function copySelfPrompt8() {
+      const text = document.getElementById('selfPromptText8').innerText.trim();
+      copyTextToClipboard(text, '자가 실습 프롬프트가 복사되었습니다.');
+    }
+
+    // Interactive Check for Slide 11 (Data A)
+    function checkCalcA() {
+      const mean = document.getElementById('ans_a_mean').value.trim();
+      const variance = document.getElementById('ans_a_var').value.trim();
+      const med = document.getElementById('ans_a_med').value.trim();
+      const mad = document.getElementById('ans_a_mad').value.trim();
+      const range = document.getElementById('ans_a_range').value.trim();
+      const msg = document.getElementById('msgCalcA');
+
+      if (mean === '6' && (variance === '10' || variance === '10.0') && med === '6' && mad === '2' && range === '8') {
+        msg.className = "text-xs font-bold text-emerald-600 dark:text-emerald-400";
+        msg.innerText = "🎉 완벽합니다! 자료 A의 모든 계산이 일치합니다.";
+        showToast("자료 A 손계산 정답입니다!", "🎉");
+      } else {
+        msg.className = "text-xs font-bold text-rose-600 dark:text-rose-400";
+        msg.innerText = "오답이 있습니다. 평균=6, 분산=10(ddof=1), 중앙값=6, MAD=2, 범위=8을 확인하세요.";
+      }
+    }
+    function toggleSolA() {
+      document.getElementById('solA').classList.toggle('hidden');
+    }
+
+    // Interactive Check for Slide 12 (Data B)
+    function checkCalcB() {
+      const mean = document.getElementById('ans_b_mean').value.trim();
+      const variance = document.getElementById('ans_b_var').value.trim();
+      const med = document.getElementById('ans_b_med').value.trim();
+      const mad = document.getElementById('ans_b_mad').value.trim();
+      const range = document.getElementById('ans_b_range').value.trim();
+      const msg = document.getElementById('msgCalcB');
+
+      if ((mean === '10' || mean === '10.0') && (variance === '130' || variance === '130.0') && med === '6' && mad === '2' && range === '28') {
+        msg.className = "text-xs font-bold text-emerald-600 dark:text-emerald-400";
+        msg.innerText = "🎉 정확합니다! 극단치에 흔들리지 않는 중앙값과 MAD를 확인하셨습니다.";
+        showToast("자료 B 손계산 정답입니다!", "🎉");
+      } else {
+        msg.className = "text-xs font-bold text-rose-600 dark:text-rose-400";
+        msg.innerText = "오답이 있습니다. 평균=10, 분산=130(ddof=1), 중앙값=6, MAD=2, 범위=28을 확인하세요.";
+      }
+    }
+    function toggleSolB() {
+      document.getElementById('solB').classList.toggle('hidden');
+    }
+  </script>
+<script>
+const fsBtn=document.getElementById('fullscreen-toggle');
+fsBtn.addEventListener('click',async()=>{try{if(document.fullscreenElement) await document.exitFullscreen(); else await document.documentElement.requestFullscreen();}catch(e){fsBtn.textContent='전체화면을 사용할 수 없습니다';}});
+document.addEventListener('fullscreenchange',()=>{const active=!!document.fullscreenElement;fsBtn.textContent=active?'전체화면 해제':'화면 전체보기';fsBtn.setAttribute('aria-pressed',String(active));});
+</script>
+</body>
+</html>
