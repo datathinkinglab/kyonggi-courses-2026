@@ -90,6 +90,21 @@
     }
   </style>
 <style>@media(max-width:640px){header h1,header .inline-flex{display:none!important} #fullscreen-toggle{font-size:0!important} #fullscreen-toggle::after{content:"⛶";font-size:16px} main,.slide-card{min-width:0;max-width:100%} .slide-card pre{max-width:100%;overflow-x:auto}} @media print { .slide-card.hidden {display:block!important} .slide-card{break-after:page;page-break-after:always} .no-print{display:none!important} }</style>
+<style id="presentation-layout">
+/* The contents list opens on demand at every screen size. */
+#sidebar { position: fixed !important; z-index: 60 !important; }
+#sidebar.-translate-x-full { transform: translateX(-100%) !important; }
+#sidebar:not(.-translate-x-full) { transform: translateX(0) !important; }
+#sidebarCloseBtn { display: block !important; }
+#sidebarOverlay:not(.hidden) { display: block !important; }
+/* Fullscreen is reserved for the active slide, with keyboard navigation. */
+html:fullscreen body > header, html:fullscreen #sidebar, html:fullscreen #sidebarOverlay,
+html:fullscreen #slideFooterNav, html:fullscreen #toast { display:none !important; }
+html:fullscreen body > div.flex-1 { max-width:none !important; width:100% !important; min-height:100vh; }
+html:fullscreen main { width:100%; padding:clamp(12px,2vw,32px) !important; display:block !important; }
+html:fullscreen #slideContentContainer { max-width:none !important; width:100%; }
+html:fullscreen .slide-card:not(.hidden) { width:100%; min-height:calc(100vh - 4vw); margin:0 !important; }
+</style>
 </head>
 <body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col font-sans antialiased transition-colors duration-200">
 
@@ -2086,8 +2101,26 @@ print("✅ 정의역 검사 완료: 20개 유효 관측치가 모두 양수(x > 
   </script>
 <script>
 const fsBtn=document.getElementById('fullscreen-toggle');
-fsBtn.addEventListener('click',async()=>{try{if(document.fullscreenElement) await document.exitFullscreen(); else await document.documentElement.requestFullscreen();}catch(e){fsBtn.textContent='전체화면을 사용할 수 없습니다';}});
-document.addEventListener('fullscreenchange',()=>{const active=!!document.fullscreenElement;fsBtn.textContent=active?'전체화면 해제':'화면 전체보기';fsBtn.setAttribute('aria-pressed',String(active));});
+let restoreReadingMode = false;
+fsBtn.addEventListener('click',async()=>{
+  try {
+    if(document.fullscreenElement) { await document.exitFullscreen(); return; }
+    restoreReadingMode = !isSlideMode;
+    if(restoreReadingMode) setSlideMode(true);
+    closeSidebar();
+    await document.documentElement.requestFullscreen();
+  } catch(e) {
+    if(restoreReadingMode) { setSlideMode(false); restoreReadingMode = false; }
+    fsBtn.textContent='전체화면을 사용할 수 없습니다';
+  }
+});
+document.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && document.fullscreenElement){ document.exitFullscreen(); } });
+document.addEventListener('fullscreenchange',()=>{
+  const active=!!document.fullscreenElement;
+  fsBtn.textContent=active?'전체화면 해제':'화면 전체보기';
+  fsBtn.setAttribute('aria-pressed',String(active));
+  if(!active && restoreReadingMode){ setSlideMode(false); restoreReadingMode=false; }
+});
 </script>
 </body>
 </html>
