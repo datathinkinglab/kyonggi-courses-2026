@@ -6,8 +6,6 @@
   <title>경기대학교 통계컨설팅의 이해 | GitHub 파일 업로드와 웹 배포 실습 강의노트</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Chart.js CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <!-- Phosphor Icons CDN -->
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <!-- Google Fonts: Pretendard / Noto Sans KR & JetBrains Mono -->
@@ -76,7 +74,7 @@
   <div class="bg-amber-100 text-amber-950 text-center px-4 py-2 text-xs font-bold">교육용 가상 사례: 이 페이지의 조직·인물·고객 정보와 수치는 수업을 위한 가상 예시이며 실제 고객 자료가 아닙니다.</div>
 
   <!-- Top Navigation Header -->
-  <header class="bg-[#001a35] border-b border-slate-800 px-4 py-2.5 flex items-center justify-between z-30 shadow-md">
+  <header class="bg-[#001a35] border-b border-slate-800 px-4 py-2.5 flex flex-wrap gap-2 items-center justify-between z-30 shadow-md">
     <div class="flex items-center space-x-3">
       <button onclick="openModal('modalToc')" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-[#cba86a] hover:bg-[#b89558] text-[#001a35] font-extrabold text-xs shadow transition" title="전체 슬라이드 목차 팝업 열기">
         <i class="ph-bold ph-list-bullets text-base"></i>
@@ -92,14 +90,14 @@
     </div>
 
     <!-- Action Buttons -->
-    <div class="flex items-center space-x-2">
+    <div class="flex flex-wrap gap-2 items-center">
       <button onclick="openModal('modalLabSimulator')" class="flex items-center space-x-1.5 px-3 py-1.5 bg-[#0284c7] hover:bg-sky-500 text-white text-xs font-bold rounded-lg shadow transition">
         <i class="ph-bold ph-terminal-window text-sm"></i>
         <span>단계별 배포 실습 시뮬레이터</span>
       </button>
-      <button onclick="openModal('modalYuantaPreview')" class="flex items-center space-x-1.5 px-3 py-1.5 bg-[#d9252c] hover:bg-red-700 text-white text-xs font-bold rounded-lg shadow transition">
+      <button onclick="openModal('modalPracticePreview')" class="flex items-center space-x-1.5 px-3 py-1.5 bg-[#d9252c] hover:bg-red-700 text-white text-xs font-bold rounded-lg shadow transition">
         <i class="ph-bold ph-chart-Polar text-sm"></i>
-        <span>실습파일(유안타 지점장) 라이브 체험</span>
+        <span>가상 실습 대시보드 미리보기</span>
       </button>
       <button onclick="openModal('modalChecklist')" class="hidden md:flex items-center space-x-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-[#cba86a]/50 text-[#cba86a] text-xs font-bold rounded-lg transition">
         <i class="ph-bold ph-check-square-offset text-sm"></i>
@@ -246,9 +244,9 @@
           </span>
           <div>
             <h2 class="text-base sm:text-lg font-extrabold text-white">
-              첨부파일(`유안타증권_지점장.html`) 기반 단계별 배포 실습 워크벤치
+              가상 실습파일 기반 단계별 배포 워크벤치
             </h2>
-            <p class="text-xs text-amber-200">실제 첨부파일의 코드 구조·익명화·GitHub 업로드·Pages 설정·트러블슈팅을 직접 클릭하며 따라 하세요.</p>
+            <p class="text-xs text-amber-200">가상 실습파일 다운로드·GitHub 업로드·Pages 설정·트러블슈팅을 따라 하세요.</p>
           </div>
         </div>
         <button onclick="closeModal('modalLabSimulator')" class="p-1.5 rounded-lg bg-slate-800 hover:bg-red-600 text-slate-300 hover:text-white transition">
@@ -259,10 +257,10 @@
       <!-- Lab Step Tabs -->
       <div class="bg-[#081628] px-4 py-2.5 border-b border-[#1a467c] flex flex-wrap gap-1.5">
         <button onclick="switchLabTab(1)" id="labTabBtn1" class="lab-tab-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-[#cba86a] text-[#001a35] transition">
-          Step 1. 원본 분석 & 교육용 사본(익명화) 만들기
+          Step 1. 가상 실습파일 다운로드
         </button>
         <button onclick="switchLabTab(2)" id="labTabBtn2" class="lab-tab-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-[#00264d] text-slate-300 hover:text-white transition">
-          Step 2. 파일명 index.html 변경 & 구조 점검
+          Step 2. index.html 이름과 구조 점검
         </button>
         <button onclick="switchLabTab(3)" id="labTabBtn3" class="lab-tab-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-[#00264d] text-slate-300 hover:text-white transition">
           Step 3. GitHub 저장소 생성 & 파일 Commit
@@ -280,48 +278,11 @@
         
         <!-- TAB 1: 익명화 및 교육용 사본 준비 (슬라이드 11~13 연계) -->
         <div id="labTabContent1" class="lab-tab-pane space-y-4">
-          <div class="bg-red-950/60 border border-red-600/70 rounded-xl p-4 flex items-start space-x-3">
-            <i class="ph-fill ph-shield-warning text-2xl text-red-400 shrink-0 mt-0.5"></i>
-            <div class="text-xs leading-relaxed">
-              <strong class="text-red-300 text-sm block mb-1">필수 보안 점검 (슬라이드 11~13 실습)</strong>
-              첨부된 <code>유안타증권_지점장.html</code>에는 <strong>"유안타증권 강남금융센터"</strong>, <strong>"김유안 수석PB"</strong>, <strong>"YT-9021 (김*회)"</strong> 등 실제 기업명과 유사한 명칭이 들어 있습니다. 공개 저장소(Public)에 올리기 전 반드시 <strong>가상의 조직명·교육용 시뮬레이션 안내 문구</strong>로 변환해야 합니다.
-            </div>
-          </div>
-
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <!-- 원본 코드 발췌 -->
-            <div class="bg-slate-950 border border-slate-800 rounded-xl p-4">
-              <div class="flex items-center justify-between pb-2 mb-3 border-b border-slate-800">
-                <span class="text-xs font-bold text-red-400 flex items-center gap-1">
-                  <i class="ph-bold ph-file-html"></i> [변경 전] 유안타증권_지점장.html (원본 코드 발췌)
-                </span>
-                <span class="text-[11px] bg-red-950 text-red-300 px-2 py-0.5 rounded border border-red-800">즉시 공개 불가</span>
-              </div>
-              <pre class="text-xs font-mono text-slate-300 overflow-x-auto leading-relaxed"><code>&lt;title&gt;<span class="bg-red-900/80 text-white px-1 rounded">유안타증권 지점장실</span> | VIP 고객 관리&lt;/title&gt;
-...
-&lt;span class="text-amber-300"&gt;
-  <span class="bg-red-900/80 text-white px-1 rounded">강남금융센터 VIP 라운지</span>
-&lt;/span&gt;
-&lt;h1&gt;지점장 일일 VIP 고객 관리 & 영업 성과 대시보드&lt;/h1&gt;
-...
-// JS 데이터셋 (Line 342)
-let vipClients = [
-  { id: 1, code: "<span class="bg-red-900/80 text-white px-1 rounded">YT-9021 (김*회)</span>", pb: "<span class="bg-red-900/80 text-white px-1 rounded">김유안 수석PB</span>", aumValue: 148.5 }
-];</code></pre>
-            </div>
-
-            <!-- 변환 후 교육용 코드 -->
-            <div class="bg-slate-950 border border-emerald-700/70 rounded-xl p-4">
-              <div class="flex items-center justify-between pb-2 mb-3 border-b border-slate-800">
-                <span class="text-xs font-bold text-emerald-400 flex items-center gap-1">
-                  <i class="ph-bold ph-check-circle"></i> [변경 후] index.html (교육용 안전 사본)
-                </span>
-                <button onclick="applySanitizeDemo()" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 text-white text-[11px] font-bold rounded transition">
-                  익명화 자동 변환 실행하기
-                </button>
-              </div>
-              <pre id="sanitizedCodePreview" class="text-xs font-mono text-emerald-200 overflow-x-auto leading-relaxed"><code>&lt;!-- 우측 상단 [익명화 자동 변환 실행하기] 버튼을 눌러보세요 --&gt;</code></pre>
-            </div>
+          <div class="bg-emerald-950 border border-emerald-700 rounded-xl p-5 text-sm leading-relaxed">
+            <h3 class="font-bold text-emerald-200">교육용 가상 파일을 내려받아 시작하세요</h3>
+            <p class="mt-2">금융센터, 고객, 담당자와 수치는 모두 수업을 위해 만든 가상 사례입니다. HTML 한 파일에 화면·스타일·동작이 들어 있으며 외부 라이브러리 없이 실행됩니다.</p>
+            <a href="practice-dashboard.html" download="index.html" class="inline-block mt-4 px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg">실습용 HTML 다운로드 (index.html)</a>
+            <p class="mt-3 text-xs">내려받은 파일을 브라우저에서 열어 필터와 상세 화면을 확인한 후 GitHub 저장소에 업로드하세요. 이 화면의 업로드·배포 버튼은 실제 GitHub를 변경하지 않는 시뮬레이션입니다.</p>
           </div>
         </div>
 
@@ -329,53 +290,8 @@ let vipClients = [
         <div id="labTabContent2" class="lab-tab-pane hidden space-y-4">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="bg-[#00264d] border border-[#1a467c] rounded-xl p-5 space-y-3">
-              <h3 class="text-sm font-bold text-[#cba86a] flex items-center gap-2">
-                <i class="ph-bold ph-folder-open text-lg"></i> 실습 1: 올바른 파일명 테스트
-              </h3>
-              <p class="text-xs text-slate-300 leading-relaxed">
-                GitHub Pages에서 <code>/(root)</code> 경로로 배포할 때, 시작 화면으로 자동 인식되는 파일명을 아래에서 직접 선택해 보세요.
-              </p>
-              <div class="space-y-2 pt-2">
-                <button onclick="checkFileNameQuiz('유안타증권_지점장.html')" class="w-full text-left px-3.5 py-2.5 rounded-lg bg-[#001a35] hover:bg-slate-800 border border-[#1a467c] text-xs font-mono flex items-center justify-between">
-                  <span>1. 유안타증권_지점장.html</span>
-                  <span class="text-slate-400">선택</span>
-                </button>
-                <button onclick="checkFileNameQuiz('index.html.html')" class="w-full text-left px-3.5 py-2.5 rounded-lg bg-[#001a35] hover:bg-slate-800 border border-[#1a467c] text-xs font-mono flex items-center justify-between">
-                  <span>2. index.html.html (확장자 숨김 실수)</span>
-                  <span class="text-slate-400">선택</span>
-                </button>
-                <button onclick="checkFileNameQuiz('Index.HTML')" class="w-full text-left px-3.5 py-2.5 rounded-lg bg-[#001a35] hover:bg-slate-800 border border-[#1a467c] text-xs font-mono flex items-center justify-between">
-                  <span>3. Index.HTML (대소문자 혼용)</span>
-                  <span class="text-slate-400">선택</span>
-                </button>
-                <button onclick="checkFileNameQuiz('index.html')" class="w-full text-left px-3.5 py-2.5 rounded-lg bg-[#001a35] hover:bg-slate-800 border border-emerald-600/60 text-xs font-mono flex items-center justify-between">
-                  <span class="text-emerald-300 font-bold">4. index.html (영문 소문자 정확 일치)</span>
-                  <span class="text-emerald-400">선택</span>
-                </button>
-              </div>
-              <div id="fileNameQuizResult" class="p-3 rounded-lg bg-slate-950 text-xs text-slate-300 border border-slate-800">
-                파일명을 클릭하면 GitHub Pages 서버의 반응 결과가 여기에 표시됩니다.
-              </div>
-            </div>
-
-            <div class="bg-[#00264d] border border-[#1a467c] rounded-xl p-5 space-y-3">
-              <h3 class="text-sm font-bold text-white flex items-center gap-2">
-                <i class="ph-bold ph-file-code text-lg text-sky-400"></i> 첨부파일의 외부 CDN 의존성 구조 확인
-              </h3>
-              <p class="text-xs text-slate-300 leading-relaxed">
-                <code>유안타증권_지점장.html</code> 파일은 별도의 이미지나 CSS 폴더 없이 단일 파일로 작동하지만, 아래 <strong>3가지 외부 CDN 라이브러리</strong>를 인터넷을 통해 불러옵니다.
-              </p>
-              <div class="bg-slate-950 p-3.5 rounded-lg border border-slate-800 space-y-2 text-xs font-mono">
-                <div class="text-sky-400">1. Tailwind CSS (디자인/다크네이비 컬러 테마)</div>
-                <div class="text-slate-400 pl-3 text-[11px]">https://cdn.tailwindcss.com</div>
-                <div class="text-amber-300">2. Chart.js (PB 달성률 가로바 & 자산배분 도넛차트)</div>
-                <div class="text-slate-400 pl-3 text-[11px]">https://cdn.jsdelivr.net/npm/chart.js</div>
-                <div class="text-emerald-400">3. Phosphor Icons (왕관, 빌딩, 경고 아이콘)</div>
-                <div class="text-slate-400 pl-3 text-[11px]">https://unpkg.com/@phosphor-icons/web</div>
-              </div>
-              <p class="text-[11px] text-amber-200">
-                ※ 따라서 오프라인 환경이나 사내 방화벽이 CDN을 차단하면 차트나 아이콘이 보이지 않을 수 있습니다 (슬라이드 24 & 27 검증 항목).
-              </p>
+              <h3 class="text-sm font-bold text-white">실습 파일 구조</h3>
+              <p class="text-xs text-slate-300">제공된 index.html은 HTML, CSS와 JavaScript가 한 파일에 포함되어 있습니다. 차트도 외부 라이브러리 없이 표시하므로 내려받아 오프라인에서 열 수 있습니다. GitHub 업로드와 공개 주소 접속에는 인터넷이 필요합니다.</p>
             </div>
           </div>
         </div>
@@ -404,7 +320,7 @@ let vipClients = [
                 <p class="text-slate-300 mt-1">업로드할 파일 선택 (최대 25MiB):</p>
                 <div class="p-3 border-2 border-dashed border-[#cba86a]/60 rounded-lg text-center bg-slate-950/60">
                   <i class="ph-bold ph-file-html text-2xl text-[#cba86a]"></i>
-                  <p class="font-mono text-white font-bold mt-1">index.html (유안타 교육용 사본)</p>
+                  <p class="font-mono text-white font-bold mt-1">index.html (가상 교육용 사본)</p>
                   <span class="text-[10px] text-emerald-400">위치: /(root) 최상위 경로 확인 완료</span>
                 </div>
               </div>
@@ -470,13 +386,13 @@ let vipClients = [
               <i class="ph-bold ph-database text-lg"></i> 핵심 검증: "지점장 코멘트 저장"이나 "조치 상태 변경"은 다른 사람에게도 보일까?
             </h3>
             <p class="text-xs text-slate-200 leading-relaxed">
-              첨부된 <code>유안타증권_지점장.html</code> 파일의 코드를 분석하면 다음과 같은 특징이 있습니다:
+              제공된 가상 실습파일의 저장 동작을 확인합니다:
             </p>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2 text-xs">
               <div class="bg-[#001a35] p-4 rounded-xl border border-amber-700/60 space-y-2">
-                <div class="font-bold text-amber-300">1. 첨부파일(`유안타증권_지점장.html`)의 실제 구현</div>
+                <div class="font-bold text-amber-300">1. 가상 실습파일의 구현</div>
                 <p class="text-slate-300 leading-relaxed">
-                  VIP 고객의 조치 상태(<code>조치대기 → 통화완료</code>) 변경과 모달창의 <code>지점장 코멘트 저장</code>은 JavaScript 메모리 변수(<code>vipClients</code> 배열)와 토스트 알림만 작동합니다.
+                  고객 조치 상태는 페이지 메모리에만 보관됩니다. 상세창의 메모는 입력을 시험하는 용도이며 저장하거나 전송하지 않습니다.
                 </p>
                 <p class="text-red-300 font-semibold">
                   → 새로고침(F5)하거나 다른 브라우저로 열면 초기 상태로 돌아갑니다.
@@ -499,10 +415,10 @@ let vipClients = [
 
       <!-- Modal Footer -->
       <div class="bg-[#001a35] px-6 py-3 border-t border-[#1a467c] flex items-center justify-between">
-        <span class="text-xs text-slate-400">우측 버튼을 눌러 실제 첨부파일 화면을 직접 조작해 볼 수 있습니다.</span>
+        <span class="text-xs text-slate-400">우측 버튼으로 내려받을 파일과 같은 가상 화면을 체험할 수 있습니다.</span>
         <div class="flex space-x-2">
-          <button onclick="closeModal('modalLabSimulator'); openModal('modalYuantaPreview');" class="px-4 py-1.5 bg-[#d9252c] hover:bg-red-700 text-white text-xs font-bold rounded-lg transition">
-            유안타 지점장 대시보드 라이브 실행 →
+          <button onclick="closeModal('modalLabSimulator'); openModal('modalPracticePreview');" class="px-4 py-1.5 bg-[#d9252c] hover:bg-red-700 text-white text-xs font-bold rounded-lg transition">
+            가상 금융센터 대시보드 라이브 실행 →
           </button>
           <button onclick="closeModal('modalLabSimulator')" class="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold rounded-lg transition">
             닫기
@@ -514,243 +430,18 @@ let vipClients = [
   </div>
 
   <!-- ===================================================================== -->
-  <!-- MODAL 2: 첨부파일(유안타증권_지점장.html) 100% 라이브 인터랙티브 샌드박스 -->
+  <!-- MODAL 2: 첨부파일(practice-dashboard.html) 100% 라이브 인터랙티브 샌드박스 -->
   <!-- ===================================================================== -->
-  <div id="modalYuantaPreview" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 hidden flex items-center justify-center p-2 sm:p-4">
-    <div class="bg-[#081628] border-2 border-[#d9252c] rounded-2xl max-w-7xl w-full max-h-[94vh] flex flex-col shadow-2xl overflow-hidden">
-      
-      <!-- Top Control Bar for Sandbox -->
-      <div class="bg-slate-950 px-4 py-2.5 border-b border-slate-800 flex flex-wrap items-center justify-between gap-2">
-        <div class="flex items-center space-x-2">
-          <span class="px-2 py-0.5 bg-[#d9252c] text-white text-[11px] font-extrabold rounded">LIVE PREVIEW</span>
-          <span class="text-xs font-mono text-slate-300" id="sandboxUrlBar">https://kgu-student.github.io/dashboard-demo/index.html</span>
-          <span id="sandboxModeBadge" class="px-2 py-0.5 bg-amber-950 text-amber-300 border border-amber-700 rounded text-[11px] font-bold">
-            원본 모드 (유안타증권_지점장.html)
-          </span>
-        </div>
-
-        <div class="flex items-center space-x-2">
-          <button id="btnToggleSanitizeLive" onclick="toggleYuantaSanitizeMode()" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-lg transition flex items-center gap-1">
-            <i class="ph-bold ph-shield-check"></i>
-            <span>교육용 익명화 사본으로 전환 (슬라이드 12~13 실습)</span>
-          </button>
-          <button onclick="closeModal('modalYuantaPreview')" class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded-lg">
-            닫기 ✕
-          </button>
-        </div>
+  <div id="modalPracticePreview" role="dialog" aria-modal="true" aria-label="가상 실습 대시보드 미리보기" class="fixed inset-0 bg-black/85 z-50 hidden flex items-center justify-center p-2 sm:p-4">
+    <div class="bg-slate-900 border-2 border-[#cba86a] rounded-2xl w-full max-w-7xl h-[90vh] flex flex-col overflow-hidden">
+      <div class="flex flex-wrap justify-between items-center gap-2 px-4 py-3 text-white">
+        <strong>교육용 가상 대시보드 미리보기</strong>
+        <div class="flex gap-2"><a href="practice-dashboard.html" download="index.html" class="px-3 py-2 rounded bg-emerald-700 text-white text-xs font-bold">실습용 HTML 다운로드</a><button onclick="closeModal('modalPracticePreview')" class="px-3 py-2 rounded bg-slate-700 text-white text-xs">닫기 ✕</button></div>
       </div>
-
-      <!-- Educational Notice Banner (Hidden in Raw Mode, Shown in Sanitized Mode) -->
-      <div id="eduNoticeBanner" class="hidden bg-emerald-950 border-b border-emerald-700 px-6 py-2 text-xs text-emerald-200 flex items-center justify-between">
-        <div>
-          <strong>[교육용 가상 데이터 안내]</strong> 본 대시보드의 모든 수치(AUM, 순증액, 수익률)는 「통계컨설팅의 이해」 배포 실습을 위해 생성된 가상 시나리오이며, 실제 금융투자 판단에 사용할 수 없습니다.
-        </div>
-        <span class="font-mono text-[11px] text-emerald-400 shrink-0 ml-2">단위: 억원, % | 가정: 모닝 브리핑 시뮬레이션</span>
-      </div>
-
-      <!-- Actual Yuanta Dashboard Content -->
-      <div class="overflow-y-auto custom-scroll flex-grow bg-[#081628] text-slate-100 p-4 sm:p-6 space-y-6">
-        
-        <!-- Yuanta Header -->
-        <div class="bg-[#00264d] border border-[#1a467c] rounded-xl px-5 py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-lg">
-          <div class="flex items-center space-x-3.5">
-            <div class="h-11 w-11 rounded-xl bg-gradient-to-br from-[#d9252c] via-[#b81d23] to-[#00264d] flex items-center justify-center text-white shadow-lg shrink-0 border border-red-500/40">
-              <i class="ph-bold ph-buildings text-2xl text-amber-200"></i>
-            </div>
-            <div>
-              <div class="flex items-center space-x-2">
-                <span id="yuantaBrandTag" class="text-[11px] font-bold tracking-wider text-[#d9252c] bg-red-950/80 px-2 py-0.5 rounded border border-red-700/60 uppercase">
-                  YUANTA BRANCH HEADQUARTERS
-                </span>
-                <span id="yuantaLoungeTag" class="text-[11px] text-amber-300 font-semibold flex items-center gap-1">
-                  <i class="ph-fill ph-crown-simple text-xs"></i> 강남금융센터 VIP 라운지
-                </span>
-              </div>
-              <h2 id="yuantaMainTitle" class="text-base sm:text-lg font-extrabold tracking-tight text-white mt-0.5">
-                지점장 일일 VIP 고객 관리 & 영업 성과 대시보드
-              </h2>
-            </div>
-          </div>
-
-          <div class="flex items-center gap-2.5">
-            <button onclick="refreshYuantaSandbox()" class="flex items-center gap-1.5 px-3 py-1.5 bg-[#001a35] hover:bg-[#083260] text-slate-200 border border-[#1a467c] hover:border-[#cba86a] font-medium text-xs rounded-lg transition">
-              <i class="ph-bold ph-arrows-clockwise text-sm text-[#cba86a]"></i>
-              <span>새로고침</span>
-            </button>
-            <button onclick="window.print()" class="flex items-center gap-1.5 px-3.5 py-1.5 bg-[#d9252c] hover:bg-[#b81d23] text-white font-semibold text-xs rounded-lg shadow transition">
-              <i class="ph-bold ph-printer text-sm"></i>
-              <span>모닝 브리핑 출력</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- 4 KPI Cards -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div class="bg-[#00264d] border border-[#1a467c] rounded-xl p-4 shadow-lg">
-            <div class="flex items-center justify-between text-xs text-slate-300">
-              <span>지점 총 AUM 달성률</span>
-              <i class="ph-bold ph-chart-pie-slice text-[#cba86a]"></i>
-            </div>
-            <div class="mt-2 flex items-baseline gap-2">
-              <span class="text-2xl font-extrabold text-white">104.8%</span>
-              <span class="text-xs text-emerald-400 font-bold">+4.8%p 초과</span>
-            </div>
-            <div class="mt-2 text-[11px] text-slate-400 flex justify-between">
-              <span>관리잔고: <strong class="text-white">1조 2,580억</strong></span>
-              <span>목표 1조 2,000억</span>
-            </div>
-          </div>
-
-          <div class="bg-[#00264d] border border-[#1a467c] rounded-xl p-4 shadow-lg">
-            <div class="flex items-center justify-between text-xs text-slate-300">
-              <span>당월 신규 순증 예탁자산</span>
-              <i class="ph-bold ph-trend-up text-emerald-400"></i>
-            </div>
-            <div class="mt-2 flex items-baseline gap-2">
-              <span class="text-2xl font-extrabold text-emerald-400">₩ +342 억</span>
-              <span class="text-xs text-slate-400">당월 누계</span>
-            </div>
-            <div class="mt-2 text-[11px] text-slate-400 flex justify-between">
-              <span>전월 동기 대비: <strong class="text-emerald-300">+18.5%</strong></span>
-              <span class="text-[#cba86a]">법인 자금 유입</span>
-            </div>
-          </div>
-
-          <div class="bg-[#00264d] border border-[#1a467c] rounded-xl p-4 shadow-lg">
-            <div class="flex items-center justify-between text-xs text-slate-300">
-              <span>만기 도래 (14일 이내)</span>
-              <i class="ph-bold ph-calendar-check text-amber-300"></i>
-            </div>
-            <div class="mt-2 flex items-baseline gap-2">
-              <span class="text-2xl font-extrabold text-amber-300">8 건</span>
-              <span class="text-xs text-slate-400">(총 ₩ 146억원)</span>
-            </div>
-            <p class="mt-2 text-[11px] text-amber-300/90">ELS 상환 & 채권 만기 롤오버 집중</p>
-          </div>
-
-          <div class="bg-[#00264d] border border-[#1a467c] rounded-xl p-4 shadow-lg">
-            <div class="flex items-center justify-between text-xs text-slate-300">
-              <span>이탈 위험 VIP 고객</span>
-              <i class="ph-bold ph-shield-warning text-red-400"></i>
-            </div>
-            <div class="mt-2 flex items-baseline gap-2">
-              <span class="text-2xl font-extrabold text-red-400" id="sandboxRiskCount">3 명</span>
-              <span class="text-xs text-red-300 font-bold">즉시 면담 요망</span>
-            </div>
-            <p class="mt-2 text-[11px] text-red-400">최근 1개월 자산 -10% 이상 급감 고객</p>
-          </div>
-        </div>
-
-        <!-- 2 Charts Section -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          <div class="lg:col-span-7 bg-[#00264d] border border-[#1a467c] rounded-xl p-5 shadow-lg">
-            <div class="flex items-center justify-between pb-3 border-b border-[#1a467c]">
-              <h3 class="text-sm font-bold text-white flex items-center gap-1.5">
-                <i class="ph-bold ph-chart-bar-horizontal text-[#cba86a]"></i>
-                PB별 목표 대비 실적 달성률 (AUM 기준)
-              </h3>
-              <span class="text-[11px] text-[#cba86a] bg-[#001a35] px-2 py-0.5 rounded border border-[#1a467c]">지점 평균: 103.2%</span>
-            </div>
-            <div class="h-56 w-full pt-3">
-              <canvas id="sandboxPbChart"></canvas>
-            </div>
-          </div>
-
-          <div class="lg:col-span-5 bg-[#00264d] border border-[#1a467c] rounded-xl p-5 shadow-lg">
-            <div class="flex items-center justify-between pb-3 border-b border-[#1a467c]">
-              <h3 class="text-sm font-bold text-white flex items-center gap-1.5">
-                <i class="ph-bold ph-chart-pie text-red-400"></i>
-                지점 총 운용 자산군별 비중
-              </h3>
-              <span class="text-[11px] text-slate-400 font-mono">총 1조 2,580억</span>
-            </div>
-            <div class="h-56 w-full relative flex items-center justify-center pt-2">
-              <canvas id="sandboxAssetChart"></canvas>
-              <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                <span class="text-[11px] text-slate-400">안전자산 비중</span>
-                <span class="text-base font-bold text-[#cba86a]">52.0%</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- VIP Client Table & Filter Controls (슬라이드 24 기능 검증 대상) -->
-        <div class="bg-[#00264d] border border-[#1a467c] rounded-xl overflow-hidden shadow-xl">
-          <div class="p-4 bg-[#001a35] border-b border-[#1a467c] flex flex-wrap items-center justify-between gap-3">
-            <div class="flex items-center gap-2">
-              <span class="h-2.5 w-2.5 rounded-full bg-[#d9252c] animate-pulse"></span>
-              <h3 class="text-sm font-bold text-white">우선 조치 필요 VIP 고객 리스트 (모닝 케어 실습)</h3>
-            </div>
-
-            <div class="flex flex-wrap items-center gap-2">
-              <select id="sandboxPbFilter" onchange="renderSandboxVipTable()" class="bg-[#00264d] border border-[#1a467c] rounded-lg px-2.5 py-1.5 text-xs text-white">
-                <option value="all">전체 담당 PB</option>
-                <option value="PB-A">김유안 수석PB (PB-A)</option>
-                <option value="PB-B">박태훈 책임PB (PB-B)</option>
-                <option value="PB-C">이지은 선임PB (PB-C)</option>
-                <option value="PB-D">최민호 PB (PB-D)</option>
-                <option value="PB-E">정수아 PB (PB-E)</option>
-              </select>
-
-              <button id="btnSandboxRiskOnly" onclick="toggleSandboxRiskFilter()" class="px-2.5 py-1.5 bg-[#00264d] border border-[#1a467c] hover:border-red-500 text-xs font-semibold text-slate-200 rounded-lg transition flex items-center gap-1">
-                <i class="ph-bold ph-warning-octagon text-red-400"></i>
-                <span>이탈위험(-10%)만 보기</span>
-              </button>
-
-              <input type="text" id="sandboxSearchInput" oninput="renderSandboxVipTable()" placeholder="고객코드/상품 검색..." 
-                class="bg-[#00264d] border border-[#1a467c] rounded-lg px-2.5 py-1.5 text-xs text-white placeholder-slate-400 w-40">
-            </div>
-          </div>
-
-          <div class="overflow-x-auto custom-scroll">
-            <table class="w-full text-left text-xs text-slate-200 border-collapse min-w-[850px]">
-              <thead>
-                <tr class="bg-[#00264d] text-slate-300 font-semibold border-b border-[#1a467c]">
-                  <th class="py-2.5 px-3 text-center">No</th>
-                  <th class="py-2.5 px-3">고객코드 (성명)</th>
-                  <th class="py-2.5 px-3 text-center">등급</th>
-                  <th class="py-2.5 px-3">담당 PB</th>
-                  <th class="py-2.5 px-3 text-right">총 평가금액</th>
-                  <th class="py-2.5 px-3 text-right">최근 1M 변동</th>
-                  <th class="py-2.5 px-3">상품 만기일</th>
-                  <th class="py-2.5 px-3 text-center">조치 상태 (변경 실습)</th>
-                  <th class="py-2.5 px-3 text-center">상세/메모</th>
-                </tr>
-              </thead>
-              <tbody id="sandboxVipTbody" class="divide-y divide-[#1a467c]/60 bg-[#001a35]">
-                <!-- Populated by JS -->
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Inner Client Detail Modal (유안타 원본의 clientDetailModal 재현) -->
-      <div id="sandboxClientDetailModal" class="fixed inset-0 bg-black/75 z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-[#00264d] border-2 border-[#cba86a] rounded-xl max-w-md w-full p-5 shadow-2xl space-y-4 text-xs">
-          <div class="flex items-center justify-between border-b border-[#1a467c] pb-2.5">
-            <span class="font-bold text-white text-sm flex items-center gap-1.5">
-              <i class="ph-bold ph-identification-card text-[#cba86a] text-lg"></i> VIP 고객 상세 케어 카드 & 지점장 메모
-            </span>
-            <button onclick="closeSandboxClientModal()" class="text-slate-400 hover:text-white">✕</button>
-          </div>
-          <div id="sandboxClientDetailBody" class="space-y-2"></div>
-          <div class="space-y-1.5">
-            <label class="block text-slate-300 font-semibold">지점장 모닝 특이 지시사항 (Action Order):</label>
-            <textarea id="sandboxBranchMemoInput" rows="3" class="w-full bg-[#001a35] border border-[#1a467c] rounded-lg p-2 text-white" placeholder="예: 10시 장 개장 직후 담당 PB와 함께 대안 포트폴리오 제안 요망"></textarea>
-            <p class="text-[11px] text-amber-300">※ [슬라이드 25 검증] 메모 입력 후 알림만 표시하며, 메모 내용은 실제로 보관하지 않습니다.</p>
-          </div>
-          <div class="flex justify-end gap-2 pt-2 border-t border-[#1a467c]">
-            <button onclick="saveSandboxClientMemo()" class="px-4 py-1.5 bg-[#cba86a] text-[#001a35] font-bold rounded-lg">지점장 코멘트 저장</button>
-          </div>
-        </div>
-      </div>
-
+      <iframe src="practice-dashboard.html" title="교육용 가상 대시보드" class="w-full flex-grow bg-white border-0"></iframe>
     </div>
   </div>
 
-  <!-- ===================================================================== -->
   <!-- MODAL 3: 부록 A. 학생용 검증표 (인터랙티브 체크 및 클립보드 복사) -->
   <!-- ===================================================================== -->
   <div id="modalChecklist" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
@@ -798,7 +489,7 @@ let vipClients = [
               <td class="p-2.5 text-center"><input type="checkbox" checked class="h-4 w-4 accent-[#cba86a]"></td>
             </tr>
             <tr>
-              <td class="p-2.5 font-bold">3. 차트(Chart.js)와 필터 버튼</td>
+              <td class="p-2.5 font-bold">3. 차트와 필터 버튼</td>
               <td class="p-2.5"><input type="text" value="PB 가로바·도넛 차트 렌더링 및 -10% 위험필터 작동" class="w-full bg-slate-900 border border-slate-800 rounded px-2 py-1 text-white"></td>
               <td class="p-2.5"><input type="text" value="정상 작동" class="w-full bg-slate-900 border border-slate-800 rounded px-2 py-1 text-white"></td>
               <td class="p-2.5 text-center"><input type="checkbox" checked class="h-4 w-4 accent-[#cba86a]"></td>
@@ -906,10 +597,10 @@ let vipClients = [
       <div class="space-y-2">
         <h4 class="font-bold text-white text-sm">부록 B. 강사용 수업 전 필수 점검 5계명</h4>
         <ol class="list-decimal list-inside space-y-1.5 text-slate-300 leading-relaxed bg-slate-950 p-4 rounded-xl border border-slate-800">
-          <li>사용 권한이 있는 가상 HTML을 준비하고 원본(<code>유안타증권_지점장.html</code>)의 실제 조직명·수치·민감한 내용이 남지 않았는지 소스까지 확인한다.</li>
+          <li>제공된 가상 HTML에 실제 고객 정보나 비밀키를 추가하지 않았는지 소스까지 확인한다.</li>
           <li>가상 수치의 생성 목적, 의미, 단위(억원, %), 가정을 설명하고 화면에 표시한다.</li>
           <li>테스트용 계정과 저장소로 현재 GitHub 메뉴, Pages 설정, 배포 및 삭제·관리 절차를 미리 확인한다.</li>
-          <li>외부 라이브러리(Tailwind, Chart.js, Phosphor Icons) 접속, 차트, 필터, 메모, 인쇄를 실습실 네트워크에서 점검한다.</li>
+          <li>가상 실습파일의 차트, 필터, 상세 화면과 새로고침 후 상태를 점검한다. 강의자료 자체는 외부 라이브러리를 사용하므로 인터넷 연결도 확인한다.</li>
           <li>수업용 계정 준비가 어려운 학생을 위해 조별 시연과 개별 설명·검증 기록 양식을 준비한다.</li>
         </ol>
       </div>
@@ -937,7 +628,7 @@ let vipClients = [
   </div>
 
   <!-- ===================================================================== -->
-  <!-- JAVASCRIPT: 32 SLIDES DATA + LAB SIMULATOR + YUANTA SANDBOX LOGIC -->
+  <!-- JAVASCRIPT: 32 SLIDES DATA + LAB SIMULATOR + PRACTICE PREVIEW -->
   <!-- ===================================================================== -->
   <script>
     // 1. 32개의 상세 설계 슬라이드 데이터 (설계안 1~32번 완벽 반영 + 첨부파일 실습 연동)
@@ -963,7 +654,7 @@ let vipClients = [
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-8 pt-6 border-t border-white/15 text-xs">
               <div class="bg-black/25 p-3.5 rounded-xl border border-white/10">
                 <div class="text-[#cba86a] font-bold mb-1">1. 내 노트북의 HTML 파일</div>
-                <div class="text-slate-300">유안타 지점장 대시보드 교육용 사본 (<code>index.html</code>) 준비</div>
+                <div class="text-slate-300">가상 금융센터 대시보드 교육용 사본 (<code>index.html</code>) 준비</div>
               </div>
               <div class="bg-black/25 p-3.5 rounded-xl border border-white/10">
                 <div class="text-sky-300 font-bold mb-1">2. GitHub 원격 저장소</div>
@@ -976,7 +667,7 @@ let vipClients = [
             </div>
           </div>
         `,
-        note: "4차수에서 만든 결과물을 다른 사람이 어떻게 접근하고 확인할 수 있는지에 초점을 둡니다. 오늘은 첨부된 '유안타증권_지점장.html'의 구조와 기능을 참고하되 공개 가능한 교육용 HTML 사본을 사용합니다."
+        note: "4차수에서 만든 결과물을 다른 사람이 어떻게 접근하고 확인할 수 있는지에 초점을 둡니다. 오늘은 첨부된 'practice-dashboard.html'의 구조와 기능을 참고하되 공개 가능한 교육용 HTML 사본을 사용합니다."
       },
       {
         num: 2,
@@ -1027,7 +718,7 @@ let vipClients = [
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
               <div class="p-4 rounded-xl bg-slate-100 border border-slate-300">
                 <div class="font-extrabold text-slate-800 text-sm mb-1">💻 제작자 (학생)</div>
-                <p class="text-slate-600 leading-relaxed">내 컴퓨터에서는 <code>유안타증권_지점장.html</code>이 정상 실행됨. 하지만 파일을 메일로 보낼 때마다 버전이 꼬임.</p>
+                <p class="text-slate-600 leading-relaxed">내 컴퓨터에서는 <code>practice-dashboard.html</code>이 정상 실행됨. 하지만 파일을 메일로 보낼 때마다 버전이 꼬임.</p>
               </div>
               <div class="p-4 rounded-xl bg-slate-100 border border-slate-300">
                 <div class="font-extrabold text-slate-800 text-sm mb-1">👔 의뢰인 (지점장/임원)</div>
@@ -1088,7 +779,7 @@ let vipClients = [
             </div>
             <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
               <h4 class="text-sm font-extrabold text-[#00264d]">Q2. 파일에 적힌 화면 구조와 버튼의 동작은 같은 것인가?</h4>
-              <p class="text-xs text-slate-600 mt-1">→ <strong>HTML</strong>은 구조를, <strong>CSS(Tailwind)</strong>는 디자인 표현을, <strong>JavaScript(Chart.js 및 이벤트 함수)</strong>는 상호작용 동작을 담당합니다.</p>
+              <p class="text-xs text-slate-600 mt-1">→ <strong>HTML</strong>은 구조를, <strong>CSS</strong>는 디자인 표현을, <strong>JavaScript</strong>는 상호작용 동작을 담당합니다.</p>
             </div>
             <div class="p-4 rounded-xl bg-red-50 border border-red-200">
               <h4 class="text-sm font-extrabold text-red-800">Q3. 인터넷 주소를 받으면 누구나 볼 수 있는가?</h4>
@@ -1096,7 +787,7 @@ let vipClients = [
             </div>
           </div>
         `,
-        note: "첨부된 유안타증권_지점장.html 역시 HTML 구조 + Tailwind CSS 스타일 + Chart.js 및 필터 JavaScript가 하나로 합쳐진 파일임을 이해시킵니다."
+        note: "실습파일은 HTML 구조, CSS 스타일, 필터 JavaScript가 하나로 합쳐진 파일임을 설명합니다."
       },
       {
         num: 6,
@@ -1116,7 +807,7 @@ let vipClients = [
               <tbody class="divide-y divide-slate-200">
                 <tr>
                   <td class="p-3 font-bold bg-slate-50">1. 내 컴퓨터</td>
-                  <td class="p-3">파일 작성, 익명화 및 사전 확인</td>
+                  <td class="p-3">가상 파일 준비 및 사전 확인</td>
                   <td class="p-3 font-mono text-xs text-slate-500">file:///C:/실습폴더/index.html</td>
                 </tr>
                 <tr>
@@ -1262,7 +953,7 @@ let vipClients = [
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
               <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
                 <div class="font-extrabold text-slate-900 text-sm mb-1">⚡ JavaScript (브라우저 실행)</div>
-                <p class="text-slate-600 leading-relaxed">첨부된 유안타 대시보드의 <strong>담당 PB 필터, -10% 이탈위험 토글, Chart.js 그래프, 상세 모달창</strong>은 모두 사용자의 브라우저가 직접 실행합니다.</p>
+                <p class="text-slate-600 leading-relaxed">첨부된 가상 대시보드의 <strong>담당 PB 필터, -10% 이하 감소 필터, CSS 차트, 상세 모달창</strong>은 모두 사용자의 브라우저가 직접 실행합니다.</p>
               </div>
               <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
                 <div class="font-extrabold text-slate-900 text-sm mb-1">🗂️ 브라우저 저장 공간</div>
@@ -1270,7 +961,7 @@ let vipClients = [
               </div>
               <div class="p-4 rounded-xl bg-red-50 border border-red-200">
                 <div class="font-extrabold text-red-900 text-sm mb-1">🖥️ 서버가 반드시 필요한 예</div>
-                <p class="text-red-800 leading-relaxed">Python 실시간 통계 모델 실행, 실시간 증권사 DB 조회, <strong>지점장이 쓴 코멘트를 담당 PB 컴퓨터에 즉시 공유(공동 저장)</strong>하는 경우.</p>
+                <p class="text-red-800 leading-relaxed">Python 실시간 통계 모델 실행, 외부 데이터베이스 조회, <strong>지점장이 쓴 코멘트를 담당 PB 컴퓨터에 즉시 공유(공동 저장)</strong>하는 경우.</p>
               </div>
             </div>
           </div>
@@ -1293,7 +984,7 @@ let vipClients = [
                 <input type="checkbox" checked class="mt-0.5 h-4 w-4 accent-red-600">
                 <div>
                   <strong class="text-slate-900 block">1. 조직명과 실제 업무 자료의 공개 권한</strong>
-                  <span class="text-slate-600">첨부파일의 '유안타증권 강남금융센터' 등 실제 기업명을 승인 없이 게시하지 않았는가?</span>
+                  <span class="text-slate-600">첨부파일의 '가상 금융센터 강남금융센터' 등 실제 기업명을 승인 없이 게시하지 않았는가?</span>
                 </div>
               </div>
               <div class="p-4 rounded-xl bg-slate-50 border border-slate-300 flex items-start gap-2.5">
@@ -1332,11 +1023,11 @@ let vipClients = [
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
               <div class="p-4 rounded-xl bg-[#00264d] text-white space-y-2">
                 <span class="px-2 py-0.5 bg-[#cba86a] text-[#001a35] font-extrabold rounded">첨부파일 구조 분석</span>
-                <h4 class="text-sm font-bold mt-1">유안타증권_지점장.html의 핵심 특징</h4>
+                <h4 class="text-sm font-bold mt-1">practice-dashboard.html의 핵심 특징</h4>
                 <ul class="space-y-1.5 text-slate-200 list-disc list-inside leading-relaxed">
-                  <li><strong>KPI 4종:</strong> 지점 총 AUM 달성률(104.8%), 당월 순증(+342억), 만기 도래(8건), 이탈위험 VIP(3명)</li>
-                  <li><strong>Chart.js 차트 2종:</strong> PB 5인 목표 달성률 가로 막대차트, 자산군별 비중 도넛차트</li>
-                  <li><strong>인터랙티브 테이블:</strong> 담당 PB 필터, <code>-10%</code> 이상 자산 급감 고객 적색 점멸 및 필터, 상세 모달창</li>
+                  <li><strong>가상 지표 4종:</strong> 목표 달성률(104.8%), 당월 순증(+342억원), 관리 고객(8명), 감소 고객(3명)</li>
+                  <li><strong>CSS 차트 2종:</strong> PB 5인 목표 달성률 가로 막대차트, 자산군별 비중 도넛차트</li>
+                  <li><strong>인터랙티브 테이블:</strong> 담당 PB 필터, <code>-10%</code> 이하 자산 감소 고객 필터, 상세 모달창</li>
                 </ul>
               </div>
               <div class="p-4 rounded-xl bg-slate-50 border border-slate-300 space-y-2">
@@ -1344,14 +1035,14 @@ let vipClients = [
                 <h4 class="text-sm font-bold text-slate-900 mt-1">교육용 사본 배포 후 확인할 질문</h4>
                 <ol class="space-y-2 text-slate-700 list-decimal list-inside leading-relaxed">
                   <li>링크를 받은 사람이 별도 설치 없이 화면을 열 수 있는가?</li>
-                  <li>PB 필터 버튼, 이탈위험 토글, 차트, 상세 모달이 의도대로 작동하는가?</li>
+                  <li>PB 필터 버튼, 감소 고객 필터, 차트, 상세 모달이 의도대로 작동하는가?</li>
                   <li>수치의 의미(단위: 억원, %)와 한계(교육용 가상 수치)를 오해 없이 이해할 수 있는가?</li>
                 </ol>
               </div>
             </div>
           </div>
         `,
-        note: "우측 상단 [이 단계 실습 열기] 또는 [실습파일 라이브 체험] 버튼을 눌러 실제 유안타 대시보드의 구조와 익명화 전환 모드를 학생들에게 시연합니다."
+        note: "실습파일을 내려받고 미리보기에서 가상 대시보드의 구조와 기능을 시연합니다."
       },
       {
         num: 13,
@@ -1364,12 +1055,12 @@ let vipClients = [
               <div class="p-4 rounded-xl bg-slate-50 border border-slate-300">
                 <span class="font-mono font-extrabold text-sky-700">STEP 01</span>
                 <h4 class="font-extrabold text-slate-900 text-sm mt-1">교육용 사본 복사</h4>
-                <p class="text-slate-600 mt-1">강사가 제공한 교육용 HTML(익명화 완료본)을 내 컴퓨터의 별도 실습 폴더에 복사합니다.</p>
+                <p class="text-slate-600 mt-1">상단의 다운로드 버튼을 눌러 교육용 HTML을 내 컴퓨터에 저장합니다.</p>
               </div>
               <div class="p-4 rounded-xl bg-amber-50 border border-amber-300">
                 <span class="font-mono font-extrabold text-amber-800">STEP 02</span>
                 <h4 class="font-extrabold text-slate-900 text-sm mt-1">index.html 이름 변경</h4>
-                <p class="text-slate-700 mt-1">사본 파일 이름을 소문자 <code>index.html</code>로 바꿉니다. (<code>index.html.html</code> 중복 확장자 주의!)</p>
+                <p class="text-slate-700 mt-1">다운로드한 파일 이름이 소문자 <code>index.html</code>인지 확인합니다. (<code>index.html.html</code> 중복 확장자 주의!)</p>
               </div>
               <div class="p-4 rounded-xl bg-slate-50 border border-slate-300">
                 <span class="font-mono font-extrabold text-sky-700">STEP 03</span>
@@ -1384,7 +1075,7 @@ let vipClients = [
             </div>
           </div>
         `,
-        note: "파일 이름만 index.html로 바꾼다고 자료가 자동 익명화되는 것은 아닙니다. 교육용 사본이 준비되었는지 먼저 확인합니다."
+        note: "다운로드한 교육용 파일을 열어 가상자료 표시와 기능을 먼저 확인합니다."
       },
       {
         num: 14,
@@ -1542,7 +1233,7 @@ let vipClients = [
             </div>
             <div class="bg-slate-900 text-white p-5 rounded-xl border border-slate-700 space-y-3 text-xs font-mono">
               <div class="p-4 border-2 border-dashed border-slate-600 rounded text-center text-slate-300">
-                📄 <strong>index.html</strong> (첨부파일 익명화 사본 업로드 완료)
+                📄 <strong>index.html</strong> (다운로드한 가상 실습파일 업로드 완료)
               </div>
               <div class="bg-slate-950 p-3 rounded border border-slate-800 space-y-1.5">
                 <div class="text-slate-400">Commit changes</div>
@@ -1611,7 +1302,7 @@ let vipClients = [
                 <strong>3. 커밋 메시지 확인:</strong> 파일 옆에 방금 적은 <code>Add dashboard</code> 설명이 보이는가?
               </div>
               <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
-                <strong>4. 파일 내용 확인:</strong> <code>index.html</code>을 클릭했을 때 익명화된 올바른 사본 코드가 보이는가?
+                <strong>4. 파일 내용 확인:</strong> <code>index.html</code>을 클릭했을 때 가상 실습파일의 코드가 보이는가?
               </div>
             </div>
             <div class="p-4 rounded-xl bg-amber-50 border border-amber-300 text-xs text-amber-900 font-semibold">
@@ -1731,7 +1422,7 @@ let vipClients = [
         labTab: 5,
         bodyHtml: `
           <div class="space-y-3">
-            <p class="text-xs font-bold text-slate-600">상단 <span class="text-[#d9252c]">[실습파일(유안타 지점장) 라이브 체험]</span> 버튼을 열고 아래 4가지 기능을 직접 작동시켜 보세요.</p>
+            <p class="text-xs font-bold text-slate-600">상단 <span class="text-[#d9252c]">[가상 실습 대시보드 미리보기]</span> 버튼을 열고 아래 4가지 기능을 직접 작동시켜 보세요.</p>
             <table class="w-full text-left border-collapse border border-slate-300 text-xs">
               <thead>
                 <tr class="bg-[#00264d] text-white">
@@ -1743,29 +1434,29 @@ let vipClients = [
               <tbody class="divide-y divide-slate-200">
                 <tr>
                   <td class="p-2.5 font-bold bg-slate-50">1. 차트 & PB 필터</td>
-                  <td class="p-2.5">Chart.js 가로바·도넛 마우스 오버 및 담당 PB 드롭다운 선택</td>
-                  <td class="p-2.5">달성률 툴팁 표시 및 선택한 PB의 담당 VIP 고객만 표에 필터링</td>
+                  <td class="p-2.5">막대·도넛의 표시와 담당 PB 드롭다운 선택</td>
+                  <td class="p-2.5">달성률과 자산 비중 표시 및 선택한 PB 담당 고객만 표에 표시</td>
                 </tr>
                 <tr>
-                  <td class="p-2.5 font-bold bg-slate-50">2. 이탈위험(-10%) 필터 & 상태 변경</td>
-                  <td class="p-2.5"><code>이탈위험(-10%)만 보기</code> 클릭 및 조치상태(조치대기→통화완료) 변경</td>
-                  <td class="p-2.5">적색 점멸 고객 3명만 필터링되고, 상태 변경 시 우측 하단 토스트 알림 표시</td>
+                  <td class="p-2.5 font-bold bg-slate-50">2. 감소 고객 필터 & 상태 변경</td>
+                  <td class="p-2.5"><code>감소 고객만 보기</code> 클릭 및 조치상태(조치대기→통화완료) 변경</td>
+                  <td class="p-2.5">변동률 −10% 이하 고객 3명만 표시되고, 선택한 상태가 화면에 반영됨</td>
                 </tr>
                 <tr>
-                  <td class="p-2.5 font-bold bg-amber-50">3. 상세 모달 & 지점장 메모</td>
-                  <td class="p-2.5">우측 <code>[상세]</code> 버튼 클릭 → 코멘트 입력 후 저장 → <strong>새로고침(F5)</strong></td>
-                  <td class="p-2.5 font-semibold text-amber-900">저장 토스트가 뜨지만, 새로고침하거나 다른 기기에서 열면 초기화됨 확인</td>
+                  <td class="p-2.5 font-bold bg-amber-50">3. 상세 모달 & 실습 메모</td>
+                  <td class="p-2.5"><code>[상세]</code> 클릭 → 실습 메모 입력 → 닫고 다시 열기</td>
+                  <td class="p-2.5 font-semibold text-amber-900">메모는 저장되지 않아 다시 열면 비어 있음</td>
                 </tr>
                 <tr>
-                  <td class="p-2.5 font-bold bg-slate-50">4. 모닝 브리핑 출력 (인쇄)</td>
-                  <td class="p-2.5">우측 상단 <code>모닝 브리핑 출력</code> 버튼 클릭 (<code>window.print()</code>)</td>
-                  <td class="p-2.5">브라우저의 인쇄 미리보기 화면이 정상 호출됨</td>
+                  <td class="p-2.5 font-bold bg-slate-50">4. 새로고침과 상태</td>
+                  <td class="p-2.5">상태를 변경한 뒤 페이지 새로고침</td>
+                  <td class="p-2.5">상태가 초기화됨</td>
                 </tr>
               </tbody>
             </table>
           </div>
         `,
-        note: "원본 설계안의 체크리스트/시나리오/메모/인쇄 검증을 실제 첨부파일(유안타증권_지점장.html)에 구현된 기능과 1:1로 매칭하여 실습합니다."
+        note: "제공된 가상 실습파일에서 필터, 상세 화면과 새로고침 후 상태를 직접 확인합니다."
       },
       {
         num: 25,
@@ -1776,7 +1467,7 @@ let vipClients = [
           <div class="space-y-4">
             <div class="bg-slate-900 text-white p-4 rounded-xl text-xs sm:text-sm font-mono flex items-center justify-between">
               <span>[내 브라우저의 메모리 / 사이트 저장 공간]</span>
-              <span class="text-[#cba86a]">← 지점장 코멘트 저장 & 조치 상태 변경</span>
+              <span class="text-[#cba86a]">← 조치 상태 변경 (메모는 저장 안 됨)</span>
               <span class="text-red-400">✖ (서버 전송 없음 / 타인 공유 안 됨)</span>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
@@ -1785,13 +1476,13 @@ let vipClients = [
                 <ul class="list-disc list-inside space-y-1.5 text-slate-700 leading-relaxed">
                   <li><code>localStorage</code>를 쓰더라도 <strong>같은 컴퓨터의 같은 브라우저</strong>에서만 유지됩니다.</li>
                   <li>다른 사람(담당 PB)이나 다른 기기(스마트폰)에 <strong>자동 공유되지 않습니다.</strong></li>
-                  <li>특히 첨부된 <code>유안타증권_지점장.html</code>의 상태 변경과 모달 메모는 JS 변수 배열(<code>vipClients</code>)만 수정하므로 <strong>새로고침 시 초기 상태로 돌아갑니다.</strong></li>
+                  <li>특히 첨부된 <code>practice-dashboard.html</code>의 상태 변경은 페이지 메모리에만 보관되어 <strong>새로고침 시 초기화됩니다.</strong> 상세 메모는 저장하지 않습니다.</li>
                 </ul>
               </div>
               <div class="p-4 rounded-xl bg-amber-50 border border-amber-300 space-y-2">
                 <h4 class="font-extrabold text-amber-900 text-sm">🧪 학생 실험 활동</h4>
                 <p class="text-amber-900 leading-relaxed">
-                  1. 내 브라우저에서 1번 고객(김*회)의 조치 상태를 <code>통화완료</code>로 바꾸고 상세 모달에 메모를 저장해 보세요.<br>
+                  1. 내 브라우저에서 1번 고객(DEMO-101)의 조치 상태를 <code>통화완료</code>로 바꾸고 상세 화면에 메모를 입력해 보세요.<br>
                   2. 스마트폰이나 옆 친구 브라우저에서 같은 주소를 열어 상태가 바뀌었는지 확인하고 차이를 기록하세요.
                 </p>
                 <p class="text-red-700 font-bold">※ 실습 입력란에는 절대 민감한 실제 내용을 입력하지 않습니다.</p>
@@ -1799,7 +1490,7 @@ let vipClients = [
             </div>
           </div>
         `,
-        note: "화면에 '지점장 코멘트 저장'이라는 버튼 이름만 보고 서버 DB 저장이나 공동 편집이 된다고 가정하면 큰 컨설팅 사고로 이어집니다."
+        note: "상태는 새로고침하면 초기화되고 메모는 저장되지 않습니다. 서버 저장이나 공동 편집과 구분합니다."
       },
       {
         num: 26,
@@ -1862,7 +1553,7 @@ let vipClients = [
                 </tr>
                 <tr>
                   <td class="p-2.5 font-bold bg-slate-50">차트/디자인이 깨져 보임</td>
-                  <td class="p-2.5">인터넷 연결 상태, 외부 CDN(Tailwind, Chart.js) 접근 차단 여부, 브라우저 개발자도구(F12 → Console) 오류 확인</td>
+                  <td class="p-2.5">실습파일이 완전히 저장되었는지, JavaScript 실행이 허용되는지, 개발자도구(F12 → Console)에 오류가 있는지 확인</td>
                 </tr>
                 <tr>
                   <td class="p-2.5 font-bold bg-slate-50">수정한 내용이 안 바뀜</td>
@@ -1888,7 +1579,7 @@ let vipClients = [
             <div class="p-4 rounded-xl bg-[#00264d] text-white space-y-2">
               <h4 class="text-sm font-extrabold text-[#cba86a]">📝 대시보드 상단에 다음 3가지를 명확히 표시해 보세요</h4>
               <ul class="list-disc list-inside text-xs space-y-1 text-slate-200">
-                <li><strong>교육용 가상 시나리오라는 사실</strong> (실제 유안타증권 지점 실적이 아님)</li>
+                <li><strong>교육용 가상 시나리오라는 사실</strong> (가상 금융센터 지점 실적이 아님)</li>
                 <li><strong>수치의 단위, 가정과 기준 시점</strong> (단위: 억원, % / 1개월 변동률 -10% 이하를 이탈위험으로 가정)</li>
                 <li><strong>실제 투자·인사·업무 판단에 사용할 수 없다는 면책 설명</strong></li>
               </ul>
@@ -2003,7 +1694,7 @@ let vipClients = [
               <span class="text-sky-800">→ 절대 아닙니다. 데이터의 출처·계산식·가정을 별도로 검증해야 합니다.</span>
             </div>
             <div class="p-3 rounded-xl bg-red-50 border border-red-200">
-              <strong>Q5. 공개 허가가 없는 내부 파일(예: 원본 유안타 파일)을 어떻게 다뤄야 하는가?</strong><br>
+              <strong>Q5. 공개 허가가 없는 실제 내부 파일을 어떻게 다뤄야 하는가?</strong><br>
               <span class="text-red-800 font-bold">→ 공개 저장소에 올리지 않고, 승인된 자료나 완전히 대체된 가상 교육용 자료를 사용합니다.</span>
             </div>
           </div>
@@ -2120,7 +1811,7 @@ let vipClients = [
           </div>
           <div class="pt-4 mt-6 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
             <span>경기대학교 「통계컨설팅의 이해」 | GitHub 웹 배포 상세 설계</span>
-            <span>실습 참조 파일: 유안타증권_지점장.html → index.html</span>
+            <span>실습 참조 파일: practice-dashboard.html → index.html</span>
           </div>
         `;
       }
@@ -2161,7 +1852,7 @@ let vipClients = [
     window.addEventListener('keydown', (e) => {
       const anyModalOpen = !document.getElementById('modalToc').classList.contains('hidden') ||
                            !document.getElementById('modalLabSimulator').classList.contains('hidden') ||
-                           !document.getElementById('modalYuantaPreview').classList.contains('hidden') ||
+                           !document.getElementById('modalPracticePreview').classList.contains('hidden') ||
                            !document.getElementById('modalChecklist').classList.contains('hidden') ||
                            !document.getElementById('modalAppendix').classList.contains('hidden') ||
                            !document.getElementById('modalAppDeploy').classList.contains('hidden');
@@ -2169,7 +1860,7 @@ let vipClients = [
         if (e.key === 'Escape') {
           closeModal('modalToc');
           closeModal('modalLabSimulator');
-          closeModal('modalYuantaPreview');
+          closeModal('modalPracticePreview');
           closeModal('modalChecklist');
           closeModal('modalAppendix');
           closeModal('modalAppDeploy');
@@ -2183,12 +1874,6 @@ let vipClients = [
     // Modal Helpers
     function openModal(id) {
       document.getElementById(id).classList.remove('hidden');
-      if (id === 'modalYuantaPreview') {
-        setTimeout(() => {
-          initSandboxCharts();
-          renderSandboxVipTable();
-        }, 80);
-      }
     }
 
     function closeModal(id) {
@@ -2252,7 +1937,7 @@ let vipClients = [
         box.innerHTML = "⚠️ 주의 (404 위험): GitHub Pages 서버(Linux 기반)는 대소문자를 엄격히 구분하므로 반드시 소문자 <code>index.html</code>로 작성해야 합니다.";
       } else {
         box.className = "p-3 rounded-lg bg-red-950 text-xs text-red-200 border border-red-600";
-        box.innerHTML = "❌ 오답: <code>유안타증권_지점장.html</code> 이름으로 올리면 기본 주소의 시작 파일로 열리지 않습니다. 파일 경로를 주소에 지정하면 접근할 수 있습니다.";
+        box.innerHTML = "❌ 오답: <code>practice-dashboard.html</code> 이름으로 올리면 기본 주소의 시작 파일로 열리지 않습니다. 파일 경로를 주소에 지정하면 접근할 수 있습니다.";
       }
     }
 
@@ -2291,224 +1976,12 @@ let vipClients = [
           <i class="ph-fill ph-check-circle text-lg"></i> GitHub Pages 배포 완료! (Actions: pages build and deployment ✔)
         </div>
         <div>🌐 <strong>Your site is live at:</strong> <code class="text-amber-300 font-bold">https://kgu-student.github.io/dashboard-demo/</code></div>
-        <div>이제 우측 하단 <strong>[유안타 지점장 대시보드 라이브 실행]</strong> 버튼을 눌러 배포된 화면의 기능을 검증하세요!</div>
+        <div>이제 우측 하단 <strong>[가상 금융센터 대시보드 라이브 실행]</strong> 버튼을 눌러 배포된 화면의 기능을 검증하세요!</div>
       `;
       showGlobalToast("GitHub Pages 배포가 성공적으로 활성화되었습니다!");
     }
 
     // ===================================================================
-    // YUANTA DASHBOARD LIVE SANDBOX LOGIC (Modal 2 - 첨부파일 완벽 재현)
-    // ===================================================================
-    let isYuantaSanitized = false;
-    let sandboxRiskOnly = false;
-    let sandboxPbChartInstance = null;
-    let sandboxAssetChartInstance = null;
-
-    let sandboxVipData = [
-      { id: 1, rawCode: "YT-9021 (김*회)", eduCode: "DEMO-101 (가상고객A)", tier: "VVIP", rawPb: "김유안 수석PB", eduPb: "PB-A 수석", pbKey: "PB-A", aumDisplay: "148억 5,000만", monthlyChange: -12.4, maturityDate: "2026-10-14", productNote: "사모 ELS 84호 (녹인 구간 근접)", status: "긴급면담예정" },
-      { id: 2, rawCode: "YT-8810 (이*진)", eduCode: "DEMO-102 (가상고객B)", tier: "VVIP", rawPb: "박태훈 책임PB", eduPb: "PB-B 책임", pbKey: "PB-B", aumDisplay: "210억 원", monthlyChange: 3.8, maturityDate: "2026-10-18", productNote: "국채 30년물 분할 매수", status: "통화완료" },
-      { id: 3, rawCode: "YT-7742 (박*호)", eduCode: "DEMO-103 (가상고객C)", tier: "VIP", rawPb: "이지은 선임PB", eduPb: "PB-C 선임", pbKey: "PB-C", aumDisplay: "62억 원", monthlyChange: -14.2, maturityDate: "2026-10-11", productNote: "해외 하이일드 펀드 환헤지 손실", status: "조치대기" },
-      { id: 4, rawCode: "YT-6531 (최*우)", eduCode: "DEMO-104 (가상고객D)", tier: "VIP", rawPb: "김유안 수석PB", eduPb: "PB-A 수석", pbKey: "PB-A", aumDisplay: "45억 2,000만", monthlyChange: 1.2, maturityDate: "2026-10-25", productNote: "지수형 ELS 만기 상환 대기", status: "통화완료" },
-      { id: 5, rawCode: "YT-5409 (정*영)", eduCode: "DEMO-105 (가상고객E)", tier: "우수", rawPb: "최민호 PB", eduPb: "PB-D 주임", pbKey: "PB-D", aumDisplay: "28억 5,000만", monthlyChange: -10.8, maturityDate: "2026-10-09", productNote: "코스닥 벤처신탁 환매 요청", status: "조치대기" },
-      { id: 6, rawCode: "YT-4328 (한*석)", eduCode: "DEMO-106 (가상고객F)", tier: "VIP", rawPb: "박태훈 책임PB", eduPb: "PB-B 책임", pbKey: "PB-B", aumDisplay: "88억 원", monthlyChange: -4.5, maturityDate: "2026-10-15", productNote: "특판 단기채 롤오버", status: "상담진행중" },
-      { id: 7, rawCode: "YT-3211 ((주)세*글로벌)", eduCode: "DEMO-107 (가상법인G)", tier: "VVIP", rawPb: "정수아 PB", eduPb: "PB-E 전담", pbKey: "PB-E", aumDisplay: "320억 원 (법인)", monthlyChange: 7.9, maturityDate: "2026-10-12", productNote: "법인 MMF 및 전단채", status: "관리완료" },
-      { id: 8, rawCode: "YT-2105 (오*림)", eduCode: "DEMO-108 (가상고객H)", tier: "우수", rawPb: "이지은 선임PB", eduPb: "PB-C 선임", pbKey: "PB-C", aumDisplay: "19억 8,000만", monthlyChange: -2.1, maturityDate: "2026-10-20", productNote: "미국 빅테크 분할 랩", status: "상담진행중" }
-    ];
-
-    function initSandboxCharts() {
-      const pbCtx = document.getElementById('sandboxPbChart').getContext('2d');
-      if (sandboxPbChartInstance) sandboxPbChartInstance.destroy();
-
-      const pbLabels = isYuantaSanitized 
-        ? ['PB-A 수석', 'PB-B 책임', 'PB-C 선임', 'PB-D 주임', 'PB-E 전담']
-        : ['김유안 수석', '박태훈 책임', '이지은 선임', '최민호 PB', '정수아 PB'];
-
-      sandboxPbChartInstance = new Chart(pbCtx, {
-        type: 'bar',
-        data: {
-          labels: pbLabels,
-          datasets: [{
-            label: '목표 달성률 (%)',
-            data: [112.5, 108.4, 96.2, 88.0, 111.0],
-            backgroundColor: (ctx) => ctx.raw >= 100 ? '#cba86a' : (ctx.raw >= 90 ? '#0284c7' : '#ef4444'),
-            borderRadius: 6,
-            barThickness: 16
-          }]
-        },
-        options: {
-          indexAxis: 'y',
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: { legend: { display: false } },
-          scales: {
-            x: { min: 50, max: 130, ticks: { color: '#94a3b8' }, grid: { color: 'rgba(26,70,124,0.3)' } },
-            y: { ticks: { color: '#e2e8f0', font: { weight: 'bold' } }, grid: { display: false } }
-          }
-        }
-      });
-
-      const assetCtx = document.getElementById('sandboxAssetChart').getContext('2d');
-      if (sandboxAssetChartInstance) sandboxAssetChartInstance.destroy();
-
-      sandboxAssetChartInstance = new Chart(assetCtx, {
-        type: 'doughnut',
-        data: {
-          labels: ['국내주식', '해외주식', '국공채·회사채', '펀드/신탁/랩'],
-          datasets: [{
-            data: [28.0, 20.0, 34.0, 18.0],
-            backgroundColor: ['#0284c7', '#e11d48', '#cba86a', '#10b981'],
-            borderColor: '#00264d',
-            borderWidth: 3
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          cutout: '70%',
-          plugins: { legend: { display: false } }
-        }
-      });
-    }
-
-    function renderSandboxVipTable() {
-      const tbody = document.getElementById('sandboxVipTbody');
-      const pbFilter = document.getElementById('sandboxPbFilter').value;
-      const search = document.getElementById('sandboxSearchInput').value.toLowerCase();
-      tbody.innerHTML = '';
-
-      const filtered = sandboxVipData.filter(c => {
-        if (pbFilter !== 'all' && c.pbKey !== pbFilter) return false;
-        if (sandboxRiskOnly && c.monthlyChange > -10) return false;
-        const codeStr = (isYuantaSanitized ? c.eduCode : c.rawCode).toLowerCase();
-        if (search && !codeStr.includes(search) && !c.productNote.toLowerCase().includes(search)) return false;
-        return true;
-      });
-
-      filtered.forEach((c, idx) => {
-        const isRisk = c.monthlyChange <= -10;
-        const tr = document.createElement('tr');
-        tr.className = isRisk ? "row-risk-glow border-b border-red-900/60" : "hover:bg-[#083260]/60 border-b border-[#1a467c]/40";
-
-        const displayCode = isYuantaSanitized ? c.eduCode : c.rawCode;
-        const displayPb = isYuantaSanitized ? c.eduPb : c.rawPb;
-
-        tr.innerHTML = `
-          <td class="py-2.5 px-3 text-center font-mono text-slate-400">${idx + 1}</td>
-          <td class="py-2.5 px-3">
-            <div class="font-bold text-white">${isRisk ? '⚠️ ' : ''}${displayCode}</div>
-            <div class="text-[11px] text-slate-400">${c.productNote}</div>
-          </td>
-          <td class="py-2.5 px-3 text-center"><span class="px-2 py-0.5 rounded bg-[#00264d] border border-[#cba86a]/40 text-[#cba86a] text-[10px] font-bold">${c.tier}</span></td>
-          <td class="py-2.5 px-3 text-slate-200">${displayPb}</td>
-          <td class="py-2.5 px-3 text-right font-mono font-bold text-white">${c.aumDisplay}</td>
-          <td class="py-2.5 px-3 text-right font-mono font-bold ${isRisk ? 'text-red-400' : (c.monthlyChange < 0 ? 'text-amber-300' : 'text-emerald-400')}">
-            ${c.monthlyChange > 0 ? '+' : ''}${c.monthlyChange}%
-          </td>
-          <td class="py-2.5 px-3 font-mono text-slate-300">${c.maturityDate}</td>
-          <td class="py-2.5 px-3 text-center">
-            <select onchange="updateSandboxClientStatus(${c.id}, this.value)" class="bg-[#001a35] border border-[#1a467c] rounded px-2 py-1 text-xs text-amber-200">
-              <option value="조치대기" ${c.status === '조치대기' ? 'selected' : ''}>조치대기</option>
-              <option value="긴급면담예정" ${c.status === '긴급면담예정' ? 'selected' : ''}>긴급면담예정</option>
-              <option value="상담진행중" ${c.status === '상담진행중' ? 'selected' : ''}>상담진행중</option>
-              <option value="통화완료" ${c.status === '통화완료' ? 'selected' : ''}>통화완료</option>
-              <option value="관리완료" ${c.status === '관리완료' ? 'selected' : ''}>관리완료</option>
-            </select>
-          </td>
-          <td class="py-2.5 px-3 text-center">
-            <button onclick="openSandboxClientModal(${c.id})" class="px-2.5 py-1 bg-[#00264d] hover:bg-[#0c386b] border border-[#cba86a]/50 text-[#cba86a] rounded text-[11px] font-bold">상세</button>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
-
-    function updateSandboxClientStatus(id, newStatus) {
-      const item = sandboxVipData.find(x => x.id === id);
-      if (item) {
-        item.status = newStatus;
-        const name = isYuantaSanitized ? item.eduCode : item.rawCode;
-        showGlobalToast(`${name} 조치상태가 [${newStatus}](으)로 변경되었습니다 (브라우저 메모리).`);
-      }
-    }
-
-    function toggleSandboxRiskFilter() {
-      sandboxRiskOnly = !sandboxRiskOnly;
-      const btn = document.getElementById('btnSandboxRiskOnly');
-      if (sandboxRiskOnly) {
-        btn.classList.add('bg-red-900/70', 'border-red-500');
-        showGlobalToast("최근 1개월 자산 -10% 이상 급감한 이탈위험 VIP 3명만 표시합니다.");
-      } else {
-        btn.classList.remove('bg-red-900/70', 'border-red-500');
-      }
-      renderSandboxVipTable();
-    }
-
-    function toggleYuantaSanitizeMode() {
-      isYuantaSanitized = !isYuantaSanitized;
-      const badge = document.getElementById('sandboxModeBadge');
-      const banner = document.getElementById('eduNoticeBanner');
-      const brandTag = document.getElementById('yuantaBrandTag');
-      const loungeTag = document.getElementById('yuantaLoungeTag');
-      const title = document.getElementById('yuantaMainTitle');
-      const btn = document.getElementById('btnToggleSanitizeLive');
-
-      if (isYuantaSanitized) {
-        badge.textContent = "교육용 익명화 사본 모드 (index.html - 공개 배포 가능)";
-        badge.className = "px-2 py-0.5 bg-emerald-950 text-emerald-300 border border-emerald-600 rounded text-[11px] font-bold";
-        banner.classList.remove('hidden');
-        brandTag.textContent = "KGU STATISTICAL CONSULTING DEMO";
-        loungeTag.innerHTML = `<i class="ph-fill ph-crown-simple text-xs"></i> 가상 금융센터 VIP 라운지 (교육용)`;
-        title.textContent = "[교육용 가상] 지점장 일일 VIP 고객 관리 & 영업 성과 대시보드";
-        btn.innerHTML = `<i class="ph-bold ph-arrow-counter-clockwise"></i><span>원본(유안타증권_지점장.html) 모드로 되돌리기</span>`;
-        showGlobalToast("슬라이드 11~13 기준에 따라 조직명·PB명·고객명이 교육용 사본으로 익명화되었습니다!");
-      } else {
-        badge.textContent = "원본 모드 (유안타증권_지점장.html)";
-        badge.className = "px-2 py-0.5 bg-amber-950 text-amber-300 border border-amber-700 rounded text-[11px] font-bold";
-        banner.classList.add('hidden');
-        brandTag.textContent = "YUANTA BRANCH HEADQUARTERS";
-        loungeTag.innerHTML = `<i class="ph-fill ph-crown-simple text-xs"></i> 강남금융센터 VIP 라운지`;
-        title.textContent = "지점장 일일 VIP 고객 관리 & 영업 성과 대시보드";
-        btn.innerHTML = `<i class="ph-bold ph-shield-check"></i><span>교육용 익명화 사본으로 전환 (슬라이드 12~13 실습)</span>`;
-      }
-      initSandboxCharts();
-      renderSandboxVipTable();
-    }
-
-    function refreshYuantaSandbox() {
-      renderSandboxVipTable();
-      showGlobalToast("시연 화면을 다시 표시했습니다. 실시간 데이터 연결은 없습니다.");
-    }
-
-    function openSandboxClientModal(id) {
-      const c = sandboxVipData.find(x => x.id === id);
-      if (!c) return;
-      const body = document.getElementById('sandboxClientDetailBody');
-      const displayCode = isYuantaSanitized ? c.eduCode : c.rawCode;
-      const displayPb = isYuantaSanitized ? c.eduPb : c.rawPb;
-
-      body.innerHTML = `
-        <div class="bg-[#001a35] p-3 rounded-lg border border-[#1a467c] space-y-1.5">
-          <div class="flex justify-between"><span class="text-slate-400">고객명/코드:</span><strong class="text-white">${displayCode}</strong></div>
-          <div class="flex justify-between"><span class="text-slate-400">등급 / 담당 PB:</span><span class="text-[#cba86a] font-bold">${c.tier} | ${displayPb}</span></div>
-          <div class="flex justify-between"><span class="text-slate-400">총 평가 잔고:</span><span class="text-emerald-400 font-mono font-bold">${c.aumDisplay}</span></div>
-          <div class="flex justify-between"><span class="text-slate-400">최근 1M 변동:</span><span class="text-red-400 font-mono font-bold">${c.monthlyChange}%</span></div>
-          <div class="pt-1 border-t border-[#1a467c] text-slate-300">보유 상품 이슈: <strong>${c.productNote}</strong></div>
-        </div>
-      `;
-      document.getElementById('sandboxBranchMemoInput').value = '';
-      document.getElementById('sandboxClientDetailModal').classList.remove('hidden');
-    }
-
-    function closeSandboxClientModal() {
-      document.getElementById('sandboxClientDetailModal').classList.add('hidden');
-    }
-
-    function saveSandboxClientMemo() {
-      const memo = document.getElementById('sandboxBranchMemoInput').value.trim();
-      closeSandboxClientModal();
-      showGlobalToast(memo ? "시연입니다. 입력한 코멘트는 저장되지 않았습니다." : "확인 완료 처리되었습니다.");
-    }
-
     // Copy Student Checklist to Clipboard
     function copyChecklistToClipboard() {
       const repo = document.getElementById('chkRepoUrl').value || '(미입력)';
