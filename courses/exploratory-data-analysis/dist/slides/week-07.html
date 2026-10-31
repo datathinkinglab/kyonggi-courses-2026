@@ -105,6 +105,41 @@ html:fullscreen main { width:100%; padding:clamp(12px,2vw,32px) !important; disp
 html:fullscreen #slideContentContainer { max-width:none !important; width:100%; }
 html:fullscreen .slide-card:not(.hidden) { width:100%; min-height:calc(100vh - 4vw); margin:0 !important; }
 </style>
+
+<style id="session-56-style">
+/* 5·6차수와 같은 네이비 무대와 흰색 강의 카드 */
+body { background:#0f172a !important; color:#0f172a; font-family:Pretendard,-apple-system,BlinkMacSystemFont,"Noto Sans KR",system-ui,sans-serif; }
+body > header { background:#090d16 !important; border-bottom:1px solid #1e293b !important; color:#f8fafc !important; }
+body > header h1, body > header .text-slate-900, body > header .text-slate-600, body > header .text-slate-500, body > header .text-slate-700 { color:#e2e8f0 !important; }
+body > header .bg-slate-100, body > header .bg-white { background:#1e293b !important; }
+body > header button { color:#e2e8f0 !important; border-color:#334155 !important; }
+body > header button:hover { background:#334155 !important; }
+body > header #modeSlideBtn, body > header #modeDocBtn, body > header #fullscreen-toggle { border-radius:6px; }
+body > header #progressBar { background:linear-gradient(90deg,#3b82f6,#06b6d4) !important; }
+body > div.flex-1 { max-width: 1336px; }
+main { background:transparent; }
+#slideContentContainer { max-width:1280px; }
+.slide-card { border-radius:16px !important; box-shadow:0 25px 50px -12px rgba(0,0,0,.5) !important; }
+.slide-card:not([data-slide="1"]) > div:first-child { border-bottom:2px solid #e2e8f0; }
+.slide-card:not([data-slide="1"]) > div:first-child > span:first-child { color:#1d4ed8; background:#dbeafe; border-radius:99px; padding:3px 10px; letter-spacing:0; }
+.slide-card:not([data-slide="1"]) > div:first-child > span:last-child { color:#003876; background:#e0f2fe; border:1px solid #bae6fd; border-radius:8px; padding:5px 12px; font-weight:700; }
+.slide-card:not([data-slide="1"]) > h3 { font-size:1.7rem; font-weight:800; letter-spacing:-.02em; }
+#slideFooterNav { color:#cbd5e1; border-color:#334155; }
+#slideFooterNav button { background:#1d4ed8 !important; border-color:#1d4ed8 !important; color:white !important; }
+#slideFooterNav button:disabled { opacity:.45; }
+/* 어두운 표지, 큰 강의 제목, 파란 핵심 질문 */
+.slide-card[data-slide="1"] { background:linear-gradient(125deg,#06264d,#0b1730 75%) !important; border-color:#142d52 !important; color:#f8fafc !important; }
+.slide-card[data-slide="1"] > div:first-of-type:not(.text-center) { border-color:rgba(148,163,184,.2); }
+.slide-card[data-slide="1"] > div:first-of-type:not(.text-center) span { color:#bfdbfe !important; }
+.slide-card[data-slide="1"] > .text-center { text-align:left !important; display:flex; flex-direction:column; align-items:flex-start; padding-top:1rem; padding-bottom:1rem; }
+.slide-card[data-slide="1"] .cover-session-title { order:1; font-size:clamp(2rem,4vw,3rem); font-weight:800; letter-spacing:-.03em; color:#fff; line-height:1.2; margin:0 0 .65rem; }
+.slide-card[data-slide="1"] > .text-center > p { order:2; color:#cbd5e1 !important; font-size:clamp(1.05rem,2vw,1.6rem); max-width:none; margin:.1rem 0 .8rem; }
+.slide-card[data-slide="1"] > .text-center > div { order:0; color:#93c5fd !important; background:rgba(29,78,216,.25) !important; border-color:#2563eb !important; }
+.slide-card[data-slide="1"] > .text-center > h2 { order:3; color:#38bdf8 !important; font-size:clamp(1rem,1.55vw,1.35rem); border-left:4px solid #38bdf8; padding-left:14px; max-width:none; margin:0; line-height:1.45; }
+.slide-card[data-slide="1"] > .text-center > p span { color:#cbd5e1 !important; }
+@media(max-width:640px){ .slide-card:not([data-slide="1"]) > h3{font-size:1.35rem} #slideFooterNav{gap:8px} .slide-card:not([data-slide="1"]) > div:first-child{gap:8px;flex-wrap:wrap} }
+@media print { body{background:white!important} .slide-card[data-slide="1"]{print-color-adjust:exact;-webkit-print-color-adjust:exact} #slideFooterNav{display:none!important} }
+</style>
 </head>
 <body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col font-sans antialiased transition-colors duration-200">
 
@@ -221,6 +256,7 @@ html:fullscreen .slide-card:not(.hidden) { width:100%; min-height:calc(100vh - 4
           </div>
 
           <div class="text-center py-6 sm:py-10">
+            <h1 class="cover-session-title">7차수 · 자료의 재표현: 변환의 사다리</h1>
             <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 dark:bg-blue-950/60 text-kgu-light dark:text-sky-300 border border-blue-200 dark:border-blue-800 mb-4">
               ✨ 핵심 질문
             </div>
