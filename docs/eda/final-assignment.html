@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>기말과제 · 자료탐색방법론</title>
+  <link rel="icon" href="assets/logo-circle.png">
+  <link rel="stylesheet" href="styles.css?v=sessions-20261018">
+  <link rel="stylesheet" href="midterm.css?v=20261018">
+</head>
+<body class="assignment-page">
+  <header class="assignment-header">
+    <a class="brand-lockup" href="index.html#final-assignment"><img class="brand-logo" src="assets/logo.png" alt="Data Thinking Lab"></a>
+    <a class="button" href="index.html#final-assignment">강의 홈</a>
+    <button class="button" id="print-assignment" type="button">안내 출력</button>
+  </header>
+  <main class="assignment-shell">
+    <div class="eyebrow">자료탐색방법론 · 2026학년도 2학기 · 기말 팀 프로젝트</div>
+    <h1>공개 데이터로 질문하고<br>검증한 결과를 발표하라</h1>
+    <p class="assignment-lead">팀이 고른 실제 공개 자료에서 질문을 찾으세요. 분석 방법을 선택한 이유와 결과를 확인한 과정을 기록하고, 팀 밖에서도 같은 결과를 재현할 수 있게 하세요.</p>
+    <div class="assignment-keyfacts">
+      <div><span>팀 구성</span><strong>3~4인 · 11개 조 편성안</strong></div>
+      <div><span>분석 자료</span><strong>팀별 실제 공개 데이터</strong></div>
+      <div><span>성적 반영</span><strong>전체 성적의 60% · 산출물 40% + 발표 20%</strong><span>산출물 점수의 30%는 개인별 동료평가</span></div>
+      <div><span>제출 및 발표</span><strong>GitHub 노트북 · 15차수 발표</strong><span>제출 마감과 링크 전달 방법은 추후 안내</span></div>
+    </div>
+
+    <nav class="assignment-resources" aria-label="기말과제 바로가기">
+      <h2>기말과제 바로가기</h2>
+      <div class="resource-actions">
+        <a class="button coral" href="#teams">조편성 확인</a>
+        <a class="button primary" href="#tasks">수행 과제</a>
+        <a class="button" href="#submission">제출 및 발표</a>
+        <a class="button" href="#rubric">평가 기준</a><a class="button" href="#peer-review">동료평가</a>
+        <a class="button" href="#checklist">제출 전 점검</a>
+      </div>
+    </nav>
+
+    <article class="assignment-content">
+      <h2 id="teams">조편성안</h2>
+      <p>42명을 11개 조로 편성했습니다. 사전 요청을 우선 반영하고 나머지 인원을 임의 배정했습니다.</p>
+      <table aria-label="기말 프로젝트 조편성안">
+        <thead><tr><th scope="col">조</th><th scope="col">팀원</th><th scope="col">인원</th></tr></thead>
+        <tbody>
+        <tr><td>1조</td><td>김도빈, 최세현, 임혜진, 이예진</td><td>4명</td></tr>
+        <tr><td>2조</td><td>김서이, 배진우, 조은수, 허가은</td><td>4명</td></tr>
+        <tr><td>3조</td><td>이승민, 강선재, 신승우, 김민영</td><td>4명</td></tr>
+        <tr><td>4조</td><td>송서윤, 오원석, 이미령, 이현지</td><td>4명</td></tr>
+        <tr><td>5조</td><td>추민재, 김성욱, 김재윤, 장보경</td><td>4명</td></tr>
+        <tr><td>6조</td><td>서세연, 조준성, 김건, 고건녕</td><td>4명</td></tr>
+        <tr><td>7조</td><td>조혜선, 오현규, 임서연, 문지찬</td><td>4명</td></tr>
+        <tr><td>8조</td><td>유연수, 이동규, 이하늘, 정형기</td><td>4명</td></tr>
+        <tr><td>9조</td><td>황동하, 이예준, 김혜진, 추형준</td><td>4명</td></tr>
+        <tr><td>10조</td><td>김도완, 이신영, 이정민</td><td>3명</td></tr>
+        <tr><td>11조</td><td>이정현, 최은설, 박준경</td><td>3명</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="tasks">수행 과제</h2>
+      <h3>1. 공개 자료를 고르고 탐색 질문을 정하세요</h3>
+      <p>공공데이터포털, 국가데이터처, Kaggle 등에서 실제 공개 자료를 고르세요. 출처 링크, 수집 시점과 맥락, 한 행의 의미, 주요 변수의 단위와 결측 처리 원칙을 기록하세요. 자료로 답할 수 있는 탐색 질문을 <strong>3개 이상</strong> 정하고 각 질문을 고른 이유를 적으세요.</p>
+      <h3>2. 분포를 살피고 재표현을 적용하세요</h3>
+      <p>질문에 맞는 수치요약과 그림을 선택하세요. <strong>재표현을 1회 이상</strong> 적용하고 변환 전후 확률플롯을 비교해 변환을 선택한 근거를 설명하세요. 로그 변환을 검토한다면 0 이하의 값이 있는지 먼저 확인하고 처리 기준을 밝히세요.</p>
+      <h3>3. 두 변수의 관계를 살피고 혼재변수를 검토하세요</h3>
+      <p><strong>이원 자료 분석을 1회 이상</strong> 수행하세요. 관계를 바꿔 보이게 할 수 있는 변수를 검토하고 층화가 가능하면 전체와 하위 집단의 결과를 비교하세요. 비율의 분모와 집단별 관측 수를 적고 관찰한 관계와 원인에 대한 해석을 구분하세요.</p>
+      <h3>4. 주요 결과 3건을 독립적으로 확인하세요</h3>
+      <p>손계산 대조, 다른 계산 경로로 교차확인, 결측·경계값 등 시험 입력을 활용하세요. 각 결과에 대해 <strong>예상값, 확인 절차, 실제 결과, 불일치와 수정 내용</strong>을 검증 로그에 남기세요. AI를 분석에 사용하고 주요 프롬프트, 응답과 수정 이유를 부록에 포함하세요.</p>
+      <h3>5. 질문별 결론을 쓰고 분석을 재현하세요</h3>
+      <p>질문마다 결론과 이를 뒷받침하는 표·그림을 연결하고 자료와 해석의 한계를 밝히세요. 팀원이 새 Colab 세션에서 첫 셀부터 실행해 핵심 결과를 다시 얻을 수 있도록 자료 접근 방법과 실행 순서를 기록하세요.</p>
+
+      <h2 id="submission">제출 및 발표 안내</h2>
+      <table aria-label="제출 및 발표 안내">
+        <thead><tr><th scope="col">구분</th><th scope="col">안내</th></tr></thead>
+        <tbody>
+          <tr><td>제출물</td><td>재현 가능한 분석 노트북(.ipynb), 주요 결과 3건의 검증 로그, 주요 AI 대화 로그 부록</td></tr>
+          <tr><td>제출 방식</td><td>팀별 노트북을 GitHub에 공개합니다. 제출 마감과 저장소 링크 전달 방법은 추후 안내합니다.</td></tr>
+          <tr><td>14차수</td><td>프로젝트 클리닉에서 진행 상황을 공유하고 분석 방향과 검증 로그를 점검합니다.</td></tr>
+          <tr><td>15차수</td><td>최종 발표에서 질문, 자료, 핵심 결과, 검증 근거와 한계를 설명합니다. 질의응답에서 검증 방법을 팀이 직접 설명합니다.</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="rubric">성적 반영 변경 안내</h2><p>전체 성적은 <strong>중간고사 개인 과제 40%와 기말 팀 프로젝트 60%</strong>로 산정합니다.</p><p>기말 팀 프로젝트는 팀 공통 산출물 28%, 개인별 동료평가 12%, 최종 발표 20%를 전체 성적에 반영합니다. 산출물 100점은 팀 공통 70점과 개인별 동료평가 30점으로 구성하며, 산출물 점수는 전체 성적의 40%에 반영합니다.</p>
+      <table aria-label="기말 팀 프로젝트 평가 기준">
+        <thead><tr><th scope="col">평가 항목</th><th scope="col">배점</th><th scope="col">평가 기준</th></tr></thead>
+        <tbody>
+          <tr><td>질문 설계</td><td>15점</td><td>탐색할 가치가 있고 자료로 답할 수 있는 질문을 정했다.</td></tr>
+          <tr><td>방법의 적절성</td><td>15점</td><td>요약, 시각화와 재표현이 자료의 특성과 질문에 맞는다.</td></tr>
+          <tr><td>검증의 엄밀성</td><td>18점</td><td>독립적인 방법으로 주요 결과를 확인하고 그 근거를 남겼다.</td></tr>
+          <tr><td>해석과 결론</td><td>15점</td><td>자료가 뒷받침하는 범위에서 질문에 답했다.</td></tr>
+          <tr><td>재현성과 소통</td><td>7점</td><td>다른 사람이 노트북을 재실행할 수 있고 문서에서 분석 판단의 근거를 이해할 수 있다.</td></tr>
+          <tr><td>동료평가</td><td>30점</td><td>각 팀원의 역할 수행, 분석과 검증 기여, 협업을 개인별로 평가한다.</td></tr>
+          <tr><td>합계</td><td><strong>100점</strong></td><td>산출물 점수로 전체 성적의 40%에 반영합니다.</td></tr>
+        </tbody>
+      </table>
+      <p>검증 없이 AI 출력을 결론에 인용한 경우, 노트북이 처음부터 끝까지 실행되지 않는 경우, 심슨의 역설 위험이 있는 집계를 층화 검토 없이 사용한 경우에는 각각 10점을 감점합니다.</p>
+
+      <h3 id="peer-review">동료평가(Peer Review) · 개인별 30점</h3>
+      <p>팀원 각자가 <strong>본인을 제외한 모든 팀원</strong>을 개별 평가합니다. 최종 발표 후 교수자에게 개별 제출하며, 응답은 팀원에게 공개하지 않습니다. 제출 기한과 제출처는 추후 안내합니다.</p>
+      <table aria-label="동료평가 기준">
+        <thead><tr><th scope="col">항목</th><th scope="col">확인할 행동</th></tr></thead>
+        <tbody>
+          <tr><td>역할 수행</td><td>맡은 일을 일정에 맞춰 마치고 팀이 사용할 수 있는 결과를 공유했다.</td></tr>
+          <tr><td>분석과 검증 기여</td><td>질문 설계, 자료 정리, 분석, 결과 검증 또는 결과 설명에 구체적으로 기여했다.</td></tr>
+          <tr><td>협업과 피드백</td><td>진행 상황을 공유하고 팀원의 의견이나 수정 요청에 대응했다.</td></tr>
+        </tbody>
+      </table>
+      <p>항목별로 <strong>0점(기여 없음), 1점(부분적으로 기여), 2점(충분히 기여)</strong> 중 하나를 선택하고, 팀원별로 판단 근거가 되는 작업이나 사례를 한 가지 이상 적으세요. 직접 확인할 근거가 부족한 항목은 ‘확인 어려움’으로 표시하세요.</p>
+      <p>유효한 평가 한 건의 6점 만점 합계에 5를 곱해 30점 만점으로 환산하고, 받은 환산 점수의 평균을 개인별 동료평가 점수로 반영합니다. 누락되었거나 근거가 부족한 평가, 평가자 간 판단 차이가 큰 경우에는 교수자가 역할 기록과 산출물을 확인해 점수를 확정합니다.</p>
+
+      <h2 id="checklist">제출 전 점검</h2>
+      <ul>
+        <li>공개 자료의 출처와 수집 맥락을 밝히고 질문 3개 이상을 정했다.</li>
+        <li>재표현 전후를 확률플롯으로 비교하고 이원 분석에서 혼재변수를 검토했다.</li>
+        <li>주요 결과 3건을 독립적으로 확인하고 검증 로그와 AI 대화 기록을 남겼다.</li>
+        <li>노트북을 처음부터 재실행하고 발표 자료의 수치와 대조했다.</li>
+        <li>GitHub 노트북을 다른 사람이 열고 재현할 수 있는지 확인했다.</li>
+        <li>최종 발표 후 본인을 제외한 팀원별 동료평가와 판단 근거를 개별 제출한다.</li>
+      </ul>
+    </article>
+  </main>
+  <footer class="footer"><span>경기대학교 응용통계전공 · Data Thinking Lab</span><a href="index.html#final-assignment">자료탐색방법론 강의 홈</a></footer>
+  <script>document.querySelector('#print-assignment').addEventListener('click', () => window.print());</script>
+</body>
+</html>
