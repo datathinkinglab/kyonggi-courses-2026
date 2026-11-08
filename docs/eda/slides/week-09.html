@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>자료탐색방법론 9차수 강의노트 · 확률분포와 분위수 대조도</title>
+  
+
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.05);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+    .dark ::-webkit-scrollbar-thumb {
+      background: #475569;
+    }
+
+    /* Print Optimization */
+    @media print {
+      body {
+        background: white !important;
+        color: black !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .slide-card {
+        display: block !important;
+        page-break-after: always;
+        break-after: page;
+        box-shadow: none !important;
+        border: 1px solid #e2e8f0 !important;
+        margin-bottom: 2rem !important;
+      }
+      .slide-mode-only {
+        display: none !important;
+      }
+      .document-mode-only {
+        display: block !important;
+      }
+    }
+
+    /* Slide transition & animations */
+    .fade-in {
+      animation: fadeIn 0.25s ease-out forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+<style>@media(max-width:640px){header h1,header .inline-flex{display:none!important} #fullscreen-toggle{font-size:0!important} #fullscreen-toggle::after{content:"⛶";font-size:16px} main,.slide-card{min-width:0;max-width:100%} .slide-card pre{max-width:100%;overflow-x:auto}} @media print { .slide-card.hidden {display:block!important} .slide-card{break-after:page;page-break-after:always} .no-print{display:none!important} }</style>
+<style id="presentation-layout">
+/* The contents list opens on demand at every screen size. */
+#sidebar { position: fixed !important; z-index: 60 !important; }
+#sidebar.-translate-x-full { transform: translateX(-100%) !important; }
+#sidebar:not(.-translate-x-full) { transform: translateX(0) !important; }
+#sidebarCloseBtn { display: block !important; }
+#sidebarOverlay:not(.hidden) { display: block !important; }
+/* Fullscreen is reserved for the active slide, with keyboard navigation. */
+html:fullscreen body > header, html:fullscreen #sidebar, html:fullscreen #sidebarOverlay,
+html:fullscreen #slideFooterNav, html:fullscreen #toast { display:none !important; }
+html:fullscreen body > div.flex-1 { max-width:none !important; width:100% !important; min-height:100vh; }
+html:fullscreen main { width:100%; padding:var(--fullscreen-inset) !important; display:block !important; }
+html:fullscreen #slideContentContainer { max-width:none !important; width:100%; }
+</style>
+
+<style id="session-56-style">
+/* 5·6차수와 같은 네이비 무대와 흰색 강의 카드 */
+body { background:#0f172a !important; color:#0f172a; font-family:Pretendard,-apple-system,BlinkMacSystemFont,"Noto Sans KR",system-ui,sans-serif; }
+body > header { background:#090d16 !important; border-bottom:1px solid #1e293b !important; color:#f8fafc !important; }
+body > header h1, body > header .text-slate-900, body > header .text-slate-600, body > header .text-slate-500, body > header .text-slate-700 { color:#e2e8f0 !important; }
+body > header .bg-slate-100, body > header .bg-white { background:#1e293b !important; }
+body > header button { color:#e2e8f0 !important; border-color:#334155 !important; }
+body > header button:hover { background:#334155 !important; }
+body > header #modeSlideBtn, body > header #modeDocBtn, body > header #fullscreen-toggle { border-radius:6px; }
+body > header #progressBar { background:linear-gradient(90deg,#3b82f6,#06b6d4) !important; }
+body > div.flex-1 { max-width: 1336px; }
+main { background:transparent; }
+#slideContentContainer { max-width:1280px; }
+.slide-card { border-radius:16px !important; box-shadow:0 25px 50px -12px rgba(0,0,0,.5) !important; }
+.slide-card:not([data-slide="1"]) > div:first-child { border-bottom:2px solid #e2e8f0; }
+.slide-card:not([data-slide="1"]) > div:first-child > span:first-child { color:#1d4ed8; background:#dbeafe; border-radius:99px; padding:3px 10px; letter-spacing:0; }
+.slide-card:not([data-slide="1"]) > div:first-child > span:last-child { color:#003876; background:#e0f2fe; border:1px solid #bae6fd; border-radius:8px; padding:5px 12px; font-weight:700; }
+.slide-card:not([data-slide="1"]) > h3 { font-size:var(--slide-title-size); font-weight:800; letter-spacing:-.02em; line-height:1.2; }
+#slideFooterNav { color:#cbd5e1; border-color:#334155; }
+#slideFooterNav button { background:#1d4ed8 !important; border-color:#1d4ed8 !important; color:white !important; }
+#slideFooterNav button:disabled { opacity:.45; }
+/* 어두운 표지, 큰 강의 제목, 파란 핵심 질문 */
+.slide-card[data-slide="1"] { background:linear-gradient(125deg,#06264d,#0b1730 75%) !important; border-color:#142d52 !important; color:#f8fafc !important; }
+.slide-card[data-slide="1"] > div:first-of-type:not(.text-center) { border-color:rgba(148,163,184,.2); }
+.slide-card[data-slide="1"] > div:first-of-type:not(.text-center) span { color:#bfdbfe !important; }
+.slide-card[data-slide="1"] > .text-center { text-align:left !important; display:flex; flex-direction:column; align-items:flex-start; padding-top:1rem; padding-bottom:1rem; }
+.slide-card[data-slide="1"] .cover-session-title { font-weight:800; letter-spacing:-.02em; }
+.slide-card[data-slide="1"] > .text-center > p { order:2; color:#cbd5e1 !important; font-size:clamp(1.05rem,2vw,1.6rem); max-width:none; margin:.1rem 0 .8rem; }
+.slide-card[data-slide="1"] > .text-center > div { order:0; color:#93c5fd !important; background:rgba(29,78,216,.25) !important; border-color:#2563eb !important; }
+.slide-card[data-slide="1"] > .text-center > h2 { order:3; color:#38bdf8 !important; font-size:clamp(1rem,1.55vw,1.35rem); border-left:4px solid #38bdf8; padding-left:14px; max-width:none; margin:0; line-height:1.45; }
+.slide-card[data-slide="1"] > .text-center > p span { color:#cbd5e1 !important; }
+@media(max-width:640px){ #slideFooterNav{gap:8px} .slide-card:not([data-slide="1"]) > div:first-child{gap:8px;flex-wrap:wrap} }
+@media print { body{background:white!important} .slide-card[data-slide="1"]{print-color-adjust:exact;-webkit-print-color-adjust:exact} #slideFooterNav{display:none!important} }
+</style>
+<style>
+.lesson-body{font-size:clamp(1rem,1.4vw,1.25rem);line-height:1.58}
+.lesson-body p,.lesson-dialog-body p{margin:0 0 .75rem}
+.lesson-body ol{list-style:decimal;padding-inline-start:1.6em;margin:.4rem 0 1rem}
+.lesson-body li{padding:.15rem 0}
+.lesson-callout{background:#eaf2fa;border-left:4px solid #0758a0;color:#14243a;padding:.7rem 1rem;border-radius:0 8px 8px 0;margin-top:.85rem}
+.lesson-button{border:1px solid #074c8c;border-radius:8px;padding:.48rem .8rem;background:#074c8c;color:#fff;font-size:.9rem;font-weight:700}
+.lesson-secondary{background:#eaf2fa;color:#074c8c}
+.lesson-button:focus-visible{outline:3px solid #f39200;outline-offset:2px}
+.lesson-actions,.lesson-copy{display:flex;align-items:center;gap:.55rem;flex-wrap:wrap;margin:.45rem 0}
+.lesson-copy [role=status]{font-size:.9rem}
+.lesson-prompt,.lesson-code{font-size:.95rem;padding:.85rem 1rem;border-radius:9px;margin:.35rem 0 .85rem;line-height:1.5;max-width:100%}
+.lesson-prompt{font-family:inherit;white-space:pre-wrap;word-break:keep-all;overflow-wrap:anywhere;background:#eff6ff;color:#14243a;border:1px solid #bfdbfe}
+.lesson-code{background:#0f172a;color:#f1f5f9;overflow:auto}
+.lesson-table{max-width:100%;overflow-x:auto;margin:.5rem 0 1rem}
+.lesson-table table{width:100%;border-collapse:collapse;text-align:left;font-size:.94em}
+.lesson-table th,.lesson-table td{padding:.45rem .65rem;border-bottom:1px solid #cbd5e1;vertical-align:top}
+.lesson-table th{background:#eaf2fa;color:#003876}
+.lesson-figures{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem;margin:0 0 .65rem}
+.lesson-figures figure{background:#f7f9fc;color:#14243a;padding:.4rem;border-radius:10px;text-align:center}
+.lesson-figures svg{width:100%;max-height:240px;display:block}
+.lesson-figures svg text{font:14px system-ui;fill:#14243a}
+.lesson-figures figcaption{font-size:.9rem}
+.chart-axis{fill:none;stroke:#64748b;stroke-width:1.3}
+.chart-curve{fill:none;stroke:#0758a0;stroke-width:2.5}
+.chart-guide{fill:none;stroke:#a63725;stroke-width:1.7;stroke-dasharray:5 4}
+.lesson-dialog{position:fixed;inset:0;margin:auto;width:min(52rem,calc(100% - 1.5rem));max-height:calc(100dvh - 1.5rem);padding:0;overflow:auto;overscroll-behavior:contain;border:1px solid #94a3b8;border-radius:14px;background:#fff;color:#14243a}
+.lesson-dialog::backdrop{background:#0f172ac4}
+.lesson-dialog-header{position:sticky;top:0;display:flex;align-items:center;justify-content:space-between;gap:.7rem;padding:.8rem 1rem;background:#eaf2fa;border-bottom:1px solid #cbd5e1}
+.lesson-dialog-header h2{font-weight:800;font-size:1.1rem;margin:0}
+.lesson-dialog-body{padding:1rem}
+.lesson-home{color:#003876;text-decoration:underline}
+.dark .lesson-home,.dark .lesson-body a{color:#93c5fd}
+@media(max-width:600px){.lesson-figures{grid-template-columns:1fr}.lesson-figures svg{max-height:200px}.lesson-body{overflow-wrap:anywhere}}
+@media print{.lesson-dialog{display:none!important}.lesson-prompt{font-size:10pt}.lesson-body{color:#14243a}.lesson-body a{color:#003876}}
+.slide-card[data-slide="1"] > .text-center > h2.cover-session-title{order:1;color:white!important;font-size:var(--slide-title-size);line-height:1.2;border:0;padding:0;margin:0 0 .65rem}
+</style>
+<style>
+/* Local layout for the shared lecture controls. */
+:root{--slide-title-size:clamp(1.35rem,2.1vw,1.75rem);--fullscreen-inset:clamp(12px,2vw,32px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;min-height:100vh}
+button{font:inherit;cursor:pointer}
+button:disabled{cursor:default}
+.hidden{display:none!important}
+body>header{position:sticky;top:0;z-index:20}
+body>header>div:first-child{display:flex;align-items:center;justify-content:space-between;gap:.65rem;min-height:3.3rem;max-width:1336px;margin:auto;padding:.45rem 1rem}
+body>header>div:first-child div{display:flex;align-items:center;gap:.45rem}
+body>header h1{margin:0;font-size:.94rem}
+body>header .inline-flex{display:inline-flex;padding:.23rem .55rem;border-radius:99px;background:#003876;color:white;font-size:.72rem;white-space:nowrap}
+body>header .text-xs{font-size:.76rem}
+body>header button,#sidebarCloseBtn{display:inline-flex;align-items:center;justify-content:center;gap:.28rem;padding:.35rem .45rem;border:1px solid #334155;border-radius:7px;background:#1e293b}
+body>header button:disabled{opacity:.45}
+body>header svg,#sidebarCloseBtn svg,#slideFooterNav svg{width:1rem;height:1rem}
+body>header>div:last-child{height:4px;background:#1e293b}
+#progressBar{height:100%;transition:width .25s}
+#slideControls{white-space:nowrap}
+#moonIcon{display:none}
+.dark #moonIcon{display:block!important}
+.dark #sunIcon{display:none!important}
+#sidebar{inset:0 auto 0 0;width:min(21rem,86vw);background:#f8fafc;display:flex;flex-direction:column;border-right:1px solid #cbd5e1;transition:transform .2s}
+#sidebar>div{padding:.75rem 1rem;border-bottom:1px solid #cbd5e1}
+#sidebar>div:first-child{display:flex;justify-content:space-between;align-items:center}
+#sidebar h2,#sidebar p{margin:.2rem 0}
+#sidebarCloseBtn{color:#fff}
+#tocList{overflow:auto;flex:1;padding:.5rem}
+#tocList button{display:block;width:100%;text-align:left;background:transparent;color:inherit;border:0;border-radius:6px;padding:.55rem;font-size:.88rem}
+#tocList button:hover,#tocList button.bg-kgu-blue{background:#dbeafe;color:#003876}
+#sidebarOverlay{position:fixed;inset:0;z-index:50;background:#0f172ab3}
+body>div.flex-1{margin:auto}
+main{padding:clamp(.75rem,2.3vw,2rem)}
+.slide-card{background:white;color:#14243a;border:1px solid #cbd5e1;padding:clamp(1rem,3vw,2.4rem);margin:0 0 1.2rem}
+.slide-card>div:first-child,.slide-card>div:last-child{display:flex;justify-content:space-between;align-items:center;gap:.5rem;font-size:.8rem}
+.slide-card>div:first-child{padding-bottom:.6rem;margin-bottom:1rem}
+.slide-card>div:last-child{border-top:1px solid #cbd5e166;padding-top:.65rem;margin-top:1.1rem}
+.slide-card>h3{margin:0 0 .9rem}
+.slide-card[data-slide="1"] .text-center>div{padding:.4rem .85rem;border:1px solid;border-radius:99px;margin-bottom:.7rem;font-size:.9rem}
+#slideFooterNav{display:flex;justify-content:space-between;align-items:center;gap:.6rem;padding:.65rem 0;border-top:1px solid;font-size:.8rem}
+#slideFooterNav button{display:inline-flex;align-items:center;gap:.35rem;padding:.45rem .7rem;border:1px solid;border-radius:8px;font:inherit}
+.dark .slide-card:not([data-slide="1"]),.dark #sidebar{background:#182235;color:#e2e8f0}
+@media screen{
+ .slide-mode .slide-card:not(.hidden){
+  display:flex;flex-direction:column;width:100%;height:max(25rem,calc(100dvh - 10rem));
+ }
+ .slide-mode .slide-card>div:first-child,.slide-mode .slide-card>h3,.slide-mode .slide-card>div:last-child{flex:none}
+ .slide-mode .slide-card>:is(.lesson-body,.text-center){
+  flex:1;min-height:0;overflow:auto;scrollbar-gutter:stable;
+ }
+ html:fullscreen .slide-mode .slide-card:not(.hidden){
+  height:calc(100dvh - 2 * var(--fullscreen-inset));margin:0;
+ }
+}
+@media(min-width:821px){body>header .sm\:inline,body>header .md\:inline{display:inline!important}}
+@media(min-width:641px){body>header button[title="인쇄 및 PDF 저장"]{display:inline-flex!important}}
+@media(max-width:820px){body>header .sm\:inline,body>header h1{display:none}}
+@media(max-width:640px){body>header>div:first-child{padding-inline:.45rem}body>header>div:first-child div{gap:.24rem}body>header .md\:inline,body>header button[title="인쇄 및 PDF 저장"],#slideFooterNav>span{display:none}#fullscreen-toggle{white-space:nowrap}}
+@media print{
+ body>header,#sidebar,#sidebarOverlay,#slideFooterNav{display:none!important}
+ main{padding:0}
+ .slide-card:not([data-slide="1"]){background:#fff!important;color:#14243a!important}
+ .slide-card:last-child{break-after:auto;page-break-after:auto}
+}
+</style>
+<style id="slide-supplements">
+.lesson-figures figure{margin:0}
+.support-cards,.support-charts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,13rem),1fr));gap:.65rem;margin:.85rem 0 .45rem}
+.support-cards>div,.support-charts figure{min-width:0;padding:.6rem .75rem;border:1px solid #dbe6f1;border-radius:9px;background:#f3f7fc;color:#14243a}
+.support-cards strong{color:#074c8c;font-size:.94em}
+.support-cards p{font-size:.85em;margin:.2rem 0 0;line-height:1.45}
+.support-charts figure{margin:0;text-align:center}
+.support-charts svg{display:block;width:100%;height:clamp(125px,18vh,175px)}
+.support-charts svg text{font:12px system-ui;fill:#14243a}
+.support-charts figcaption,.support-note{font-size:.81em;line-height:1.4}
+.support-note a{color:#074c8c;text-decoration:underline}
+.dark .support-note a{color:#93c5fd}
+.slide-card[data-slide="1"] .support-cards{width:100%;order:4;margin-top:1.25rem;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important}
+.slide-card[data-slide="1"] .support-cards>div{background:#122e52;border-color:#285280;color:#e2e8f0}
+.slide-card[data-slide="1"] .support-cards strong{color:#93c5fd}
+@media(max-width:560px){.support-charts,.support-cards{grid-template-columns:1fr}}
+</style>
+<style>.cover-diagram{width:min(100%,40rem);margin:.65rem auto 0;order:5}
+.cover-diagram svg{width:100%;display:block;max-height:190px}
+@media(min-width:900px){
+ .normal-example{display:grid;grid-template-columns:minmax(14rem,.8fr) minmax(0,1.6fr);gap:.8rem;align-items:start}
+ .normal-example>.lesson-table,.normal-example>.support-charts{margin:.35rem 0}
+ .normal-example>.support-note{grid-column:1/-1}
+}
+@media(min-width:900px) and (max-height:790px){
+ .support-charts svg{height:123px}
+ .lesson-figures svg{max-height:175px}
+ .support-cards,.support-charts{margin-top:.5rem}
+}</style>
+</head>
+<body class="slide-mode bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col font-sans antialiased transition-colors duration-200">
+
+  <!-- Top Sticky Navigation Bar -->
+  <header class="no-print sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur border-b border-slate-200 dark:border-slate-800 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+      
+      <!-- Brand & Title -->
+      <div class="flex items-center gap-3">
+        <button id="sidebarToggleBtn" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 focus:outline-none" title="목차 열기/닫기">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <div class="flex items-center gap-2">
+          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-kgu-blue text-white shadow-sm">
+            KGU EDA 2026-2
+          </span>
+          <span class="text-xs font-medium text-slate-500 dark:text-slate-400 hidden sm:inline">9차수 강의노트</span>
+        </div>
+        <div class="h-4 w-px bg-slate-300 dark:bg-slate-700 hidden sm:block"></div>
+        <h1 class="text-sm md:text-base font-bold text-slate-900 dark:text-white truncate max-w-[200px] sm:max-w-md">
+          확률분포와 분위수 대조도
+        </h1>
+      </div>
+
+      <!-- Controls: Slide Navigator & Mode Switchers -->
+      <div class="flex items-center gap-2">
+        <!-- View Mode Switcher -->
+        <div class="bg-slate-100 dark:bg-slate-800 p-1 rounded-lg flex items-center text-xs font-medium">
+          <button id="modeSlideBtn" aria-label="슬라이드 모드" class="px-2.5 py-1 rounded-md bg-white dark:bg-slate-700 text-kgu-blue dark:text-sky-400 shadow-xs font-semibold flex items-center gap-1">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/></svg>
+            <span class="hidden md:inline">슬라이드 모드</span>
+          </button>
+          <button id="modeDocBtn" aria-label="전체 읽기" class="px-2.5 py-1 rounded-md text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white flex items-center gap-1">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            <span class="hidden md:inline">전체 읽기</span>
+          </button>
+        </div>
+
+        <!-- Slide Stepper (Visible in Slide Mode) -->
+        <div id="slideControls" class="flex items-center gap-1.5">
+          <button id="prevSlideBtn" class="p-1.5 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed" title="이전 (←)">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+          </button>
+          <span class="text-xs font-mono font-medium text-slate-600 dark:text-slate-300 min-w-[50px] text-center">
+            <span id="currentSlideNum">1</span> / <span id="totalSlideNum">17</span>
+          </span>
+          <button id="nextSlideBtn" class="p-1.5 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed" title="다음 (→)">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+
+        <button id="fullscreen-toggle" type="button" aria-label="화면 전체보기" title="화면 전체보기" class="p-2 rounded-lg border text-xs">화면 전체보기</button>
+        <!-- Utility: Dark mode & Print -->
+        <button id="darkModeBtn" aria-label="다크/라이트 모드" class="p-2 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800" title="다크/라이트 모드">
+          <svg id="moonIcon" class="w-4 h-4 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+          <svg id="sunIcon" class="w-4 h-4 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+        </button>
+        <button onclick="window.print()" class="p-2 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hidden sm:block" title="인쇄 및 PDF 저장">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Progress Indicator Bar -->
+    <div class="w-full bg-slate-200 dark:bg-slate-800 h-1">
+      <div id="progressBar" class="bg-kgu-blue dark:bg-sky-500 h-1 transition-all duration-300" style="width: 5.88%;"></div>
+    </div>
+  </header>
+
+  <div class="flex-1 flex max-w-7xl w-full mx-auto relative">
+    
+    <!-- Sidebar / Table of Contents -->
+    <aside id="sidebar" class="no-print fixed inset-y-0 left-0 z-50 w-72 sm:w-80 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 transform -translate-x-full transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:z-10 flex flex-col pt-16 lg:pt-0">
+      <div class="p-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+        <div>
+          <h2 class="text-xs font-semibold uppercase tracking-wider text-slate-400">강의 슬라이드 목차</h2>
+          <p class="text-sm font-bold text-slate-800 dark:text-slate-200">총 17개 슬라이드</p>
+        </div>
+        <button id="sidebarCloseBtn" class="lg:hidden p-1.5 rounded-md text-slate-400 hover:text-slate-700 dark:hover:text-slate-200">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <!-- Dynamic TOC List -->
+      <nav id="tocList" class="flex-1 overflow-y-auto p-2 space-y-1 text-xs sm:text-sm">
+        <!-- Rendered by buildTOC() -->
+      </nav>
+
+      <!-- Sidebar Footer Badge -->
+      <div class="p-3 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 text-xs text-slate-500">
+        <div class="flex items-center gap-2 mb-1">
+          <span class="w-2 h-2 rounded-full bg-kgu-accent"></span>
+          <span class="font-medium text-slate-700 dark:text-slate-300">가상 소득과 배송시간</span>
+        </div>
+        <p class="text-[11px] text-slate-400">정렬 · 이론 분위수 · 기준선</p>
+      </div>
+    </aside>
+
+    <!-- Overlay for mobile sidebar -->
+    <div id="sidebarOverlay" class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-40 hidden lg:hidden"></div>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 min-w-0 p-4 sm:p-6 lg:p-8 flex flex-col justify-between">
+      
+      <!-- Slide Wrapper -->
+      <div id="slideContentContainer" class="w-full max-w-5xl mx-auto">
+        <article class="slide-card text-white border-blue-900/60 rounded-2xl border p-5 sm:p-8 shadow-sm mb-8 relative" data-slide="1">
+          <div class="flex items-center justify-between pb-3 mb-4">
+            <span class="text-xs font-mono font-bold">SLIDE 01 · 표지</span>
+            <span class="text-xs font-semibold">자료탐색방법론 · 9차수</span>
+          </div>
+<div class="text-center relative z-10"><div class="rounded-full border px-4 py-2 mb-4">자료탐색방법론 · 9차수</div><h2 class="cover-session-title !border-0 !p-0">확률분포와 분위수 대조도</h2><p>확률변수 · 정규분포 · Q–Q 플롯</p><h2 class="cover-question">자료의 중심과 양쪽 꼬리는 정규분포가 예상하는 위치에 얼마나 가까운가?</h2><div class="support-cards"><div><strong>1. 관측값 정렬</strong><p>작은 값부터 순위를 매긴다.</p></div><div><strong>2. 이론 분위수</strong><p>같은 순위에 해당하는 정규 기준값을 찾는다.</p></div><div><strong>3. 기준선 대조</strong><p>중심과 양쪽 꼬리를 나누어 읽는다.</p></div></div><figure class="cover-diagram">
+<svg viewBox="0 0 520 145" role="img" aria-label="정규분포 곡선의 세 분위수를 대조도의 점으로 옮기는 개념도">
+<path d="M24 115H220M300 115H500M300 115V22" fill="none" stroke="#91aac9"/>
+<path d="M25 114C65 114 72 105 88 73S113 25 122 25 141 42 156 73 179 114 219 114" fill="none" stroke="#7dd3fc" stroke-width="3"/>
+<path d="M85 115V79M122 115V25M159 115V79" stroke="#f8cc83" stroke-dasharray="4 4"/>
+<path d="M239 68H278m-9-8 9 8-9 8M319 104L478 34" stroke="#91aac9" fill="none" stroke-width="2"/>
+<circle cx="330" cy="99" r="5" fill="#7dd3fc"/><circle cx="397" cy="69" r="5" fill="#7dd3fc"/><circle cx="468" cy="35" r="5" fill="#f8cc83"/>
+<g fill="#dbeafe" font-size="15" text-anchor="middle"><text x="122" y="137">이론 분위수</text><text x="402" y="137">이론과 관측값의 대응</text></g>
+</svg>
+</figure></div>
+          <div class="mt-5 pt-3 border-t border-slate-300/40 flex justify-between gap-2 text-xs text-blue-200"><span>Data Thinking Lab · 경기대학교</span><span>01 / 17</span></div>
+        </article>
+        <article class="slide-card hidden bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 rounded-2xl border p-5 sm:p-8 shadow-sm mb-8 relative" data-slide="2">
+          <div class="flex items-center justify-between pb-3 mb-4">
+            <span class="text-xs font-mono font-bold">SLIDE 02 · 학습 목표</span>
+            <span class="text-xs font-semibold">자료탐색방법론 · 9차수</span>
+          </div>
+          <h3 class="mb-4">분포의 모양을 분위수로 비교하기</h3>
+          <div class="lesson-body"><ol><li>점확률, 구간확률, 누적확률을 구분한다.</li><li>표본의 순위와 정규분포의 이론 분위수를 짝지어 점을 그린다.</li><li>중심과 양쪽 꼬리를 나누어 읽고 변환 전후의 차이를 설명한다.</li></ol><aside class="lesson-callout">4차수 밀도와 면적 → 5·6차수 사분위수 → 8차수 표준화와 Box–Cox → 9차수 정규 기준과 비교</aside><div class="support-cards"><div><strong>4차수 · 밀도</strong><p>곡선 아래 면적을 확률로 읽는다.</p></div><div><strong>5·6차수 · 분위수</strong><p>사분위수에서 더 촘촘한 순위 비교로 넓힌다.</p></div><div><strong>8차수 · 변환</strong><p>척도 변화와 분포 모양의 변화를 나누어 살핀다.</p></div></div></div>
+          <div class="mt-5 pt-3 border-t border-slate-300/40 flex justify-between gap-2 text-xs text-slate-500 dark:text-slate-400"><span>Data Thinking Lab · 경기대학교</span><span>02 / 17</span></div>
+        </article>
+        <article class="slide-card hidden bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 rounded-2xl border p-5 sm:p-8 shadow-sm mb-8 relative" data-slide="3">
+          <div class="flex items-center justify-between pb-3 mb-4">
+            <span class="text-xs font-mono font-bold">SLIDE 03 · 도입</span>
+            <span class="text-xs font-semibold">자료탐색방법론 · 9차수</span>
+          </div>
+          <h3 class="mb-4">Z점수를 구하면 분포 모양도 달라질까?</h3>
+          <div class="lesson-body"><p>8차수의 가상 소득은 오른쪽에 큰 값이 있었다. 각 값을 표본평균으로 중심화하고 표본표준편차로 나누면, 가장 큰 값과 나머지 값의 관계가 어떻게 달라질까?</p><aside class="lesson-callout">원자료와 Z점수의 정규 분위수 대조도를 예상해 보자. 기준선에서 가장 멀어 보일 순위와 그 이유를 한 줄로 적는다.</aside><div class="support-charts"><figure><svg viewBox="0 0 320 150" role="img" aria-label="원자료 · 가상 소득 20건"><path class="chart-axis" d="M37 20V117H303"/><text x="40" y="15">관측값 표시</text><text x="169" y="146" text-anchor="middle">소득(만 원)</text><path d="M46.5 47v30" stroke="#0758a0" stroke-width="2.5"/><path d="M50.9 57v30" stroke="#0758a0" stroke-width="2.5"/><path d="M53.2 67v30" stroke="#0758a0" stroke-width="2.5"/><path d="M55.4 47v30" stroke="#0758a0" stroke-width="2.5"/><path d="M57.6 57v30" stroke="#0758a0" stroke-width="2.5"/><path d="M59.9 67v30" stroke="#0758a0" stroke-width="2.5"/><path d="M62.1 47v30" stroke="#0758a0" stroke-width="2.5"/><path d="M64.3 57v30" stroke="#0758a0" stroke-width="2.5"/><path d="M66.6 67v30" stroke="#0758a0" stroke-width="2.5"/><path d="M68.8 47v30" stroke="#0758a0" stroke-width="2.5"/><path d="M71.0 57v30" stroke="#0758a0" stroke-width="2.5"/><path d="M73.3 67v30" stroke="#0758a0" stroke-width="2.5"/><path d="M75.5 47v30" stroke="#0758a0" stroke-width="2.5"/><path d="M79.9 57v30" stroke="#0758a0" stroke-width="2.5"/><path d="M86.6 67v30" stroke="#0758a0" stroke-width="2.5"/><path d="M97.8 47v30" stroke="#0758a0" stroke-width="2.5"/><path d="M109.0 57v30" stroke="#0758a0" stroke-width="2.5"/><path d="M131.3 67v30" stroke="#0758a0" stroke-width="2.5"/><path d="M175.9 47v30" stroke="#0758a0" stroke-width="2.5"/><path d="M287.5 57v30" stroke="#0758a0" stroke-width="2.5"/><text x="46.464285714285715" y="133" text-anchor="middle">120</text><text x="88.65178571428572" y="133" text-anchor="middle">309</text><text x="175.92857142857142" y="133" text-anchor="middle">700</text><text x="287.5357142857143" y="133" text-anchor="middle">1200</text></svg><figcaption>원자료 · 가상 소득 20건</figcaption></figure><figure><svg viewBox="0 0 320 150" role="img" aria-label="같은 관측을 Z점수로 표시"><path class="chart-axis" d="M37 20V117H303"/><text x="40" y="15">관측값 표시</text><text x="169" y="146" text-anchor="middle">Z점수</text><path d="M46.5 47v30" stroke="#0758a0" stroke-width="2.5"/><path d="M50.9 57v30" stroke="#0758a0" stroke-width="2.5"/><path d="M53.2 67v30" stroke="#0758a0" stroke-width="2.5"/><path d="M55.4 47v30" stroke="#0758a0" stroke-width="2.5"/><path d="M57.6 57v30" stroke="#0758a0" stroke-width="2.5"/><path d="M59.9 67v30" stroke="#0758a0" stroke-width="2.5"/><path d="M62.1 47v30" stroke="#0758a0" stroke-width="2.5"/><path d="M64.3 57v30" stroke="#0758a0" stroke-width="2.5"/><path d="M66.6 67v30" stroke="#0758a0" stroke-width="2.5"/><path d="M68.8 47v30" stroke="#0758a0" stroke-width="2.5"/><path d="M71.0 57v30" stroke="#0758a0" stroke-width="2.5"/><path d="M73.3 67v30" stroke="#0758a0" stroke-width="2.5"/><path d="M75.5 47v30" stroke="#0758a0" stroke-width="2.5"/><path d="M79.9 57v30" stroke="#0758a0" stroke-width="2.5"/><path d="M86.6 67v30" stroke="#0758a0" stroke-width="2.5"/><path d="M97.8 47v30" stroke="#0758a0" stroke-width="2.5"/><path d="M109.0 57v30" stroke="#0758a0" stroke-width="2.5"/><path d="M131.3 67v30" stroke="#0758a0" stroke-width="2.5"/><path d="M175.9 47v30" stroke="#0758a0" stroke-width="2.5"/><path d="M287.5 57v30" stroke="#0758a0" stroke-width="2.5"/><text x="46.464285714285715" y="133" text-anchor="middle">−0.75</text><text x="88.65178571428572" y="133" text-anchor="middle">0</text><text x="175.92857142857142" y="133" text-anchor="middle">1.56</text><text x="287.5357142857143" y="133" text-anchor="middle">3.54</text></svg><figcaption>같은 관측을 Z점수로 표시</figcaption></figure></div><p class="support-note">겹침을 줄이기 위해 표식을 세 줄로 엇갈려 놓았다. 두 그림의 눈금은 같은 관측값에 대응한다.</p></div>
+          <div class="mt-5 pt-3 border-t border-slate-300/40 flex justify-between gap-2 text-xs text-slate-500 dark:text-slate-400"><span>Data Thinking Lab · 경기대학교</span><span>03 / 17</span></div>
+        </article>
+        <article class="slide-card hidden bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 rounded-2xl border p-5 sm:p-8 shadow-sm mb-8 relative" data-slide="4">
+          <div class="flex items-center justify-between pb-3 mb-4">
+            <span class="text-xs font-mono font-bold">SLIDE 04 · 이론</span>
+            <span class="text-xs font-semibold">자료탐색방법론 · 9차수</span>
+          </div>
+          <h3 class="mb-4">관측한 분포와 확률모형</h3>
+          <div class="lesson-body"><p>경험분포는 관측된 값들의 비율을 요약한다. 확률모형은 가능한 값과 확률을 정해 아직 관측하지 않은 결과도 생각할 수 있게 한다.</p><p>확률변수는 실험 결과에 수치를 대응시킨다. 동전을 두 번 던져 HH가 나오면 앞면 횟수 X는 2다. 측정값을 연속형으로 모형화하면 확률은 구간으로 계산한다.</p><div class="support-cards"><div><strong>관측에서 출발</strong><p>관측 예시가 0, 0, 1, 2이면 0의 경험적 비율은 2/4다.</p></div><div><strong>모형에서 출발</strong><p>공정한 동전 두 번에서 앞면이 0번 나올 모형 확률은 1/4이다.</p></div><div><strong>비교해서 묻기</strong><p>표본을 더 모으면 관측 비율은 어떻게 달라질까?</p></div></div><div class="support-charts"><figure><svg viewBox="0 0 320 150" role="img" aria-label="관측 예시 4회 · 경험적 비율"><path class="chart-axis" d="M37 20V117H303"/><text x="40" y="15">비율</text><rect x="75" y="42" width="36" height="75" rx="3" fill="#447db8"/><text x="93" y="38" text-anchor="middle">0.50</text><text x="93" y="132" text-anchor="middle">0</text><rect x="151" y="79.5" width="36" height="37.5" rx="3" fill="#447db8"/><text x="169" y="75.5" text-anchor="middle">0.25</text><text x="169" y="132" text-anchor="middle">1</text><rect x="227" y="79.5" width="36" height="37.5" rx="3" fill="#447db8"/><text x="245" y="75.5" text-anchor="middle">0.25</text><text x="245" y="132" text-anchor="middle">2</text><text x="169" y="146" text-anchor="middle">앞면 횟수</text></svg><figcaption>관측 예시 4회 · 경험적 비율</figcaption></figure><figure><svg viewBox="0 0 320 150" role="img" aria-label="공정한 동전 모형 · 이론 확률"><path class="chart-axis" d="M37 20V117H303"/><text x="40" y="15">비율</text><rect x="75" y="79.5" width="36" height="37.5" rx="3" fill="#447db8"/><text x="93" y="75.5" text-anchor="middle">0.25</text><text x="93" y="132" text-anchor="middle">0</text><rect x="151" y="42" width="36" height="75" rx="3" fill="#447db8"/><text x="169" y="38" text-anchor="middle">0.50</text><text x="169" y="132" text-anchor="middle">1</text><rect x="227" y="79.5" width="36" height="37.5" rx="3" fill="#447db8"/><text x="245" y="75.5" text-anchor="middle">0.25</text><text x="245" y="132" text-anchor="middle">2</text><text x="169" y="146" text-anchor="middle">앞면 횟수</text></svg><figcaption>공정한 동전 모형 · 이론 확률</figcaption></figure></div></div>
+          <div class="mt-5 pt-3 border-t border-slate-300/40 flex justify-between gap-2 text-xs text-slate-500 dark:text-slate-400"><span>Data Thinking Lab · 경기대학교</span><span>04 / 17</span></div>
+        </article>
+        <article class="slide-card hidden bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 rounded-2xl border p-5 sm:p-8 shadow-sm mb-8 relative" data-slide="5">
+          <div class="flex items-center justify-between pb-3 mb-4">
+            <span class="text-xs font-mono font-bold">SLIDE 05 · 이론</span>
+            <span class="text-xs font-semibold">자료탐색방법론 · 9차수</span>
+          </div>
+          <h3 class="mb-4">이산형은 질량, 연속형은 면적</h3>
+          <div class="lesson-body"><div class="lesson-table"><table><thead><tr><th scope="col">구분</th><th scope="col">점 또는 구간의 확률</th><th scope="col">예</th></tr></thead><tbody><tr><td>이산형 · PMF</td><td>가능한 값의 확률을 더한다.</td><td>공정한 동전 두 번의 앞면 수 0, 1, 2의 확률은 ¼, ½, ¼이다.</td></tr><tr><td>연속형 · PDF</td><td>구간에서 밀도곡선 아래 면적을 구한다.</td><td>밀도 높이 자체는 확률이 아니다. 한 점의 확률은 0이다.</td></tr></tbody></table></div><aside class="lesson-callout">동전 예제에서 P(X = 1)과 P(X ≤ 1)을 비교해 보자. <button class="lesson-button lesson-secondary no-print" type="button" aria-haspopup="dialog" data-open="cdf-hand">손계산 해설</button></aside><div class="support-charts"><figure><svg viewBox="0 0 320 150" role="img" aria-label="앞면 횟수의 확률질량"><path class="chart-axis" d="M37 20V117H303"/><text x="40" y="15">점확률</text><text x="169" y="146" text-anchor="middle">앞면 횟수</text><rect x="76" y="80.25" width="32" height="36.75" rx="3" fill="#447db8"/><text x="92" y="75.25" text-anchor="middle">0.25</text><text x="92" y="133" text-anchor="middle">0</text><rect x="151" y="43.5" width="32" height="73.5" rx="3" fill="#447db8"/><text x="167" y="38.5" text-anchor="middle">0.5</text><text x="167" y="133" text-anchor="middle">1</text><rect x="226" y="80.25" width="32" height="36.75" rx="3" fill="#447db8"/><text x="242" y="75.25" text-anchor="middle">0.25</text><text x="242" y="133" text-anchor="middle">2</text></svg><figcaption>앞면 횟수의 확률질량</figcaption></figure><figure><svg viewBox="0 0 320 150" role="img" aria-label="표준정규분포의 구간확률"><path class="chart-axis" d="M37 20V117H303"/><text x="40" y="15">확률밀도</text><text x="169" y="146" text-anchor="middle">표준정규 값 z</text><path d="M128 117L128 63Q170 21 212 63V117Z" fill="#bfdbfe"/><path d="M38 116C93 116 108 96 128 63Q170 21 212 63C232 96 247 116 300 116" class="chart-curve"/><text x="128" y="133" text-anchor="middle">−1</text><text x="212" y="133" text-anchor="middle">1</text><text x="170" y="94" text-anchor="middle">구간의 면적</text></svg><figcaption>표준정규분포의 구간확률</figcaption></figure></div></div>
+          <div class="mt-5 pt-3 border-t border-slate-300/40 flex justify-between gap-2 text-xs text-slate-500 dark:text-slate-400"><span>Data Thinking Lab · 경기대학교</span><span>05 / 17</span></div>
+        </article>
+        <article class="slide-card hidden bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 rounded-2xl border p-5 sm:p-8 shadow-sm mb-8 relative" data-slide="6">
+          <div class="flex items-center justify-between pb-3 mb-4">
+            <span class="text-xs font-mono font-bold">SLIDE 06 · 이론</span>
+            <span class="text-xs font-semibold">자료탐색방법론 · 9차수</span>
+          </div>
+          <h3 class="mb-4">누적확률과 분위수는 방향이 반대다</h3>
+          <div class="lesson-body"><div class="lesson-figures"><figure><svg viewBox="0 0 410 196" role="img" aria-label="표준정규 밀도에서 z=1 왼쪽의 면적 0.8413">
+    <path d="M48 23V154H391" class="chart-axis"/><path d="M48 154 L48.0 153.8 L52.9 153.7 L57.8 153.6 L62.7 153.4 L67.6 153.2 L72.5 152.8 L77.4 152.5 L82.3 151.9 L87.2 151.3 L92.1 150.5 L97.0 149.4 L101.9 148.2 L106.8 146.6 L111.7 144.8 L116.6 142.6 L121.5 140.0 L126.4 136.9 L131.3 133.5 L136.2 129.5 L141.1 125.2 L146.0 120.3 L150.9 115.1 L155.8 109.4 L160.7 103.5 L165.6 97.4 L170.5 91.1 L175.4 84.8 L180.3 78.7 L185.2 72.8 L190.1 67.4 L195.0 62.5 L199.9 58.2 L204.8 54.8 L209.7 52.3 L214.6 50.8 L219.5 50.3 L224.4 50.8 L229.3 52.3 L234.2 54.8 L239.1 58.2 L244.0 62.5 L248.9 67.4 L253.8 72.8 L258.7 78.7 L263.6 84.8 L268.5 91.1 L268.5 154Z" fill="#bfdbfe"/>
+    <path d="M48.0 153.8 L52.9 153.7 L57.8 153.6 L62.7 153.4 L67.6 153.2 L72.5 152.8 L77.4 152.5 L82.3 151.9 L87.2 151.3 L92.1 150.5 L97.0 149.4 L101.9 148.2 L106.8 146.6 L111.7 144.8 L116.6 142.6 L121.5 140.0 L126.4 136.9 L131.3 133.5 L136.2 129.5 L141.1 125.2 L146.0 120.3 L150.9 115.1 L155.8 109.4 L160.7 103.5 L165.6 97.4 L170.5 91.1 L175.4 84.8 L180.3 78.7 L185.2 72.8 L190.1 67.4 L195.0 62.5 L199.9 58.2 L204.8 54.8 L209.7 52.3 L214.6 50.8 L219.5 50.3 L224.4 50.8 L229.3 52.3 L234.2 54.8 L239.1 58.2 L244.0 62.5 L248.9 67.4 L253.8 72.8 L258.7 78.7 L263.6 84.8 L268.5 91.1 L273.4 97.4 L278.3 103.5 L283.2 109.4 L288.1 115.1 L293.0 120.3 L297.9 125.2 L302.8 129.5 L307.7 133.5 L312.6 136.9 L317.5 140.0 L322.4 142.6 L327.3 144.8 L332.2 146.6 L337.1 148.2 L342.0 149.4 L346.9 150.5 L351.8 151.3 L356.7 151.9 L361.6 152.5 L366.5 152.8 L371.4 153.2 L376.3 153.4 L381.2 153.6 L386.1 153.7 L391.0 153.8" class="chart-curve"/>
+    <path d="M268.5 154V91.08761162502273" class="chart-guide"/>
+    <text x="268.5" y="175" text-anchor="middle">1</text><text x="386" y="182">z</text>
+    <text x="52" y="18">확률밀도 f(z)</text><text x="99" y="116">0.8413 (면적)</text></svg><figcaption>밀도에서 면적으로</figcaption></figure><figure><svg viewBox="0 0 410 196" role="img" aria-label="표준정규 누적곡선의 z=1, 누적확률 0.8413">
+    <path d="M48 23V154H391" class="chart-axis"/>
+    <path d="M48.0 154.0 L52.9 154.0 L57.8 153.9 L62.7 153.9 L67.6 153.9 L72.5 153.8 L77.4 153.8 L82.3 153.7 L87.2 153.6 L92.1 153.4 L97.0 153.3 L101.9 153.0 L106.8 152.7 L111.7 152.3 L116.6 151.9 L121.5 151.3 L126.4 150.6 L131.3 149.7 L136.2 148.7 L141.1 147.5 L146.0 146.1 L150.9 144.4 L155.8 142.5 L160.7 140.3 L165.6 137.9 L170.5 135.1 L175.4 132.1 L180.3 128.8 L185.2 125.2 L190.1 121.4 L195.0 117.3 L199.9 113.0 L204.8 108.5 L209.7 103.9 L214.6 99.2 L219.5 94.5 L224.4 89.8 L229.3 85.1 L234.2 80.5 L239.1 76.0 L244.0 71.7 L248.9 67.6 L253.8 63.8 L258.7 60.2 L263.6 56.9 L268.5 53.9 L273.4 51.1 L278.3 48.7 L283.2 46.5 L288.1 44.6 L293.0 42.9 L297.9 41.5 L302.8 40.3 L307.7 39.3 L312.6 38.4 L317.5 37.7 L322.4 37.1 L327.3 36.7 L332.2 36.3 L337.1 36.0 L342.0 35.7 L346.9 35.6 L351.8 35.4 L356.7 35.3 L361.6 35.2 L366.5 35.2 L371.4 35.1 L376.3 35.1 L381.2 35.1 L386.1 35.0 L391.0 35.0" class="chart-curve"/>
+    <path d="M268.5 154V53.8853H48" class="chart-guide"/>
+    <text x="268.5" y="175" text-anchor="middle">1</text><text x="386" y="182">z</text>
+    <text x="52" y="18">누적확률 F(z)</text><text x="49" y="45.8853">0.8413</text></svg><figcaption>CDF에서 값과 누적확률을 대응</figcaption></figure></div><p>F(x) = P(X ≤ x). CDF는 값 x를 누적확률로, 정규분포의 분위수 함수는 확률 p를 값으로 보낸다. 예를 들어 F(1) ≈ 0.8413이다.</p><div class="support-cards"><div><strong>값 → 확률</strong><p>표준정규에서 z=0이면 F(0)=0.5다.</p></div><div><strong>확률 → 값</strong><p>같은 분포에서 p=0.5인 분위수는 0이다.</p></div></div></div>
+          <div class="mt-5 pt-3 border-t border-slate-300/40 flex justify-between gap-2 text-xs text-slate-500 dark:text-slate-400"><span>Data Thinking Lab · 경기대학교</span><span>06 / 17</span></div>
+        </article>
+        <article class="slide-card hidden bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 rounded-2xl border p-5 sm:p-8 shadow-sm mb-8 relative" data-slide="7">
+          <div class="flex items-center justify-between pb-3 mb-4">
+            <span class="text-xs font-mono font-bold">SLIDE 07 · 이론</span>
+            <span class="text-xs font-semibold">자료탐색방법론 · 9차수</span>
+          </div>
+          <h3 class="mb-4">정규분포에서 μ와 σ가 정하는 것</h3>
+          <div class="lesson-body"><p>정규분포에서 평균 μ는 중심을 옮기고 표준편차 σ는 폭을 바꾼다. 모집단의 X가 정규분포를 따를 때 (X−μ)/σ는 표준정규분포 N(0, 1)를 따른다.</p><div class="normal-example"><div class="lesson-table"><table><thead><tr><th scope="col">SciPy 함수</th><th scope="col">묻는 것</th></tr></thead><tbody><tr><td>pdf(z)</td><td>z에서 밀도의 높이는?</td></tr><tr><td>cdf(z)</td><td>z 이하 확률은?</td></tr><tr><td>ppf(p)</td><td>누적확률 p에 해당하는 값은?</td></tr><tr><td>rvs(...)</td><td>이 모형에서 난수를 생성하면?</td></tr></tbody></table></div><div class="support-charts"><figure><svg viewBox="0 0 320 150" role="img" aria-label="평균 이동 · N(1, 1)"><path class="chart-axis" d="M37 20V117H303"/><text x="40" y="15">확률밀도</text><text x="169" y="146" text-anchor="middle">관측값 x</text><path d="M50.0 117.0L53.8 117.0L57.5 117.0L61.3 116.9L65.0 116.9L68.8 116.8L72.5 116.8L76.3 116.6L80.0 116.5L83.8 116.2L87.5 115.9L91.3 115.5L95.0 114.9L98.8 114.1L102.5 113.2L106.3 112.0L110.0 110.5L113.8 108.7L117.5 106.6L121.3 104.2L125.0 101.5L128.8 98.4L132.5 95.1L136.3 91.6L140.0 88.0L143.8 84.4L147.5 80.9L151.3 77.6L155.0 74.8L158.8 72.4L162.5 70.6L166.3 69.5L170.0 69.1L173.8 69.5L177.5 70.6L181.3 72.4L185.0 74.8L188.8 77.6L192.5 80.9L196.3 84.4L200.0 88.0L203.8 91.6L207.5 95.1L211.3 98.4L215.0 101.5L218.8 104.2L222.5 106.6L226.3 108.7L230.0 110.5L233.8 112.0L237.5 113.2L241.3 114.1L245.0 114.9L248.8 115.5L252.5 115.9L256.3 116.2L260.0 116.5L263.8 116.6L267.5 116.8L271.3 116.8L275.0 116.9L278.8 116.9L282.5 117.0L286.3 117.0L290.0 117.0" class="chart-guide"/><path d="M50.0 117.0L53.8 117.0L57.5 117.0L61.3 117.0L65.0 117.0L68.8 117.0L72.5 117.0L76.3 117.0L80.0 117.0L83.8 117.0L87.5 117.0L91.3 116.9L95.0 116.9L98.8 116.8L102.5 116.8L106.3 116.6L110.0 116.5L113.8 116.2L117.5 115.9L121.3 115.5L125.0 114.9L128.8 114.1L132.5 113.2L136.3 112.0L140.0 110.5L143.8 108.7L147.5 106.6L151.3 104.2L155.0 101.5L158.8 98.4L162.5 95.1L166.3 91.6L170.0 88.0L173.8 84.4L177.5 80.9L181.3 77.6L185.0 74.8L188.8 72.4L192.5 70.6L196.3 69.5L200.0 69.1L203.8 69.5L207.5 70.6L211.3 72.4L215.0 74.8L218.8 77.6L222.5 80.9L226.3 84.4L230.0 88.0L233.8 91.6L237.5 95.1L241.3 98.4L245.0 101.5L248.8 104.2L252.5 106.6L256.3 108.7L260.0 110.5L263.8 112.0L267.5 113.2L271.3 114.1L275.0 114.9L278.8 115.5L282.5 115.9L286.3 116.2L290.0 116.5" class="chart-curve"/><text x="110" y="133" text-anchor="middle">-2</text><text x="170" y="133" text-anchor="middle">0</text><text x="230" y="133" text-anchor="middle">2</text></svg><figcaption>평균 이동 · N(1, 1)</figcaption></figure><figure><svg viewBox="0 0 320 150" role="img" aria-label="폭 확대 · N(0, 2²)"><path class="chart-axis" d="M37 20V117H303"/><text x="40" y="15">확률밀도</text><text x="169" y="146" text-anchor="middle">관측값 x</text><path d="M50.0 117.0L53.8 117.0L57.5 117.0L61.3 116.9L65.0 116.9L68.8 116.8L72.5 116.8L76.3 116.6L80.0 116.5L83.8 116.2L87.5 115.9L91.3 115.5L95.0 114.9L98.8 114.1L102.5 113.2L106.3 112.0L110.0 110.5L113.8 108.7L117.5 106.6L121.3 104.2L125.0 101.5L128.8 98.4L132.5 95.1L136.3 91.6L140.0 88.0L143.8 84.4L147.5 80.9L151.3 77.6L155.0 74.8L158.8 72.4L162.5 70.6L166.3 69.5L170.0 69.1L173.8 69.5L177.5 70.6L181.3 72.4L185.0 74.8L188.8 77.6L192.5 80.9L196.3 84.4L200.0 88.0L203.8 91.6L207.5 95.1L211.3 98.4L215.0 101.5L218.8 104.2L222.5 106.6L226.3 108.7L230.0 110.5L233.8 112.0L237.5 113.2L241.3 114.1L245.0 114.9L248.8 115.5L252.5 115.9L256.3 116.2L260.0 116.5L263.8 116.6L267.5 116.8L271.3 116.8L275.0 116.9L278.8 116.9L282.5 117.0L286.3 117.0L290.0 117.0" class="chart-guide"/><path d="M50.0 113.8L53.8 113.3L57.5 112.9L61.3 112.4L65.0 111.8L68.8 111.2L72.5 110.6L76.3 109.9L80.0 109.2L83.8 108.5L87.5 107.7L91.3 106.9L95.0 106.0L98.8 105.2L102.5 104.3L106.3 103.4L110.0 102.5L113.8 101.6L117.5 100.7L121.3 99.8L125.0 98.9L128.8 98.1L132.5 97.3L136.3 96.6L140.0 95.9L143.8 95.2L147.5 94.7L151.3 94.2L155.0 93.8L158.8 93.5L162.5 93.2L166.3 93.1L170.0 93.1L173.8 93.1L177.5 93.2L181.3 93.5L185.0 93.8L188.8 94.2L192.5 94.7L196.3 95.2L200.0 95.9L203.8 96.6L207.5 97.3L211.3 98.1L215.0 98.9L218.8 99.8L222.5 100.7L226.3 101.6L230.0 102.5L233.8 103.4L237.5 104.3L241.3 105.2L245.0 106.0L248.8 106.9L252.5 107.7L256.3 108.5L260.0 109.2L263.8 109.9L267.5 110.6L271.3 111.2L275.0 111.8L278.8 112.4L282.5 112.9L286.3 113.3L290.0 113.8" class="chart-curve"/><text x="110" y="133" text-anchor="middle">-2</text><text x="170" y="133" text-anchor="middle">0</text><text x="230" y="133" text-anchor="middle">2</text></svg><figcaption>폭 확대 · N(0, 2²)</figcaption></figure></div><p class="support-note">점선은 표준정규 N(0, 1), 실선은 비교할 정규분포다. 두 패널의 축 눈금은 같다.</p></div></div>
+          <div class="mt-5 pt-3 border-t border-slate-300/40 flex justify-between gap-2 text-xs text-slate-500 dark:text-slate-400"><span>Data Thinking Lab · 경기대학교</span><span>07 / 17</span></div>
+        </article>
+        <article class="slide-card hidden bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 rounded-2xl border p-5 sm:p-8 shadow-sm mb-8 relative" data-slide="8">
+          <div class="flex items-center justify-between pb-3 mb-4">
+            <span class="text-xs font-mono font-bold">SLIDE 08 · 이론</span>
+            <span class="text-xs font-semibold">자료탐색방법론 · 9차수</span>
+          </div>
+          <h3 class="mb-4">순위에서 Q–Q 플롯의 점 하나 만들기</h3>
+          <div class="lesson-body"><ol><li>관측값을 작은 순서대로 정렬해 x₍ᵢ₎를 구한다.</li><li>순위 i에 중간순위 확률 pᵢ = (i − 0.5)/n을 배정한다.</li><li>표준정규 분위수 zᵢ = Φ⁻¹(pᵢ)를 찾는다.</li><li>가로 zᵢ, 세로 x₍ᵢ₎를 한 점으로 그린다.</li></ol><aside class="lesson-callout">pᵢ는 그림의 확률 배치 규칙이다. n=3에서 가운데 점의 p는 0.5다. 이때 가로 좌표는 어디에 놓일까?</aside><div class="support-cards"><div><strong>정렬</strong><p>[14, 8, 10] → [8, 10, 14]</p></div><div><strong>확률 배치</strong><p>n=3에서 i=2이면 p=(2−0.5)/3=0.5</p></div><div><strong>점으로 옮기기</strong><p>가운데 관측값의 좌표는 (0, 10)</p></div></div><p class="support-note">확률 배치는 양 끝에서 0과 1을 피한다. 같은 표본에서 확률 규칙을 바꾸어도 정렬된 관측값은 그대로다.</p></div>
+          <div class="mt-5 pt-3 border-t border-slate-300/40 flex justify-between gap-2 text-xs text-slate-500 dark:text-slate-400"><span>Data Thinking Lab · 경기대학교</span><span>08 / 17</span></div>
+        </article>
+        <article class="slide-card hidden bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 rounded-2xl border p-5 sm:p-8 shadow-sm mb-8 relative" data-slide="9">
+          <div class="flex items-center justify-between pb-3 mb-4">
+            <span class="text-xs font-mono font-bold">SLIDE 09 · 이론</span>
+            <span class="text-xs font-semibold">자료탐색방법론 · 9차수</span>
+          </div>
+          <h3 class="mb-4">직선과 어긋나는 구간을 읽기</h3>
+          <div class="lesson-body"><p>표준정규 분위수를 가로축에 놓으면 정규 모형에서 이론적인 관계는 y = μ + σz다. 표본에서는 기준선에 대한 점열의 위치와 굽음을 살핀다.</p><div class="lesson-table"><table><thead><tr><th scope="col">읽는 순서</th><th scope="col">확인할 것</th></tr></thead><tbody><tr><td>1. 축과 기준선</td><td>가로는 표준정규 이론 분위수, 세로는 정렬 관측값이다. 이번 실습은 최소제곱 직선을 사용한다.</td></tr><tr><td>2. 중심과 양쪽 꼬리</td><td>가운데가 직선에 가까워도 끝점은 위나 아래로 벗어날 수 있다.</td></tr><tr><td>3. 해석의 한계</td><td>작은 정규 표본도 꼬리 점이 흔들린다. 이탈이 집중된 순위를 자료에서 확인한다.</td></tr></tbody></table></div><div class="support-charts"><figure><svg viewBox="0 0 320 150" role="img" aria-label="직선에 가까운 점열"><path class="chart-axis" d="M37 20V117H303"/><text x="40" y="15">정렬 관측값</text><text x="169" y="146" text-anchor="middle">표준정규 분위수</text><text x="89.35483870967742" y="133" text-anchor="middle">-1</text><text x="170" y="133" text-anchor="middle">0</text><text x="250.64516129032256" y="133" text-anchor="middle">1</text><text x="33" y="90.14634146341464" text-anchor="end">-1</text><text x="33" y="45.756097560975604" text-anchor="end">1</text><path class="chart-guide" d="M73.22580645161291 90.58536585365854L266.7741935483871 37.3170731707317"/><circle cx="73.2" cy="90.1" r="3.5" fill="#0758a0" stroke="#0758a0"/><circle cx="121.6" cy="77.7" r="3.5" fill="#0758a0" stroke="#0758a0"/><circle cx="170.0" cy="62.8" r="3.5" fill="#0758a0" stroke="#0758a0"/><circle cx="218.4" cy="51.5" r="3.5" fill="#0758a0" stroke="#0758a0"/><circle cx="266.8" cy="36.9" r="3.5" fill="#0758a0" stroke="#0758a0"/></svg><figcaption>직선에 가까운 점열</figcaption></figure><figure><svg viewBox="0 0 320 150" role="img" aria-label="오른쪽 끝의 상향 이탈"><path class="chart-axis" d="M37 20V117H303"/><text x="40" y="15">정렬 관측값</text><text x="169" y="146" text-anchor="middle">표준정규 분위수</text><text x="89.35483870967742" y="133" text-anchor="middle">-1</text><text x="170" y="133" text-anchor="middle">0</text><text x="250.64516129032256" y="133" text-anchor="middle">1</text><text x="33" y="90.14634146341464" text-anchor="end">-1</text><text x="33" y="45.756097560975604" text-anchor="end">1</text><path class="chart-guide" d="M73.22580645161291 90.58536585365854L266.7741935483871 37.3170731707317"/><circle cx="73.2" cy="84.4" r="3.5" fill="#0758a0" stroke="#0758a0"/><circle cx="121.6" cy="79.0" r="3.5" fill="#0758a0" stroke="#0758a0"/><circle cx="170.0" cy="73.1" r="3.5" fill="#0758a0" stroke="#0758a0"/><circle cx="218.4" cy="61.7" r="3.5" fill="#0758a0" stroke="#0758a0"/><circle cx="266.8" cy="29.5" r="3.5" fill="#0758a0" stroke="#0758a0"/></svg><figcaption>오른쪽 끝의 상향 이탈</figcaption></figure><figure><svg viewBox="0 0 320 150" role="img" aria-label="양쪽 꼬리의 이탈"><path class="chart-axis" d="M37 20V117H303"/><text x="40" y="15">정렬 관측값</text><text x="169" y="146" text-anchor="middle">표준정규 분위수</text><text x="89.35483870967742" y="133" text-anchor="middle">-1</text><text x="170" y="133" text-anchor="middle">0</text><text x="250.64516129032256" y="133" text-anchor="middle">1</text><text x="33" y="90.14634146341464" text-anchor="end">-1</text><text x="33" y="45.756097560975604" text-anchor="end">1</text><path class="chart-guide" d="M73.22580645161291 90.58536585365854L266.7741935483871 37.3170731707317"/><circle cx="73.2" cy="104.6" r="3.5" fill="#0758a0" stroke="#0758a0"/><circle cx="121.6" cy="78.2" r="3.5" fill="#0758a0" stroke="#0758a0"/><circle cx="170.0" cy="64.0" r="3.5" fill="#0758a0" stroke="#0758a0"/><circle cx="218.4" cy="50.4" r="3.5" fill="#0758a0" stroke="#0758a0"/><circle cx="266.8" cy="26.9" r="3.5" fill="#0758a0" stroke="#0758a0"/></svg><figcaption>양쪽 꼬리의 이탈</figcaption></figure></div><p class="support-note">읽기 연습용 모식도다. 중심부에 맞춘 같은 점선을 사용한다. 최소제곱선은 전체 점의 영향을 받고, 사분위수 기준선은 이론·표본의 1·3사분위수 쌍을 잇는다. 패턴은 분포를 탐색하는 단서다.</p></div>
+          <div class="mt-5 pt-3 border-t border-slate-300/40 flex justify-between gap-2 text-xs text-slate-500 dark:text-slate-400"><span>Data Thinking Lab · 경기대학교</span><span>09 / 17</span></div>
+        </article>
+        <article class="slide-card hidden bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 rounded-2xl border p-5 sm:p-8 shadow-sm mb-8 relative" data-slide="10">
+          <div class="flex items-center justify-between pb-3 mb-4">
+            <span class="text-xs font-mono font-bold">SLIDE 10 · 실습 1</span>
+            <span class="text-xs font-semibold">자료탐색방법론 · 9차수</span>
+          </div>
+          <h3 class="mb-4">프롬프트 · 정렬된 세 점을 검증하기</h3>
+          <div class="lesson-body"><p>가상 관측값 [14, 8, 10]. AI 결과를 보기 전에 정렬 순서와 가운데 점을 직접 적어 본다.</p><div class="lesson-copy"><button class="lesson-button no-print" type="button" data-copy="p-small">프롬프트 복사</button><span role="status" aria-live="polite"></span></div><pre id="p-small" class="lesson-prompt" tabindex="0">관측값 [14, 8, 10]을 정렬하고, 순위 i마다 p=(i−0.5)/n과 표준정규 분위수 z를 구해 표를 만들어줘. 가로축은 z, 세로축은 정렬 관측값으로 점을 그려줘.
+같은 자료에서 Filliben 방식의 확률도 직접 계산해 SciPy probplot(fit=False)과 좌표를 대조해줘. 중간순위 방식의 가로 좌표가 왜 다른지도 설명해줘.</pre><div class="lesson-actions"><button class="lesson-button lesson-secondary no-print" type="button" aria-haspopup="dialog" data-open="small-hand">손계산 해설</button><button class="lesson-button lesson-secondary no-print" type="button" aria-haspopup="dialog" data-open="small-code">비교용 Python</button></div><div class="support-cards"><div><strong>실행 전</strong><p>정렬 결과와 가운데 점을 직접 적는다.</p></div><div><strong>실행 후</strong><p>같은 확률 배치끼리 좌표 배열을 대조한다.</p></div><div><strong>설명</strong><p>가로 좌표가 다를 때 사용한 확률 공식을 확인한다.</p></div></div><div class="lesson-table practice-grid"><table><thead><tr><th scope="col">먼저 채울 항목</th><th scope="col">첫 순위</th><th scope="col">가운데 순위</th><th scope="col">마지막 순위</th></tr></thead><tbody><tr><th scope="row">정렬 관측값</th><td>□</td><td>□</td><td>□</td></tr><tr><th scope="row">중간순위 확률</th><td>□</td><td>□</td><td>□</td></tr></tbody></table></div></div>
+          <div class="mt-5 pt-3 border-t border-slate-300/40 flex justify-between gap-2 text-xs text-slate-500 dark:text-slate-400"><span>Data Thinking Lab · 경기대학교</span><span>10 / 17</span></div>
+        </article>
+        <article class="slide-card hidden bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 rounded-2xl border p-5 sm:p-8 shadow-sm mb-8 relative" data-slide="11">
+          <div class="flex items-center justify-between pb-3 mb-4">
+            <span class="text-xs font-mono font-bold">SLIDE 11 · 실습 1 정리</span>
+            <span class="text-xs font-semibold">자료탐색방법론 · 9차수</span>
+          </div>
+          <h3 class="mb-4">좌표가 다르면 확률 배치부터 확인하기</h3>
+          <div class="lesson-body"><p>수업의 중간순위 방식과 SciPy의 Filliben 방식은 순위에 붙이는 확률이 다르다. 같은 자료라면 두 방식의 세로 좌표는 같고 가로 좌표는 달라질 수 있다.</p><p>Filliben은 양 끝에 1−0.5^(1/n), 0.5^(1/n)을 놓고 내부 순위에는 (i−0.3175)/(n+0.365)를 쓴다.</p><aside class="lesson-callout">검증 기준 · 같은 배치 규칙으로 계산했을 때 두 좌표 배열이 허용오차 안에서 일치하는가?</aside><div class="support-charts"><figure><svg viewBox="0 0 320 150" role="img" aria-label="같은 관측값, 다른 가로 좌표"><path class="chart-axis" d="M37 20V117H303"/><text x="40" y="15">정렬 관측값</text><text x="169" y="146" text-anchor="middle">표준정규 분위수</text><text x="73.84615384615385" y="133" text-anchor="middle">-1</text><text x="170" y="133" text-anchor="middle">0</text><text x="266.15384615384613" y="133" text-anchor="middle">1</text><text x="33" y="88.66666666666667" text-anchor="end">10</text><text x="33" y="48.22222222222223" text-anchor="end">14</text><circle cx="77.0" cy="104.9" r="3.5" fill="#0758a0" stroke="#0758a0"/><circle cx="170.0" cy="84.7" r="3.5" fill="#0758a0" stroke="#0758a0"/><circle cx="263.0" cy="44.2" r="3.5" fill="#0758a0" stroke="#0758a0"/><circle cx="91.2" cy="104.9" r="5" fill="none" stroke="#ac4c17"/><circle cx="170.0" cy="84.7" r="5" fill="none" stroke="#ac4c17"/><circle cx="248.8" cy="44.2" r="5" fill="none" stroke="#ac4c17"/></svg><figcaption>같은 관측값, 다른 가로 좌표</figcaption></figure></div><p class="support-note">파란 점은 중간순위, 주황색 원은 Filliben이다. i/n을 쓰면 마지막 p=1에서 표준정규 분위수가 유한하지 않다.</p></div>
+          <div class="mt-5 pt-3 border-t border-slate-300/40 flex justify-between gap-2 text-xs text-slate-500 dark:text-slate-400"><span>Data Thinking Lab · 경기대학교</span><span>11 / 17</span></div>
+        </article>
+        <article class="slide-card hidden bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 rounded-2xl border p-5 sm:p-8 shadow-sm mb-8 relative" data-slide="12">
+          <div class="flex items-center justify-between pb-3 mb-4">
+            <span class="text-xs font-mono font-bold">SLIDE 12 · 실습 2</span>
+            <span class="text-xs font-semibold">자료탐색방법론 · 9차수</span>
+          </div>
+          <h3 class="mb-4">프롬프트 · 가상 소득의 변환 전후 비교</h3>
+          <div class="lesson-body"><p>8차수 가상 소득을 다시 사용한다. 원자료와 Z점수에서 가장 오른쪽 점의 이탈 방향을 먼저 예상한다.</p><div class="lesson-copy"><button class="lesson-button no-print" type="button" data-copy="p-income">프롬프트 복사</button><span role="status" aria-live="polite"></span></div><pre id="p-income" class="lesson-prompt" tabindex="0">교육용 가상 자료 [120,140,150,160,170,180,190,200,210,220,230,240,250,270,300,350,400,500,700,1200,None,None]에서 전체·유효·결측 건수를 확인해줘.
+같은 유효 관측으로 원자료(만 원), Z점수(ddof=1), 최대우도 Box–Cox 변환의 정규 분위수 대조도를 나란히 그려줘. Filliben 확률과 표준정규 분위수, 각 패널의 최소제곱 기준선을 사용해줘.
+원자료와 Z점수의 표준화 잔차가 일치하는지 검증하고, Box–Cox 전후 양 끝점의 표준화 잔차를 표로 보여줘. 표준화 잔차는 (관측값−기준선 값)/해당 척도의 표본표준편차로 정의해줘. 해석은 내가 작성할 수 있도록 질문만 남겨줘.</pre><div class="lesson-actions"><button class="lesson-button lesson-secondary no-print" type="button" aria-haspopup="dialog" data-open="income-hand">손계산 검증</button><button class="lesson-button lesson-secondary no-print" type="button" aria-haspopup="dialog" data-open="income-code">비교용 Python</button></div><div class="support-cards"><div><strong>입력 확인</strong><p>전체·유효·결측 건수를 적고 같은 관측을 세 패널에 사용한다.</p></div><div><strong>경계 사례</strong><p>유효값이 2개 미만이거나 상수인 자료는 비교를 중단한다. Box–Cox에는 양수가 필요하다.</p></div><div><strong>결과 확인</strong><p>두 꼬리를 같은 척도로 비교할 때는 잔차를 해당 척도의 표본표준편차로 나눈다.</p></div></div></div>
+          <div class="mt-5 pt-3 border-t border-slate-300/40 flex justify-between gap-2 text-xs text-slate-500 dark:text-slate-400"><span>Data Thinking Lab · 경기대학교</span><span>12 / 17</span></div>
+        </article>
+        <article class="slide-card hidden bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 rounded-2xl border p-5 sm:p-8 shadow-sm mb-8 relative" data-slide="13">
+          <div class="flex items-center justify-between pb-3 mb-4">
+            <span class="text-xs font-mono font-bold">SLIDE 13 · 실습 2 정리</span>
+            <span class="text-xs font-semibold">자료탐색방법론 · 9차수</span>
+          </div>
+          <h3 class="mb-4">같은 눈금에서 분포 모양 비교하기</h3>
+          <div class="lesson-body"><div class="lesson-figures"><figure><svg viewBox="0 0 397 247" role="img" aria-label="가상 소득 원자료를 Z점수로 표현한 값의 정규 분위수 대조도">
+    <path d="M55 24V207H361" class="chart-axis"/>
+    <text x="58" y="223" text-anchor="middle">-2</text><text x="47" y="208" text-anchor="end">-2</text><text x="208" y="223" text-anchor="middle">0</text><text x="47" y="146" text-anchor="end">0</text><text x="358" y="223" text-anchor="middle">2</text><text x="47" y="84" text-anchor="end">2</text>
+    <path d="M58 194.12738961659483L358 89.87261038340519" class="chart-guide"/>
+    <circle cx="71.19" cy="165.31" r="4" fill="#0758a0"/><circle cx="103.92" cy="162.84" r="4" fill="#0758a0"/><circle cx="124.13" cy="161.61" r="4" fill="#0758a0"/><circle cx="139.58" cy="160.37" r="4" fill="#0758a0"/><circle cx="152.57" cy="159.14" r="4" fill="#0758a0"/><circle cx="164.07" cy="157.91" r="4" fill="#0758a0"/><circle cx="174.62" cy="156.68" r="4" fill="#0758a0"/><circle cx="184.54" cy="155.44" r="4" fill="#0758a0"/><circle cx="194.07" cy="154.21" r="4" fill="#0758a0"/><circle cx="203.38" cy="152.97" r="4" fill="#0758a0"/><circle cx="212.62" cy="151.74" r="4" fill="#0758a0"/><circle cx="221.93" cy="150.51" r="4" fill="#0758a0"/><circle cx="231.46" cy="149.28" r="4" fill="#0758a0"/><circle cx="241.38" cy="146.81" r="4" fill="#0758a0"/><circle cx="251.93" cy="143.11" r="4" fill="#0758a0"/><circle cx="263.43" cy="136.94" r="4" fill="#0758a0"/><circle cx="276.42" cy="130.78" r="4" fill="#0758a0"/><circle cx="291.87" cy="118.45" r="4" fill="#0758a0"/><circle cx="312.08" cy="93.79" r="4" fill="#0758a0"/><circle cx="344.81" cy="32.13" r="4" fill="#0758a0"/>
+    <text x="55" y="17">표준화한 관측값</text><text x="208" y="242" text-anchor="middle">표준정규 이론 분위수</text></svg><figcaption>원자료의 Z점수</figcaption></figure><figure><svg viewBox="0 0 397 247" role="img" aria-label="가상 소득 Box–Cox 변환값을 Z점수로 표현한 값의 정규 분위수 대조도">
+    <path d="M55 24V207H361" class="chart-axis"/>
+    <text x="58" y="223" text-anchor="middle">-2</text><text x="47" y="208" text-anchor="end">-2</text><text x="208" y="223" text-anchor="middle">0</text><text x="47" y="146" text-anchor="end">0</text><text x="358" y="223" text-anchor="middle">2</text><text x="47" y="84" text-anchor="end">2</text>
+    <path d="M58 207.16615038982667L358 76.83384961017332" class="chart-guide"/>
+    <circle cx="71.19" cy="201.99" r="4" fill="#0758a0"/><circle cx="103.92" cy="184.40" r="4" fill="#0758a0"/><circle cx="124.13" cy="177.27" r="4" fill="#0758a0"/><circle cx="139.58" cy="170.98" r="4" fill="#0758a0"/><circle cx="152.57" cy="165.39" r="4" fill="#0758a0"/><circle cx="164.07" cy="160.38" r="4" fill="#0758a0"/><circle cx="174.62" cy="155.88" r="4" fill="#0758a0"/><circle cx="184.54" cy="151.79" r="4" fill="#0758a0"/><circle cx="194.07" cy="148.08" r="4" fill="#0758a0"/><circle cx="203.38" cy="144.68" r="4" fill="#0758a0"/><circle cx="212.62" cy="141.56" r="4" fill="#0758a0"/><circle cx="221.93" cy="138.69" r="4" fill="#0758a0"/><circle cx="231.46" cy="136.04" r="4" fill="#0758a0"/><circle cx="241.38" cy="131.28" r="4" fill="#0758a0"/><circle cx="251.93" cy="125.27" r="4" fill="#0758a0"/><circle cx="263.43" cy="117.43" r="4" fill="#0758a0"/><circle cx="276.42" cy="111.45" r="4" fill="#0758a0"/><circle cx="291.87" cy="102.89" r="4" fill="#0758a0"/><circle cx="312.08" cy="92.80" r="4" fill="#0758a0"/><circle cx="344.81" cy="81.74" r="4" fill="#0758a0"/>
+    <text x="55" y="17">표준화한 관측값</text><text x="208" y="242" text-anchor="middle">표준정규 이론 분위수</text></svg><figcaption>Box–Cox 변환값의 Z점수</figcaption></figure></div><p>가상 소득 유효 20건 · Filliben 좌표 · 점선은 최소제곱 기준선. 이 그림에서는 분포 모양만 비교하도록 두 세로축을 각각 표준화했다. 실습 코드는 각 척도의 실제 눈금도 보여 준다.</p><aside class="lesson-callout">가장 오른쪽 점을 보자. Box–Cox 이후 이탈이 작아졌다. 변환값으로 정규 모형을 사용할지는 분석 목적과 추가 근거를 함께 살핀다.</aside><p class="support-note">비교 기준 · 같은 순위의 가로 좌표는 유지된다. 오른쪽 끝점의 세로 잔차를 읽을 때는 각 패널에서 기준선을 다시 적합했다는 점을 함께 고려한다.</p></div>
+          <div class="mt-5 pt-3 border-t border-slate-300/40 flex justify-between gap-2 text-xs text-slate-500 dark:text-slate-400"><span>Data Thinking Lab · 경기대학교</span><span>13 / 17</span></div>
+        </article>
+        <article class="slide-card hidden bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 rounded-2xl border p-5 sm:p-8 shadow-sm mb-8 relative" data-slide="14">
+          <div class="flex items-center justify-between pb-3 mb-4">
+            <span class="text-xs font-mono font-bold">SLIDE 14 · 형성평가</span>
+            <span class="text-xs font-semibold">자료탐색방법론 · 9차수</span>
+          </div>
+          <h3 class="mb-4">그림을 근거로 보고서 문장 고치기</h3>
+          <div class="lesson-body"><p>“평균이 0이고 표준편차가 1이므로 정규분포를 따른다.” 이 문장을 그래프에서 확인할 수 있는 관찰로 바꾸어 보자.</p><aside class="lesson-callout">첫 문장에는 기준 분포와 이탈 구간을, 둘째 문장에는 표본 크기나 변환 선택에 따른 해석 한계를 적는다.</aside><div class="support-cards"><div><strong>1. 기준</strong><p>어떤 이론분포와 어떤 기준선을 사용했는가?</p></div><div><strong>2. 관찰</strong><p>가운데와 양쪽 끝에서 점이 선의 어느 쪽에 있는가?</p></div><div><strong>3. 확인</strong><p>큰 값 한 개의 영향인지 여러 순위에 걸친 이탈인지 살핀다.</p></div><div><strong>4. 한계</strong><p>표본 크기와 변환 기준이 해석에 어떤 영향을 주는가?</p></div></div><div class="support-charts"><figure><svg viewBox="0 0 320 150" role="img" aria-label="왼쪽과 가운데 점은 기준선 근처이고 오른쪽 끝 세 점은 기준선 위인 형성평가용 예시"><path d="M37 20V117H303" class="chart-axis"/><path d="M52 106L286 43" class="chart-guide"/><g fill="#0758a0"><circle cx="58" cy="105" r="4"/><circle cx="86" cy="96" r="4"/><circle cx="115" cy="90" r="4"/><circle cx="145" cy="83" r="4"/><circle cx="174" cy="73" r="4"/><circle cx="202" cy="66" r="4"/></g><g fill="#a63725"><circle cx="230" cy="50" r="4"/><circle cx="258" cy="34" r="4"/><circle cx="286" cy="19" r="4"/></g><text x="40" y="15">정렬 관측값</text><text x="169" y="145" text-anchor="middle">표준정규 분위수</text></svg><figcaption>문장 교정용 모식도 · 파란색은 앞쪽 순위, 주황색은 마지막 세 순위</figcaption></figure></div></div>
+          <div class="mt-5 pt-3 border-t border-slate-300/40 flex justify-between gap-2 text-xs text-slate-500 dark:text-slate-400"><span>Data Thinking Lab · 경기대학교</span><span>14 / 17</span></div>
+        </article>
+        <article class="slide-card hidden bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 rounded-2xl border p-5 sm:p-8 shadow-sm mb-8 relative" data-slide="15">
+          <div class="flex items-center justify-between pb-3 mb-4">
+            <span class="text-xs font-mono font-bold">SLIDE 15 · 자가 실습</span>
+            <span class="text-xs font-semibold">자료탐색방법론 · 9차수</span>
+          </div>
+          <h3 class="mb-4">새 가상 표본 · 배송시간의 오른쪽 꼬리</h3>
+          <div class="lesson-body"><p>다른 자료로 수업의 분석을 재현한다. 16건은 교육용 가상 배송시간이며 단위는 분이다. None은 결측 한 건이다.</p><pre class="lesson-prompt">[19,12,15,9,11,17,14,13,16,21,18,24,29,35,52,None]</pre><ol><li>최솟값·중앙값·최댓값의 중간순위 확률과 이론 분위수를 손으로 구한다.</li><li>프롬프트로 코드를 작성한 뒤 Filliben 좌표와 SciPy 결과를 대조한다.</li><li>원자료와 Z점수에서 같은 순위의 점이 어떻게 보이는지 확인한다. Box–Cox 이후 양쪽 끝점의 이탈을 비교한다.</li></ol><div class="support-charts"><figure><svg viewBox="0 0 320 150" role="img" aria-label="자가 실습 자료의 관측값 위치"><path class="chart-axis" d="M37 20V117H303"/><text x="40" y="15">관측값 표시</text><text x="169" y="146" text-anchor="middle">가상 배송시간(분)</text><path d="M101.8 47v30" stroke="#0758a0" stroke-width="2.5"/><path d="M63.7 57v30" stroke="#0758a0" stroke-width="2.5"/><path d="M80.0 67v30" stroke="#0758a0" stroke-width="2.5"/><path d="M47.4 47v30" stroke="#0758a0" stroke-width="2.5"/><path d="M58.3 57v30" stroke="#0758a0" stroke-width="2.5"/><path d="M90.9 67v30" stroke="#0758a0" stroke-width="2.5"/><path d="M74.6 47v30" stroke="#0758a0" stroke-width="2.5"/><path d="M69.2 57v30" stroke="#0758a0" stroke-width="2.5"/><path d="M85.5 67v30" stroke="#0758a0" stroke-width="2.5"/><path d="M112.7 47v30" stroke="#0758a0" stroke-width="2.5"/><path d="M96.3 57v30" stroke="#0758a0" stroke-width="2.5"/><path d="M129.0 67v30" stroke="#0758a0" stroke-width="2.5"/><path d="M156.1 47v30" stroke="#0758a0" stroke-width="2.5"/><path d="M188.7 57v30" stroke="#0758a0" stroke-width="2.5"/><path d="M281.1 67v30" stroke="#0758a0" stroke-width="2.5"/><text x="52.869565217391305" y="133" text-anchor="middle">10</text><text x="107.21739130434783" y="133" text-anchor="middle">20</text><text x="161.56521739130434" y="133" text-anchor="middle">30</text><text x="215.91304347826087" y="133" text-anchor="middle">40</text><text x="270.2608695652174" y="133" text-anchor="middle">50</text></svg><figcaption>자가 실습 자료의 관측값 위치</figcaption></figure></div></div>
+          <div class="mt-5 pt-3 border-t border-slate-300/40 flex justify-between gap-2 text-xs text-slate-500 dark:text-slate-400"><span>Data Thinking Lab · 경기대학교</span><span>15 / 17</span></div>
+        </article>
+        <article class="slide-card hidden bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 rounded-2xl border p-5 sm:p-8 shadow-sm mb-8 relative" data-slide="16">
+          <div class="flex items-center justify-between pb-3 mb-4">
+            <span class="text-xs font-mono font-bold">SLIDE 16 · 자가 실습</span>
+            <span class="text-xs font-semibold">자료탐색방법론 · 9차수</span>
+          </div>
+          <h3 class="mb-4">프롬프트 · 혼자 실행하고 결과 대조하기</h3>
+          <div class="lesson-body"><div class="lesson-copy"><button class="lesson-button no-print" type="button" data-copy="p-self">자가 실습 프롬프트 복사</button><span role="status" aria-live="polite"></span></div><pre id="p-self" class="lesson-prompt" tabindex="0">새 가상 배송시간(분) [19,12,15,9,11,17,14,13,16,21,18,24,29,35,52,None]을 사용해줘.
+유효 관측의 최솟값·중앙값·최댓값에 대해 중간순위 확률과 표준정규 분위수를 먼저 표로 만들어줘.
+그다음 Filliben 방식을 직접 구현해 probplot(fit=False)의 좌표와 대조해줘.
+원자료·Z점수(ddof=1)·최대우도 Box–Cox의 정규 분위수 대조도를 그리고, 최소제곱 기준선에서 양 끝점이 얼마나 벗어나는지 각 척도의 표본표준편차 단위로 보여줘. 내 해석은 대신 작성하지 말아줘.</pre><div class="lesson-actions"><button class="lesson-button lesson-secondary no-print" type="button" aria-haspopup="dialog" data-open="self-hand">손계산·결과 확인</button><button class="lesson-button lesson-secondary no-print" type="button" aria-haspopup="dialog" data-open="self-code">비교용 Python</button></div><p>남길 기록 · 세 순위의 좌표표, 변환 전후 그림, 양쪽 꼬리의 관찰 두 줄, 해석의 한계 한 줄.</p><div class="support-cards"><div><strong>검증 1</strong><p>손계산과 코드의 세 순위 결과를 대조한다.</p></div><div><strong>검증 2</strong><p>Filliben 좌표가 SciPy 결과와 일치하는지 확인한다.</p></div><div><strong>검증 3</strong><p>왼쪽과 오른쪽 끝점의 변화 방향을 각각 한 줄로 적는다.</p></div></div></div>
+          <div class="mt-5 pt-3 border-t border-slate-300/40 flex justify-between gap-2 text-xs text-slate-500 dark:text-slate-400"><span>Data Thinking Lab · 경기대학교</span><span>16 / 17</span></div>
+        </article>
+        <article class="slide-card hidden bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 rounded-2xl border p-5 sm:p-8 shadow-sm mb-8 relative" data-slide="17">
+          <div class="flex items-center justify-between pb-3 mb-4">
+            <span class="text-xs font-mono font-bold">SLIDE 17 · 정리</span>
+            <span class="text-xs font-semibold">자료탐색방법론 · 9차수</span>
+          </div>
+          <h3 class="mb-4">다음 차수 · 어떤 모양이 왜 나타날까?</h3>
+          <div class="lesson-body"><p>이번 차수에서는 표준정규 기준으로 점을 배치하고 어떤 순위가 직선에서 벗어나는지 읽었다. 10차수에서는 여러 분포를 생성해 비대칭, 꼬리 두께, 절단이 만드는 패턴을 비교한다.</p><aside class="lesson-callout">종료 질문 · 가운데 점은 직선에 가깝고 오른쪽 끝점이 위에 있다. 무엇을 관찰했고, 원자료의 어떤 값을 더 확인할까?</aside><p><a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.probplot.html" target="_blank" rel="noopener">SciPy 공식 문서에서 Filliben 계산 규칙 보기 ↗</a></p><div class="support-charts"><figure><svg viewBox="0 0 320 150" role="img" aria-label="표준정규 표본 A · n=8"><path class="chart-axis" d="M37 20V117H303"/><text x="40" y="15">정렬 관측값</text><text x="169" y="146" text-anchor="middle">표준정규 분위수</text><text x="89.35483870967742" y="133" text-anchor="middle">-1</text><text x="170" y="133" text-anchor="middle">0</text><text x="250.64516129032256" y="133" text-anchor="middle">1</text><text x="33" y="90.14634146341464" text-anchor="end">-1</text><text x="33" y="45.756097560975604" text-anchor="end">1</text><path class="chart-guide" d="M58.29048387096776 94.10176077878315L281.70951612903224 34.84939775780221"/><circle cx="58.3" cy="100.7" r="3.5" fill="#0758a0" stroke="#0758a0"/><circle cx="102.5" cy="81.8" r="3.5" fill="#0758a0" stroke="#0758a0"/><circle cx="132.4" cy="74.0" r="3.5" fill="#0758a0" stroke="#0758a0"/><circle cx="157.9" cy="58.6" r="3.5" fill="#0758a0" stroke="#0758a0"/><circle cx="182.1" cy="58.4" r="3.5" fill="#0758a0" stroke="#0758a0"/><circle cx="207.6" cy="54.4" r="3.5" fill="#0758a0" stroke="#0758a0"/><circle cx="237.5" cy="49.4" r="3.5" fill="#0758a0" stroke="#0758a0"/><circle cx="281.7" cy="38.6" r="3.5" fill="#0758a0" stroke="#0758a0"/></svg><figcaption>표준정규 표본 A · n=8</figcaption></figure><figure><svg viewBox="0 0 320 150" role="img" aria-label="표준정규 표본 B · n=8"><path class="chart-axis" d="M37 20V117H303"/><text x="40" y="15">정렬 관측값</text><text x="169" y="146" text-anchor="middle">표준정규 분위수</text><text x="89.35483870967742" y="133" text-anchor="middle">-1</text><text x="170" y="133" text-anchor="middle">0</text><text x="250.64516129032256" y="133" text-anchor="middle">1</text><text x="33" y="90.14634146341464" text-anchor="end">-1</text><text x="33" y="45.756097560975604" text-anchor="end">1</text><path class="chart-guide" d="M58.29048387096776 106.77822996399956L281.70951612903224 42.875428572585804"/><circle cx="58.3" cy="106.0" r="3.5" fill="#0758a0" stroke="#0758a0"/><circle cx="102.5" cy="91.9" r="3.5" fill="#0758a0" stroke="#0758a0"/><circle cx="132.4" cy="83.3" r="3.5" fill="#0758a0" stroke="#0758a0"/><circle cx="157.9" cy="82.0" r="3.5" fill="#0758a0" stroke="#0758a0"/><circle cx="182.1" cy="75.9" r="3.5" fill="#0758a0" stroke="#0758a0"/><circle cx="207.6" cy="63.5" r="3.5" fill="#0758a0" stroke="#0758a0"/><circle cx="237.5" cy="56.4" r="3.5" fill="#0758a0" stroke="#0758a0"/><circle cx="281.7" cy="39.5" r="3.5" fill="#0758a0" stroke="#0758a0"/></svg><figcaption>표준정규 표본 B · n=8</figcaption></figure></div><p class="support-note">같은 표준정규 모형에서 생성한 두 표본(시드 9와 17)이다. 양끝의 이탈이 어떻게 다른지 비교해 본다. <a href="https://www.itl.nist.gov/div898/handbook/eda/section3/normprpl.htm" target="_blank" rel="noopener">NIST 정규확률플롯</a> · <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.norm.html" target="_blank" rel="noopener">SciPy 정규분포 함수</a></p></div>
+          <div class="mt-5 pt-3 border-t border-slate-300/40 flex justify-between gap-2 text-xs text-slate-500 dark:text-slate-400"><span>Data Thinking Lab · 경기대학교</span><span>17 / 17</span></div>
+        </article>
+</div>
+
+      <!-- Slide Navigation Footer (Slide Mode) -->
+      <footer id="slideFooterNav" class="no-print w-full max-w-5xl mx-auto pt-4 pb-8 flex items-center justify-between border-t border-slate-200 dark:border-slate-800">
+        <button id="footerPrevBtn" class="flex items-center gap-1.5 px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+          이전 슬라이드
+        </button>
+        <span class="text-xs text-slate-400 font-medium hidden sm:inline">단축키: 키보드 좌우 방향키 (← / →)</span>
+        <button id="footerNextBtn" class="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-kgu-blue hover:bg-kgu-light text-white text-xs font-bold transition shadow-xs">
+          다음 슬라이드
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        </button>
+      </footer>
+    </main>
+  </div>
+
+  <dialog id="cdf-hand" class="lesson-dialog" aria-labelledby="cdf-hand-title"><div class="lesson-dialog-header"><h2 id="cdf-hand-title">손계산 · 점확률과 누적확률</h2><form method="dialog"><button class="lesson-button" autofocus>닫기</button></form></div><div class="lesson-dialog-body"><p>앞면 0회는 TT 한 가지, 1회는 HT와 TH 두 가지, 2회는 HH 한 가지다. P(X = 1) = 2/4 = 0.5. P(X ≤ 1) = 1/4 + 2/4 = 0.75.</p></div></dialog>
+<dialog id="small-hand" class="lesson-dialog" aria-labelledby="small-hand-title"><div class="lesson-dialog-header"><h2 id="small-hand-title">손계산 · 세 점의 좌표</h2><form method="dialog"><button class="lesson-button" autofocus>닫기</button></form></div><div class="lesson-dialog-body"><p>관측값을 8, 10, 14로 정렬한다. 예를 들어 첫 순위는 (1−0.5)/3 = 1/6이다. 표준정규분포에서 누적확률 1/6에 해당하는 z는 약 −0.9674다.</p><div class="lesson-table"><table><thead><tr><th scope="col">순위 i</th><th scope="col">관측값</th><th scope="col">p</th><th scope="col">이론 분위수 z</th></tr></thead><tbody><tr><td>1</td><td>8</td><td>0.1667</td><td>−0.9674</td></tr><tr><td>2</td><td>10</td><td>0.5000</td><td>0</td></tr><tr><td>3</td><td>14</td><td>0.8333</td><td>+0.9674</td></tr></tbody></table></div><p>14를 22로 바꾸면 마지막 점의 세로 좌표만 22로 바뀐다. 기준선을 다시 적합하면 기준선도 달라질 수 있다.</p></div></dialog>
+<dialog id="small-code" class="lesson-dialog" aria-labelledby="small-code-title"><div class="lesson-dialog-header"><h2 id="small-code-title">비교용 Python · 두 좌표 배치</h2><form method="dialog"><button class="lesson-button" autofocus>닫기</button></form></div><div class="lesson-dialog-body"><div class="lesson-copy"><button class="lesson-button no-print" type="button" data-copy="small-code-request">작성 프롬프트 복사</button><span role="status" aria-live="polite"></span></div><pre id="small-code-request" class="lesson-prompt" tabindex="0">관측값 [14, 8, 10]을 정렬하고, 순위 i마다 p=(i−0.5)/n과 표준정규 분위수 z를 구해 표를 만들어줘. 가로축은 z, 세로축은 정렬 관측값으로 점을 그려줘.
+같은 자료에서 Filliben 방식의 확률도 직접 계산해 SciPy probplot(fit=False)과 좌표를 대조해줘. 중간순위 방식의 가로 좌표가 왜 다른지도 설명해줘.</pre><div class="lesson-copy"><button class="lesson-button no-print" type="button" data-copy="small-code-source">Python 코드 복사</button><span role="status" aria-live="polite"></span></div><pre id="small-code-source" class="lesson-code" tabindex="0">from statistics import NormalDist
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy import stats
+
+normal = NormalDist()
+
+def qq_coordinates(values, method):
+    ordered = np.sort(np.asarray(values, dtype=float))
+    n = len(ordered)
+    if n &lt; 2 or not np.isfinite(ordered).all():
+        raise ValueError(&quot;Need at least two finite values.&quot;)
+    i = np.arange(1, n + 1)
+    if method == &quot;midrank&quot;:
+        p = (i - 0.5) / n
+    elif method == &quot;filliben&quot;:
+        p = (i - 0.3175) / (n + 0.365)
+        p[-1] = 0.5 ** (1 / n)
+        p[0] = 1 - p[-1]
+    else:
+        raise ValueError(&quot;Unknown plotting position.&quot;)
+    q = np.array([normal.inv_cdf(value) for value in p])
+    return q, ordered, p
+
+x = [14, 8, 10]
+q_mid, y, p_mid = qq_coordinates(x, &quot;midrank&quot;)
+q_fill, y_fill, _ = qq_coordinates(x, &quot;filliben&quot;)
+q_scipy, y_scipy = stats.probplot(x, dist=&quot;norm&quot;, fit=False)
+np.testing.assert_array_equal(y, [8, 10, 14])
+np.testing.assert_array_equal(y_fill, y_scipy)
+np.testing.assert_allclose(q_fill, q_scipy, atol=1e-12)
+assert not np.allclose(q_mid, q_scipy)
+for p, q, value in zip(p_mid, q_mid, y):
+    print(f&quot;p={p:.4f}, z={q:.4f}, x={value:g}&quot;)
+
+plt.scatter(q_mid, y, marker=&quot;x&quot;, label=&quot;Midrank (manual)&quot;)
+plt.scatter(q_scipy, y_scipy, facecolors=&quot;none&quot;, edgecolors=&quot;C1&quot;,
+            label=&quot;Filliben (SciPy)&quot;)
+plt.xlabel(&quot;Theoretical standard normal quantile&quot;)
+plt.ylabel(&quot;Ordered observations&quot;)
+plt.legend()
+plt.show()</pre></div></dialog>
+<dialog id="income-hand" class="lesson-dialog" aria-labelledby="income-hand-title"><div class="lesson-dialog-header"><h2 id="income-hand-title">손계산 · 표준화 전후의 이탈</h2><form method="dialog"><button class="lesson-button" autofocus>닫기</button></form></div><div class="lesson-dialog-body"><p>22건에서 결측 2건을 빼면 20건이다. Filliben의 마지막 p는 0.5^(1/20) ≈ 0.96594이고, 표준정규 분위수는 약 1.82416이다. 마지막 관측값은 1200만 원이다.</p><p>원자료의 기준선 예측값을 ŷ, 평균을 x̄, 표본표준편차를 s라고 하자. 관측값과 기준선에 같은 Z변환을 적용하면 [(x−x̄)/s] − [(ŷ−x̄)/s] = (x−ŷ)/s다.</p><p>가장 큰 관측값의 표준화 잔차는 원자료와 Z점수에서 모두 약 +2.0106이다. Box–Cox 이후에는 약 +0.0266이다.</p></div></dialog>
+<dialog id="income-code" class="lesson-dialog" aria-labelledby="income-code-title"><div class="lesson-dialog-header"><h2 id="income-code-title">비교용 Python · 가상 소득 변환</h2><form method="dialog"><button class="lesson-button" autofocus>닫기</button></form></div><div class="lesson-dialog-body"><div class="lesson-copy"><button class="lesson-button no-print" type="button" data-copy="income-code-request">작성 프롬프트 복사</button><span role="status" aria-live="polite"></span></div><pre id="income-code-request" class="lesson-prompt" tabindex="0">교육용 가상 자료 [120,140,150,160,170,180,190,200,210,220,230,240,250,270,300,350,400,500,700,1200,None,None]에서 전체·유효·결측 건수를 확인해줘.
+같은 유효 관측으로 원자료(만 원), Z점수(ddof=1), 최대우도 Box–Cox 변환의 정규 분위수 대조도를 나란히 그려줘. Filliben 확률과 표준정규 분위수, 각 패널의 최소제곱 기준선을 사용해줘.
+원자료와 Z점수의 표준화 잔차가 일치하는지 검증하고, Box–Cox 전후 양 끝점의 표준화 잔차를 표로 보여줘. 표준화 잔차는 (관측값−기준선 값)/해당 척도의 표본표준편차로 정의해줘. 해석은 내가 작성할 수 있도록 질문만 남겨줘.</pre><div class="lesson-copy"><button class="lesson-button no-print" type="button" data-copy="income-code-source">Python 코드 복사</button><span role="status" aria-live="polite"></span></div><pre id="income-code-source" class="lesson-code" tabindex="0">from statistics import NormalDist
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy import stats
+
+normal = NormalDist()
+
+def qq_coordinates(values, method):
+    ordered = np.sort(np.asarray(values, dtype=float))
+    n = len(ordered)
+    if n &lt; 2 or not np.isfinite(ordered).all():
+        raise ValueError(&quot;Need at least two finite values.&quot;)
+    i = np.arange(1, n + 1)
+    if method == &quot;midrank&quot;:
+        p = (i - 0.5) / n
+    elif method == &quot;filliben&quot;:
+        p = (i - 0.3175) / (n + 0.365)
+        p[-1] = 0.5 ** (1 / n)
+        p[0] = 1 - p[-1]
+    else:
+        raise ValueError(&quot;Unknown plotting position.&quot;)
+    q = np.array([normal.inv_cdf(value) for value in p])
+    return q, ordered, p
+
+raw = [120,140,150,160,170,180,190,200,210,220,230,240,250,270,300,350,400,500,700,1200,None,None]
+x = np.array([value for value in raw if value is not None], dtype=float)
+print(&quot;Total, valid, missing:&quot;, len(raw), len(x), raw.count(None))
+if len(x) &lt; 2 or not np.isfinite(x).all() or np.ptp(x) == 0:
+    raise ValueError(&quot;Need at least two finite, nonconstant observations.&quot;)
+if np.any(x &lt;= 0):
+    raise ValueError(&quot;Box-Cox requires positive observations.&quot;)
+
+q, ordered, _ = qq_coordinates(x, &quot;filliben&quot;)
+q_scipy, y_scipy = stats.probplot(x, dist=&quot;norm&quot;, fit=False)
+np.testing.assert_allclose(q, q_scipy, atol=1e-12)
+np.testing.assert_array_equal(ordered, y_scipy)
+
+z = (x - x.mean()) / x.std(ddof=1)
+transformed, lam = stats.boxcox(x)
+print(f&quot;Box-Cox lambda={lam:.4f}&quot;)
+panels = [
+    (&quot;Original&quot;, &quot;10,000 KRW&quot;, x),
+    (&quot;Z-score&quot;, &quot;Z-score&quot;, z),
+    (&quot;Box-Cox&quot;, &quot;Transformed value&quot;, transformed),
+]
+fig, axes = plt.subplots(1, 3, figsize=(12, 3.8), sharex=True,
+                         constrained_layout=True)
+residuals = []
+for ax, (label, unit, values) in zip(axes, panels):
+    y = np.sort(values)
+    slope, intercept = np.polyfit(q, y, 1)
+    fitted = slope * q + intercept
+    residual = (y - fitted) / y.std(ddof=1)
+    residuals.append(residual)
+    print(f&quot;{label}: first={residual[0]:+.4f}, last={residual[-1]:+.4f}&quot;)
+    ax.scatter(q, y, s=22)
+    ax.plot(q, fitted, &quot;--&quot;, color=&quot;tab:red&quot;)
+    ax.set(title=f&quot;{label} (n={len(y)})&quot;, xlabel=&quot;Theoretical N(0,1) quantile&quot;,
+           ylabel=unit)
+np.testing.assert_allclose(residuals[0], residuals[1], atol=1e-12)
+plt.show()</pre></div></dialog>
+<dialog id="self-hand" class="lesson-dialog" aria-labelledby="self-hand-title"><div class="lesson-dialog-header"><h2 id="self-hand-title">자가 실습 · 손계산과 비교 기준</h2><form method="dialog"><button class="lesson-button" autofocus>닫기</button></form></div><div class="lesson-dialog-body"><p>전체 16건, 유효 15건, 결측 1건이다. 최댓값의 중간순위 확률은 (15−0.5)/15 ≈ 0.9667이다.</p><div class="lesson-table"><table><thead><tr><th scope="col">순위 i</th><th scope="col">배송시간(분)</th><th scope="col">p</th><th scope="col">이론 분위수 z</th></tr></thead><tbody><tr><td>1</td><td>9</td><td>0.0333</td><td>−1.8339</td></tr><tr><td>8</td><td>17</td><td>0.5000</td><td>0</td></tr><tr><td>15</td><td>52</td><td>0.9667</td><td>+1.8339</td></tr></tbody></table></div><div class="lesson-table"><table><thead><tr><th scope="col">척도</th><th scope="col">첫 점의 표준화 잔차</th><th scope="col">끝 점의 표준화 잔차</th></tr></thead><tbody><tr><td>원자료와 Z점수</td><td>+0.6015</td><td>+1.2165</td></tr><tr><td>Box–Cox (λ ≈ −0.6467)</td><td>−0.0815</td><td>+0.0646</td></tr></tbody></table></div><p>양 끝점의 잔차 절댓값이 이 표본에서 줄었다. 전체 점열과 작은 표본에서의 변동도 함께 살펴본다.</p></div></dialog>
+<dialog id="self-code" class="lesson-dialog" aria-labelledby="self-code-title"><div class="lesson-dialog-header"><h2 id="self-code-title">비교용 Python · 가상 배송시간</h2><form method="dialog"><button class="lesson-button" autofocus>닫기</button></form></div><div class="lesson-dialog-body"><div class="lesson-copy"><button class="lesson-button no-print" type="button" data-copy="self-code-request">작성 프롬프트 복사</button><span role="status" aria-live="polite"></span></div><pre id="self-code-request" class="lesson-prompt" tabindex="0">새 가상 배송시간(분) [19,12,15,9,11,17,14,13,16,21,18,24,29,35,52,None]을 사용해줘.
+유효 관측의 최솟값·중앙값·최댓값에 대해 중간순위 확률과 표준정규 분위수를 먼저 표로 만들어줘.
+그다음 Filliben 방식을 직접 구현해 probplot(fit=False)의 좌표와 대조해줘.
+원자료·Z점수(ddof=1)·최대우도 Box–Cox의 정규 분위수 대조도를 그리고, 최소제곱 기준선에서 양 끝점이 얼마나 벗어나는지 각 척도의 표본표준편차 단위로 보여줘. 내 해석은 대신 작성하지 말아줘.</pre><div class="lesson-copy"><button class="lesson-button no-print" type="button" data-copy="self-code-source">Python 코드 복사</button><span role="status" aria-live="polite"></span></div><pre id="self-code-source" class="lesson-code" tabindex="0">from statistics import NormalDist
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy import stats
+
+normal = NormalDist()
+
+def qq_coordinates(values, method):
+    ordered = np.sort(np.asarray(values, dtype=float))
+    n = len(ordered)
+    if n &lt; 2 or not np.isfinite(ordered).all():
+        raise ValueError(&quot;Need at least two finite values.&quot;)
+    i = np.arange(1, n + 1)
+    if method == &quot;midrank&quot;:
+        p = (i - 0.5) / n
+    elif method == &quot;filliben&quot;:
+        p = (i - 0.3175) / (n + 0.365)
+        p[-1] = 0.5 ** (1 / n)
+        p[0] = 1 - p[-1]
+    else:
+        raise ValueError(&quot;Unknown plotting position.&quot;)
+    q = np.array([normal.inv_cdf(value) for value in p])
+    return q, ordered, p
+
+raw = [19,12,15,9,11,17,14,13,16,21,18,24,29,35,52,None]
+x = np.array([value for value in raw if value is not None], dtype=float)
+print(&quot;Total, valid, missing:&quot;, len(raw), len(x), raw.count(None))
+if len(x) &lt; 2 or not np.isfinite(x).all() or np.ptp(x) == 0:
+    raise ValueError(&quot;Need at least two finite, nonconstant observations.&quot;)
+if np.any(x &lt;= 0):
+    raise ValueError(&quot;Box-Cox requires positive observations.&quot;)
+
+q_mid, ordered, p_mid = qq_coordinates(x, &quot;midrank&quot;)
+for index in [0, len(x) // 2, len(x) - 1]:
+    print(f&quot;i={index + 1}, p={p_mid[index]:.4f}, &quot;
+          f&quot;z={q_mid[index]:.4f}, x={ordered[index]:g}&quot;)
+
+q, ordered, _ = qq_coordinates(x, &quot;filliben&quot;)
+q_scipy, y_scipy = stats.probplot(x, dist=&quot;norm&quot;, fit=False)
+np.testing.assert_allclose(q, q_scipy, atol=1e-12)
+np.testing.assert_array_equal(ordered, y_scipy)
+
+z = (x - x.mean()) / x.std(ddof=1)
+transformed, lam = stats.boxcox(x)
+print(f&quot;Box-Cox lambda={lam:.4f}&quot;)
+panels = [
+    (&quot;Original&quot;, &quot;Minutes&quot;, x),
+    (&quot;Z-score&quot;, &quot;Z-score&quot;, z),
+    (&quot;Box-Cox&quot;, &quot;Transformed value&quot;, transformed),
+]
+fig, axes = plt.subplots(1, 3, figsize=(12, 3.8), sharex=True,
+                         constrained_layout=True)
+residuals = []
+for ax, (label, unit, values) in zip(axes, panels):
+    y = np.sort(values)
+    slope, intercept = np.polyfit(q, y, 1)
+    fitted = slope * q + intercept
+    residual = (y - fitted) / y.std(ddof=1)
+    residuals.append(residual)
+    print(f&quot;{label}: first={residual[0]:+.4f}, last={residual[-1]:+.4f}&quot;)
+    ax.scatter(q, y, s=22)
+    ax.plot(q, fitted, &quot;--&quot;, color=&quot;tab:red&quot;)
+    ax.set(title=f&quot;{label} (n={len(y)})&quot;, xlabel=&quot;Theoretical N(0,1) quantile&quot;,
+           ylabel=unit)
+np.testing.assert_allclose(residuals[0], residuals[1], atol=1e-12)
+plt.show()</pre></div></dialog>
+
+  <!-- JavaScript Application Logic -->
+  <script>
+    let currentSlide = 1;
+    const totalSlides = 17;
+    let isSlideMode = true;
+
+    const slideTitles = [
+  "01. 표지 · 확률분포와 분위수 대조도",
+  "02. 학습 목표 · 분포의 모양을 분위수로 비교하기",
+  "03. 도입 · Z점수를 구하면 분포 모양도 달라질까?",
+  "04. 이론 · 관측한 분포와 확률모형",
+  "05. 이론 · 이산형은 질량, 연속형은 면적",
+  "06. 이론 · 누적확률과 분위수는 방향이 반대다",
+  "07. 이론 · 정규분포에서 μ와 σ가 정하는 것",
+  "08. 이론 · 순위에서 Q–Q 플롯의 점 하나 만들기",
+  "09. 이론 · 직선과 어긋나는 구간을 읽기",
+  "10. 실습 1 · 프롬프트 · 정렬된 세 점을 검증하기",
+  "11. 실습 1 정리 · 좌표가 다르면 확률 배치부터 확인하기",
+  "12. 실습 2 · 프롬프트 · 가상 소득의 변환 전후 비교",
+  "13. 실습 2 정리 · 같은 눈금에서 분포 모양 비교하기",
+  "14. 형성평가 · 그림을 근거로 보고서 문장 고치기",
+  "15. 자가 실습 · 새 가상 표본 · 배송시간의 오른쪽 꼬리",
+  "16. 자가 실습 · 프롬프트 · 혼자 실행하고 결과 대조하기",
+  "17. 정리 · 다음 차수 · 어떤 모양이 왜 나타날까?"
+];
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const initialSlide = Number(location.hash.slice(1));
+      if (Number.isInteger(initialSlide) && initialSlide >= 1 && initialSlide <= totalSlides) currentSlide = initialSlide;
+      updateSlideView();
+      const params = new URLSearchParams(location.search);
+      if (params.get('read') === '1') setSlideMode(false);
+      if (params.get('print') === '1') { setSlideMode(false); setTimeout(() => window.print(), 700); }
+
+
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.classList.add('dark');
+      }
+    });
+
+    function buildTOC() {
+      const tocList = document.getElementById('tocList');
+      tocList.innerHTML = '';
+      slideTitles.forEach((title, idx) => {
+        const slideNum = idx + 1;
+        const item = document.createElement('button');
+        item.className = `w-full text-left px-3 py-2 rounded-lg text-xs font-medium transition flex items-center justify-between ${
+          currentSlide === slideNum && isSlideMode
+            ? 'bg-kgu-blue text-white font-bold'
+            : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+        }`;
+        item.innerHTML = `<span class="truncate">${title}</span>`;
+        item.onclick = () => {
+          goToSlide(slideNum);
+          closeSidebar();
+        };
+        tocList.appendChild(item);
+      });
+    }
+
+    function goToSlide(num) {
+      if (num < 1 || num > totalSlides) return;
+      currentSlide = num;
+      history.replaceState(null, '', '#' + num);
+      if (!isSlideMode) setSlideMode(true);
+      updateSlideView();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function updateSlideView() {
+      document.getElementById('currentSlideNum').innerText = currentSlide;
+      document.getElementById('totalSlideNum').innerText = totalSlides;
+      const progressPct = ((currentSlide / totalSlides) * 100).toFixed(2);
+      document.getElementById('progressBar').style.width = `${progressPct}%`;
+
+      document.getElementById('prevSlideBtn').disabled = (currentSlide === 1);
+      document.getElementById('nextSlideBtn').disabled = (currentSlide === totalSlides);
+      document.getElementById('footerPrevBtn').disabled = (currentSlide === 1);
+      document.getElementById('footerNextBtn').disabled = (currentSlide === totalSlides);
+
+      const slides = document.querySelectorAll('.slide-card');
+      slides.forEach(slide => {
+        const sNum = parseInt(slide.getAttribute('data-slide'));
+        if (isSlideMode) {
+          if (sNum === currentSlide) {
+            slide.classList.remove('hidden');
+            slide.classList.add('fade-in');
+          } else {
+            slide.classList.add('hidden');
+            slide.classList.remove('fade-in');
+          }
+        } else {
+          slide.classList.remove('hidden');
+          slide.classList.remove('fade-in');
+        }
+      });
+
+      buildTOC();
+    }
+
+    function setSlideMode(slideMode) {
+      isSlideMode = slideMode;
+      document.body.classList.toggle('slide-mode', isSlideMode);
+      const slideControls = document.getElementById('slideControls');
+      const footerNav = document.getElementById('slideFooterNav');
+      const btnSlide = document.getElementById('modeSlideBtn');
+      const btnDoc = document.getElementById('modeDocBtn');
+
+      if (isSlideMode) {
+        slideControls.classList.remove('hidden');
+        footerNav.classList.remove('hidden');
+        btnSlide.className = "px-2.5 py-1 rounded-md bg-white dark:bg-slate-700 text-kgu-blue dark:text-sky-400 shadow-xs font-semibold flex items-center gap-1";
+        btnDoc.className = "px-2.5 py-1 rounded-md text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white flex items-center gap-1";
+      } else {
+        slideControls.classList.add('hidden');
+        footerNav.classList.add('hidden');
+        btnDoc.className = "px-2.5 py-1 rounded-md bg-white dark:bg-slate-700 text-kgu-blue dark:text-sky-400 shadow-xs font-semibold flex items-center gap-1";
+        btnSlide.className = "px-2.5 py-1 rounded-md text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white flex items-center gap-1";
+      }
+      updateSlideView();
+    }
+
+    document.getElementById('prevSlideBtn').onclick = () => goToSlide(currentSlide - 1);
+    document.getElementById('nextSlideBtn').onclick = () => goToSlide(currentSlide + 1);
+    document.getElementById('footerPrevBtn').onclick = () => goToSlide(currentSlide - 1);
+    document.getElementById('footerNextBtn').onclick = () => goToSlide(currentSlide + 1);
+
+    document.getElementById('modeSlideBtn').onclick = () => setSlideMode(true);
+    document.getElementById('modeDocBtn').onclick = () => setSlideMode(false);
+
+    window.addEventListener('keydown', (e) => {
+      if (!isSlideMode || document.querySelector('.lesson-dialog[open]') || e.target.closest?.('pre')) return;
+      if (e.key === 'Home' || e.key === 'End') {
+        e.preventDefault();
+        goToSlide(e.key === 'Home' ? 1 : totalSlides);
+      } else if (e.key === 'ArrowRight' || e.key === 'PageDown') {
+        goToSlide(currentSlide + 1);
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        goToSlide(currentSlide - 1);
+      }
+    });
+
+    document.getElementById('darkModeBtn').onclick = () => {
+      document.documentElement.classList.toggle('dark');
+    };
+
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    function openSidebar() {
+      sidebar.classList.remove('-translate-x-full');
+      overlay.classList.remove('hidden');
+    }
+    function closeSidebar() {
+      sidebar.classList.add('-translate-x-full');
+      overlay.classList.add('hidden');
+    }
+    document.getElementById('sidebarToggleBtn').onclick = openSidebar;
+    document.getElementById('sidebarCloseBtn').onclick = closeSidebar;
+    overlay.onclick = closeSidebar;
+
+  </script>
+<script>
+const fsBtn=document.getElementById('fullscreen-toggle');
+let restoreReadingMode = false;
+fsBtn.addEventListener('click',async()=>{
+  try {
+    if(document.fullscreenElement) { await document.exitFullscreen(); return; }
+    restoreReadingMode = !isSlideMode;
+    if(restoreReadingMode) setSlideMode(true);
+    closeSidebar();
+    await document.documentElement.requestFullscreen();
+  } catch(e) {
+    if(restoreReadingMode) { setSlideMode(false); restoreReadingMode = false; }
+    fsBtn.textContent='전체화면을 사용할 수 없습니다';
+  }
+});
+document.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && document.fullscreenElement && !document.querySelector('.lesson-dialog[open]')){ document.exitFullscreen(); } });
+document.addEventListener('fullscreenchange',()=>{
+  const active=!!document.fullscreenElement;
+  fsBtn.textContent=active?'전체화면 해제':'화면 전체보기';
+  fsBtn.setAttribute('aria-pressed',String(active));
+  if(!active && restoreReadingMode){ setSlideMode(false); restoreReadingMode=false; }
+});
+</script>
+<script>
+  // Popups share the browser's modal focus and Escape handling.
+  const popupOpeners = new WeakMap();
+  document.querySelectorAll('.lesson-dialog').forEach(dialog => {
+    dialog.addEventListener('close', () => popupOpeners.get(dialog)?.focus());
+  });
+
+  document.addEventListener('click', async event => {
+    const opener = event.target.closest('[data-open]');
+    if (opener) {
+      const dialog = document.getElementById(opener.dataset.open);
+      popupOpeners.set(dialog, opener);
+      dialog.showModal();
+      return;
+    }
+    const button = event.target.closest('[data-copy]');
+    if (!button) return;
+    const source = document.getElementById(button.dataset.copy);
+    const status = button.nextElementSibling;
+    try {
+      await navigator.clipboard.writeText(source.textContent);
+      status.textContent = '복사했습니다.';
+    } catch {
+      const selection = window.getSelection();
+      const range = document.createRange();
+      range.selectNodeContents(source);
+      selection.removeAllRanges();
+      selection.addRange(range);
+      try {
+        if (!document.execCommand('copy')) throw new Error('Copy unavailable');
+        selection.removeAllRanges();
+        status.textContent = '복사했습니다.';
+      } catch {
+        status.textContent = '선택한 텍스트를 직접 복사하세요.';
+      }
+    }
+  });
+</script>
+</body>
+</html>

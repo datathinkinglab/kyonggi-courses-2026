@@ -35,7 +35,7 @@
     { week: 6, title: "5수요약과 상자그림", activity: "5수요약·울타리·수염·이상점의 규칙을 확인하고 그룹별 분포를 비교합니다.", slide: "slides/week-06.html", slideCount: 21, printFrom: 1, printTo: 21, sessionTitle: "5수요약을 이해하고<br>상자그림으로 비교하기", copy: "상자그림의 계산 기준과 이상점의 의미를 손계산·AI·Colab으로 확인하고, 같은 축에서 그룹별 분포를 비교합니다.", agenda: ["5수요약과 상자그림의 구조", "울타리·수염·이상점의 규칙", "그룹별 분포 비교와 해석", "손계산·프롬프트·Colab 실습"] },
     { week: 7, title: "재표현: 변환의 사다리", activity: "변환 전후 분포와 왜도를 비교하고 선택 근거를 검증합니다.", slide: "slides/week-07.html", slideCount: 23, printFrom: 1, printTo: 23, sessionTitle: "자료를 다른 척도로<br>표현하고 비교하기", copy: "제곱근·로그·제곱 변환을 손계산과 Colab으로 비교하고 선택 근거를 설명합니다.", agenda: ["재표현의 목적","변환의 사다리","손계산과 분포 비교","명세·검증·해석"] },
     { week: 8, title: "표준화와 Box–Cox", activity: "표준화·로버스트 표준화·Box–Cox 변환을 다룹니다.", slide: "slides/week-08.html", slideCount: 27, printFrom: 1, printTo: 27, sessionTitle: "기준을 비교하고<br>변환을 검증하기", copy: "Z점수·최소–최대·MAD와 Box–Cox 변환을 비교하고 결과의 근거를 확인합니다.", agenda: ["세 가지 표준화","극단값과 기준 비교","Box–Cox와 λ 추정","명세·검증·해석"] },
-    { week: 9, title: "확률분포와 Q–Q 플롯", activity: "정규분포와 확률플롯을 이용해 분포 적합성을 살펴봅니다." },
+    { week: 9, title: "확률분포와 분위수 대조도", activity: "정규분포의 이론 분위수와 관측값을 비교하고 변환 전후의 꼬리를 읽습니다.", slide: "slides/week-09.html", slideCount: 17, printFrom: 1, printTo: 17, sessionTitle: "이론 분위수와<br>관측값을 대조하기", copy: "실습은 작성 프롬프트로 시작하고 손계산과 Python은 팝업에서 대조합니다. 가상 배송시간으로 혼자 재현해 봅니다.", agenda: ["확률분포와 누적확률", "정규분포와 이론 분위수", "Q–Q 플롯과 변환 비교", "프롬프트·검증·자가 실습"] },
     { week: 10, title: "여러 분포와 플롯 진단", activity: "연속·이산분포의 꼬리와 비대칭을 진단합니다." },
     { week: 11, title: "이원 자료와 빈도표", activity: "주변합·비율·모자이크 플롯으로 범주형 관계를 탐색합니다." },
     { week: 12, title: "혼재변수와 심슨의 역설", activity: "층화 전후의 결론을 비교하고 혼재변수를 점검합니다." },
@@ -152,7 +152,7 @@
     notionLink.href = item.notion || notionCourse;
     notionLink.textContent = item.notion ? `${item.week}차수 원문 ↗` : "전체 Notion 강의노트 ↗";
     byId("current-card-help").innerHTML = item.slide
-      ? ([7, 8].includes(item.week) ? "방향키 이동 · 목차 · 전체 읽기 · 화면 전체보기<br>프롬프트·코드 복사" : [5, 6].includes(item.week) ? "방향키 이동 · M 전체 목차 · 전체 읽기 · 화면 전체보기<br>프롬프트·코드 복사 · 해설 팝업" : [3, 4].includes(item.week) ? "방향키 이동 · O 전체 목차<br>전체 읽기 · 코드 복사 · Colab 실습" : "방향키로 이동 · O 전체 목록<br>N 강사 노트 · 전체 화면 지원")
+      ? (item.week === 9 ? "방향키 이동 · 목차 · 전체 읽기 · 화면 전체보기<br>프롬프트 복사 · 손계산·Python 팝업 · 자가 실습" : [7, 8].includes(item.week) ? "방향키 이동 · 목차 · 전체 읽기 · 화면 전체보기<br>프롬프트·코드 복사" : [5, 6].includes(item.week) ? "방향키 이동 · M 전체 목차 · 전체 읽기 · 화면 전체보기<br>프롬프트·코드 복사 · 해설 팝업" : [3, 4].includes(item.week) ? "방향키 이동 · O 전체 목차<br>전체 읽기 · 코드 복사 · Colab 실습" : "방향키로 이동 · O 전체 목록<br>N 강사 노트 · 전체 화면 지원")
       : "해당 차수 슬라이드가 추가되면<br>이 버튼이 자동으로 활성화됩니다.";
 
     const headerLink = byId("header-slide-link");
