@@ -1,0 +1,105 @@
+@font-face{font-family:Paperlogy;src:url(assets/Paperlogy-4Regular.woff2) format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:Paperlogy;src:url(assets/Paperlogy-7Bold.woff2) format('woff2');font-weight:700;font-display:swap}
+@font-face{font-family:Paperlogy;src:url(assets/Paperlogy-8ExtraBold.woff2) format('woff2');font-weight:800 900;font-display:swap}
+.distribution-deck{font-family:Paperlogy,'Malgun Gothic',sans-serif;word-break:keep-all;overflow-wrap:normal;background:#0f172a;--plot-height:clamp(128px,22vh,220px)}
+.distribution-deck *{word-break:keep-all;overflow-wrap:normal}
+.distribution-deck button,.distribution-deck .prompt-code{font-family:inherit}
+.distribution-deck .slide{background:#f7f9fc;padding:clamp(17px,3vh,32px) clamp(28px,5vw,84px) 76px;grid-template-rows:auto minmax(min-content,1fr) auto;overflow-y:auto;overflow-x:hidden}
+.distribution-deck .slide-header{padding-bottom:10px;border-bottom:1px solid #dce5ef;color:#27547b}
+.distribution-deck .slide-footer{padding-top:8px;border-top:1px solid #dce5ef}
+.distribution-deck .slide-body{gap:clamp(8px,1.55vh,17px);padding:clamp(8px,1.4vh,15px) 0}
+.distribution-deck .slide h2{margin:0;line-height:1.16;font-size:clamp(29px,3.45vw,55px);letter-spacing:-.045em}
+.distribution-deck .slide h3{font-size:clamp(16px,1.55vw,25px);line-height:1.3;margin:0 0 5px}
+.distribution-deck .slide p,.distribution-deck .slide li{font-size:clamp(16px,1.43vw,23px);line-height:1.5;margin:0;max-width:67ch}
+.distribution-deck .slide .small{font-size:clamp(12px,1.04vw,16px);color:#4f6278}
+.distribution-deck .slide .callout{padding:clamp(8px,1.3vh,14px) 16px;border-left:4px solid #f2604f;border-radius:0 9px 9px 0;background:#eaf1f8;max-width:none}
+.distribution-deck .slide .cover-lead{color:#d8e7fb}
+.distribution-deck .study-toolbar{flex-wrap:wrap}
+.distribution-deck .study-toolbar button,.distribution-deck .study-toolbar a{font-family:inherit}
+:fullscreen .distribution-deck:not(.reading-mode) .slide{padding-bottom:48px}
+:fullscreen .distribution-deck:not(.reading-mode) .study-toolbar{left:auto;right:18px;bottom:12px}
+:fullscreen .distribution-deck:not(.reading-mode) .study-toolbar > :not([data-action="fullscreen"]),
+:fullscreen .distribution-deck:not(.reading-mode) .deck-controls,
+:fullscreen .distribution-deck:not(.reading-mode) .slide-counter{display:none}
+@media(max-height:760px) and (min-width:651px){.distribution-deck .slide{padding-bottom:70px}}
+.distribution-deck .lecture-cover{background:#13213c;color:white}
+.lecture-cover .slide-header,.lecture-cover .slide-footer{border-color:#3f5573;color:#ccdaed}
+.lecture-cover .cover-grid{display:grid;grid-template-columns:1.2fr .8fr;align-items:center;gap:5vw}
+.distribution-deck .lecture-cover h2{font-size:clamp(39px,5.7vw,92px);max-width:11em;color:#fff;letter-spacing:-.055em}
+.lecture-cover .cover-kicker{color:#ff9c8f;font-weight:800;margin-bottom:12px}
+.lecture-cover .cover-copy{display:grid;gap:14px}
+.lecture-cover .cover-image{width:100%;max-height:46vh;aspect-ratio:1.45;object-fit:cover;border-radius:18px;border:1px solid #557095;background:#192c4c}
+.distribution-deck .slide-grid{display:grid;gap:clamp(7px,1.25vw,16px);align-items:stretch;min-width:0}
+.distribution-deck .cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.distribution-deck .cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.distribution-deck .step-card,.distribution-deck .plot-card{margin:0;min-width:0;border:1px solid #d8e3ef;background:#fff;border-radius:12px;padding:clamp(9px,1vw,16px);color:#183451}
+.step-card{display:flex;flex-direction:column;gap:5px;justify-content:center;min-height:72px}
+.distribution-deck .metric{font-size:clamp(22px,3vw,48px);line-height:1.1;font-weight:800;color:#074c8c;font-variant-numeric:tabular-nums}
+.plot-card figcaption{font-size:clamp(13px,1.13vw,18px);font-weight:800;margin:0 0 4px;line-height:1.25}
+.chart-box{position:relative;height:var(--plot-height);width:100%;min-width:0}
+.compact-plots{--plot-height:clamp(102px,16vh,162px)}
+.large-plot{--plot-height:clamp(148px,28vh,282px)}
+.mosaic-box{height:var(--plot-height);padding:4px 0;display:grid;grid-template-columns:4fr 1fr;gap:0}
+.mosaic-column{display:grid;grid-template-rows:var(--on-time) var(--late);min-width:0}
+.mosaic-tile{font-size:clamp(12px,1.35vw,20px);color:#13213c;display:grid;place-items:center;text-align:center;border:1px solid white;min-height:0;background:#cfe1f2}
+.mosaic-tile.late{background:#f29182;color:#311915}
+.mosaic-tile:focus-visible{outline:3px solid #074c8c;outline-offset:-3px}
+.mosaic-labels{display:grid;grid-template-columns:4fr 1fr;text-align:center;font-size:clamp(11px,1.1vw,16px);font-weight:700;gap:0}
+.distribution-deck .distribution-table{min-width:0;border-collapse:separate;border-spacing:0;width:100%;background:white;border:1px solid #dce5ef;border-radius:10px;font-size:clamp(14px,1.4vw,20px)}
+.distribution-table th,.distribution-table td{text-align:center;padding:clamp(4px,1.1vh,10px) 5px;border-bottom:1px solid #dce5ef}
+.distribution-table thead,.distribution-table th[scope=row],.distribution-table .subtotal{background:#eaf1f8;color:#163b62}
+.distribution-table .spot{background:#ffe3dc;font-weight:800;color:#722e24}
+.distribution-deck .lab{display:grid;gap:6px;min-width:0}
+.distribution-deck .lab .copy-head{min-height:0}
+.distribution-deck .lab .copy-button,.distribution-deck .resource-button{font-size:14px;font-weight:700;min-height:35px;padding:7px 12px}
+.distribution-deck .lab .copy-status:empty{display:none}
+.distribution-deck .lab pre{background:#14243a;color:#f2f7ff;padding:10px 14px;border-radius:8px;margin:0;max-width:100%;overflow:auto;font-size:clamp(13px,1.16vw,17px);line-height:1.45}
+.distribution-deck .lab .prompt-code{white-space:pre-wrap}
+.lab pre code{font:inherit;color:inherit}
+.resource-actions{display:flex;flex-wrap:wrap;gap:8px}
+.resource-button{background:white;border:1px solid #a6bed8;color:#074c8c;cursor:pointer;border-radius:8px;text-decoration:none;width:fit-content}
+.resource-button:hover{background:#eaf1f8}
+.distribution-deck .lesson-dialog{width:min(900px,94vw);max-height:88dvh;border:0;border-radius:14px;padding:0;color:#13213c;background:#f7f9fc;box-shadow:0 14px 60px #07101e66}
+.lesson-dialog::backdrop{background:#07101ecc}
+.dialog-title{position:sticky;top:0;background:#13213c;color:white;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:8px;z-index:1}
+.dialog-title h2{margin:0;font-size:clamp(17px,2vw,24px)}
+.dialog-content{padding:16px;display:grid;gap:13px}
+.dialog-content .python-code{max-height:48vh;white-space:pre}
+.distribution-deck details{padding:10px 14px;border:1px solid #d8e3ef;border-radius:8px;background:white;color:#183451}
+.distribution-deck summary{cursor:pointer;font-weight:700}
+.distribution-deck details > p{padding-top:8px}
+.distribution-deck :focus-visible{outline:3px solid #df604f;outline-offset:3px}
+.distribution-deck .progress{background:#f2604f}
+.distribution-deck .slide.active .slide-body{animation:lesson-rise .38s cubic-bezier(.2,.8,.2,1) both}
+.distribution-deck .float-card{transition:transform .22s cubic-bezier(.2,.8,.2,1),box-shadow .22s ease}
+@media(hover:hover) and (pointer:fine){.distribution-deck .float-card:hover{transform:translateY(-4px);box-shadow:0 8px 18px #13213c18}.mosaic-tile:hover{filter:saturate(1.45)}}
+@keyframes lesson-rise{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+.distribution-deck.reading-mode .slide{height:auto;padding:24px clamp(16px,4vw,52px);scroll-margin-top:66px}
+.distribution-deck.reading-mode .slide .slide-body{animation:none}
+@media(max-width:650px){
+  .distribution-deck .slide{padding:16px 16px 132px;grid-template-rows:auto auto auto}
+  .distribution-deck .slide-header{font-size:11px;gap:8px}
+  .distribution-deck .slide-footer{font-size:10px}
+  .distribution-deck .slide .cols-2,.distribution-deck .slide .cols-3,.lecture-cover .cover-grid{grid-template-columns:minmax(0,1fr)}
+  .distribution-deck .slide .cols-2.mobile-pair{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .distribution-deck .slide h2{font-size:clamp(27px,7vw,39px)}
+  .distribution-deck .lecture-cover h2{font-size:clamp(40px,10vw,64px)}
+  .lecture-cover .cover-grid{gap:16px}
+  .lecture-cover .cover-image{max-height:26vh;object-position:center}
+  .distribution-deck .study-toolbar{justify-content:flex-start;bottom:68px}
+  .distribution-deck.reading-mode .study-toolbar{bottom:auto}
+  .distribution-deck .mosaic-labels{font-size:10px}
+  .distribution-deck .chart-box{height:max(135px,var(--plot-height))}
+}
+@media(prefers-reduced-motion:reduce){.distribution-deck *{animation:none!important;transition:none!important}.distribution-deck .float-card:hover{transform:none}}
+@media print{
+  .distribution-deck .slide{grid-template-rows:auto minmax(0,1fr) auto!important;overflow:hidden!important;--plot-height:37mm}
+  .distribution-deck .slide[data-skip-print="true"]{display:none!important}
+  .distribution-deck .slide:last-child{break-after:auto}
+  .distribution-deck .slide .slide-body{animation:none!important;padding:2mm 0;gap:2mm}
+  .distribution-deck .slide .large-plot{--plot-height:62mm}
+  .distribution-deck .slide .compact-plots{--plot-height:32mm}
+  .distribution-deck .slide .cols-2,.lecture-cover .cover-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .distribution-deck .slide .cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .distribution-deck .lesson-dialog,.distribution-deck .resource-actions{display:none!important}
+}

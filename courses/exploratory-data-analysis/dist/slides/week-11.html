@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>11차수 · 이원 자료와 빈도표 · 자료탐색방법론</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../eda-detailed.css">
+  <link rel="stylesheet" href="../distribution-lessons.css">
+  <script defer src="../assets/chart.umd.min.js"></script>
+  <script defer src="../eda-detailed.js"></script>
+  <script defer src="../distribution-lessons.js"></script>
+</head>
+<body class="deck detailed-deck distribution-deck" data-week="11">
+  <main class="deck-stage" aria-label="11차수 강의 슬라이드">
+    <section class="slide lecture-cover active" data-title="이원 자료와 빈도표" aria-labelledby="heading-1">
+      <header class="slide-header"><span>자료탐색방법론 · 11차수</span><span class="type">표지</span></header>
+      <div class="slide-body detailed-content"><div class="cover-grid"><div class="cover-copy"><p class="cover-kicker">경기대학교 응용통계전공</p><h2 id="heading-1">이원 자료와<br>빈도표</h2><p class="cover-lead">어느 배송 방식에서 지연이 더 자주 발생했을까?</p></div><img class="cover-image float-card" src="../assets/delivery-sorting-illustration.png" alt="서로 다른 수의 택배가 두 분류 라인으로 나뉘는 모습"></div></div>
+      <footer class="slide-footer"><span>경기대학교 응용통계전공</span><span>01 / 20</span></footer>
+    </section>
+    <section class="slide" data-title="배송시간 옆에 배송 방식을 기록했다" aria-labelledby="heading-2">
+      <header class="slide-header"><span>자료탐색방법론 · 11차수</span><span class="type">도입</span></header>
+      <div class="slide-body detailed-content"><h2 id="heading-2">배송시간 옆에 배송 방식을 기록했다</h2><p class="">10차수의 질문을 이어 가기 위해 배송 방식이 포함된 별도의 가상 주문을 준비했습니다.</p><div class="table-wrap"><table class="distribution-table"><thead><tr><th scope="col">주문 ID</th><th scope="col">배송 방식</th><th scope="col">배송시간</th><th scope="col">지연 여부</th></tr></thead><tbody><tr><th scope="row">1</th><td class="">빠른배송</td><td class="">18분</td><td class="">정시</td></tr><tr><th scope="row">61</th><td class="">빠른배송</td><td class="">30분</td><td class="">정시</td></tr><tr><th scope="row">95</th><td class="">일반배송</td><td class="">41분</td><td class="">지연</td></tr></tbody></table></div><p class="callout">한 행은 주문 한 건입니다. 배송 방식과 지연 여부를 비교합니다. 30분 초과를 지연으로 기록합니다.</p></div>
+      <footer class="slide-footer"><span>경기대학교 응용통계전공</span><span>02 / 20</span></footer>
+    </section>
+    <section class="slide" data-title="지연 12건 대 6건" aria-labelledby="heading-3">
+      <header class="slide-header"><span>자료탐색방법론 · 11차수</span><span class="type">판단</span></header>
+      <div class="slide-body detailed-content"><h2 id="heading-3">지연 12건 대 6건</h2><div class="slide-grid cols-2 mobile-pair"><div class="step-card float-card"><h3>빠른배송 지연</h3><div class="metric">12건</div></div><div class="step-card float-card"><h3>일반배송 지연</h3><div class="metric">6건</div></div></div><div class="slide-grid cols-1 "><figure class="plot-card float-card"><figcaption>지연 주문만 집계</figcaption><div class="chart-box"><canvas data-chart="late" role="img" aria-label="빠른배송 지연 12건, 일반배송 지연 6건.">빠른배송 지연 12건, 일반배송 지연 6건.</canvas></div></figure></div><p class="callout">어느 방식이 더 자주 늦었을까요? 판단에 필요한 정보를 적어 보세요.</p></div>
+      <footer class="slide-footer"><span>경기대학교 응용통계전공</span><span>03 / 20</span></footer>
+    </section>
+    <section class="slide" data-title="주문 수를 공개합니다" aria-labelledby="heading-4">
+      <header class="slide-header"><span>자료탐색방법론 · 11차수</span><span class="type">판단</span></header>
+      <div class="slide-body detailed-content"><h2 id="heading-4">주문 수를 공개합니다</h2><div class="slide-grid cols-2 mobile-pair"><div class="step-card float-card"><h3>빠른배송 총 주문</h3><div class="metric">80건</div><p class="">지연 비율 12/□</p></div><div class="step-card float-card"><h3>일반배송 총 주문</h3><div class="metric">20건</div><p class="">지연 비율 6/□</p></div></div><div class="slide-grid cols-1 "><figure class="plot-card float-card"><figcaption>방식별 전체 주문</figcaption><div class="chart-box"><canvas data-chart="total" role="img" aria-label="빠른배송 총 80건, 일반배송 총 20건.">빠른배송 총 80건, 일반배송 총 20건.</canvas></div></figure></div><p class="callout">각 방식의 지연 건수를 무엇으로 나누어야 할까요?</p></div>
+      <footer class="slide-footer"><span>경기대학교 응용통계전공</span><span>04 / 20</span></footer>
+    </section>
+    <section class="slide" data-title="두 변수로 2×2 표를 완성하기" aria-labelledby="heading-5">
+      <header class="slide-header"><span>자료탐색방법론 · 11차수</span><span class="type">손계산</span></header>
+      <div class="slide-body detailed-content"><h2 id="heading-5">두 변수로 2×2 표를 완성하기</h2><div class="table-wrap"><table class="distribution-table"><thead><tr><th scope="col">배송 방식</th><th scope="col">지연</th><th scope="col">정시</th><th scope="col">합계</th></tr></thead><tbody><tr><th scope="row">빠른배송</th><td class="">12</td><td class="">□</td><td class="subtotal">80</td></tr><tr><th scope="row">일반배송</th><td class="">6</td><td class="">□</td><td class="subtotal">20</td></tr><tr><th scope="row">합계</th><td class="subtotal">□</td><td class="subtotal">□</td><td class="subtotal">□</td></tr></tbody></table></div><p class="callout">먼저 각 행의 정시 주문을 구하고 열 합계와 전체 합계를 채우세요.</p></div>
+      <footer class="slide-footer"><span>경기대학교 응용통계전공</span><span>05 / 20</span></footer>
+    </section>
+    <section class="slide" data-title="행과 열 바깥의 숫자 · 주변합" aria-labelledby="heading-6">
+      <header class="slide-header"><span>자료탐색방법론 · 11차수</span><span class="type">해설</span></header>
+      <div class="slide-body detailed-content"><h2 id="heading-6">행과 열 바깥의 숫자 · 주변합</h2><div class="table-wrap"><table class="distribution-table"><thead><tr><th scope="col">배송 방식</th><th scope="col">지연</th><th scope="col">정시</th><th scope="col">합계</th></tr></thead><tbody><tr><th scope="row">빠른배송</th><td class="spot">12</td><td class="">68</td><td class="subtotal">80</td></tr><tr><th scope="row">일반배송</th><td class="">6</td><td class="">14</td><td class="subtotal">20</td></tr><tr><th scope="row">합계</th><td class="subtotal">18</td><td class="subtotal">82</td><td class="subtotal">100</td></tr></tbody></table></div><p class="callout">방식별 합계는 80+20, 지연 여부별 합계는 18+82입니다. 두 합계는 모두 100건입니다.</p></div>
+      <footer class="slide-footer"><span>경기대학교 응용통계전공</span><span>06 / 20</span></footer>
+    </section>
+    <section class="slide" data-title="같은 12건의 세 분모" aria-labelledby="heading-7">
+      <header class="slide-header"><span>자료탐색방법론 · 11차수</span><span class="type">손계산</span></header>
+      <div class="slide-body detailed-content"><h2 id="heading-7">같은 12건의 세 분모</h2><div class="table-wrap"><table class="distribution-table"><thead><tr><th scope="col">배송 방식</th><th scope="col">지연</th><th scope="col">정시</th><th scope="col">합계</th></tr></thead><tbody><tr><th scope="row">빠른배송</th><td class="spot">12</td><td class="">68</td><td class="subtotal">80</td></tr><tr><th scope="row">일반배송</th><td class="">6</td><td class="">14</td><td class="subtotal">20</td></tr><tr><th scope="row">합계</th><td class="subtotal">18</td><td class="subtotal">82</td><td class="subtotal">100</td></tr></tbody></table></div><div class="slide-grid cols-3 "><div class="step-card float-card"><h3>전체 주문 중</h3><p class="">빠른배송이면서 지연된 비율 · 12/□</p></div><div class="step-card float-card"><h3>빠른배송 중</h3><p class="">지연된 비율 · 12/□</p></div><div class="step-card float-card"><h3>지연 주문 중</h3><p class="">빠른배송의 비중 · 12/□</p></div></div><p class="callout">각 질문이 가리키는 집단을 먼저 말하고, 그 집단의 주문 수를 찾으세요.</p></div>
+      <footer class="slide-footer"><span>경기대학교 응용통계전공</span><span>07 / 20</span></footer>
+    </section>
+    <section class="slide" data-title="12%·15%·66.7%가 각각 답하는 질문" aria-labelledby="heading-8">
+      <header class="slide-header"><span>자료탐색방법론 · 11차수</span><span class="type">해설</span></header>
+      <div class="slide-body detailed-content"><h2 id="heading-8">12%·15%·66.7%가 각각 답하는 질문</h2><div class="slide-grid cols-3 "><div class="step-card float-card"><h3>전체 백분율</h3><div class="metric">12%</div><p class="">전체 100건 중 12건</p></div><div class="step-card float-card"><h3>행 백분율</h3><div class="metric">15%</div><p class="">빠른배송 80건 중 12건</p></div><div class="step-card float-card"><h3>열 백분율</h3><div class="metric">66.7%</div><p class="">지연 18건 중 12건</p></div></div><p class="callout">빠른배송 주문의 지연 비율을 설명할 때는 빠른배송 전체 80건을 분모로 씁니다.</p></div>
+      <footer class="slide-footer"><span>경기대학교 응용통계전공</span><span>08 / 20</span></footer>
+    </section>
+    <section class="slide" data-title="주문당 지연 비율을 비교하면" aria-labelledby="heading-9">
+      <header class="slide-header"><span>자료탐색방법론 · 11차수</span><span class="type">비교</span></header>
+      <div class="slide-body detailed-content"><h2 id="heading-9">주문당 지연 비율을 비교하면</h2><div class="slide-grid cols-2 mobile-pair"><div class="step-card float-card"><h3>빠른배송</h3><div class="metric">15%</div><p class="">지연 12건 / 주문 80건</p></div><div class="step-card float-card"><h3>일반배송</h3><div class="metric">30%</div><p class="">지연 6건 / 주문 20건</p></div></div><div class="slide-grid cols-1 "><figure class="plot-card float-card"><figcaption>배송 방식별 지연 비율</figcaption><div class="chart-box"><canvas data-chart="lateRates" role="img" aria-label="빠른배송 지연 비율 15%, 일반배송 30%.">빠른배송 지연 비율 15%, 일반배송 30%.</canvas></div></figure></div><p class="callout">일반배송이 15%p 높습니다. 전체 지연 비율 18%는 0.8×15% + 0.2×30%로 검산할 수 있습니다.</p></div>
+      <footer class="slide-footer"><span>경기대학교 응용통계전공</span><span>09 / 20</span></footer>
+    </section>
+    <section class="slide" data-title="병렬 막대 · 지연 주문은 몇 건인가?" aria-labelledby="heading-10">
+      <header class="slide-header"><span>자료탐색방법론 · 11차수</span><span class="type">시각화</span></header>
+      <div class="slide-body detailed-content"><h2 id="heading-10">병렬 막대 · 지연 주문은 몇 건인가?</h2><div class="slide-grid cols-1 large-plot"><figure class="plot-card float-card"><figcaption>병렬 막대 · 주문 건수</figcaption><div class="chart-box"><canvas data-chart="counts" role="img" aria-label="빠른배송은 지연 12건과 정시 68건, 일반배송은 지연 6건과 정시 14건이다.">빠른배송은 지연 12건과 정시 68건, 일반배송은 지연 6건과 정시 14건이다.</canvas></div></figure></div><p class="callout">지연 주문의 처리 건수를 비교합니다. 빠른배송 12건, 일반배송 6건입니다.</p></div>
+      <footer class="slide-footer"><span>경기대학교 응용통계전공</span><span>10 / 20</span></footer>
+    </section>
+    <section class="slide" data-title="100% 누적 막대 · 어느 방식의 지연 비율이 더 높은가?" aria-labelledby="heading-11">
+      <header class="slide-header"><span>자료탐색방법론 · 11차수</span><span class="type">시각화</span></header>
+      <div class="slide-body detailed-content"><h2 id="heading-11">100% 누적 막대 · 어느 방식의 지연 비율이 더 높은가?</h2><div class="slide-grid cols-1 large-plot"><figure class="plot-card float-card"><figcaption>100% 누적 막대 · 방식 내 비율</figcaption><div class="chart-box"><canvas data-chart="rates" role="img" aria-label="빠른배송은 지연 15%와 정시 85%, 일반배송은 지연 30%와 정시 70%다.">빠른배송은 지연 15%와 정시 85%, 일반배송은 지연 30%와 정시 70%다.</canvas></div></figure></div><p class="callout">각 방식의 주문을 100%로 두면 지연 구간은 빠른배송 15%, 일반배송 30%입니다.</p></div>
+      <footer class="slide-footer"><span>경기대학교 응용통계전공</span><span>11 / 20</span></footer>
+    </section>
+    <section class="slide" data-title="모자이크 · 폭, 높이, 면적은 무엇을 뜻할까?" aria-labelledby="heading-12">
+      <header class="slide-header"><span>자료탐색방법론 · 11차수</span><span class="type">시각화</span></header>
+      <div class="slide-body detailed-content"><h2 id="heading-12">모자이크 · 폭, 높이, 면적은 무엇을 뜻할까?</h2><div class="slide-grid cols-1 large-plot"><figure class="plot-card float-card"><figcaption>모자이크 · 배송 방식 × 지연 여부</figcaption>
+<div class="mosaic-box" role="group" aria-label="모자이크. 폭은 방식별 주문 비중, 높이는 방식 내 비율, 면적은 전체 주문 중 해당 셀의 비율이다.">
+  <div class="mosaic-column" style="--on-time:85%;--late:15%"><div class="mosaic-tile" tabindex="0" title="빠른배송 정시 · 68건 · 방식 내 85% · 전체의 68%">정시 68건</div><div class="mosaic-tile late" tabindex="0" title="빠른배송 지연 · 12건 · 폭 80% · 높이 15% · 면적 12%">지연 12건</div></div>
+  <div class="mosaic-column" style="--on-time:70%;--late:30%"><div class="mosaic-tile" tabindex="0" title="일반배송 정시 · 14건 · 방식 내 70% · 전체의 14%">정시 14건</div><div class="mosaic-tile late" tabindex="0" title="일반배송 지연 · 6건 · 폭 20% · 높이 30% · 면적 6%">지연 6건</div></div>
+</div><div class="mosaic-labels"><span>빠른배송 80%</span><span>일반배송 20%</span></div></figure></div><p class="callout">빠른배송 지연 칸은 폭 80% × 높이 15% = 면적 12%입니다. 일반배송 지연 칸의 면적도 계산해 보세요.</p></div>
+      <footer class="slide-footer"><span>경기대학교 응용통계전공</span><span>12 / 20</span></footer>
+    </section>
+    <section class="slide" data-title="주문 단위 자료에서 교차표 만들기" aria-labelledby="heading-13">
+      <header class="slide-header"><span>자료탐색방법론 · 11차수</span><span class="type practice">Colab 실습</span></header>
+      <div class="slide-body detailed-content"><h2 id="heading-13">주문 단위 자료에서 교차표 만들기</h2><div class="slide-grid cols-2 "><div class="table-wrap"><table class="distribution-table"><thead><tr><th scope="col">배송 방식</th><th scope="col">배송시간(분)</th><th scope="col">반복 수</th></tr></thead><tbody><tr><th scope="row">빠른배송</th><td class="">18</td><td class="">60</td></tr><tr><th scope="row">빠른배송</th><td class="spot">30</td><td class="">8</td></tr><tr><th scope="row">빠른배송</th><td class="">36</td><td class="">12</td></tr><tr><th scope="row">일반배송</th><td class="">25</td><td class="">14</td></tr><tr><th scope="row">일반배송</th><td class="">41</td><td class="">6</td></tr></tbody></table></div><div class="step-card float-card"><h3>경계값 검산</h3><p class="">29분 · 30분 · 31분 · 결측을 먼저 분류하세요. 이 네 건은 기본 100건과 별도로 확인합니다.</p></div></div><div class="lab"><div class="copy-head"><strong>작성 프롬프트</strong><button class="copy-button" type="button">작성 프롬프트 복사</button></div><pre class="prompt-code" tabindex="0"><code>반복표의 (배송 방식, 배송시간, 반복 수)는 (빠른배송,18,60), (빠른배송,30,8), (빠른배송,36,12), (일반배송,25,14), (일반배송,41,6)이야. 고유 주문 ID가 있는 100행을 만들고 30분 초과는 지연, 30분 이하는 정시, 결측은 미분류로 기록해 줘. 29·30·31분과 결측 검산은 따로 해 줘. 배송 방식×지연 여부 빈도표와 주변합, 전체·행·열 백분율을 구하고 각각의 분모를 명시해 줘.</code></pre><p class="copy-status" role="status" aria-live="polite"></p></div><div class="resource-actions"><button class="resource-button" type="button" data-open-dialog="s11-table-code" aria-haspopup="dialog" aria-controls="s11-table-code">비교용 Python</button><a class="resource-button" href="https://colab.research.google.com/" target="_blank" rel="noopener">Colab 열기</a></div></div>
+      <footer class="slide-footer"><span>경기대학교 응용통계전공</span><span>13 / 20</span></footer>
+    </section>
+    <section class="slide" data-title="경계값과 분모 확인" aria-labelledby="heading-14">
+      <header class="slide-header"><span>자료탐색방법론 · 11차수</span><span class="type">검증</span></header>
+      <div class="slide-body detailed-content"><h2 id="heading-14">경계값과 분모 확인</h2><div class="slide-grid cols-3 "><div class="step-card float-card"><h3>29분 · 30분</h3><p class="">정시</p></div><div class="step-card float-card"><h3>31분</h3><p class="">지연</p></div><div class="step-card float-card"><h3>결측</h3><p class="">미분류</p></div></div><div class="table-wrap"><table class="distribution-table"><thead><tr><th scope="col">배송 방식</th><th scope="col">지연</th><th scope="col">정시</th><th scope="col">합계</th></tr></thead><tbody><tr><th scope="row">빠른배송</th><td class="spot">12</td><td class="">68</td><td class="subtotal">80</td></tr><tr><th scope="row">일반배송</th><td class="">6</td><td class="">14</td><td class="subtotal">20</td></tr><tr><th scope="row">합계</th><td class="subtotal">18</td><td class="subtotal">82</td><td class="subtotal">100</td></tr></tbody></table></div><p class="callout">고유 주문 100건과 본표 총합 100을 대조합니다. 전체 표, 각 행, 각 열은 해당 분모로 계산했을 때 각각 100%가 됩니다.</p></div>
+      <footer class="slide-footer"><span>경기대학교 응용통계전공</span><span>14 / 20</span></footer>
+    </section>
+    <section class="slide" data-title="운영 질문에 맞는 그림 만들기" aria-labelledby="heading-15">
+      <header class="slide-header"><span>자료탐색방법론 · 11차수</span><span class="type practice">Colab 실습</span></header>
+      <div class="slide-body detailed-content"><h2 id="heading-15">운영 질문에 맞는 그림 만들기</h2><div class="slide-grid cols-3 "><div class="step-card float-card"><h3>지연 건수</h3><p class="">처리할 지연 주문은 몇 건인가?</p></div><div class="step-card float-card"><h3>방식 내 지연 비율</h3><p class="">어느 배송 방식에서 더 자주 늦었는가?</p></div><div class="step-card float-card"><h3>방식별 규모까지</h3><p class="">각 방식은 전체에서 얼마나 큰 비중인가?</p></div></div><div class="lab"><div class="copy-head"><strong>작성 프롬프트</strong><button class="copy-button" type="button">작성 프롬프트 복사</button></div><pre class="prompt-code" tabindex="0"><code>행은 빠른배송·일반배송, 열은 지연·정시인 2×2 표 [[12,68],[6,14]]를 써 줘. 병렬 막대는 건수, 100% 누적 막대는 방식 내 비율을 표시해 줘. 모자이크는 주문 비중을 폭, 방식 내 비율을 높이로 쓰고 지연 칸을 두 방식 모두 아래에 배치해 줘. 빠른배송 지연 칸의 폭·높이·면적을 출력해 줘.</code></pre><p class="copy-status" role="status" aria-live="polite"></p></div><div class="resource-actions"><button class="resource-button" type="button" data-open-dialog="s11-charts-code" aria-haspopup="dialog" aria-controls="s11-charts-code">비교용 Python</button><a class="resource-button" href="https://colab.research.google.com/" target="_blank" rel="noopener">Colab 열기</a></div></div>
+      <footer class="slide-footer"><span>경기대학교 응용통계전공</span><span>15 / 20</span></footer>
+    </section>
+    <section class="slide" data-title="같은 표를 세 그림으로 설명하기" aria-labelledby="heading-16">
+      <header class="slide-header"><span>자료탐색방법론 · 11차수</span><span class="type">검증</span></header>
+      <div class="slide-body detailed-content"><h2 id="heading-16">같은 표를 세 그림으로 설명하기</h2><div class="slide-grid cols-3 compact-plots"><figure class="plot-card float-card"><figcaption>병렬 막대 · 주문 건수</figcaption><div class="chart-box"><canvas data-chart="counts" role="img" aria-label="빠른배송은 지연 12건과 정시 68건, 일반배송은 지연 6건과 정시 14건이다.">빠른배송은 지연 12건과 정시 68건, 일반배송은 지연 6건과 정시 14건이다.</canvas></div></figure><figure class="plot-card float-card"><figcaption>100% 누적 막대 · 방식 내 비율</figcaption><div class="chart-box"><canvas data-chart="rates" role="img" aria-label="빠른배송은 지연 15%와 정시 85%, 일반배송은 지연 30%와 정시 70%다.">빠른배송은 지연 15%와 정시 85%, 일반배송은 지연 30%와 정시 70%다.</canvas></div></figure><figure class="plot-card float-card"><figcaption>모자이크 · 배송 방식 × 지연 여부</figcaption>
+<div class="mosaic-box" role="group" aria-label="모자이크. 폭은 방식별 주문 비중, 높이는 방식 내 비율, 면적은 전체 주문 중 해당 셀의 비율이다.">
+  <div class="mosaic-column" style="--on-time:85%;--late:15%"><div class="mosaic-tile" tabindex="0" title="빠른배송 정시 · 68건 · 방식 내 85% · 전체의 68%">정시 68건</div><div class="mosaic-tile late" tabindex="0" title="빠른배송 지연 · 12건 · 폭 80% · 높이 15% · 면적 12%">지연 12건</div></div>
+  <div class="mosaic-column" style="--on-time:70%;--late:30%"><div class="mosaic-tile" tabindex="0" title="일반배송 정시 · 14건 · 방식 내 70% · 전체의 14%">정시 14건</div><div class="mosaic-tile late" tabindex="0" title="일반배송 지연 · 6건 · 폭 20% · 높이 30% · 면적 6%">지연 6건</div></div>
+</div><div class="mosaic-labels"><span>빠른배송 80%</span><span>일반배송 20%</span></div></figure></div><div class="slide-grid cols-3 "><div class="step-card float-card"><h3>병렬 막대</h3><p class="">12건 대 6건</p></div><div class="step-card float-card"><h3>100% 누적 막대</h3><p class="">15% 대 30%</p></div><div class="step-card float-card"><h3>모자이크</h3><p class="">폭 80% × 높이 15% = 면적 12%</p></div></div></div>
+      <footer class="slide-footer"><span>경기대학교 응용통계전공</span><span>16 / 20</span></footer>
+    </section>
+    <section class="slide" data-title="AI의 보고서를 검토하라" aria-labelledby="heading-17">
+      <header class="slide-header"><span>자료탐색방법론 · 11차수</span><span class="type">형성평가</span></header>
+      <div class="slide-body detailed-content"><h2 id="heading-17">AI의 보고서를 검토하라</h2><p class="callout">“지연 주문의 66.7%가 빠른배송이므로, 빠른배송 주문이 지연될 가능성이 더 높습니다.”</p><div class="slide-grid cols-2 "><div class="step-card float-card"><h3>AI가 쓴 분모</h3><p class="">66.7%에서 분모가 가리키는 집단은?</p></div><div class="step-card float-card"><h3>질문이 요구한 분모</h3><p class="">각 배송 방식 내 지연 비율의 분모는?</p></div></div></div>
+      <footer class="slide-footer"><span>경기대학교 응용통계전공</span><span>17 / 20</span></footer>
+    </section>
+    <section class="slide" data-title="운영팀에 전달할 세 문장" aria-labelledby="heading-18">
+      <header class="slide-header"><span>자료탐색방법론 · 11차수</span><span class="type">해설</span></header>
+      <div class="slide-body detailed-content"><h2 id="heading-18">운영팀에 전달할 세 문장</h2><div class="slide-grid cols-3 "><div class="step-card float-card"><h3>처리 건수</h3><p class="">지연 건수는 빠른배송 12건, 일반배송 6건입니다.</p></div><div class="step-card float-card"><h3>방식별 비율</h3><p class="">지연 비율은 빠른배송 15%, 일반배송 30%였습니다.</p></div><div class="step-card float-card"><h3>추가 확인</h3><p class="">배송 거리대별 주문 구성을 확인하겠습니다.</p></div></div></div>
+      <footer class="slide-footer"><span>경기대학교 응용통계전공</span><span>18 / 20</span></footer>
+    </section>
+    <section class="slide" data-title="일반배송 지연 칸을 읽어 보기" aria-labelledby="heading-19">
+      <header class="slide-header"><span>자료탐색방법론 · 11차수</span><span class="type practice">자가 실습</span></header>
+      <div class="slide-body detailed-content"><h2 id="heading-19">일반배송 지연 칸을 읽어 보기</h2><div class="table-wrap"><table class="distribution-table"><thead><tr><th scope="col">배송 방식</th><th scope="col">지연</th><th scope="col">정시</th><th scope="col">합계</th></tr></thead><tbody><tr><th scope="row">빠른배송</th><td class="">12</td><td class="">68</td><td class="subtotal">80</td></tr><tr><th scope="row">일반배송</th><td class="spot">6</td><td class="">14</td><td class="subtotal">20</td></tr><tr><th scope="row">합계</th><td class="subtotal">18</td><td class="subtotal">82</td><td class="subtotal">100</td></tr></tbody></table></div><p class="">전체 비중, 일반배송의 지연 비율, 지연 주문 중 일반배송의 비중, 모자이크 폭·높이·면적을 적으세요.</p><details><summary>해설과 선택 R 대조</summary><p>6%, 30%, 33.3%. 모자이크 폭 20%, 높이 30%, 면적 6%입니다.</p><p>R에서 table(method, late)로 본표를 만든 뒤 addmargins와 prop.table의 행·열 비율을 대조할 수 있습니다.</p></details></div>
+      <footer class="slide-footer"><span>경기대학교 응용통계전공</span><span>19 / 20</span></footer>
+    </section>
+    <section class="slide" data-title="배송 거리가 같아도 순서가 같을까?" aria-labelledby="heading-20">
+      <header class="slide-header"><span>자료탐색방법론 · 11차수</span><span class="type">다음 차수</span></header>
+      <div class="slide-body detailed-content"><h2 id="heading-20">배송 거리가 같아도 순서가 같을까?</h2><div class="slide-grid cols-3 "><div class="step-card float-card"><h3>전체 주문</h3><p class="">빠른배송 15% · 일반배송 30%</p></div><div class="step-card float-card"><h3>가까운 주문</h3><p class="">빠른배송 □ · 일반배송 □</p></div><div class="step-card float-card"><h3>먼 주문</h3><p class="">빠른배송 □ · 일반배송 □</p></div></div><p class="callout">거리대를 하나 더 기록하면 같은 거리대 안에서 비교할 수 있습니다. 다음 차수에는 층화와 심슨의 역설을 다룹니다.</p></div>
+      <footer class="slide-footer"><span>경기대학교 응용통계전공</span><span>20 / 20</span></footer>
+    </section>
+  </main>
+  <div class="study-toolbar" aria-label="강의 보기 도구">
+    <a href="../index.html?week=11">강의 홈</a>
+    <button type="button" data-action="overview">목차</button>
+    <button type="button" id="reading-toggle" aria-pressed="false">전체 읽기</button>
+    <button type="button" data-action="fullscreen" aria-pressed="false">화면 전체보기</button>
+    <button type="button" id="print-deck">인쇄</button>
+  </div>
+  <nav class="deck-controls" aria-label="슬라이드 이동">
+    <button type="button" class="control" data-action="prev" aria-label="이전 슬라이드">←</button>
+    <button type="button" class="control" data-action="next" aria-label="다음 슬라이드">→</button>
+  </nav>
+  <span class="slide-counter" aria-live="polite">1 / 20</span><div class="progress" aria-hidden="true"></div>
+  <div class="overview" aria-label="슬라이드 목차"><button class="overview-close" type="button">목차 닫기</button></div>
+  <dialog class="lesson-dialog" id="s11-table-code" aria-labelledby="s11-table-code-title"><header class="dialog-title"><h2 id="s11-table-code-title">주문 자료와 이원 빈도표</h2><form method="dialog"><button class="resource-button" autofocus>닫기</button></form></header><div class="dialog-content"><div class="lab"><div class="copy-head"><strong>작성 프롬프트</strong><button class="copy-button" type="button">작성 프롬프트 복사</button></div><pre class="prompt-code" tabindex="0"><code>반복표의 (배송 방식, 배송시간, 반복 수)는 (빠른배송,18,60), (빠른배송,30,8), (빠른배송,36,12), (일반배송,25,14), (일반배송,41,6)이야. 고유 주문 ID가 있는 100행을 만들고 30분 초과는 지연, 30분 이하는 정시, 결측은 미분류로 기록해 줘. 29·30·31분과 결측 검산은 따로 해 줘. 배송 방식×지연 여부 빈도표와 주변합, 전체·행·열 백분율을 구하고 각각의 분모를 명시해 줘.</code></pre><p class="copy-status" role="status" aria-live="polite"></p></div><div class="lab"><div class="copy-head"><strong>Python 코드</strong><button class="copy-button" type="button">Python 코드 복사</button></div><pre class="python-code" tabindex="0"><code>import numpy as np
+import pandas as pd
+
+groups = [(&quot;빠른배송&quot;, 18, 60), (&quot;빠른배송&quot;, 30, 8), (&quot;빠른배송&quot;, 36, 12),
+          (&quot;일반배송&quot;, 25, 14), (&quot;일반배송&quot;, 41, 6)]
+methods = [&quot;빠른배송&quot;, &quot;일반배송&quot;]
+status = [&quot;지연&quot;, &quot;정시&quot;]
+orders = pd.DataFrame([(method, minutes) for method, minutes, count in groups
+                       for _ in range(count)], columns=[&quot;method&quot;, &quot;minutes&quot;])
+orders.insert(0, &quot;order_id&quot;, range(1, len(orders) + 1))
+
+def classify(minutes):
+    return np.select([minutes.isna(), minutes.gt(30)], [&quot;미분류&quot;, &quot;지연&quot;], default=&quot;정시&quot;)
+
+cases = pd.Series([29, 30, 31, np.nan])
+assert classify(cases).tolist() == [&quot;정시&quot;, &quot;정시&quot;, &quot;지연&quot;, &quot;미분류&quot;]
+orders[&quot;late&quot;] = classify(orders[&quot;minutes&quot;])
+print(&quot;미분류:&quot;, orders[&quot;late&quot;].eq(&quot;미분류&quot;).sum())
+valid = orders.loc[orders[&quot;late&quot;].ne(&quot;미분류&quot;)]
+tab = pd.crosstab(valid[&quot;method&quot;], valid[&quot;late&quot;]).reindex(index=methods, columns=status, fill_value=0)
+with_totals = pd.crosstab(valid[&quot;method&quot;], valid[&quot;late&quot;], margins=True, margins_name=&quot;합계&quot;)
+with_totals = with_totals.reindex(index=methods + [&quot;합계&quot;], columns=status + [&quot;합계&quot;])
+total_pct = 100 * tab / tab.to_numpy().sum()
+row_pct = 100 * tab.div(tab.sum(axis=1), axis=0)
+col_pct = 100 * tab.div(tab.sum(axis=0), axis=1)
+assert orders[&quot;order_id&quot;].nunique() == tab.to_numpy().sum() == 100
+assert tab.to_numpy().tolist() == [[12, 68], [6, 14]]
+assert np.allclose(row_pct.sum(axis=1), 100) and np.allclose(col_pct.sum(axis=0), 100)
+print(with_totals)
+for label, result in [(&quot;전체&quot;, total_pct), (&quot;행&quot;, row_pct), (&quot;열&quot;, col_pct)]:
+    print(label, result.round(1), sep=&quot;\n&quot;)
+</code></pre><p class="copy-status" role="status" aria-live="polite"></p></div><div><strong>확인값</strong><p>본표 [[12, 68], [6, 14]]. 행 합계 80·20, 열 합계 18·82. 전체 100건.</p></div></div></dialog><dialog class="lesson-dialog" id="s11-charts-code" aria-labelledby="s11-charts-code-title"><header class="dialog-title"><h2 id="s11-charts-code-title">세 가지 시각화 비교</h2><form method="dialog"><button class="resource-button" autofocus>닫기</button></form></header><div class="dialog-content"><div class="lab"><div class="copy-head"><strong>작성 프롬프트</strong><button class="copy-button" type="button">작성 프롬프트 복사</button></div><pre class="prompt-code" tabindex="0"><code>행은 빠른배송·일반배송, 열은 지연·정시인 2×2 표 [[12,68],[6,14]]를 써 줘. 병렬 막대는 건수, 100% 누적 막대는 방식 내 비율을 표시해 줘. 모자이크는 주문 비중을 폭, 방식 내 비율을 높이로 쓰고 지연 칸을 두 방식 모두 아래에 배치해 줘. 빠른배송 지연 칸의 폭·높이·면적을 출력해 줘.</code></pre><p class="copy-status" role="status" aria-live="polite"></p></div><div class="lab"><div class="copy-head"><strong>Python 코드</strong><button class="copy-button" type="button">Python 코드 복사</button></div><pre class="python-code" tabindex="0"><code>import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.patches import Rectangle
+
+# 13장과 같은 교차표
+counts = np.array([[12, 68], [6, 14]])
+labels = [&quot;Fast&quot;, &quot;Regular&quot;]
+colors = [&quot;#dc6254&quot;, &quot;#b6d2ea&quot;]
+totals = counts.sum(axis=1)
+rates = counts / totals[:, None]
+weights = totals / totals.sum()
+x = np.arange(len(counts))
+fig, axes = plt.subplots(1, 3, figsize=(12, 3.8), layout=&quot;constrained&quot;)
+for j, status in enumerate([&quot;Late&quot;, &quot;On time&quot;]):
+    axes[0].bar(x + (j - .5) * .32, counts[:, j], .32, color=colors[j], label=status)
+    axes[1].bar(x, 100 * rates[:, j], .5, bottom=100 * rates[:, :j].sum(axis=1),
+                color=colors[j], label=status)
+axes[0].set(xticks=x, xticklabels=labels, ylabel=&quot;Orders&quot;)
+axes[1].set(xticks=x, xticklabels=labels, ylabel=&quot;Within-method share (%)&quot;, ylim=(0, 100))
+axes[0].legend()
+left = 0
+for i, width in enumerate(weights):
+    bottom = 0
+    for j, height in enumerate(rates[i]):
+        axes[2].add_patch(Rectangle((left, bottom), width, height, facecolor=colors[j], edgecolor=&quot;white&quot;))
+        axes[2].text(left + width / 2, bottom + height / 2, str(counts[i, j]), ha=&quot;center&quot;, va=&quot;center&quot;)
+        bottom += height
+    left += width
+axes[2].set(xlim=(0, 1), ylim=(0, 1), xticks=[.4, .9], xticklabels=labels)
+axes[2].set_ylabel(&quot;Within-method share&quot;)
+print(&quot;빠른배송 지연 칸의 폭·높이·면적:&quot;, weights[0], rates[0, 0], weights[0] * rates[0, 0])
+assert np.isclose(weights[0] * rates[0, 0], .12)
+plt.show()
+</code></pre><p class="copy-status" role="status" aria-live="polite"></p></div><div><strong>확인값</strong><p>지연 12건·6건, 방식 내 지연 15%·30%, 빠른배송 지연 면적 0.8 × 0.15 = 0.12.</p></div></div></dialog>
+  <script type="application/json" id="lesson-data">{"late":{"kind":"bar","late":[12,6],"y":"지연 건수(건)","ymax":16},"total":{"kind":"bar","late":[80,20],"y":"전체 주문(건)","ymax":100,"labels":["전체 주문"]},"rates":{"kind":"stacked","late":[15,30],"second":[85,70],"y":"방식 내 비율(%)"},"lateRates":{"kind":"bar","late":[15,30],"y":"방식 내 지연 비율(%)","ymax":40,"unit":"%"},"counts":{"kind":"bar","late":[12,6],"second":[68,14],"y":"주문 건수(건)","ymax":80}}</script>
+</body>
+</html>
