@@ -12,13 +12,12 @@
     {"week": 6, "title": "AI 리서치를 활용한 기업 및 산업 자료조사", "activity": "기업·산업 현황과 출처 검증", "slide": "slides/week-06.html", "slideCount": 30, "sessionTitle": "AI 리서치와<br>원문 검증", "copy": "기업·산업 자료를 조사하고 AI가 제시한 주장과 수치를 원문에서 확인합니다.", "agenda": ["분석 질문과 자료 탐색", "기업·산업 조사", "원문과 출처 검증", "근거 정리와 수집 계획"], "help": "방향키로 이동 · M 목차<br>N 강사 노트 · 전체 읽기 · 전체화면"},
     {"week": 7, "title": "공공데이터와 DART 기업공시자료 확보", "activity": "자료 수집, 기초 지표·추세·경쟁사 비교", "slide": "slides/week-07.html", "slideCount": 36, "sessionTitle": "공시와 공공데이터로<br>비교 가능한 근거 확보", "copy": "공시와 공공통계에서 자료를 수집하고 지표·추세와 비교 가능성을 검토합니다.", "agenda": ["자료 수집 설계", "DART와 공공통계", "지표 계산과 비교", "검산·해석과 정리"], "help": "방향키로 이동 · M 목차<br>N 강사 노트 · 전체 읽기 · 전체화면"},
     { week: 8, title: '기업 데이터 정제와 분석용 데이터셋 구축', activity: '데이터 정제, 기술통계·현황분석, 개인 보고서 정리' },
-    { week: 9, title: '중간고사: 기업 현황분석 개별 Term Report 제출', activity: '개인별 분석 관점과 근거를 갖춘 현황분석 보고서' },
-    { week: 10, title: '기업 데이터의 통계분석과 핵심 인사이트 도출', activity: '개별 분석 종합, 핵심 문제 확정과 원인 가설 검토' },
-    { week: 11, title: '통계컨설팅 보고서 구조와 초안 작성', activity: '데이터 스토리텔링과 팀 전략보고서 초안' },
-    { week: 12, title: '기업분석 브리핑보드 설계 및 제작', activity: '핵심 메시지·분석 근거·전략 제안 요약' },
-    { week: 13, title: 'PSDM 기반 해결대안 평가와 실행전략 수립', activity: '대안 비교, 실행계획·성과지표, 시나리오 분석' },
-    { week: 14, title: '최종 전략보고서 통합 및 검증', activity: '근거·해석·권고안의 일관성 검토와 발표 준비' },
-    { week: 15, title: '최종 통계컨설팅 프로젝트 발표 및 결과물 제출', activity: '기말 Team Report와 조별 발표·질의응답' }
+    { week: 9, title: '기업 데이터의 통계분석과 핵심 인사이트 도출', activity: '개별 분석 종합, 핵심 문제 확정과 원인 가설 검토' },
+    { week: 10, title: '통계컨설팅 보고서 구조와 초안 작성', activity: '데이터 스토리텔링과 팀 전략보고서 초안' },
+    { week: 11, title: '기업분석 브리핑보드 설계 및 제작', activity: '핵심 메시지·분석 근거·전략 제안 요약' },
+    { week: 12, title: 'PSDM 기반 해결대안 평가와 실행전략 수립', activity: '대안 비교, 실행계획·성과지표, 시나리오 분석' },
+    { week: 13, title: '최종 전략보고서 통합 및 검증', activity: '근거·해석·권고안의 일관성 검토와 발표 준비' },
+    { week: 14, title: '최종 통계컨설팅 프로젝트 발표 및 결과물 제출', activity: '기말 Team Report와 조별 발표·질의응답' }
   ];
 
   const byId = id => document.getElementById(id);
