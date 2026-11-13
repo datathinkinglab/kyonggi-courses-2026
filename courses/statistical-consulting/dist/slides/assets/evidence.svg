@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 126">
+  <g font-family="Malgun Gothic, sans-serif" text-anchor="middle">
+    <rect x="5" y="17" width="145" height="91" rx="13" fill="#e3edfd"/>
+    <text x="77.5" y="55" font-size="22" font-weight="700" fill="#173761">원자료</text>
+    <text x="77.5" y="83" font-size="16" fill="#405979">출처와 기간</text>
+    <path d="M153 63h16m-5-5 5 5-5 5" stroke="#2059ce" stroke-width="2.5" fill="none"/>
+    <rect x="175" y="17" width="145" height="91" rx="13" fill="#e3edfd"/>
+    <text x="247.5" y="55" font-size="22" font-weight="700" fill="#173761">그림</text>
+    <text x="247.5" y="83" font-size="16" fill="#405979">비교와 단위</text>
+    <path d="M323 63h16m-5-5 5 5-5 5" stroke="#2059ce" stroke-width="2.5" fill="none"/>
+    <rect x="345" y="17" width="145" height="91" rx="13" fill="#e3edfd"/>
+    <text x="417.5" y="55" font-size="22" font-weight="700" fill="#173761">관찰</text>
+    <text x="417.5" y="83" font-size="16" fill="#405979">확인한 수치</text>
+    <path d="M493 63h16m-5-5 5 5-5 5" stroke="#2059ce" stroke-width="2.5" fill="none"/>
+    <rect x="515" y="17" width="145" height="91" rx="13" fill="#e3edfd"/>
+    <text x="587.5" y="55" font-size="22" font-weight="700" fill="#173761">해석</text>
+    <text x="587.5" y="83" font-size="16" fill="#405979">수치의 의미</text>
+    <path d="M663 63h16m-5-5 5 5-5 5" stroke="#2059ce" stroke-width="2.5" fill="none"/>
+    <rect x="685" y="17" width="145" height="91" rx="13" fill="#173761"/>
+    <text x="757.5" y="55" font-size="22" font-weight="700" fill="white">후속 행동</text>
+    <text x="757.5" y="83" font-size="16" fill="#d9e8ff">다음 판단</text>
+  </g>
+</svg>

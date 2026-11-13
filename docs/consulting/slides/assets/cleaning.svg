@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 510 126">
+  <g font-family="Malgun Gothic, sans-serif" text-anchor="middle">
+    <rect x="5" y="17" width="145" height="91" rx="13" fill="#e3edfd"/>
+    <text x="77.5" y="55" font-size="22" font-weight="700" fill="#173761">원자료 A4</text>
+    <text x="77.5" y="83" font-size="16" fill="#405979">정정 확정 · 백만 원</text>
+    <path d="M153 63h16m-5-5 5 5-5 5" stroke="#2059ce" stroke-width="2.5" fill="none"/>
+    <rect x="175" y="17" width="145" height="91" rx="13" fill="#e3edfd"/>
+    <text x="247.5" y="55" font-size="22" font-weight="700" fill="#173761">단위 맞추기</text>
+    <text x="247.5" y="83" font-size="16" fill="#405979">100으로 나누기</text>
+    <path d="M323 63h16m-5-5 5 5-5 5" stroke="#2059ce" stroke-width="2.5" fill="none"/>
+    <rect x="345" y="17" width="145" height="91" rx="13" fill="#173761"/>
+    <text x="417.5" y="55" font-size="22" font-weight="700" fill="white">정제표</text>
+    <text x="417.5" y="83" font-size="16" fill="#d9e8ff">연간 연결 · 억 원</text>
+  </g>
+</svg>

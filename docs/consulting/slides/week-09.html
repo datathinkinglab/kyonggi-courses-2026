@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>9차수 · 기업 데이터의 통계분석과 핵심 인사이트 도출</title>
+<link rel="stylesheet" href="assets/deck.css">
+<script defer src="assets/chart.umd.min.js"></script>
+<script defer src="assets/deck.js"></script>
+<script defer src="assets/charts.js"></script>
+</head>
+<body data-title="9차수 · 기업 데이터의 통계분석과 핵심 인사이트 도출">
+<header class="top">
+  <div class="toolbar"><div class="brand">9차수 · 통계분석과 핵심 인사이트<small>경기대학교 · 통계컨설팅의 이해</small></div>
+    <div class="tools">
+      <button type="button" id="toc-button" aria-haspopup="dialog">목차</button><button type="button" id="notes-button" aria-controls="notes" aria-pressed="false">강사 노트</button><button type="button" id="reading" aria-pressed="false">전체 읽기</button><button type="button" id="fullscreen">전체 화면</button><button type="button" id="resources-button" aria-haspopup="dialog">자료</button>
+    </div>
+  </div>
+  <div class="progress" aria-hidden="true"><span id="progress"></span></div>
+</header>
+<main id="deck">
+  <section class="slide cover" id="slide-1" data-note="8차수 브리핑에서 매출과 영업이익률 변화를 복습한다.">
+    <div><p class="tag">9차수 · 가온생활 실적 회의</p><h1>원가가 오른 걸까, 팔린 제품이 달라진 걸까?</h1><p class="lead">가온생활의 수익성이 낮아졌습니다. 팀의 첫 회의에서 무엇부터 조사할지 정합니다.</p></div><figure data-hover><img class="cover-image" src="assets/meeting.webp" alt="생활용품 샘플과 손익 자료를 놓고 회의하는 가온생활 분석팀"></figure><p class="source">가상 기업 · 수업용 이미지</p>
+  </section>
+  <section class="slide" id="slide-2" data-note="비교 기준과 연결 범위를 확인한다. 이익률의 %p와 매출 증감률의 %를 함께 합산하지 않는다." hidden>
+    <p class="tag">팀 회의</p><h2>세 팀원이 서로 다른 발견을 가져왔다</h2><div class="grid"><div class="card" data-hover><h3>매출 성장</h3><strong class="metric">+20%</strong><p>전기 대비 연결 매출</p></div><div class="card" data-hover><h3>수익성 하락</h3><strong class="metric down">−2%p</strong><p>전기 대비 영업이익률</p></div><div class="card" data-hover><h3>경쟁사 격차</h3><strong class="metric down">−1%p</strong><p>당기 이익률: 가온생활 − 나래생활</p></div></div><p class="prompt">각 숫자가 전년 변화와 당기 격차 중 어떤 질문에 답하나요?</p><p class="source">가온생활 사례 · 교육용 합성 자료</p>
+  </section>
+  <section class="slide" id="slide-3" data-note="예시: 가온생활의 연간 연결 매출이 전기보다 20% 늘었고 영업이익률은 2%p 하락했다." hidden>
+    <p class="tag">문제 정의</p><h2>팀이 조사할 문제를 한 문장으로 써 보자</h2><div class="grid"><div class="card" data-hover><h3>기업과 기간</h3><p>누구의 어느 기간 실적을 볼까요?</p></div><div class="card" data-hover><h3>지표와 변화 폭</h3><p>어떤 지표가 얼마나 달라졌나요?</p></div><div class="card" data-hover><h3>선정 기준</h3><p>영향, 근거의 신뢰성, 자료 확보 가능성은 어떤가요?</p></div></div><p class="prompt">팀이 먼저 확인할 문제를 고르고 이유를 적으세요.</p><p class="source">가온생활 사례 · 교육용 합성 자료</p>
+  </section>
+  <section class="slide" id="slide-4" data-note="두 가설이 함께 나타날 수 있다. 제품 원가율은 판매가격과 단위당 원가 모두의 영향을 받는다." hidden>
+    <p class="tag">가설</p><h2>구매팀과 영업팀은 어떤 변화를 예상했을까?</h2><div class="grid"><div class="card" data-hover><h3>구매팀</h3><p>“제품별 원가율이 올랐을 수 있습니다.”</p></div><div class="card" data-hover><h3>영업팀</h3><p>“원가율이 높은 제품의 매출 비중이 커졌을 수 있습니다.”</p></div></div><p class="prompt">각 가설을 지지하는 관찰이 무엇인지 자료를 열기 전에 적으세요.</p><p class="source">가온생활 사례 · 교육용 합성 자료</p>
+  </section>
+  <section class="slide" id="slide-5" data-note="양변을 매출액으로 나누고 100을 곱한다. 실제 기업에 적용할 때 해당 기업의 손익계산서 정의를 확인한다." hidden>
+    <p class="tag">개념</p><h2>매출 100원에서 두 비용을 빼면</h2><figure class="illustration" data-hover><img src="assets/cost.svg" alt="매출에서 매출원가와 판매관리비를 차감하면 영업이익이 남는 그림"><figcaption>모든 비율의 분모는 같은 기간의 매출액입니다.</figcaption></figure><p class="formula">영업이익률 = 100% − 매출원가율 − 판매관리비율</p><p class="lead">이 사례에서 영업이익은 매출액에서 두 비용을 뺀 값입니다.</p><p class="source">가온생활 사례 · 교육용 합성 자료</p>
+  </section>
+  <section class="slide" id="slide-6" data-note="학생이 분모와 이익률 기여의 부호를 설명하도록 한다." hidden>
+    <p class="tag">실습 A</p><h2>2%p 하락을 비용 항목으로 설명하다</h2><div class="table-wrap"><table><caption>가온생활 · 연간 연결 · 금액은 억 원</caption><thead><tr><th scope="col">항목</th><th scope="col">전기</th><th scope="col">당기</th></tr></thead><tbody><tr><th scope="row">매출액</th><td>100</td><td>120</td></tr><tr><th scope="row">매출원가</th><td>70.0</td><td>85.8</td></tr><tr><th scope="row">판매관리비</th><td>20.0</td><td>24.6</td></tr><tr><th scope="row">영업이익</th><td>10.0</td><td>9.6</td></tr></tbody></table></div><p class="prompt">각 비용을 해당 연도 매출액으로 나누고, 이익률 하락에 대한 기여를 %p로 적으세요.</p><p class="source">가온생활 사례 · 교육용 합성 자료</p>
+  </section>
+  <section class="slide" id="slide-7" data-note="폭포 그림의 음수는 영업이익률에 대한 기여다. 비용이 달라진 배경은 제품별 자료로 확인한다." hidden>
+    <p class="tag">해설</p><h2>−1.5%p와 −0.5%p를 합하면 −2%p</h2><figure class="illustration chart-figure"><div class="canvas-wrap"><canvas data-chart="waterfall" role="img" aria-label="영업이익률 전기 10%, 매출원가율 기여 −1.5%p, 판매관리비율 기여 −0.5%p, 당기 8%"></canvas></div><figcaption>영업이익률 10.0% → 8.0% · 매출원가율 기여 −1.5%p · 판매관리비율 기여 −0.5%p</figcaption></figure><p class="lead">매출원가율은 70.0%에서 71.5%로, 판매관리비율은 20.0%에서 20.5%로 올랐습니다.</p><p class="source">가온생활 사례 · 교육용 합성 자료</p>
+  </section>
+  <section class="slide" id="slide-8" data-note="각 변수의 용도를 확인한다. 판매가격과 단위당 원가의 영향까지 보려면 추가 자료가 필요하다." hidden>
+    <p class="tag">자료 요청</p><h2>두 가설을 검토할 자료를 요청하다</h2><div class="grid"><div class="card" data-hover><h3>제품별 매출액</h3><p>어떤 제품이 전체 매출에서 차지하는 비중을 계산할까요?</p></div><div class="card" data-hover><h3>제품별 매출원가</h3><p>제품 원가를 어떤 금액으로 나눌까요?</p></div><div class="card" data-hover><h3>전사 매출액</h3><p>제품별 합계와 전사 자료를 어떻게 대조할까요?</p></div></div><p class="prompt">요청할 변수와 함께 기간과 집계 범위를 정하세요.</p><p class="source">가온생활 사례 · 교육용 합성 자료</p>
+  </section>
+  <section class="slide" id="slide-9" data-note="한 행은 제품 × 회계연도다. 두 제품이 사례의 전체 매출과 매출원가를 구성한다." hidden>
+    <p class="tag">원자료</p><h2>제품 A와 B의 자료가 도착했다</h2><div class="table-wrap"><table><caption>가온생활 · 제품별 연간 연결 자료 · 억 원</caption><thead><tr><th scope="col">기간</th><th scope="col">제품</th><th scope="col">매출액</th><th scope="col">매출원가</th></tr></thead><tbody><tr><th scope="row">전기</th><td>A</td><td>50</td><td>30</td></tr><tr><th scope="row">전기</th><td>B</td><td>50</td><td>40</td></tr><tr><th scope="row">당기</th><td>A</td><td>51</td><td>30.6</td></tr><tr><th scope="row">당기</th><td>B</td><td>69</td><td>55.2</td></tr></tbody></table></div><p class="prompt">제품별 금액을 더하면 전사 매출과 매출원가가 나오는지 확인하세요.</p><p class="source">가온생활 사례 · 교육용 합성 자료</p>
+  </section>
+  <section class="slide" id="slide-10" data-note="각 항의 제품 매출액이 약분돼 전체 원가 ÷ 전체 매출로 정리됨을 설명한다. 가중치는 매출 금액 비중이다." hidden>
+    <p class="tag">개념</p><h2>매출 비중만큼 제품별 원가율을 반영한다</h2><p class="formula">전체 원가율 = (A 매출 비중 × A 원가율) + (B 매출 비중 × B 원가율)</p><p class="lead">가중평균(weighted average)은 각 값에 그 값의 비중을 곱해 더합니다. 비중의 합은 100%입니다.</p><p class="prompt">예시　25% × 40% + 75% × 60% = 55%</p><p class="source">가온생활 사례 · 교육용 합성 자료</p>
+  </section>
+  <section class="slide" id="slide-11" data-note="비중의 합이 100%인지 확인한다. 당기에는 85.8÷120과 가중평균이 같은지 묻는다." hidden>
+    <p class="tag">실습 B</p><h2>전체 원가율 71.5%를 재현할 수 있을까?</h2><div class="table-wrap"><table><caption>가온생활 · 제품별 연간 연결 자료 · 억 원</caption><thead><tr><th scope="col">기간</th><th scope="col">제품</th><th scope="col">매출액</th><th scope="col">매출원가</th></tr></thead><tbody><tr><th scope="row">전기</th><td>A</td><td>50</td><td>30</td></tr><tr><th scope="row">전기</th><td>B</td><td>50</td><td>40</td></tr><tr><th scope="row">당기</th><td>A</td><td>51</td><td>30.6</td></tr><tr><th scope="row">당기</th><td>B</td><td>69</td><td>55.2</td></tr></tbody></table></div><p class="prompt">두 해의 제품별 원가율과 매출 비중을 구하고, 가중평균을 전사 원가율과 대조하세요.</p><p class="source">가온생활 사례 · 교육용 합성 자료</p>
+  </section>
+  <section class="slide" id="slide-12" data-note="제품 원가율을 고정한 모의 실습이다. 관측된 두 기간과 조건을 바꾼 결과를 구별한다." hidden>
+    <p class="tag">해설</p><h2>제품별 원가율은 같았고, B의 매출 비중은 커졌다</h2><figure class="illustration chart-figure"><div class="canvas-wrap"><canvas data-chart="mix" role="img" aria-label="전기 A 50% B 50%, 당기 A 42.5% B 57.5%"></canvas></div><figcaption>연간 매출액 비중 · A 원가율 60%, B 원가율 80% · 전체 원가율 70.0% → 71.5%</figcaption></figure><div class="card sim screen-only"><label for="mix">제품 B의 매출 비중을 바꿔 보세요</label><input type="range" id="mix" min="30" max="70" step="0.5" value="57.5"><output id="mix-output" for="mix" aria-live="polite"></output></div><p class="source">가온생활 사례 · 교육용 합성 자료</p>
+  </section>
+  <section class="slide" id="slide-13" data-note="직전 장은 원가율을 고정했고, 이번 장은 비중을 고정한 별도 조건이다." hidden>
+    <p class="tag">실습 C</p><h2>비중이 그대로여도 71.5%가 나올까?</h2><div class="grid"><div class="card" data-hover><h3>매출 비중</h3><p>A와 B 각각 50%로 고정합니다.</p></div><div class="card" data-hover><h3>B의 원가율</h3><p>80%로 유지합니다.</p></div><div class="card" data-hover><h3>A의 원가율</h3><p>전체가 71.5%가 되는 값을 구합니다.</p></div></div><p class="prompt">가중평균 식에 고정 조건을 넣고 A 원가율을 구하세요.</p><p class="source">가온생활 사례 · 교육용 합성 자료</p>
+  </section>
+  <section class="slide" id="slide-14" data-note="제품별 매출액과 매출원가가 필요하다. 가상 관측 사례는 판매 구성의 변화가 설명한다." hidden>
+    <p class="tag">해설</p><h2>같은 전체 원가율, 두 가지 제품별 상황</h2><div class="grid"><div class="card" data-hover><h3>가상 관측 자료</h3><p>0.425 × 60% + 0.575 × 80% = 71.5%</p></div><div class="card" data-hover><h3>조건을 바꾼 실습</h3><p>0.5 × 63% + 0.5 × 80% = 71.5%</p></div></div><p class="prompt">전체 원가율만 알 때 두 상황을 구별하려면 어떤 자료가 필요할까요?</p><p class="source">가온생활 사례 · 교육용 합성 자료</p>
+  </section>
+  <section class="slide" id="slide-15" data-note="판매 수량·실판매단가·판촉은 같은 기간과 제품 범위를 맞춘다. 두 해 변화 폭에서 장기 추세를 단정하기 어렵다." hidden>
+    <p class="tag">팀 실습</p><h2>팀이 다음 회의에 요청할 자료를 정하다</h2><div class="table-wrap"><table><caption>가설 검토표 · 팀 작성용</caption><thead><tr><th scope="col">가설</th><th scope="col">예상 관찰</th><th scope="col">실제 관찰</th><th scope="col">요청할 자료와 비교</th></tr></thead><tbody><tr><th scope="row">제품별 원가율 상승</th><td>작성</td><td>작성</td><td>작성</td></tr><tr><th scope="row">판매 구성 변화</th><td>작성</td><td>작성</td><td>작성</td></tr></tbody></table></div><p class="prompt">B의 매출 비중 변화와 판매관리비율 상승을 조사할 다음 질문을 각각 적으세요.</p><p class="source">가온생활 사례 · 교육용 합성 자료</p>
+  </section>
+  <section class="slide closing" id="slide-16" data-note="각 팀원이 판단에 사용한 근거 한 건을 설명한다." hidden>
+    <p class="tag">다음 차수</p><h2>“이 결과를 보고서 첫 장에 어떻게 쓰죠?”</h2><p class="lead">핵심 문제 한 문장, 비용 기여도 그림, 가설 검토표를 다음 회의에 가져갑니다.</p><a class="button screen-only" href="week-10.html">10차수 · 보고서 검토 회의 →</a><p class="source">가온생활 사례 · 교육용 합성 자료</p>
+  </section>
+  <aside id="notes" class="instructor" hidden><strong>강사 노트</strong><p id="note-text"></p></aside>
+</main>
+<footer class="bottom"><nav class="nav" aria-label="강의 이동"><div class="nav-group" id="nav-controls"><button type="button" id="prev">← 이전</button><button type="button" id="next" class="primary">다음 →</button></div><span class="counter" id="counter" aria-live="polite">1 / 16</span><a class="button" href="week-10.html">10차수</a></nav></footer>
+<dialog id="toc" aria-labelledby="toc-title"><div class="dialog-head"><h2 id="toc-title">슬라이드 목차</h2><form method="dialog"><button>닫기</button></form></div><div class="toc-list" id="toc-list"></div></dialog>
+<dialog id="resources" aria-labelledby="resources-title"><div class="dialog-head"><h2 id="resources-title">자료와 사용법</h2><form method="dialog"><button>닫기</button></form></div>
+<ul class="steps"><li><a href="plans/9차수_통계분석과_핵심_인사이트.md">슬라이드 상세 설계안</a></li><li><a href="https://noonnu.cc/font_page/1456">페이퍼로지 글꼴</a> · <a href="assets/Paperlogy-OFL.txt">라이선스</a></li><li><a href="https://datathinkinglab.github.io/slide-fx-lab/">Slide FX Lab</a></li><li><a href="https://www.chartjs.org/docs/latest/samples/information.html">Chart.js 차트 예시</a> · <a href="assets/Chart.js-LICENSE.md">라이선스</a></li><li>← → 이동, Home 첫 장, End 마지막 장, M 목차, N 강사 노트</li></ul><p class="source"><button type="button" id="print">인쇄</button></p></dialog>
+</body>
+</html>

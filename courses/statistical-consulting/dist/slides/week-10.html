@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>10차수 · 통계컨설팅 보고서 구조와 초안 작성</title>
+<link rel="stylesheet" href="assets/deck.css">
+<script defer src="assets/chart.umd.min.js"></script>
+<script defer src="assets/deck.js"></script>
+<script defer src="assets/charts.js"></script>
+</head>
+<body data-title="10차수 · 통계컨설팅 보고서 구조와 초안 작성">
+<header class="top">
+  <div class="toolbar"><div class="brand">10차수 · 통계컨설팅 보고서 초안<small>경기대학교 · 통계컨설팅의 이해</small></div>
+    <div class="tools">
+      <button type="button" id="toc-button" aria-haspopup="dialog">목차</button><button type="button" id="notes-button" aria-controls="notes" aria-pressed="false">강사 노트</button><button type="button" id="reading" aria-pressed="false">전체 읽기</button><button type="button" id="fullscreen">전체 화면</button><button type="button" id="resources-button" aria-haspopup="dialog">자료</button>
+    </div>
+  </div>
+  <div class="progress" aria-hidden="true"><span id="progress"></span></div>
+</header>
+<main id="deck">
+  <section class="slide cover" id="slide-1" data-note="8차수 비교표와 9차수 비용 기여도·가설 검토 결과를 준비한다.">
+    <div><p class="tag">10차수 · 가온생활 실적 회의</p><h1>경영진이 첫 장을 읽고 다음 행동을 정할 수 있을까?</h1><p class="lead">앞선 실적표와 원인 검토 결과를 펼쳐 놓고, 팀 전략보고서의 첫 장을 작성합니다.</p></div><figure data-hover><img class="cover-image" src="assets/report-meeting.webp" alt="실적 도표가 담긴 보고서 초안을 함께 읽는 회의 장면"></figure><p class="source">가상 기업 · 수업용 이미지</p>
+  </section>
+  <section class="slide" id="slide-2" data-note="학생이 분석 절차 중심 초안에서 빠진 문제, 근거, 다음 행동을 찾아 말한다." hidden>
+    <p class="tag">도입</p><h2>“그래서 오늘 무엇을 결정해야 합니까?”</h2><blockquote class="quote">초안　“실적표를 정제했습니다. 비율을 계산했습니다. 제품별 수치를 비교했습니다.”</blockquote><p class="prompt">이 초안을 읽은 경영진은 무엇을 결정할 수 있을까요? 첫 장에 넣을 내용 세 가지를 고르세요.</p><p class="source">가온생활 사례 · 교육용 합성 자료</p>
+  </section>
+  <section class="slide" id="slide-3" data-note="1쪽 핵심 요약과 본문의 역할을 설명한다." hidden>
+    <p class="tag">개념</p><h2>첫 장에는 문제, 근거, 다음 행동이 필요하다</h2><div class="grid"><div class="card" data-hover><h3>문제</h3><p>어떤 변화에 대응해야 하나요?</p></div><div class="card" data-hover><h3>근거</h3><p>어떤 수치와 자료가 뒷받침하나요?</p></div><div class="card" data-hover><h3>다음 행동</h3><p>누가 무엇을 확인하거나 결정해야 하나요?</p></div></div><p class="lead">핵심 요약(executive summary)은 의사결정자가 먼저 읽는 부분입니다.</p><p class="source">가온생활 사례 · 교육용 합성 자료</p>
+  </section>
+  <section class="slide" id="slide-4" data-note="대안 평가와 실행 계획이 마련되면 보고서에 해당 부분을 확장한다." hidden>
+    <p class="tag">보고서 구조</p><h2>독자의 질문을 보고서 목차로 바꾸다</h2><ol class="steps"><li>핵심 요약</li><li>기업 현황과 핵심 문제</li><li>분석 근거와 해석</li><li>한계와 후속 제안</li></ol><p class="prompt">이번 회의에서 결정할 일은 후속 조사 범위와 담당입니다.</p><p class="source">가온생활 사례 · 교육용 합성 자료</p>
+  </section>
+  <section class="slide" id="slide-5" data-note="같은 그림을 근거로 쓸 때도 본문 문장이 정확히 어느 값을 인용하는지 확인한다." hidden>
+    <p class="tag">근거 선택</p><h2>어떤 주장에 어떤 그림이 필요할까?</h2><div class="table-wrap"><table><caption>주장에 연결할 자료 · 가온생활 사례</caption><thead><tr><th scope="col">질문</th><th scope="col">자료</th><th scope="col">확인할 값</th></tr></thead><tbody><tr><th scope="row">무엇이 변했나?</th><td>8차수 비교표</td><td>매출 +20%, 영업이익률 −2%p</td></tr><tr><th scope="row">어느 항목이 기여했나?</th><td>9차수 폭포 그림</td><td>−1.5%p와 −0.5%p</td></tr><tr><th scope="row">제품별로 무엇이 달랐나?</th><td>9차수 판매 비중 그림</td><td>제품 B의 매출 비중 50% → 57.5%</td></tr></tbody></table></div><figure class="illustration chart-figure"><div class="canvas-wrap"><canvas data-chart="waterfall" role="img" aria-label="전기 이익률 10%, 원가율 기여 −1.5%p, 판매관리비율 기여 −0.5%p, 당기 8%"></canvas></div><figcaption>예시 근거 · 가온생활의 전기·당기 연간 연결 영업이익률과 비용 기여</figcaption></figure><p class="source">가온생활 사례 · 교육용 합성 자료</p>
+  </section>
+  <section class="slide" id="slide-6" data-note="그림에 원자료 위치와 관측 기간을 기록한다." hidden>
+    <p class="tag">근거 추적</p><h2>표에서 결론까지 이어지는 길</h2><figure class="illustration" data-hover><img src="assets/evidence.svg" alt="원자료, 그림, 관찰, 해석, 후속 행동이 연결되는 흐름도"><figcaption>원자료 ID → 비교표·그림 → 관찰 문장 → 해석 → 후속 행동</figcaption></figure><p class="prompt">이 행동이 어떤 다음 판단을 돕는지 한 문장으로 말해 보세요.</p><p class="source">가온생활 사례 · 교육용 합성 자료</p>
+  </section>
+  <section class="slide" id="slide-7" data-note="학생이 수치와 해석을 작성한 뒤 다음 장에서 예시를 제시한다." hidden>
+    <p class="tag">실습 A</p><h2>막대 그림을 세 문장으로 바꾸다</h2><figure class="illustration chart-figure"><div class="canvas-wrap"><canvas data-chart="mix" role="img" aria-label="전기 제품 B 매출 비중 50%, 당기 57.5%"></canvas></div><figcaption>연간 제품별 매출 비중 · 제품 A와 B의 원가율은 각 60%, 80%로 유지</figcaption></figure><p class="prompt">관찰, 해석, 후속 행동을 한 문장씩 쓰세요. 누가 어떤 자료를 비교할지도 적으세요.</p><p class="source">가온생활 사례 · 교육용 합성 자료</p>
+  </section>
+  <section class="slide" id="slide-8" data-note="판매 구성 변화는 사례의 원가율 상승 폭을 설명한다. 비중 증가의 배경은 후속 검토할 질문이다." hidden>
+    <p class="tag">해설</p><h2>세 문장으로 근거와 행동을 연결하다</h2><ol class="steps"><li><strong>관찰</strong>　제품 B의 매출 비중은 50.0%에서 57.5%로 늘었고, 제품별 원가율은 각각 60%, 80%로 유지됐습니다.</li><li><strong>해석</strong>　원가율이 높은 B의 비중이 커지면서 전체 매출원가율이 70.0%에서 71.5%로 상승했습니다.</li><li><strong>후속 행동</strong>　영업팀에 월별 판매 수량·실판매단가·판촉 기록을 요청하고 전년 동월을 비교합니다.</li></ol><p class="source">가온생활 사례 · 교육용 합성 자료</p>
+  </section>
+  <section class="slide" id="slide-9" data-note="매출액 비중과 판매 수량 비중을 구별한다. 제목·단위·기간·출처를 대조한다." hidden>
+    <p class="tag">검산</p><h2>그림 제목과 본문 수치가 같은 말을 하는가?</h2><blockquote class="quote">수정 전　“B의 판매량 비중 57.5%”</blockquote><p class="prompt">69억 원 ÷ 120억 원으로 계산한 57.5%를 어떤 문구로 표시할까요?</p><details><summary>수정 예시 확인</summary><p>가온생활 당기 제품 B의 매출액 비중 57.5% · 연간 연결 · 8·9차수 교육용 자료</p></details><p class="source">가온생활 사례 · 교육용 합성 자료</p>
+  </section>
+  <section class="slide" id="slide-10" data-note="자료 요청에 담당, 비교 기간, 목적을 적게 한다." hidden>
+    <p class="tag">의사결정</p><h2>자료에 맞는 다음 행동을 제안하다</h2><div class="grid"><div class="card" data-hover><h3>영업팀</h3><p>월별 수량·실판매단가·판촉 기록으로 B 비중 변화의 배경을 검토합니다.</p></div><div class="card" data-hover><h3>재무팀</h3><p>판매관리비 세부 항목을 비교해 비율 상승에 기여한 항목을 확인합니다.</p></div></div><p class="prompt">두 조사 결과가 가격 조정이나 판촉 변경을 검토하는 데 어떤 판단을 도울까요?</p><p class="source">가온생활 사례 · 교육용 합성 자료</p>
+  </section>
+  <section class="slide" id="slide-11" data-note="요약 1쪽과 근거가 연결된 팀 초안을 작성한다." hidden>
+    <p class="tag">실습 B</p><h2>팀 전략보고서 첫 페이지 쓰기</h2><div class="table-wrap"><table><caption>핵심 요약 작성 양식</caption><thead><tr><th scope="col">항목</th><th scope="col">적을 내용</th></tr></thead><tbody><tr><th scope="row">핵심 문제</th><td>기업·기간·지표·변화 폭</td></tr><tr><th scope="row">근거</th><td>원값·비율·그림 또는 표 번호</td></tr><tr><th scope="row">다음 행동</th><td>담당·필요 자료·비교 방법</td></tr><tr><th scope="row">남은 질문</th><td>현재 자료로 판단하기 어려운 내용</td></tr></tbody></table></div><p class="prompt">비교표나 그림 하나를 골라 첫 페이지와 근거 문단을 작성하세요.</p><p class="source">가온생활 사례 · 교육용 합성 자료</p>
+  </section>
+  <section class="slide" id="slide-12" data-note="팀원별로 검산한 근거 하나를 말한다. 작성 팀은 수정할 문장과 이유를 기록한다." hidden>
+    <p class="tag">교차 검토</p><h2>다른 팀이 읽고 무엇을 결정해야 하는지 말한다</h2><div class="grid"><div class="card" data-hover><h3>결정할 일은?</h3><p>팀의 핵심 요약을 한 문장으로 다시 말해 보세요.</p></div><div class="card" data-hover><h3>어느 표가 근거인가?</h3><p>표나 그림에서 수치 한 개를 찾으세요.</p></div><div class="card" data-hover><h3>무엇을 더 확인할까?</h3><p>자료 요청이 어떤 판단에 필요한지 말해 보세요.</p></div></div><p class="source">가온생활 사례 · 교육용 합성 자료</p>
+  </section>
+  <section class="slide" id="slide-13" data-note="수정 후에도 수량·가격·판촉의 영향과 판매관리비율의 배경은 추가 조사 대상으로 남는다." hidden>
+    <p class="tag">수정</p><h2>피드백으로 한 문장과 그림 설명을 고치다</h2><div class="grid"><div class="card" data-hover><h3>수정 전</h3><p>“B가 많이 팔려 수익성이 떨어졌습니다.”</p></div><div class="card" data-hover><h3>수정 후</h3><p>“B의 매출 비중이 50.0%에서 57.5%로 올라 전체 매출원가율이 1.5%p 상승했습니다. 그림 2”</p></div></div><p class="prompt">동료가 그림 2에서 같은 수치를 다시 찾을 수 있나요?</p><p class="source">가온생활 사례 · 교육용 합성 자료</p>
+  </section>
+  <section class="slide closing" id="slide-14" data-note="핵심 요약과 보고서의 표·그림 번호가 일치하는지 마지막으로 확인한다." hidden>
+    <p class="tag">다음 차수</p><h2>다음 회의에서 보여 줄 그림 한 장은?</h2><p class="lead">핵심 메시지 한 문장, 근거 그림 하나, 자료 요청 한 줄을 골라 11차수 브리핑보드에 가져갑니다.</p><p class="source">가온생활 사례 · 교육용 합성 자료</p>
+  </section>
+  <aside id="notes" class="instructor" hidden><strong>강사 노트</strong><p id="note-text"></p></aside>
+</main>
+<footer class="bottom"><nav class="nav" aria-label="강의 이동"><div class="nav-group" id="nav-controls"><button type="button" id="prev">← 이전</button><button type="button" id="next" class="primary">다음 →</button></div><span class="counter" id="counter" aria-live="polite">1 / 14</span><a class="button" href="week-09.html">9차수</a></nav></footer>
+<dialog id="toc" aria-labelledby="toc-title"><div class="dialog-head"><h2 id="toc-title">슬라이드 목차</h2><form method="dialog"><button>닫기</button></form></div><div class="toc-list" id="toc-list"></div></dialog>
+<dialog id="resources" aria-labelledby="resources-title"><div class="dialog-head"><h2 id="resources-title">자료와 사용법</h2><form method="dialog"><button>닫기</button></form></div>
+<ul class="steps"><li><a href="plans/10차수_통계컨설팅_보고서_초안.md">슬라이드 상세 설계안</a></li><li><a href="https://noonnu.cc/font_page/1456">페이퍼로지 글꼴</a> · <a href="assets/Paperlogy-OFL.txt">라이선스</a></li><li><a href="https://datathinkinglab.github.io/slide-fx-lab/">Slide FX Lab</a></li><li><a href="https://www.chartjs.org/docs/latest/samples/information.html">Chart.js 차트 예시</a> · <a href="assets/Chart.js-LICENSE.md">라이선스</a></li><li>← → 이동, Home 첫 장, End 마지막 장, M 목차, N 강사 노트</li></ul><p class="source"><button type="button" id="print">인쇄</button></p></dialog>
+</body>
+</html>

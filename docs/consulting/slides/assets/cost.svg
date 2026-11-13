@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 650 166">
+  <rect x="25" y="51" width="600" height="54" rx="13" fill="#cfe0fa"/>
+  <rect x="383" y="51" width="130" height="54" fill="#9abbe9"/>
+  <path d="M513 51h99a13 13 0 0 1 13 13v28a13 13 0 0 1-13 13h-99Z" fill="#2059ce"/>
+  <path d="M25 39v-9h600v9" fill="none" stroke="#335985" stroke-width="2"/>
+  <g font-family="Malgun Gothic, sans-serif" font-weight="bold" font-size="20" text-anchor="middle">
+    <text x="325" y="24" fill="#142640">매출 100원</text>
+    <text x="205" y="85" fill="#183d81">매출원가</text>
+    <text x="448" y="85" fill="#142640">판매관리비</text>
+    <text x="569" y="85" fill="white">영업이익</text>
+  </g>
+</svg>
