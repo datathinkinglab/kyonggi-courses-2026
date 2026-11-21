@@ -1,77 +1,95 @@
-/* Reading explanations for session 11. */
-.explanatory-deck .lesson-reading-grid{display:grid;grid-template-columns:minmax(0,1.04fr) minmax(0,1fr);gap:24px;align-items:center;min-width:0}
+/* Session 11 uses a single 1600 × 900 presentation canvas. */
+.explanatory-deck:not(.reading-mode) .deck-stage{position:fixed;left:50%;top:calc(50% - 28px);width:1600px;height:900px;transform:translate(-50%,-50%) scale(var(--session-scale,1));transform-origin:center;padding:0}
+.distribution-deck.explanatory-deck:not(.reading-mode) .slide{width:1600px;height:900px;padding:28px 60px 28px;grid-template-rows:40px minmax(0,1fr) 30px;gap:12px;overflow:hidden;box-sizing:border-box;border-radius:12px}
+.distribution-deck.explanatory-deck .slide .slide-body{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:96px minmax(0,1fr);justify-content:stretch;gap:12px;padding:0;min-height:0;max-width:none}
+.distribution-deck.explanatory-deck .slide h2{font-size:40px!important;line-height:1.2!important;font-weight:800;margin:0;max-width:none;letter-spacing:-.04em;align-self:start}
+.explanatory-deck .lesson-content{display:flex;flex-direction:column;justify-content:center;gap:12px;min-height:0;min-width:0;overflow:auto;padding:0 3px 3px 0}
+.explanatory-deck .lesson-reading-grid{display:grid;grid-template-columns:minmax(0,1.04fr) minmax(0,1fr);gap:26px;align-items:center;min-width:0}
 .explanatory-deck .lesson-visual{display:grid;gap:12px;min-width:0}
-.explanatory-deck .lesson-explanation{display:grid;gap:13px;min-width:0;padding-left:22px;border-left:2px solid #c8d9ea}
-.explanatory-deck .lesson-explanation p{font-size:clamp(17px,1.4vw,21px);line-height:1.7;max-width:none;margin:0}
-.explanatory-deck .lesson-visual p{font-size:clamp(16px,1.3vw,20px);line-height:1.5}
-.explanatory-deck .slide-body> .lesson-explanation{grid-template-columns:repeat(2,minmax(0,1fr));border-left:0;border-top:2px solid #dce6ef;padding:12px 0 0;gap:24px}
-.explanatory-deck .lesson-visual .large-plot{--plot-height:clamp(160px,29vh,270px)}
-.explanatory-deck .lesson-visual .cols-3{grid-template-columns:minmax(0,1fr)}
-.explanatory-deck .slide[aria-labelledby="heading-7"] .lesson-visual .cols-3,
-.explanatory-deck .slide[aria-labelledby="heading-14"] .lesson-visual .cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
-.explanatory-deck .slide[aria-labelledby="heading-13"] .distribution-table th,
-.explanatory-deck .slide[aria-labelledby="heading-13"] .distribution-table td{padding:4px 6px}
-.explanatory-deck .slide[aria-labelledby="heading-13"] .slide-body,
-.explanatory-deck .selfstudy-data .slide-body{gap:8px}
-.explanatory-deck .selfstudy-data .lesson-explanation p{font-size:16px;line-height:1.55}
-.explanatory-deck .selfstudy-data .lesson-explanation{padding-top:8px;gap:15px}
-.distribution-deck.explanatory-deck .selfstudy-data .distribution-table th,
-.distribution-deck.explanatory-deck .selfstudy-data .distribution-table td{padding:3px 6px}
-.explanatory-deck .selfstudy-data .slide-body{gap:6px}
-.explanatory-deck .lesson-visual .metric{font-size:clamp(25px,3vw,42px)}
-.explanatory-deck .lesson-visual .step-card{min-height:0;padding:10px 13px}
-.explanatory-deck .slide h2{font-size:clamp(28px,3vw,45px);line-height:1.2}
-.explanatory-deck .slide-body{gap:14px}
-@media(max-height:780px) and (min-width:901px){
- .explanatory-deck .slide{padding-top:17px}
- .explanatory-deck .slide h2{font-size:32px}
- .explanatory-deck .lesson-explanation p{font-size:17px;line-height:1.6}
- .explanatory-deck .lesson-explanation{gap:10px}
- .explanatory-deck .lesson-visual{gap:9px}
- .explanatory-deck .lesson-reading-grid{gap:20px}
- .explanatory-deck .lesson-visual .chart-box{height:170px}
- .explanatory-deck .slide-body{gap:10px}
- .explanatory-deck .slide-body>.lesson-explanation p{font-size:16px;line-height:1.5}
-}
-@media(max-width:900px){
- .explanatory-deck .lesson-reading-grid{grid-template-columns:minmax(0,1fr);gap:18px}
- .explanatory-deck .lesson-explanation{padding:14px 0 0;border-left:0;border-top:2px solid #dce6ef}
- .explanatory-deck .slide-body>.lesson-explanation{grid-template-columns:minmax(0,1fr);gap:13px}
- .explanatory-deck .slide-body{justify-content:flex-start}
- .explanatory-deck .slide[aria-labelledby="heading-7"] .lesson-visual .cols-3,
- .explanatory-deck .slide[aria-labelledby="heading-14"] .lesson-visual .cols-3{grid-template-columns:minmax(0,1fr)}
-}
-.explanatory-deck.reading-mode .lesson-explanation p{font-size:20px;line-height:1.8}
-@media print{
- .explanatory-deck .lesson-reading-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:7mm}
- .explanatory-deck .lesson-explanation p{font-size:11pt!important;line-height:1.55!important}
- .explanatory-deck .lesson-visual p,.explanatory-deck .lesson-visual li{font-size:11pt!important}
- .explanatory-deck .slide h2{font-size:25pt!important}
- .explanatory-deck .slide-body>.lesson-explanation{grid-template-columns:repeat(2,minmax(0,1fr));gap:6mm}
- .explanatory-deck .lesson-visual .large-plot{--plot-height:50mm}
- .explanatory-deck .lesson-visual .chart-box{height:var(--plot-height)}
- .explanatory-deck .lesson-visual .distribution-table{font-size:11pt!important}
-}
-
-/* Each bullet carries one concept, calculation, or reading instruction. */
-.explanatory-deck .lesson-explanation .explanation-points{display:grid;gap:13px;margin:0;padding:0 0 0 20px;list-style:disc}
-.explanatory-deck .lesson-explanation .explanation-points li{margin:0;padding:0;font-size:clamp(17px,1.4vw,21px);line-height:1.55;max-width:none}
+.explanatory-deck .lesson-explanation{min-width:0;padding-left:22px;border-left:2px solid #c8d9ea}
+.explanatory-deck .lesson-explanation .explanation-points{display:grid;gap:12px;margin:0;padding:0 0 0 20px;list-style:disc}
+.explanatory-deck .lesson-explanation .explanation-points li{font-size:20px;line-height:1.5;margin:0;padding:0;max-width:none}
 .explanatory-deck .explanation-points li::marker{color:#0a68b3}
 .explanatory-deck .explanation-points strong{display:block;margin-bottom:3px;color:#074c8c;font-weight:700}
 .explanatory-deck .explanation-points span{display:block}
-.explanatory-deck .slide-body>.lesson-explanation{display:block}
-.explanatory-deck .slide-body>.lesson-explanation .explanation-points{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 28px}
-@media(max-height:780px) and (min-width:901px){
- .explanatory-deck .lesson-explanation .explanation-points{gap:10px}
- .explanatory-deck .lesson-explanation .explanation-points li{font-size:17px;line-height:1.5}
- .explanatory-deck .slide-body>.lesson-explanation .explanation-points li{font-size:16px}
-}
+.explanatory-deck .lesson-content>.lesson-explanation{border-left:0;border-top:2px solid #dce6ef;padding:10px 0 0}
+.explanatory-deck .lesson-content>.lesson-explanation .explanation-points{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 30px}
+.explanatory-deck .lesson-visual .cols-3{grid-template-columns:minmax(0,1fr)}
+.explanatory-deck .slide[aria-labelledby="heading-7"] .lesson-visual .cols-3,
+.explanatory-deck .slide[aria-labelledby="heading-14"] .lesson-visual .cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.explanatory-deck .lesson-visual .step-card{min-height:0;padding:12px}
+.explanatory-deck .lesson-visual .metric{font-size:40px}
+.explanatory-deck .lesson-visual .large-plot{--plot-height:250px}
+.explanatory-deck .chart-box{height:210px}
+.explanatory-deck .compact-plots .chart-box{height:155px}
+.explanatory-deck .slide p,.explanatory-deck .slide li{font-size:20px;line-height:1.5;max-width:none}
+.explanatory-deck .slide h3{font-size:22px;line-height:1.35}
+.explanatory-deck .slide .distribution-table{font-size:20px}
+.explanatory-deck .slide .distribution-table th,.explanatory-deck .slide .distribution-table td{padding:7px}
+.explanatory-deck .slide .slide-reference-bar{display:flex;gap:16px;align-items:center;border-top:1px solid #dce6ef;padding-top:10px;margin-top:auto;flex-shrink:0}
+.explanatory-deck .slide-reference-bar p{font-size:17px;line-height:1.4;flex:1;color:#425e79}
+.explanatory-deck .slide-reference-bar button{flex-shrink:0;font-size:16px}
+.explanatory-deck .slide[aria-labelledby="heading-13"] .distribution-table th,
+.explanatory-deck .slide[aria-labelledby="heading-13"] .distribution-table td,
+.distribution-deck.explanatory-deck .selfstudy-data .distribution-table th,
+.distribution-deck.explanatory-deck .selfstudy-data .distribution-table td{padding:3px 6px}
+.explanatory-deck .slide[aria-labelledby="heading-13"] .lesson-content,
+.explanatory-deck .selfstudy-data .lesson-content{gap:8px}
+.explanatory-deck .slide[aria-labelledby="heading-13"] .explanation-points li,
+.explanatory-deck .selfstudy-data .explanation-points li{font-size:18px}
+.explanatory-deck .lecture-cover .cover-image{max-height:450px}
+.explanatory-deck .lecture-cover .cover-lead{font-size:34px;line-height:1.5}
+.explanatory-deck .lecture-cover .cover-kicker{font-size:20px}
+.explanatory-deck:not(.reading-mode) .slide .cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.explanatory-deck:not(.reading-mode) .slide .cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.explanatory-deck:not(.reading-mode) .slide .lesson-visual .cols-3{grid-template-columns:minmax(0,1fr)}
+.explanatory-deck:not(.reading-mode) .slide[aria-labelledby="heading-7"] .lesson-visual .cols-3,
+.explanatory-deck:not(.reading-mode) .slide[aria-labelledby="heading-14"] .lesson-visual .cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.explanatory-deck:not(.reading-mode) .cover-grid{grid-template-columns:1.2fr .8fr}
+.explanatory-deck:not(.reading-mode) .mosaic-labels{font-size:16px}
+.explanatory-deck .reference-dialog .dialog-content{font-size:18px;line-height:1.65;gap:16px}
+.reference-points{margin:0;padding-left:24px;display:grid;gap:14px}
+.reference-points li{line-height:1.65}
+.explanatory-deck .reference-dialog .distribution-table{font-size:16px}
+.session11-reference-page{font-family:Paperlogy,'Malgun Gothic',sans-serif;color:#13213c;max-width:1100px;margin:32px auto;padding:0 24px;line-height:1.7;word-break:keep-all}
+.session11-reference-page h1{font-size:36px;line-height:1.3}
+.session11-reference-page h2{font-size:27px;line-height:1.4}
+.session11-reference-page section{padding:24px 0;border-top:1px solid #ceddeb;scroll-margin-top:20px}
+.session11-reference-page nav{display:flex;flex-wrap:wrap;gap:8px;margin:24px 0}
+.session11-reference-page a,.session11-reference-page button{color:#074c8c;border:1px solid #c8daeb;padding:7px 12px;border-radius:6px;background:white;text-decoration:none}
+.session11-reference-page table{width:100%;border-collapse:collapse}
+.session11-reference-page th,.session11-reference-page td{padding:9px;border:1px solid #ceddeb;text-align:left}
+.session11-reference-page th{background:#eaf1f8}
+.session11-reference-page .table-wrap{overflow:auto}
+.explanatory-deck.reading-mode .slide{height:auto;min-height:900px;box-sizing:border-box}
+.explanatory-deck.reading-mode .deck-stage{width:auto;height:auto;transform:none;position:relative;top:auto;left:auto;padding-top:70px}
+.distribution-deck.explanatory-deck.reading-mode .slide .slide-body{display:flex;gap:24px}
+.explanatory-deck.reading-mode .lesson-content{overflow:visible;min-height:0;gap:18px}
 @media(max-width:900px){
- .explanatory-deck .slide-body>.lesson-explanation .explanation-points{grid-template-columns:minmax(0,1fr);gap:13px}
+ .explanatory-deck.reading-mode .lesson-reading-grid{grid-template-columns:minmax(0,1fr)}
+ .explanatory-deck.reading-mode .lesson-explanation{border-left:0;border-top:2px solid #dce6ef;padding:14px 0 0}
+ .explanatory-deck.reading-mode .lesson-content>.lesson-explanation .explanation-points{grid-template-columns:minmax(0,1fr)}
+ .explanatory-deck.reading-mode .slide-reference-bar{flex-direction:column;align-items:flex-start}
+ .explanatory-deck.reading-mode .slide .cols-2,.explanatory-deck.reading-mode .slide .cols-3{grid-template-columns:minmax(0,1fr)}
+ .explanatory-deck.reading-mode .slide{min-height:0}
 }
-.explanatory-deck.reading-mode .lesson-explanation .explanation-points li{font-size:20px;line-height:1.7}
 @media print{
- .explanatory-deck .lesson-explanation .explanation-points{gap:3mm}
- .explanatory-deck .lesson-explanation .explanation-points li{font-size:11pt!important;line-height:1.5!important;break-inside:avoid}
- .explanatory-deck .slide-body>.lesson-explanation .explanation-points{grid-template-columns:repeat(2,minmax(0,1fr));gap:3mm 7mm}
+ .distribution-deck.explanatory-deck .deck-stage{position:relative!important;top:auto!important;left:auto!important;width:auto!important;height:auto!important;transform:none!important;padding:0!important}
+ .distribution-deck.explanatory-deck .slide{width:297mm!important;height:210mm!important;padding:10mm 14mm!important;grid-template-rows:9mm minmax(0,1fr) 8mm!important;gap:2mm!important;border-radius:0!important}
+ .distribution-deck.explanatory-deck .slide .slide-body{display:grid!important;grid-template-rows:22mm minmax(0,1fr)!important;gap:2mm!important}
+ .distribution-deck.explanatory-deck .slide h2{font-size:25pt!important;line-height:1.2!important}
+ .explanatory-deck .lesson-content{overflow:hidden!important;gap:2mm;justify-content:center}
+ .explanatory-deck .lesson-reading-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:6mm}
+ .explanatory-deck .lesson-explanation .explanation-points li{font-size:10.5pt!important;line-height:1.4!important}
+ .explanatory-deck .lesson-explanation .explanation-points{gap:2mm}
+ .explanatory-deck .lesson-visual p,.explanatory-deck .lesson-visual li{font-size:11pt!important}
+ .explanatory-deck .slide .slide-reference-bar{display:none!important}
+ .explanatory-deck .lesson-visual .chart-box{height:40mm!important}
+ .explanatory-deck .compact-plots .chart-box{height:30mm!important}
+ .explanatory-deck .slide .distribution-table{font-size:11pt!important}
+ .explanatory-deck .slide .distribution-table th,.explanatory-deck .slide .distribution-table td{padding:4px!important}
+ .session11-reference-page nav,.session11-reference-page button,.session11-reference-page header a{display:none}
+ .session11-reference-page{margin:0;font-size:11pt}
+ .session11-reference-page section{break-inside:auto}
+ .session11-reference-page li,.session11-reference-page tr{break-inside:avoid}
 }
