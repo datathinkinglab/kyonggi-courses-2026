@@ -1,0 +1,54 @@
+/* Reading explanations for session 11. */
+.explanatory-deck .lesson-reading-grid{display:grid;grid-template-columns:minmax(0,1.04fr) minmax(0,1fr);gap:24px;align-items:center;min-width:0}
+.explanatory-deck .lesson-visual{display:grid;gap:12px;min-width:0}
+.explanatory-deck .lesson-explanation{display:grid;gap:13px;min-width:0;padding-left:22px;border-left:2px solid #c8d9ea}
+.explanatory-deck .lesson-explanation p{font-size:clamp(17px,1.4vw,21px);line-height:1.7;max-width:none;margin:0}
+.explanatory-deck .lesson-visual p{font-size:clamp(16px,1.3vw,20px);line-height:1.5}
+.explanatory-deck .slide-body> .lesson-explanation{grid-template-columns:repeat(2,minmax(0,1fr));border-left:0;border-top:2px solid #dce6ef;padding:12px 0 0;gap:24px}
+.explanatory-deck .lesson-visual .large-plot{--plot-height:clamp(160px,29vh,270px)}
+.explanatory-deck .lesson-visual .cols-3{grid-template-columns:minmax(0,1fr)}
+.explanatory-deck .slide[aria-labelledby="heading-7"] .lesson-visual .cols-3,
+.explanatory-deck .slide[aria-labelledby="heading-14"] .lesson-visual .cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.explanatory-deck .slide[aria-labelledby="heading-13"] .distribution-table th,
+.explanatory-deck .slide[aria-labelledby="heading-13"] .distribution-table td{padding:4px 6px}
+.explanatory-deck .slide[aria-labelledby="heading-13"] .slide-body,
+.explanatory-deck .selfstudy-data .slide-body{gap:8px}
+.explanatory-deck .selfstudy-data .lesson-explanation p{font-size:16px;line-height:1.55}
+.explanatory-deck .selfstudy-data .lesson-explanation{padding-top:8px;gap:15px}
+.distribution-deck.explanatory-deck .selfstudy-data .distribution-table th,
+.distribution-deck.explanatory-deck .selfstudy-data .distribution-table td{padding:3px 6px}
+.explanatory-deck .selfstudy-data .slide-body{gap:6px}
+.explanatory-deck .lesson-visual .metric{font-size:clamp(25px,3vw,42px)}
+.explanatory-deck .lesson-visual .step-card{min-height:0;padding:10px 13px}
+.explanatory-deck .slide h2{font-size:clamp(28px,3vw,45px);line-height:1.2}
+.explanatory-deck .slide-body{gap:14px}
+@media(max-height:780px) and (min-width:901px){
+ .explanatory-deck .slide{padding-top:17px}
+ .explanatory-deck .slide h2{font-size:32px}
+ .explanatory-deck .lesson-explanation p{font-size:17px;line-height:1.6}
+ .explanatory-deck .lesson-explanation{gap:10px}
+ .explanatory-deck .lesson-visual{gap:9px}
+ .explanatory-deck .lesson-reading-grid{gap:20px}
+ .explanatory-deck .lesson-visual .chart-box{height:170px}
+ .explanatory-deck .slide-body{gap:10px}
+ .explanatory-deck .slide-body>.lesson-explanation p{font-size:16px;line-height:1.5}
+}
+@media(max-width:900px){
+ .explanatory-deck .lesson-reading-grid{grid-template-columns:minmax(0,1fr);gap:18px}
+ .explanatory-deck .lesson-explanation{padding:14px 0 0;border-left:0;border-top:2px solid #dce6ef}
+ .explanatory-deck .slide-body>.lesson-explanation{grid-template-columns:minmax(0,1fr);gap:13px}
+ .explanatory-deck .slide-body{justify-content:flex-start}
+ .explanatory-deck .slide[aria-labelledby="heading-7"] .lesson-visual .cols-3,
+ .explanatory-deck .slide[aria-labelledby="heading-14"] .lesson-visual .cols-3{grid-template-columns:minmax(0,1fr)}
+}
+.explanatory-deck.reading-mode .lesson-explanation p{font-size:20px;line-height:1.8}
+@media print{
+ .explanatory-deck .lesson-reading-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:7mm}
+ .explanatory-deck .lesson-explanation p{font-size:11pt!important;line-height:1.55!important}
+ .explanatory-deck .lesson-visual p,.explanatory-deck .lesson-visual li{font-size:11pt!important}
+ .explanatory-deck .slide h2{font-size:25pt!important}
+ .explanatory-deck .slide-body>.lesson-explanation{grid-template-columns:repeat(2,minmax(0,1fr));gap:6mm}
+ .explanatory-deck .lesson-visual .large-plot{--plot-height:50mm}
+ .explanatory-deck .lesson-visual .chart-box{height:var(--plot-height)}
+ .explanatory-deck .lesson-visual .distribution-table{font-size:11pt!important}
+}
