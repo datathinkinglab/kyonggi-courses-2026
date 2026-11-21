@@ -1,7 +1,7 @@
 (() => {
   const notionCourse = 'https://app.notion.com/p/3b096f1add7680318b68eab65a95c2c4';
   // 학기 진행에 맞춰 이 숫자만 바꾸면 메인 화면의 기본 차수가 함께 변경됩니다.
-  const currentWeek = 5;
+  const currentWeek = 12;
   const weeks = [
     { week: 1, title: '기업 통계컨설팅과 AX의 이해', activity: '수업 안내, 간단한 기업 사례, 관심 기업 후보 탐색', slide: 'slides/week-01.html', slideCount: 24, notion: 'https://app.notion.com/p/3b196f1add768070a79ed3301a0eed07', sessionTitle: '기업의 질문과<br>데이터의 근거', copy: '통계컨설턴트의 역할, AI 활용과 검증, PSDM, 한 학기 프로젝트를 이해합니다.', agenda: ['통계컨설팅과 AX', '바이브코딩의 역할과 검증', '매출 감소 사례와 PSDM', '개인 진단과 팀 전략 프로젝트'] },
     { week: 2, title: '바이브코딩의 개념과 활용 방식', activity: '요구사항·코드 개발·저장·첫 실행·검증과 기능 확장', slide: 'slides/week-02.html', slideCount: 54, notion: 'https://app.notion.com/p/3e796f1add768134b2dceafa4090e7f3', sessionTitle: 'AI로 개발하고<br>실행해서 검증하는 웹앱', copy: '코드 없는 시작 자료로 PRD를 작성하고 AI로 앱을 개발한 뒤, 파일 저장·실행·검증과 기능 확장을 실습합니다.', agenda: ['의뢰·규칙·PRD', 'AI 앱 개발·파일 저장', '설치·첫 실행', '검증·수정과 기능 확장'], help: '방향키로 이동 · O 전체 목록<br>N 강사 노트 · 전체 화면 지원' },
@@ -14,8 +14,8 @@
     {"week":8,"title":"기업 데이터 정제와 분석용 데이터셋 구축","activity":"실적 자료 정제, 지표 검산, 세 문장 브리핑","sessionTitle":"회의에 올라온 숫자,<br>그대로 비교해도 될까?","copy":"가온생활의 실적 자료에서 비교할 수 있는 행을 고르고 영업이익률을 검산해 경영진에게 보고합니다.","agenda":["기간·범위·단위·버전 점검","비교 가능한 정제표 만들기","전년·경쟁사 비교","세 문장 브리핑"],"slideCount":16,"slide":"slides/week-08.html","help":"방향키로 이동 · M 목차<br>N 강사 노트 · 전체 읽기 · 전체화면"},
     {"week":9,"title":"기업 데이터의 통계분석과 핵심 인사이트 도출","activity":"팀 문제 정의, 비용 기여도 분석, 원인 가설 검토","sessionTitle":"원가가 오른 걸까,<br>팔린 제품이 달라진 걸까?","copy":"비용 항목과 제품별 매출 구성을 분석해 수익성 하락에 관한 두 가설을 검토합니다.","agenda":["팀의 핵심 문제 정의","비용 기여도 폭포 그림","제품별 가중평균","원인 가설과 추가 자료"],"slideCount":16,"slide":"slides/week-09.html","help":"방향키로 이동 · M 목차<br>N 강사 노트 · 전체 읽기 · 전체화면"},
     {"week":10,"title":"통계컨설팅 보고서 구조와 초안 작성","activity":"핵심 요약과 보고서 문단 작성, 팀 교차 검토","sessionTitle":"경영진이 첫 장을 읽고<br>다음 행동을 정할 수 있을까?","copy":"가온생활의 실적 비교와 원인 검토 결과를 바탕으로 팀 전략보고서 첫 페이지를 작성합니다.","agenda":["의사결정 질문과 목차","표와 그림에서 근거 찾기","핵심 요약과 근거 문단 작성","팀 교차 검토"],"slideCount":14,"slide":"slides/week-10.html","help":"방향키로 이동 · M 목차<br>N 강사 노트 · 전체 읽기 · 전체화면"},
-    { week: 11, title: '기업분석 브리핑보드 설계 및 제작', activity: '핵심 메시지·분석 근거·전략 제안 요약' },
-    { week: 12, title: 'PSDM 기반 해결대안 평가와 실행전략 수립', activity: '대안 비교, 실행계획·성과지표, 시나리오 분석' },
+    {"week":11,"title":"통계컨설팅 보고서 구조와 초안 작성","activity":"데이터 스토리텔링·근거 문단·팀 전략보고서 초안","slide":"slides/week-11.html","slideCount":49,"sessionTitle":"분석의 근거를<br>판단의 문장으로","copy":"사실·해석·가설·권고를 구분하고 분석표를 근거 문단과 핵심 요약으로 바꾸어 팀 보고서 초안을 작성합니다.","agenda":["독자와 의사결정 질문","핵심 근거와 해석의 범위","보고서 문단과 핵심 요약","팀 초안 작성·교차 검토"],"help":"방향키로 이동 · G 목차<br>참고 팝업 · 전체 읽기 · 전체화면"},
+    {"week":12,"title":"기업분석 브리핑보드 설계 및 제작","activity":"핵심 메시지·차트·한계·잠정 제안을 한 화면으로","slide":"slides/week-12.html","slideCount":40,"sessionTitle":"보고서의 핵심을<br>판단할 수 있는 한 화면으로","copy":"보고서 초안에서 핵심 메시지와 근거를 골라 HTML 브리핑보드를 만들고 원자료·해석·동작을 검증합니다.","agenda":["판단 질문과 메시지 선정","지표·차트와 정보 구조","AI 제작·수치·동작 검증","팀 브리핑과 피드백"],"help":"방향키로 이동 · G 목차<br>N 강사 노트 · 참고 팝업 · 전체 읽기"},
     { week: 13, title: '최종 전략보고서 통합 및 검증', activity: '근거·해석·권고안의 일관성 검토와 발표 준비' },
     { week: 14, title: '최종 통계컨설팅 프로젝트 발표 및 결과물 제출', activity: '기말 Team Report와 조별 발표·질의응답' }
   ];
@@ -91,3 +91,4 @@
 
   const initial = selectedFromUrl(); renderHeaderMenu(initial); renderPicker(initial); selectWeek(initial);
 })();
+
