@@ -52,3 +52,26 @@
  .explanatory-deck .lesson-visual .chart-box{height:var(--plot-height)}
  .explanatory-deck .lesson-visual .distribution-table{font-size:11pt!important}
 }
+
+/* Each bullet carries one concept, calculation, or reading instruction. */
+.explanatory-deck .lesson-explanation .explanation-points{display:grid;gap:13px;margin:0;padding:0 0 0 20px;list-style:disc}
+.explanatory-deck .lesson-explanation .explanation-points li{margin:0;padding:0;font-size:clamp(17px,1.4vw,21px);line-height:1.55;max-width:none}
+.explanatory-deck .explanation-points li::marker{color:#0a68b3}
+.explanatory-deck .explanation-points strong{display:block;margin-bottom:3px;color:#074c8c;font-weight:700}
+.explanatory-deck .explanation-points span{display:block}
+.explanatory-deck .slide-body>.lesson-explanation{display:block}
+.explanatory-deck .slide-body>.lesson-explanation .explanation-points{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 28px}
+@media(max-height:780px) and (min-width:901px){
+ .explanatory-deck .lesson-explanation .explanation-points{gap:10px}
+ .explanatory-deck .lesson-explanation .explanation-points li{font-size:17px;line-height:1.5}
+ .explanatory-deck .slide-body>.lesson-explanation .explanation-points li{font-size:16px}
+}
+@media(max-width:900px){
+ .explanatory-deck .slide-body>.lesson-explanation .explanation-points{grid-template-columns:minmax(0,1fr);gap:13px}
+}
+.explanatory-deck.reading-mode .lesson-explanation .explanation-points li{font-size:20px;line-height:1.7}
+@media print{
+ .explanatory-deck .lesson-explanation .explanation-points{gap:3mm}
+ .explanatory-deck .lesson-explanation .explanation-points li{font-size:11pt!important;line-height:1.5!important;break-inside:avoid}
+ .explanatory-deck .slide-body>.lesson-explanation .explanation-points{grid-template-columns:repeat(2,minmax(0,1fr));gap:3mm 7mm}
+}
