@@ -38,7 +38,7 @@
     { week: 9, title: "확률분포와 분위수 대조도", activity: "정규분포의 이론 분위수와 관측값을 비교하고 변환 전후의 꼬리를 읽습니다.", slide: "slides/week-09.html", slideCount: 17, printFrom: 1, printTo: 17, sessionTitle: "이론 분위수와<br>관측값을 대조하기", copy: "실습은 작성 프롬프트로 시작하고 손계산과 Python은 팝업에서 대조합니다. 가상 배송시간으로 혼자 재현해 봅니다.", agenda: ["확률분포와 누적확률", "정규분포와 이론 분위수", "Q–Q 플롯과 변환 비교", "프롬프트·검증·자가 실습"] },
     { week: 10, title: "여러 분포와 플롯 진단", activity: "연속·이산분포의 꼬리와 비대칭을 진단합니다.", slide: "slides/week-10.html", slideCount: 20, printFrom: 1, printTo: 20, sessionTitle: "여러 분포와<br>플롯 진단", copy: "52분 걸린 배송 기록에서 시작해 Q–Q 플롯의 꼬리와 동점을 살펴보고, 분포 후보와 확인할 기록을 정리합니다.", agenda: ["배송시간의 오른쪽 꼬리", "연속·이산분포 비교", "모의 표본과 민감도 실습", "AI 진단 문장 교정"] },
     { week: 11, title: "이원 자료와 빈도표", activity: "주변합·비율·모자이크 플롯으로 범주형 관계를 탐색합니다.", slide: "slides/week-11.html", slideCount: 23, printFrom: 1, printTo: 23, sessionTitle: "이원 자료와<br>빈도표", copy: "지연 12건과 6건에서 시작해 방식별 주문 수를 확인하고, 교차표와 모자이크 플롯으로 건수와 비율을 비교합니다.", agenda: ["주변합과 세 가지 분모", "방식별 지연 비율", "병렬·누적 막대와 모자이크", "교차표 작성과 AI 해석 검증"] },
-    { week: 12, title: "혼재변수와 심슨의 역설", activity: "층화 전후의 결론을 비교하고 혼재변수를 점검합니다." },
+    { week: 12, title: "혼재변수와 심슨의 역설", activity: "전체와 거리대별 지연 비율을 비교하고, 구성비·가중평균·혼재변수를 검증합니다.", slide: "slides/week-12.html", slideCount: 29, printFrom: 1, printTo: 29, sessionTitle: "혼재변수와<br>심슨의 역설", copy: "배송 100건의 전체·층별 비교에서 출발해 거리 구성비를 직접 조절하고, AI의 결론을 근거와 함께 교정합니다.", agenda: ["전체·거리대별 지연 비율", "구성비·가중평균과 비교 방향의 역전", "공통 구성비 슬라이더·검증 실습", "AI 보고서 교정과 프로젝트 적용"] },
     { week: 13, title: "프로젝트 클리닉", activity: "팀별 진행 발표와 분석 근거, 검증 로그를 점검합니다." },
     { week: 14, title: "최종 프로젝트 발표", activity: "팀별 최종 분석 결과를 발표하고 질의응답을 진행합니다." }
   ];
@@ -152,7 +152,7 @@
     notionLink.href = item.notion || notionCourse;
     notionLink.textContent = item.notion ? `${item.week}차수 원문 ↗` : "전체 Notion 강의노트 ↗";
     byId("current-card-help").innerHTML = item.slide
-      ? ([10, 11].includes(item.week) ? "방향키 이동 · O 목차 · 전체 읽기 · 화면 전체보기<br>프롬프트·Python 복사 · 실습 팝업" : item.week === 9 ? "방향키 이동 · 목차 · 전체 읽기 · 화면 전체보기<br>프롬프트 복사 · 손계산·Python 팝업 · 자가 실습" : [7, 8].includes(item.week) ? "방향키 이동 · 목차 · 전체 읽기 · 화면 전체보기<br>프롬프트·코드 복사" : [5, 6].includes(item.week) ? "방향키 이동 · M 전체 목차 · 전체 읽기 · 화면 전체보기<br>프롬프트·코드 복사 · 해설 팝업" : [3, 4].includes(item.week) ? "방향키 이동 · O 전체 목차<br>전체 읽기 · 코드 복사 · Colab 실습" : "방향키로 이동 · O 전체 목록<br>N 강사 노트 · 전체 화면 지원")
+      ? ([10, 11, 12].includes(item.week) ? "방향키 이동 · O 목차 · 전체 읽기 · 화면 전체보기<br>프롬프트·Python 복사 · 실습 팝업" : item.week === 9 ? "방향키 이동 · 목차 · 전체 읽기 · 화면 전체보기<br>프롬프트 복사 · 손계산·Python 팝업 · 자가 실습" : [7, 8].includes(item.week) ? "방향키 이동 · 목차 · 전체 읽기 · 화면 전체보기<br>프롬프트·코드 복사" : [5, 6].includes(item.week) ? "방향키 이동 · M 전체 목차 · 전체 읽기 · 화면 전체보기<br>프롬프트·코드 복사 · 해설 팝업" : [3, 4].includes(item.week) ? "방향키 이동 · O 전체 목차<br>전체 읽기 · 코드 복사 · Colab 실습" : "방향키로 이동 · O 전체 목록<br>N 강사 노트 · 전체 화면 지원")
       : "해당 차수 슬라이드가 추가되면<br>이 버튼이 자동으로 활성화됩니다.";
 
     const headerLink = byId("header-slide-link");
