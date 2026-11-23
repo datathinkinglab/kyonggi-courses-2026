@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>기말 발표·성적 확인 · 자료탐색방법론</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<script>
+/* ════════════════════════════════════════════════════════════════
+   설정: Apps Script 웹 앱 URL을 아래 따옴표 안에 붙여넣으세요.
+   비워 두면 '준비 중' 화면이 나오고, 주소 끝에 ?demo=1 을 붙이면
+   데모 모드로 화면을 미리 볼 수 있습니다(입력 내용은 저장되지 않음).
+   ════════════════════════════════════════════════════════════════ */
+const API_URL = '';
+const CONTACT_EMAIL = 'lee.seungmook@gmail.com';
+</script>
+<style>
+@font-face{font-family:Paperlogy;src:url(assets/Paperlogy-8ExtraBold.woff2) format("woff2");font-weight:800;font-display:swap}
+@font-face{font-family:Paperlogy;src:url(assets/Paperlogy-7Bold.woff2) format("woff2");font-weight:700;font-display:swap}
+:root{
+  --ink:#14243a; --ink2:#46566b; --ink3:#5f6d7e; --line:#dce4ed; --bg:#f7f9fc; --card:#fff;
+  --navy:#13213c; --navy2:#074c8c; --accent:#0a68b3; --accent-bg:#e6f0fa; --coral:#f2604f;
+  --ok:#17794a; --ok-bg:#e4f4ec; --warn:#a15c00; --warn-bg:#fdf1dc; --bad:#b3261e; --bad-bg:#fbe9e7;
+  --r:14px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;color:var(--ink);background:var(--bg);line-height:1.6;word-break:keep-all;-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
+button,input,select,textarea{font:inherit;color:inherit}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+
+/* header */
+.top{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:16px;min-height:60px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;color:var(--ink);font-weight:700}
+.brand:hover{text-decoration:none}
+.brand img{width:clamp(96px,9vw,128px);height:auto}
+.brand>span{padding-left:12px;border-left:1px solid var(--line)}
+.brand small{display:block;font-weight:500;font-size:12px;color:var(--ink3);line-height:1.2}
+.nav{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
+.nav a{padding:7px 13px;border-radius:999px;color:var(--ink2);font-weight:600;font-size:15px}
+.nav a:hover{background:var(--bg);text-decoration:none}
+.nav a.on{background:var(--navy);color:#fff}
+.who{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--ink2)}
+.who b{color:var(--ink)}
+
+/* hero */
+.hero{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:38px 0 34px}
+.hero .eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:13.5px;letter-spacing:.03em;color:#9fc9ef;font-weight:800}
+.hero .eyebrow::before{content:"";width:28px;height:4px;border-radius:4px;background:var(--coral)}
+.hero h1{margin:6px 0 8px;font-family:Paperlogy,inherit;font-weight:800;font-size:clamp(26px,4vw,38px);line-height:1.25;letter-spacing:-.02em}
+h2{font-family:Paperlogy,inherit;font-weight:800}
+.hero p{margin:0;max-width:680px;opacity:.88}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:22px}
+.step{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16);border-radius:12px;padding:12px 14px}
+.step .d{font-weight:700;font-size:15px}
+.step .t{font-size:14px;opacity:.88}
+.step .s{display:inline-block;margin-top:6px;font-size:12px;font-weight:700;padding:2px 9px;border-radius:999px;background:rgba(255,255,255,.16)}
+.step .s.open{background:#bff0d3;color:#0c4a2b}
+.demo{background:var(--warn-bg);color:var(--warn);font-size:14px;font-weight:600;padding:8px 0;text-align:center}
+
+main{padding:28px 0 70px;min-height:50vh}
+h2{font-size:22px;margin:0 0 4px;letter-spacing:-.01em}
+h3{font-size:17px;margin:0 0 10px}
+.lead{color:var(--ink2);margin:0 0 20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px}
+.stack>*+*{margin-top:16px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.muted{color:var(--ink3);font-size:14px}
+.back{display:inline-block;margin-bottom:14px;font-weight:600}
+
+/* chips */
+.chip{display:inline-flex;align-items:center;gap:4px;font-size:12.5px;font-weight:600;padding:2px 9px;border-radius:999px;background:var(--bg);color:var(--ink3);border:1px solid var(--line);white-space:nowrap}
+.chip.ok{background:var(--ok-bg);color:var(--ok);border-color:transparent}
+.chip.warn{background:var(--warn-bg);color:var(--warn);border-color:transparent}
+.chip.blue{background:var(--accent-bg);color:var(--accent);border-color:transparent}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+
+/* team grid */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:16px}
+.tcard{display:flex;flex-direction:column;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px;color:inherit;transition:border-color .15s,box-shadow .15s,transform .15s}
+.tcard:hover{text-decoration:none;border-color:var(--accent);box-shadow:0 6px 20px rgba(20,40,75,.09);transform:translateY(-2px)}
+.tcard .no{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.badge{display:inline-flex;align-items:center;justify-content:center;min-width:44px;height:28px;padding:0 10px;border-radius:8px;background:var(--navy);color:#fff;font-weight:700;font-size:14px}
+.tcard .ttl{font-weight:700;font-size:17px;line-height:1.4}
+.tcard .ttl.empty{color:var(--ink3);font-weight:500}
+.tcard .mem{font-size:14px;color:var(--ink2)}
+.tcard .foot{margin-top:auto;padding-top:10px;border-top:1px dashed var(--line)}
+.mine{outline:2px solid var(--accent);outline-offset:-1px}
+
+/* materials */
+.mat{display:flex;gap:14px;align-items:flex-start;padding:14px 0;border-top:1px solid var(--line)}
+.mat:first-child{border-top:0;padding-top:0}
+.mat .body{flex:1;min-width:0}
+.mat .name{font-weight:650;overflow-wrap:anywhere}
+.mat .desc{font-size:14.5px;color:var(--ink2);white-space:pre-wrap;overflow-wrap:anywhere}
+.mat .acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.kv{display:grid;grid-template-columns:110px 1fr;gap:6px 14px;font-size:15px}
+.kv dt{color:var(--ink3);font-weight:600} .kv dd{margin:0;overflow-wrap:anywhere;white-space:pre-wrap}
+
+/* buttons, forms */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:9px 16px;border-radius:10px;border:1px solid var(--line);background:#fff;font-weight:650;font-size:15px;cursor:pointer;color:var(--ink);white-space:nowrap}
+.btn:hover{border-color:var(--ink3);text-decoration:none}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.pri:hover{background:#08589a}
+.btn.coral{background:var(--coral);border-color:var(--coral);color:#fff}
+.btn.sm{padding:5px 11px;font-size:13.5px;border-radius:8px}
+.btn.danger{color:var(--bad)}
+.btn[disabled]{opacity:.55;cursor:not-allowed}
+label.f{display:block;font-size:14px;font-weight:650;margin-bottom:5px}
+label.f span{font-weight:500;color:var(--ink3)}
+input[type=text],input[type=url],input[type=password],select,textarea{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:#fff}
+textarea{min-height:84px;resize:vertical}
+input:focus,select:focus,textarea:focus,.btn:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fgrid .full{grid-column:1/-1}
+.notice{padding:12px 16px;border-radius:12px;background:var(--accent-bg);color:#1c3f8f;font-size:15px}
+.notice.warn{background:var(--warn-bg);color:var(--warn)}
+.notice.ok{background:var(--ok-bg);color:var(--ok)}
+
+/* segmented score */
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}
+.seg label{position:relative;cursor:pointer}
+.seg input{position:absolute;opacity:0;inset:0;cursor:pointer}
+.seg span{display:block;min-width:44px;padding:8px 12px;text-align:center;font-weight:650;font-size:14.5px;border-left:1px solid var(--line);color:var(--ink2)}
+.seg label:first-child span{border-left:0}
+.seg input:checked+span{background:var(--navy);color:#fff}
+.seg input:focus-visible+span{outline:2px solid var(--accent);outline-offset:-2px}
+.crit{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:12px 0;border-top:1px solid var(--line);flex-wrap:wrap}
+.crit:first-of-type{border-top:0}
+.crit .q{flex:1;min-width:220px}
+.crit .q b{display:block}
+.crit .q small{color:var(--ink3);font-size:13.5px}
+
+/* evaluate */
+.tabs{display:flex;gap:6px;margin-bottom:18px;border-bottom:1px solid var(--line)}
+.tabs button{border:0;background:none;padding:10px 14px;font-weight:650;color:var(--ink3);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-1px}
+.tabs button.on{color:var(--navy);border-bottom-color:var(--navy)}
+details.ev{background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+details.ev+details.ev{margin-top:10px}
+details.ev summary{display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;list-style:none;flex-wrap:wrap}
+details.ev summary::-webkit-details-marker{display:none}
+details.ev summary .ttl{flex:1;min-width:160px;font-weight:650}
+details.ev[open] summary{border-bottom:1px solid var(--line);background:#fafbfe}
+details.ev .in{padding:8px 18px 18px}
+.progress{height:8px;border-radius:99px;background:var(--line);overflow:hidden;flex:1;min-width:120px}
+.progress i{display:block;height:100%;background:var(--ok);border-radius:99px;transition:width .3s}
+
+/* grades */
+.gcard{background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.gcard+.gcard{margin-top:16px}
+.gcard .ghead{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:16px 20px;border-bottom:1px solid var(--line);background:#fafbfd}
+.gcard .ghead h3{margin:0;font-family:Paperlogy,inherit;font-weight:800;font-size:19px}
+.gcard .gbody{padding:20px}
+.score-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+.big{font-family:Paperlogy,inherit;font-weight:800;font-size:44px;line-height:1;color:var(--navy);letter-spacing:-.02em}
+.big small{font-size:20px;color:var(--ink3);font-weight:700}
+.big-label{font-size:13.5px;font-weight:700;color:var(--ink3);margin-bottom:6px}
+.items{margin-top:20px;border-top:1px solid var(--line)}
+.irow{display:grid;grid-template-columns:minmax(150px,1.2fr) 2fr 84px;align-items:center;gap:14px;padding:10px 0;border-bottom:1px solid var(--line);font-size:15px}
+.irow .bar{height:8px;border-radius:99px;background:#e9eef4;overflow:hidden}
+.irow .bar i{display:block;height:100%;background:var(--accent);border-radius:99px}
+.irow .v{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+.irow .v small{color:var(--ink3);font-weight:500}
+.fb{margin-top:20px}
+.fb h4{margin:0 0 8px;font-size:15px}
+.txt{white-space:pre-wrap;overflow-wrap:anywhere;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:15px;line-height:1.75}
+details.more{margin-top:12px;border:1px solid var(--line);border-radius:12px;background:#fff}
+details.more summary{cursor:pointer;padding:12px 16px;font-weight:700}
+details.more .txt{border:0;border-top:1px solid var(--line);border-radius:0 0 12px 12px}
+.empty-g{color:var(--ink3);padding:4px 0}
+dialog{border:0;border-radius:18px;padding:0;width:min(420px,calc(100vw - 32px));box-shadow:0 30px 80px rgba(10,20,45,.35)}
+dialog::backdrop{background:rgba(10,20,45,.5)}
+dialog form{padding:24px}
+.err{color:var(--bad);font-size:14px;font-weight:600;min-height:20px;margin:8px 0 0}
+#toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,20px);background:var(--ink);color:#fff;padding:11px 18px;border-radius:12px;font-weight:600;font-size:15px;opacity:0;pointer-events:none;transition:.25s;z-index:50;max-width:calc(100vw - 32px)}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+#toast.bad{background:var(--bad)}
+.skel{padding:60px 0;text-align:center;color:var(--ink3)}
+footer{border-top:1px solid var(--line);padding:22px 0;color:var(--ink3);font-size:14px;background:#fff}
+@media (max-width:900px){.steps{grid-template-columns:1fr 1fr}}
+@media (max-width:640px){
+  .steps{grid-template-columns:1fr}.score-head{flex-direction:column;align-items:flex-start}.irow{grid-template-columns:1fr auto}.irow .bar{grid-column:1/-1;order:3}.fgrid{grid-template-columns:1fr}.kv{grid-template-columns:1fr;gap:0 0}.kv dd{margin-bottom:8px}
+  .nav{margin-left:0;width:100%;order:3;padding-bottom:8px}.who{margin-left:auto}
+  .mat{flex-direction:column}.mat .acts{justify-content:flex-start}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="index.html" title="강의 홈"><img src="assets/logo.png" alt="Data Thinking Lab" onerror="this.remove()"><span>기말 발표·성적 확인<small>자료탐색방법론 · 경기대학교 응용통계전공</small></span></a>
+    <nav class="nav" id="nav">
+      <a href="#teams" data-v="teams">조별 발표</a>
+      <a href="#submit" data-v="submit">자료 등록</a>
+      <a href="#evaluate" data-v="evaluate">평가</a>
+      <a href="#grades" data-v="grades">내 성적</a>
+    </nav>
+    <div class="who" id="who"></div>
+  </div>
+</header>
+<div class="demo" id="demo" hidden>데모 모드 — 입력 내용은 저장되지 않고 새로고침하면 사라집니다. 명단의 이름과 아무 학번으로 로그인해 볼 수 있으며, 성적은 예시 값입니다.</div>
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow">2026학년도 2학기 · 팀 프로젝트</div>
+    <h1>공개 데이터로 질문하고, 검증한 결과를 발표합니다</h1>
+    <p>각 조의 발표자료와 노트북, 참고자료를 한곳에서 확인하고, 발표가 끝나면 다른 조의 발표와 우리 팀원의 기여를 평가합니다. 중간고사와 기말고사 성적·피드백도 여기서 확인합니다. <a href="final-assignment.html" style="color:#cfe0ff;text-decoration:underline">기말과제 안내 보기</a></p>
+    <div class="steps" id="steps"></div>
+  </div>
+</section>
+<main><div class="wrap" id="app"><div class="skel">불러오는 중…</div></div></main>
+<footer><div class="wrap">경기대학교 응용통계전공 이승묵 · Data Thinking Lab — 질문 → 분석 → 검증 → 해석</div></footer>
+
+<dialog id="loginDlg">
+  <form id="loginForm" class="stack">
+    <div><h3 style="margin-bottom:2px">본인 확인</h3><div class="muted">자료 등록, 평가, 성적 확인은 수강생 본인만 할 수 있습니다.</div></div>
+    <div><label class="f" for="lgName">이름</label><input type="text" id="lgName" autocomplete="name" required></div>
+    <div><label class="f" for="lgSid">학번</label><input type="password" id="lgSid" inputmode="numeric" autocomplete="off" required></div>
+    <p class="err" id="lgErr"></p>
+    <div class="row" style="justify-content:flex-end"><button type="button" class="btn" id="lgCancel">취소</button><button class="btn pri" id="lgGo">확인</button></div>
+  </form>
+</dialog>
+<div id="toast" role="status"></div>
+
+<script>
+'use strict';
+const DEMO = !API_URL && /[?&]demo=1\b/.test(location.search);
+const NOT_READY = !API_URL && !DEMO;
+const S = { boot: null, token: null, me: null, mine: { teamEvals: {}, peerEvals: {} }, evalTab: 'team', grades: null };
+const $ = (s, r = document) => r.querySelector(s);
+
+/* ───────── DOM 도우미 ───────── */
+function h(tag, attrs, ...kids) {
+  const e = document.createElement(tag);
+  for (const k in (attrs || {})) {
+    const v = attrs[k];
+    if (v == null || v === false) continue;
+    if (k === 'class') e.className = v;
+    else if (k.startsWith('on')) e.addEventListener(k.slice(2), v);
+    else if (k === 'value') e.value = v;
+    else e.setAttribute(k, v === true ? '' : v);
+  }
+  for (const c of kids.flat(Infinity)) { if (c == null || c === false) continue; e.append(c.nodeType ? c : document.createTextNode(String(c))); }
+  return e;
+}
+let toastT;
+function toast(msg, bad) { const t = $('#toast'); t.textContent = msg; t.className = 'show' + (bad ? ' bad' : ''); clearTimeout(toastT); toastT = setTimeout(() => t.className = '', bad ? 5000 : 2600); }
+async function busy(btn, fn) {
+  const txt = btn.textContent; btn.disabled = true; btn.textContent = '처리 중…';
+  try { return await fn(); } catch (e) { toast(e.message || '오류가 발생했습니다.', true); } finally { btn.disabled = false; btn.textContent = btn.dataset.label || txt; }
+}
+const safeUrl = u => /^https?:\/\//i.test(u || '') ? u : '#';
+const ext = n => (String(n || '').split('.').pop() || '').toLowerCase();
+
+/* ───────── API ───────── */
+async function api(action, data) {
+  const body = Object.assign({ action, token: S.token }, data || {});
+  if (DEMO) return Mock.call(body);
+  let j;
+  try { const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify(body) }); j = await res.json(); }
+  catch (e) { throw new Error('서버에 연결하지 못했습니다. 잠시 후 다시 시도해 주세요.'); }
+  if (!j.ok) {
+    if (/로그인/.test(j.error || '')) { logout(true); }
+    throw new Error(j.error || '요청을 처리하지 못했습니다.');
+  }
+  return j;
+}
+
+/* ───────── 세션 ───────── */
+function saveSession() { try { S.token ? sessionStorage.setItem('fs_token', S.token) : sessionStorage.removeItem('fs_token'); } catch (e) { } }
+function logout(silent) { S.token = null; S.me = null; S.grades = null; S.mine = { teamEvals: {}, peerEvals: {} }; saveSession(); renderWho(); if (!silent) { toast('로그아웃했습니다.'); render(); } }
+function renderWho() {
+  const w = $('#who'); w.replaceChildren();
+  if (S.me) w.append(h('span', null, h('b', null, S.me.name), S.me.team ? ' · ' + S.me.team + '조' : ''), h('button', { class: 'btn sm', onclick: () => logout() }, '로그아웃'));
+  else w.append(h('button', { class: 'btn sm', onclick: () => openLogin() }, '로그인'));
+}
+let loginResolve;
+function openLogin() {
+  $('#lgErr').textContent = ''; $('#loginDlg').showModal(); $('#lgName').focus();
+  return new Promise(r => loginResolve = r);
+}
+$('#lgCancel').onclick = () => $('#loginDlg').close();
+$('#loginForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const btn = $('#lgGo'); btn.disabled = true; $('#lgErr').textContent = '';
+  try {
+    const r = await api('login', { name: $('#lgName').value, sid: $('#lgSid').value });
+    S.token = r.token; S.me = r.me; S.mine = r.mine; saveSession();
+    $('#lgSid').value = ''; $('#loginDlg').close(); renderWho(); render(); toast(S.me.name + '님, 확인되었습니다.');
+    if (loginResolve) loginResolve(true);
+  } catch (err) { $('#lgErr').textContent = err.message; }
+  btn.disabled = false;
+});
+
+/* ───────── 데이터 ───────── */
+async function load() { S.boot = await api('bootstrap'); renderSteps(); }
+const team = n => S.boot.teams.find(t => t.team === Number(n));
+function renderSteps() {
+  const st = S.boot.settings, pill = (on, a, b) => h('span', { class: 's' + (on ? ' open' : '') }, on ? a : b);
+  $('#steps').replaceChildren(
+    h('div', { class: 'step' }, h('div', { class: 'd' }, '12월 7일(월)'), h('div', { class: 't' }, '발표자료·노트북 등록'), pill(st.upload, '등록 가능', '등록 마감')),
+    h('div', { class: 'step' }, h('div', { class: 'd' }, '12월 14일(월)'), h('div', { class: 't' }, '최종 발표와 질의응답'), pill(st.teamEval, '발표 평가 진행 중', '발표 평가는 발표 후 오픈')),
+    h('div', { class: 'step' }, h('div', { class: 'd' }, '발표 이후'), h('div', { class: 't' }, '팀원 동료평가 개별 제출'), pill(st.peerEval, '동료평가 진행 중', '동료평가는 발표 후 오픈')),
+    h('div', { class: 'step' }, h('div', { class: 'd' }, '성적 확인'), h('div', { class: 't' }, '중간·기말 점수와 피드백'),
+      h('div', { class: 'row', style: 'gap:5px' }, (S.boot.exams || []).map(e => pill(e.open, e.label + ' 공개', e.label + ' 공개 전'))))
+  );
+}
+
+/* ───────── 화면: 조별 발표 ───────── */
+function statusChips(t) {
+  const have = new Set(t.materials.map(m => m.type));
+  return h('div', { class: 'chips' },
+    S.boot.required.map(r => h('span', { class: 'chip' + (have.has(r) ? ' ok' : '') }, (have.has(r) ? '✓ ' : '') + r)),
+    h('span', { class: 'chip' + (t.info.github ? ' ok' : '') }, (t.info.github ? '✓ ' : '') + 'GitHub'));
+}
+function viewTeams() {
+  const total = S.boot.teams.reduce((a, t) => a + t.materials.length, 0);
+  return h('div', null,
+    h('h2', null, '조별 발표'),
+    h('p', { class: 'lead' }, S.boot.teams.length + '개 조 · 등록된 자료 ' + total + '건. 조를 선택하면 발표자료와 참고자료를 볼 수 있습니다.'),
+    h('div', { class: 'grid' }, S.boot.teams.map(t => {
+      const res = S.boot.results && S.boot.results[t.team];
+      return h('a', { class: 'tcard' + (S.me && S.me.team === t.team ? ' mine' : ''), href: '#team-' + t.team },
+        h('div', { class: 'no' }, h('span', { class: 'badge' }, t.team + '조'),
+          h('span', { class: 'row', style: 'gap:6px' }, res ? h('span', { class: 'chip blue' }, '평균 ' + res.avg + '점 · ' + res.n + '명') : null, S.me && S.me.team === t.team ? h('span', { class: 'chip blue' }, '우리 조') : null)),
+        h('div', { class: 'ttl' + (t.info.title ? '' : ' empty') }, t.info.title || '프로젝트 제목 미등록'),
+        t.info.summary ? h('div', { class: 'muted' }, t.info.summary) : null,
+        h('div', { class: 'mem' }, t.members.join(' · ')),
+        h('div', { class: 'foot' }, statusChips(t)));
+    })));
+}
+function matRow(m, canDelete) {
+  const acts = [h('a', { class: 'btn sm', href: safeUrl(m.url), target: '_blank', rel: 'noopener' }, m.kind === '파일' ? '열기' : '링크 열기')];
+  if (m.kind === '파일' && ext(m.fileName) === 'ipynb' && m.fileId) acts.push(h('a', { class: 'btn sm', href: 'https://colab.research.google.com/drive/' + encodeURIComponent(m.fileId), target: '_blank', rel: 'noopener' }, 'Colab에서 열기'));
+  if (m.kind === '링크' && /^https:\/\/github\.com\/.+\.ipynb/i.test(m.url)) acts.push(h('a', { class: 'btn sm', href: m.url.replace('https://github.com/', 'https://colab.research.google.com/github/'), target: '_blank', rel: 'noopener' }, 'Colab에서 열기'));
+  if (canDelete) {
+    const del = h('button', { class: 'btn sm danger', onclick: async () => {
+      if (del.dataset.arm !== '1') { del.dataset.arm = '1'; del.textContent = '정말 삭제할까요?'; setTimeout(() => { del.dataset.arm = ''; del.textContent = '삭제'; }, 4000); return; }
+      await busy(del, async () => { await api('deleteMaterial', { id: m.id }); await load(); render(); toast('삭제했습니다.'); });
+    } }, '삭제');
+    acts.push(del);
+  }
+  return h('div', { class: 'mat' },
+    h('div', { class: 'body' },
+      h('div', { class: 'row', style: 'gap:6px;margin-bottom:3px' }, h('span', { class: 'chip blue' }, m.type), h('span', { class: 'chip' }, m.kind === '파일' ? (ext(m.fileName).toUpperCase() || '파일') : '링크')),
+      h('div', { class: 'name' }, m.title),
+      m.desc ? h('div', { class: 'desc' }, m.desc) : null,
+      h('div', { class: 'muted' }, [m.fileName, m.by, m.at].filter(Boolean).join(' · '))),
+    h('div', { class: 'acts' }, acts));
+}
+function viewTeam(n) {
+  const t = team(n);
+  if (!t) return h('div', { class: 'notice warn' }, '해당 조를 찾을 수 없습니다.');
+  const mineTeam = S.me && S.me.team === t.team;
+  const order = S.boot.types;
+  const mats = t.materials.slice().sort((a, b) => order.indexOf(a.type) - order.indexOf(b.type));
+  const i = t.info;
+  return h('div', { class: 'stack' },
+    h('a', { class: 'back', href: '#teams' }, '← 전체 조 목록'),
+    h('div', { class: 'card stack' },
+      h('div', { class: 'row' }, h('span', { class: 'badge' }, t.team + '조'), h('h2', { style: 'margin:0;flex:1;min-width:200px' }, i.title || '프로젝트 제목 미등록'),
+        mineTeam ? h('a', { class: 'btn sm', href: '#submit' }, '자료 등록·수정') : (S.boot.settings.teamEval && S.me ? h('a', { class: 'btn sm pri', href: '#evaluate' }, '이 조 평가하기') : null)),
+      h('dl', { class: 'kv' },
+        h('dt', null, '조원'), h('dd', null, t.members.join(', ')),
+        i.summary ? [h('dt', null, '한 줄 요약'), h('dd', null, i.summary)] : null,
+        i.dataSource ? [h('dt', null, '데이터 출처'), h('dd', null, i.dataSource)] : null,
+        i.github ? [h('dt', null, 'GitHub'), h('dd', null, h('a', { href: safeUrl(i.github), target: '_blank', rel: 'noopener' }, i.github))] : null),
+      statusChips(t)),
+    h('div', { class: 'card' },
+      h('h3', null, '발표자료와 참고자료 ', h('span', { class: 'muted' }, mats.length + '건')),
+      mats.length ? mats.map(m => matRow(m, false)) : h('div', { class: 'muted' }, '아직 등록된 자료가 없습니다.')));
+}
+
+/* ───────── 화면: 자료 등록 ───────── */
+function needLogin(what) {
+  return h('div', { class: 'card stack', style: 'text-align:center;padding:40px 20px' },
+    h('div', null, what + ' 이름과 학번으로 본인 확인이 필요합니다.'),
+    h('div', null, h('button', { class: 'btn pri', onclick: () => openLogin() }, '로그인')));
+}
+function field(label, input, hint, full) { return h('div', { class: full ? 'full' : null }, h('label', { class: 'f' }, label, hint ? h('span', null, ' ' + hint) : null), input); }
+function viewSubmit() {
+  const head = [h('h2', null, '자료 등록'), h('p', { class: 'lead' }, '우리 조의 프로젝트 정보와 발표자료, 노트북, 참고자료, 링크를 등록합니다. 등록한 내용은 모든 수강생에게 공개됩니다.')];
+  if (!S.me) return h('div', null, head, needLogin('자료를 등록하려면'));
+  if (!S.me.team || !team(S.me.team)) return h('div', null, head, h('div', { class: 'notice warn' }, '조 배정 정보가 없어 자료를 등록할 수 없습니다. 담당 교수에게 문의해 주세요.'));
+  const t = team(S.me.team), open = S.boot.settings.upload, i = t.info;
+
+  // 프로젝트 정보
+  const fTitle = h('input', { type: 'text', maxlength: 120, value: i.title || '', placeholder: '예: 평일과 주말의 지하철 승차 인원은 어떻게 다른가' });
+  const fSum = h('textarea', { maxlength: 400, placeholder: '탐색 질문과 핵심 결과를 2~3문장으로' }); fSum.value = i.summary || '';
+  const fSrc = h('input', { type: 'text', maxlength: 400, value: i.dataSource || '', placeholder: '제공기관, 자료명, 다운로드 날짜' });
+  const fGit = h('input', { type: 'url', maxlength: 500, value: i.github || '', placeholder: 'https://github.com/…' });
+  const infoBtn = h('button', { class: 'btn pri', disabled: !open, onclick: () => busy(infoBtn, async () => {
+    await api('saveTeamInfo', { title: fTitle.value, summary: fSum.value, dataSource: fSrc.value, github: fGit.value });
+    await load(); render(); toast('프로젝트 정보를 저장했습니다.');
+  }) }, '프로젝트 정보 저장');
+
+  // 자료 추가
+  const fType = h('select', null, S.boot.types.map(x => h('option', { value: x }, x)));
+  const fMT = h('input', { type: 'text', maxlength: 120, placeholder: '예: 최종 발표 슬라이드' });
+  const fMD = h('textarea', { maxlength: 500, placeholder: '어떤 자료인지 간단히 적어 주세요 (선택)' });
+  const fFile = h('input', { type: 'file', accept: S.boot.allowedExt.map(x => '.' + x).join(',') });
+  const fUrl = h('input', { type: 'url', maxlength: 600, placeholder: 'https://…' });
+  const boxFile = field('파일', fFile, '(' + S.boot.maxFileMb + 'MB 이하 · ' + S.boot.allowedExt.join(', ') + ')', true);
+  const boxUrl = field('주소(URL)', fUrl, '(구글 드라이브·GitHub·Colab·유튜브 등 공개 링크)', true); boxUrl.hidden = true;
+  let kind = '파일';
+  const kindSeg = h('div', { class: 'seg' }, ['파일', '링크'].map(k => h('label', null,
+    h('input', { type: 'radio', name: 'kind', checked: k === kind, onchange: () => { kind = k; boxFile.hidden = k !== '파일'; boxUrl.hidden = k !== '링크'; } }), h('span', null, k + '로 등록'))));
+  const addBtn = h('button', { class: 'btn pri', disabled: !open, onclick: () => busy(addBtn, async () => {
+    if (!fMT.value.trim()) throw new Error('제목을 입력해 주세요.');
+    const base = { type: fType.value, title: fMT.value, desc: fMD.value };
+    if (kind === '링크') await api('addLink', Object.assign(base, { url: fUrl.value }));
+    else {
+      const f = fFile.files[0];
+      if (!f) throw new Error('파일을 선택해 주세요.');
+      if (f.size > S.boot.maxFileMb * 1024 * 1024) throw new Error('파일은 ' + S.boot.maxFileMb + 'MB 이하만 올릴 수 있습니다. 더 큰 파일은 링크로 등록해 주세요.');
+      if (S.boot.allowedExt.indexOf(ext(f.name)) < 0) throw new Error('올릴 수 없는 파일 형식입니다.');
+      addBtn.textContent = '업로드 중… (파일 크기에 따라 1분 정도 걸릴 수 있습니다)';
+      const data = await new Promise((ok, no) => { const rd = new FileReader(); rd.onload = () => ok(String(rd.result).split(',')[1] || ''); rd.onerror = () => no(new Error('파일을 읽지 못했습니다.')); rd.readAsDataURL(f); });
+      await api('uploadFile', Object.assign(base, { fileName: f.name, mime: f.type, data }));
+    }
+    await load(); render(); toast('자료를 등록했습니다.');
+  }) }, '자료 등록');
+
+  return h('div', { class: 'stack' }, head,
+    open ? null : h('div', { class: 'notice warn' }, '지금은 자료 등록 기간이 아닙니다. 등록된 자료는 확인만 할 수 있습니다.'),
+    h('div', { class: 'card stack' },
+      h('div', { class: 'row' }, h('span', { class: 'badge' }, t.team + '조'), h('h3', { style: 'margin:0' }, '프로젝트 정보')),
+      h('div', { class: 'fgrid' }, field('프로젝트 제목', fTitle, null, true), field('한 줄 요약', fSum, null, true), field('데이터 출처', fSrc), field('GitHub 저장소 주소', fGit)),
+      h('div', null, infoBtn)),
+    h('div', { class: 'card stack' },
+      h('h3', { style: 'margin:0' }, '자료 추가'),
+      h('div', { class: 'fgrid' },
+        field('구분', fType), h('div', null, h('label', { class: 'f' }, '등록 방법'), kindSeg),
+        field('제목', fMT, null, true), boxFile, boxUrl, field('설명', fMD, null, true)),
+      h('div', null, addBtn)),
+    h('div', { class: 'card' },
+      h('div', { class: 'row', style: 'margin-bottom:10px' }, h('h3', { style: 'margin:0;flex:1' }, '우리 조 등록 자료 ', h('span', { class: 'muted' }, t.materials.length + '건')), statusChips(t)),
+      t.materials.length ? t.materials.map(m => matRow(m, open)) : h('div', { class: 'muted' }, '아직 등록한 자료가 없습니다.')));
+}
+
+/* ───────── 화면: 평가 ───────── */
+function seg(name, values, labels, sel) {
+  return h('div', { class: 'seg' }, values.map((v, k) => h('label', null, h('input', { type: 'radio', name, value: v, checked: sel === v }), h('span', null, labels ? labels[k] : v))));
+}
+const picked = (root, name) => { const c = root.querySelector('input[name="' + name + '"]:checked'); return c ? Number(c.value) : null; };
+
+function teamEvalPanel() {
+  const st = S.boot.settings, c = S.boot.criteria, vals = [];
+  for (let v = c.scale.min; v <= c.scale.max; v++) vals.push(v);
+  const others = S.boot.teams.filter(t => t.team !== S.me.team);
+  const max = c.team.length * c.scale.max;
+  const bar = h('i'), cnt = h('span', { class: 'muted' });
+  const upd = () => { const n = others.filter(t => S.mine.teamEvals[t.team]).length; bar.style.width = (others.length ? n / others.length * 100 : 0) + '%'; cnt.textContent = n + ' / ' + others.length + '개 조 평가 완료'; };
+  const list = others.map(t => {
+    const prev = S.mine.teamEvals[t.team], id = 'te' + t.team;
+    const chip = h('span', { class: 'chip' });
+    const setChip = e => { chip.className = 'chip' + (e ? ' ok' : ''); chip.textContent = e ? '✓ 제출 완료 · ' + e.scores.reduce((a, b) => a + b, 0) + '/' + max + '점' : '미평가'; };
+    setChip(prev);
+    const good = h('textarea', { maxlength: 1000, placeholder: '설득력 있었던 분석이나 검증, 인상적이었던 점' }); good.value = prev ? prev.good : '';
+    const imp = h('textarea', { maxlength: 1000, placeholder: '더 알고 싶은 점, 보완하면 좋을 점' }); imp.value = prev ? prev.improve : '';
+    const body = h('div', { class: 'in' });
+    const btn = h('button', { class: 'btn pri', disabled: !st.teamEval, onclick: () => busy(btn, async () => {
+      const scores = c.team.map((_, k) => picked(body, id + '_' + k));
+      if (scores.some(v => v == null)) throw new Error('모든 항목에 점수를 선택해 주세요.');
+      await api('submitTeamEval', { target: t.team, scores, good: good.value, improve: imp.value });
+      S.mine.teamEvals[t.team] = { scores, good: good.value, improve: imp.value };
+      setChip(S.mine.teamEvals[t.team]); upd(); btn.dataset.label = '평가 수정 제출'; toast(t.team + '조 평가를 제출했습니다.');
+    }) }, prev ? '평가 수정 제출' : '평가 제출');
+    body.append(
+      ...c.team.map((cr, k) => h('div', { class: 'crit' }, h('div', { class: 'q' }, h('b', null, cr.label), h('small', null, cr.desc)), seg(id + '_' + k, vals, null, prev ? prev.scores[k] : null))),
+      h('div', { class: 'fgrid', style: 'margin-top:12px' }, field('좋았던 점', good, '(선택)'), field('질문·개선 제안', imp, '(선택)')),
+      h('div', { class: 'row', style: 'margin-top:14px' }, btn, h('a', { href: '#team-' + t.team, target: '_blank', rel: 'noopener' }, '이 조 자료 보기 ↗')));
+    return h('details', { class: 'ev' }, h('summary', null, h('span', { class: 'badge' }, t.team + '조'), h('span', { class: 'ttl' }, t.info.title || t.members.join(' · ')), chip), body);
+  });
+  upd();
+  return h('div', { class: 'stack' },
+    st.teamEval ? h('div', { class: 'notice' }, '본인 조를 제외한 모든 조를 평가합니다. 항목마다 ' + c.scale.min + '점(미흡)부터 ' + c.scale.max + '점(매우 우수)까지 선택하세요. 제출 후에도 마감 전까지 수정할 수 있습니다.')
+      : h('div', { class: 'notice warn' }, '발표 평가는 12월 14일 최종 발표 후 열립니다. 평가 항목은 미리 확인할 수 있습니다.'),
+    h('div', { class: 'row' }, h('div', { class: 'progress' }, bar), cnt),
+    h('div', null, list));
+}
+
+function peerEvalPanel() {
+  const st = S.boot.settings, c = S.boot.criteria.peer;
+  const mates = team(S.me.team).members.filter(n => n !== S.me.name);
+  const root = h('div', { class: 'stack' });
+  const cards = mates.map((name, mi) => {
+    const prev = S.mine.peerEvals[name], id = 'pe' + mi;
+    const ev = h('textarea', { maxlength: 1500, placeholder: '판단 근거가 되는 작업이나 사례를 1개 이상 적어 주세요' }); ev.value = prev ? prev.evidence : '';
+    const un = h('input', { type: 'checkbox', checked: prev && prev.unsure });
+    return { name, id, ev, un, el: h('div', { class: 'card' },
+      h('div', { class: 'row', style: 'margin-bottom:6px' }, h('h3', { style: 'margin:0;flex:1' }, name), prev ? h('span', { class: 'chip ok' }, '✓ 제출 완료') : h('span', { class: 'chip' }, '미제출')),
+      c.map((label, k) => h('div', { class: 'crit' }, h('div', { class: 'q' }, h('b', null, label)), seg(id + '_' + k, [0, 1, 2], ['0 기여 없음', '1 부분 기여', '2 충분 기여'], prev ? prev.scores[k] : null))),
+      h('div', { style: 'margin-top:10px' }, field('판단 근거', ev)),
+      h('label', { class: 'row muted', style: 'margin-top:8px;gap:6px;cursor:pointer' }, un, '근거가 부족해 판단하기 어려움 (확인 어려움)')) };
+  });
+  const done = mates.length && mates.every(n => S.mine.peerEvals[n]);
+  const btn = h('button', { class: 'btn pri', disabled: !st.peerEval, onclick: () => busy(btn, async () => {
+    const items = cards.map(cd => {
+      const scores = c.map((_, k) => picked(root, cd.id + '_' + k));
+      if (scores.some(v => v == null)) throw new Error(cd.name + ' 팀원의 모든 항목 점수를 선택해 주세요.');
+      if (!cd.ev.value.trim() && !cd.un.checked) throw new Error(cd.name + " 팀원의 판단 근거를 적거나 '확인 어려움'을 표시해 주세요.");
+      return { target: cd.name, scores, evidence: cd.ev.value, unsure: cd.un.checked };
+    });
+    await api('submitPeerEval', { items });
+    items.forEach(it => S.mine.peerEvals[it.target] = { scores: it.scores, evidence: it.evidence, unsure: it.unsure });
+    render(); toast('동료평가를 제출했습니다.');
+  }) }, done ? '동료평가 수정 제출' : '동료평가 제출');
+  root.append(
+    st.peerEval ? h('div', { class: 'notice' }, '본인을 제외한 ' + S.me.team + '조 팀원 전원을 평가합니다. 응답은 팀원에게 공개되지 않으며 담당 교수만 확인합니다. 항목별 0~2점, 합계 6점을 30점으로 환산합니다.')
+      : h('div', { class: 'notice warn' }, '동료평가는 12월 14일 최종 발표 후 열립니다. 평가 항목은 미리 확인할 수 있습니다.'),
+    ...cards.map(cd => cd.el), h('div', null, btn));
+  return root;
+}
+
+function viewEvaluate() {
+  const head = [h('h2', null, '평가'), h('p', { class: 'lead' }, '다른 조의 발표를 평가하고, 우리 조 팀원의 기여를 평가합니다.')];
+  if (!S.me) return h('div', null, head, needLogin('평가에 참여하려면'));
+  if (!S.me.team || !team(S.me.team)) return h('div', null, head, h('div', { class: 'notice warn' }, '조 배정 정보가 없어 평가에 참여할 수 없습니다. 담당 교수에게 문의해 주세요.'));
+  const tab = (k, label) => h('button', { class: S.evalTab === k ? 'on' : null, onclick: () => { S.evalTab = k; render(); } }, label);
+  return h('div', null, head,
+    h('div', { class: 'tabs' }, tab('team', '다른 조 발표 평가'), tab('peer', '팀원 동료평가')),
+    S.evalTab === 'team' ? teamEvalPanel() : peerEvalPanel());
+}
+
+/* ───────── 화면: 내 성적 ───────── */
+const fmtN = n => n == null ? '–' : (Math.round(n * 10) / 10).toLocaleString('ko-KR');
+function gradeCard(g) {
+  const head = h('div', { class: 'ghead' }, h('h3', null, g.label), g.weight ? h('span', { class: 'chip' }, g.weight) : null,
+    h('span', { style: 'margin-left:auto' }, !g.open ? h('span', { class: 'chip' }, '공개 전') : g.found ? h('span', { class: 'chip ok' }, '공개됨') : null));
+  if (!g.open) return h('section', { class: 'gcard' }, head, h('div', { class: 'gbody' }, h('div', { class: 'empty-g' }, '아직 공개되지 않았습니다. 공개되면 이 화면에서 바로 확인할 수 있습니다.')));
+  if (!g.found) return h('section', { class: 'gcard' }, head, h('div', { class: 'gbody' }, h('div', { class: 'empty-g' }, '등록된 성적이 없습니다. 제출하지 않았거나 처리 중일 수 있으니 담당 교수에게 문의해 주세요.')));
+  const chips = [];
+  if (g.stats) chips.push(h('span', { class: 'chip blue' }, '수강생 평균 ' + fmtN(g.stats.mean) + ' · 중앙값 ' + fmtN(g.stats.median) + ' (' + g.stats.n + '명)'));
+  (g.totals || []).forEach(t => chips.push(h('span', { class: 'chip' }, t.label + ' ' + fmtN(t.score) + (t.max ? ' / ' + fmtN(t.max) : ''))));
+  if (g.deduct) chips.push(h('span', { class: 'chip warn' }, g.deduct.label + ' ' + g.deduct.text));
+  (g.info || []).forEach(t => chips.push(h('span', { class: 'chip' }, t.label + ': ' + t.text)));
+  const fb = g.feedback || [];
+  return h('section', { class: 'gcard' }, head, h('div', { class: 'gbody' },
+    h('div', { class: 'score-head' },
+      h('div', null, h('div', { class: 'big-label' }, g.scoreLabel || '점수'),
+        h('div', { class: 'big' }, g.score == null ? '채점 중' : fmtN(g.score), g.score != null && g.max ? h('small', null, ' / ' + fmtN(g.max)) : null)),
+      chips.length ? h('div', { class: 'chips', style: 'justify-content:flex-end;max-width:560px' }, chips) : null),
+    g.items && g.items.length ? h('div', { class: 'items' }, g.items.map(it => {
+      const pct = it.score != null && it.max ? Math.max(0, Math.min(100, it.score / it.max * 100)) : 0;
+      return h('div', { class: 'irow' }, h('div', null, it.label), h('div', { class: 'bar', role: 'img', 'aria-label': it.label + ' ' + fmtN(it.score) + '점' + (it.max ? ' / ' + it.max + '점' : '') }, h('i', { style: 'width:' + pct + '%' })),
+        h('div', { class: 'v' }, fmtN(it.score), it.max ? h('small', null, ' / ' + fmtN(it.max)) : null));
+    })) : null,
+    fb.length ? h('div', { class: 'fb' }, h('h4', null, '피드백'), h('div', { class: 'txt' }, fb[0].text)) : null,
+    fb.slice(1).map(f => h('details', { class: 'more' }, h('summary', null, f.label), h('div', { class: 'txt' }, f.text)))));
+}
+function viewGrades() {
+  const head = [h('h2', null, '내 성적'), h('p', { class: 'lead' }, '본인의 점수와 피드백만 표시됩니다. 공용 컴퓨터에서는 확인 후 꼭 로그아웃해 주세요.')];
+  if (!S.me) return h('div', null, head, needLogin('성적을 확인하려면'));
+  const box = h('div', null, h('div', { class: 'skel' }, '성적을 불러오는 중…'));
+  const draw = () => box.replaceChildren(...S.grades.map(gradeCard),
+    h('p', { class: 'muted', style: 'margin-top:18px' }, '점수나 피드백에 대한 질문은 담당 교수에게 이메일(' + CONTACT_EMAIL + ')로 보내 주세요. 메일에 학번과 이름, 해당 시험을 적어 주세요.'));
+  if (S.grades) draw();
+  else api('grades').then(r => { S.grades = r.grades; if (location.hash === '#grades') draw(); })
+    .catch(e => box.replaceChildren(h('div', { class: 'notice warn' }, e.message)));
+  const refresh = h('button', { class: 'btn sm', onclick: () => { S.grades = null; render(); } }, '새로 고침');
+  return h('div', null, h('div', { class: 'row', style: 'justify-content:space-between;align-items:flex-start' }, h('div', null, head), refresh), box);
+}
+
+/* ───────── 라우팅 ───────── */
+function render() {
+  if (!S.boot) return;
+  const hash = location.hash.replace('#', '') || 'teams';
+  const m = hash.match(/^team-(\d+)$/);
+  const v = m ? 'teams' : (['teams', 'submit', 'evaluate', 'grades'].indexOf(hash) >= 0 ? hash : 'teams');
+  document.querySelectorAll('#nav a').forEach(a => a.classList.toggle('on', a.dataset.v === v));
+  $('#app').replaceChildren(m ? viewTeam(m[1]) : v === 'submit' ? viewSubmit() : v === 'evaluate' ? viewEvaluate() : v === 'grades' ? viewGrades() : viewTeams());
+}
+window.addEventListener('hashchange', () => { render(); window.scrollTo(0, 0); });
+
+/* ───────── 데모용 저장소 (API_URL이 비어 있을 때만 사용) ───────── */
+const Mock = (() => {
+  const R = [[1,'김도빈'],[1,'최세현'],[1,'임혜진'],[1,'이예진'],[2,'김서이'],[2,'배진우'],[2,'조은수'],[2,'허가은'],[3,'이승민'],[3,'강선재'],[3,'신승우'],[3,'김민영'],[4,'송서윤'],[4,'오원석'],[4,'이미령'],[4,'이현지'],[5,'추민재'],[5,'김성욱'],[5,'김재윤'],[5,'장보경'],[6,'서세연'],[6,'조준성'],[6,'김건'],[6,'고건녕'],[7,'조혜선'],[7,'오현규'],[7,'임서연'],[7,'문지찬'],[8,'유연수'],[8,'이동규'],[8,'이하늘'],[8,'정형기'],[9,'황동하'],[9,'이예준'],[9,'김혜진'],[9,'추형준'],[10,'김도완'],[10,'이신영'],[10,'이정민'],[11,'이정현'],[11,'최은설'],[11,'박준경']];
+  const types = ['발표자료', '노트북', '검증 로그', 'AI 대화 로그', '참고자료'];
+  const crit = { scale: { min: 1, max: 5 }, peer: ['역할 수행', '분석·검증 기여', '협업·피드백'], team: [
+    { label: '질문 설계', desc: '탐색 가치가 있고 자료로 답할 수 있는 질문인가' }, { label: '방법의 적절성', desc: '요약·시각화·재표현이 자료와 질문에 맞는가' },
+    { label: '검증의 엄밀성', desc: '독립적인 방법으로 주요 결과를 확인하고 근거를 남겼는가' }, { label: '해석과 결론', desc: '자료가 뒷받침하는 범위 안에서 답했는가' },
+    { label: '재현성과 소통', desc: '다른 사람이 재실행하고 판단 근거를 이해할 수 있게 전달했는가' }] };
+  const db = { info: { 1: { title: '(예시) 평일과 주말의 지하철 승차 인원 분포 비교', summary: '데모 화면용 예시입니다. 실제 등록 내용이 아닙니다.', dataSource: '서울 열린데이터광장', github: 'https://github.com/' } },
+    mats: [{ id: 'demo1', team: 1, type: '발표자료', kind: '링크', title: '(예시) 최종 발표 슬라이드', desc: '데모용 예시 항목', url: 'https://data.seoul.go.kr/', fileId: '', fileName: '', by: '예시', at: '12/07 10:00' }],
+    te: {}, pe: {} };
+  const who = tok => { const r = R.find(x => x[1] === tok); if (!r) throw new Error('로그인이 필요합니다.'); return { name: r[1], team: r[0] }; };
+  const mine = u => ({ teamEvals: Object.assign({}, db.te[u.name]), peerEvals: Object.assign({}, db.pe[u.name]) });
+  const now = () => { const d = new Date(), p = n => String(n).padStart(2, '0'); return p(d.getMonth() + 1) + '/' + p(d.getDate()) + ' ' + p(d.getHours()) + ':' + p(d.getMinutes()); };
+  const A = {
+    bootstrap() {
+      const teams = {};
+      R.forEach(([t, n]) => { (teams[t] = teams[t] || { team: t, members: [], info: db.info[t] || {}, materials: db.mats.filter(m => m.team === t) }).members.push(n); });
+      return { course: '자료탐색방법론', teams: Object.values(teams), exams: [{ key: 'mid', label: '중간고사', weight: '개인 과제 · 40%', open: true }, { key: 'fin', label: '기말고사', weight: '팀 프로젝트 · 60%', open: false }], settings: { upload: true, teamEval: true, peerEval: true, results: false, mid: true, fin: false }, types, required: types.slice(0, 4), criteria: crit, maxFileMb: 25, allowedExt: ['pdf', 'pptx', 'ppt', 'key', 'ipynb', 'html', 'md', 'txt', 'csv', 'xlsx', 'docx', 'hwp', 'hwpx', 'zip', 'png', 'jpg', 'jpeg'] };
+    },
+    login(r) { const n = String(r.name || '').replace(/\s/g, ''); if (!R.find(x => x[1] === n) || !String(r.sid || '').trim()) throw new Error('이름 또는 학번이 명단과 일치하지 않습니다.'); const u = who(n); return { token: n, me: u, mine: mine(u) }; },
+    me(r) { const u = who(r.token); return { me: u, mine: mine(u) }; },
+    saveTeamInfo(r) { const u = who(r.token); db.info[u.team] = { title: r.title, summary: r.summary, dataSource: r.dataSource, github: r.github }; },
+    addLink(r) { const u = who(r.token); if (!/^https?:\/\/\S+$/i.test(r.url || '')) throw new Error('주소는 http:// 또는 https:// 로 시작해야 합니다.'); db.mats.push({ id: 'm' + Date.now(), team: u.team, type: r.type, kind: '링크', title: r.title, desc: r.desc, url: r.url, fileId: '', fileName: '', by: u.name, at: now() }); },
+    uploadFile(r) { const u = who(r.token); db.mats.push({ id: 'm' + Date.now(), team: u.team, type: r.type, kind: '파일', title: r.title, desc: r.desc, url: '#', fileId: '', fileName: r.fileName, by: u.name, at: now() }); },
+    deleteMaterial(r) { const u = who(r.token); db.mats = db.mats.filter(m => !(m.id === r.id && m.team === u.team)); },
+    submitTeamEval(r) { const u = who(r.token); if (Number(r.target) === u.team) throw new Error('본인 조는 평가할 수 없습니다.'); (db.te[u.name] = db.te[u.name] || {})[r.target] = { scores: r.scores, good: r.good, improve: r.improve }; },
+    grades(r) {
+      who(r.token);
+      return { grades: [
+        { key: 'mid', label: '중간고사', weight: '개인 과제 · 40%', open: true, found: true, score: 82, max: 100, scoreLabel: '최종점수',
+          items: [{ label: '① 문제 정의와 자료 이해', score: 13, max: 15 }, { label: '② 프롬프트와 수정 과정', score: 17, max: 20 }, { label: '③ 분석 결과와 재현성', score: 8, max: 10 }, { label: '④ 오류 진단과 검증', score: 32, max: 40 }, { label: '⑤ 해석과 최종 제안', score: 12, max: 15 }],
+          totals: [{ label: '원점수', score: 82, max: 100 }], info: [{ label: '제출구분', text: '기한 내' }], stats: { n: 39, mean: 79.8, median: 91 },
+          feedback: [{ label: '피드백 (강점 / 보완)', text: '(예시 피드백입니다)\n\n[강점]\n · 한 행이 방문 1건이라는 점과 결측 7건을 정확히 구분함.\n · 초안 A의 평균 오류를 원자료로 다시 계산해 확인함.\n\n[보완]\n ④ 초안 C의 영향받은 방문 ID를 제시하지 않음 — 해당 행을 찾아 수치와 함께 적을 것.' },
+            { label: '항목별 상세 피드백', text: '(예시) ① 13/15 — 질문 선정 이유를 한 문장 더 구체화하면 좋음.\n④ 32/40 — 검증 자료 12행과의 대조 결과를 표로 남길 것.' }] },
+        { key: 'fin', label: '기말고사', weight: '팀 프로젝트 · 60%', open: false }] };
+    },
+    submitPeerEval(r) { const u = who(r.token); db.pe[u.name] = {}; r.items.forEach(it => db.pe[u.name][it.target] = { scores: it.scores, evidence: it.evidence, unsure: it.unsure }); }
+  };
+  return { call: async b => { await new Promise(r => setTimeout(r, 150)); return Object.assign({ ok: true }, JSON.parse(JSON.stringify(A[b.action](b) || {}))); } };
+})();
+
+/* ───────── 시작 ───────── */
+(async () => {
+  $('#demo').hidden = !DEMO;
+  if (NOT_READY) {
+    $('#nav').style.display = 'none';
+    $('#app').replaceChildren(h('div', { class: 'card', style: 'text-align:center;padding:48px 20px' },
+      h('h2', null, '준비 중입니다'), h('p', { class: 'lead', style: 'margin:8px 0 0' }, '자료 등록·평가·성적 확인 시스템은 담당 교수 안내 후 열립니다.')));
+    return;
+  }
+  renderWho();
+  try {
+    await load();
+    let tok = null; try { tok = sessionStorage.getItem('fs_token'); } catch (e) { }
+    if (tok) { S.token = tok; try { const r = await api('me'); S.me = r.me; S.mine = r.mine; } catch (e) { S.token = null; saveSession(); } renderWho(); }
+    render();
+  } catch (e) {
+    $('#app').replaceChildren(h('div', { class: 'notice warn' }, '자료를 불러오지 못했습니다. 잠시 후 새로고침해 주세요. (' + e.message + ')'));
+  }
+})();
+</script>
+</body>
+</html>
