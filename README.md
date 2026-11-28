@@ -23,6 +23,8 @@ shared/                              공통 브랜드 자산
 
 ## 공통 참고 자료
 
+- [GitHub 프로젝트 배포와 개인 포트폴리오 관리 · 2026.11.28](https://datathinkinglab.github.io/kyonggi-courses-2026/github_portfolio_lecture.html) — 두 과목 공통 22페이지 강의 슬라이드입니다. [Notion 상세 가이드](https://app.notion.com/p/42696f1add7681f0b8a3fbc84fa0d888)
+
 - [프롬프트 작성법 · 2026.09.28](https://datathinkinglab.github.io/kyonggi-courses-2026/%ED%94%84%EB%A1%AC%ED%94%84%ED%8A%B8%EC%9E%91%EC%84%B1%EB%B2%95_26_0928.html) — 자료탐색분석과 통계컨설팅의 이해 수업에서 함께 활용하는 HTML 참고 자료입니다.
 - [원본 HTML](./프롬프트작성법_26_0928.html) — 참고 자료를 저장소 루트와 GitHub Pages 배포 폴더인 docs/에 보관합니다.
 - 자료탐색분석: 데이터의 맥락과 탐색 질문, 분석·시각화 요청 및 결과 검증 기준을 구체화할 때 참고합니다.
